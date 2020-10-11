@@ -133,28 +133,6 @@ It includes:
 - Apollo Client / React Hooks
 - Create React App
 
-### [`/web-angular`](./web-angular)
-
-![](web-angular/img/angular-ui.jpg)
-
-A UI built with [Angular](https://angular.io), [Apollo](https://www.apollographql.com/docs/angular/) and the [Clarity Design System](https://clarity.design) is also available.
-
-_Start the Angular UI server_
-
-```
-cd ./web-angular && npm start
-```
-
-### [`/mobile_client_flutter`](./mobile_client_flutter)
-
-![](img/grandstack-flutter.png)
-
-A mobile client built with [Flutter](https://flutter.dev) which supports Android, iOS, and web. See the [README](./mobile_client_flutter/README.md) for detailed setup instructions.
-
-```
-cd ./mobile_client_flutter && flutter run
-```
-
 ### [`/web-react-ts`](./web-react-ts)
 
 A UI built with [CRA](https://reactjs.org/docs/create-a-new-react-app.html)
