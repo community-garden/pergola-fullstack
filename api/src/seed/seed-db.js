@@ -2,6 +2,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 import dotenv from 'dotenv'
 import fetch from 'node-fetch'
 import { getSeedMutations } from './seed-mutations'
+import { logger } from '../index'
 
 dotenv.config()
 
@@ -37,6 +38,6 @@ const runMutations = async () => {
 
 runMutations()
   .then(() => {
-    console.log('Database seeded!')
+    logger.log('Database seeded!')
   })
-  .catch((e) => console.error(e))
+  .catch((e) => logger.error(e))

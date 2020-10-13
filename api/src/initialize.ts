@@ -1,4 +1,6 @@
-export const initializeDatabase = (driver) => {
+import { logger } from './index'
+
+export const initializeDatabase = (driver: Driver) => {
   const initCypher = `CALL apoc.schema.assert({}, {User: ["userId"], Business: ["businessId"], Review: ["reviewId"], Category: ["name"]})`
 
   const executeQuery = (driver) => {
@@ -10,6 +12,6 @@ export const initializeDatabase = (driver) => {
   }
 
   executeQuery(driver).catch((error) => {
-    console.error('Database initialization failed to complete\n', error.message)
+    logger.error('Database initialization failed to complete\n', error.message)
   })
 }

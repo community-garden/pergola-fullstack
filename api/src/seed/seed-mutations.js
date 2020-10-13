@@ -1,6 +1,8 @@
-const fetch = require('node-fetch')
-const parse = require('csv-parse/lib/sync')
-const { gql } = require('@apollo/client')
+import fetch from "node-fetch";
+
+import {gql} from "@apollo/client";
+import parse from "csv-parse/lib/sync";
+
 
 export const getSeedMutations = async () => {
   const res = await fetch(
