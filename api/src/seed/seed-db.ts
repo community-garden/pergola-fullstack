@@ -1,9 +1,18 @@
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client"
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client/core"
+import { fetch } from "cross-fetch"
 import dotenv from "dotenv"
-import fetch from "node-fetch"
+import pino from "pino"
+import PinoColada from "pino-colada"
 
-import { logger } from "../index"
 import { getSeedMutations } from "./seed-mutations"
+
+const logger = pino( {
+  level: process.env.LOG_LEVEL || "info",
+  prettifier: PinoColada,
+  prettyPrint: {
+    levelFirst: true,
+  },
+} )
 
 dotenv.config()
 
@@ -39,6 +48,6 @@ const runMutations = async () => {
 
 runMutations()
   .then(() => {
-    logger.log( "Database seeded!" )
+    logger.info( "Database seeded!" )
   } )
   .catch(( e ) => logger.error( e ))

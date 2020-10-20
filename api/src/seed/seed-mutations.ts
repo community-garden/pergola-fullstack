@@ -1,4 +1,4 @@
-import { DocumentNode, gql } from "@apollo/client"
+import { DocumentNode, gql } from "@apollo/client/core"
 import parse from "csv-parse/lib/sync"
 import fetch from "node-fetch"
 
