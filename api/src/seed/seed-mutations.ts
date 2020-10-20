@@ -1,34 +1,36 @@
-import fetch from "node-fetch";
+import { DocumentNode, gql } from "@apollo/client"
+import parse from "csv-parse/lib/sync"
+import fetch from "node-fetch"
 
-import {gql} from "@apollo/client";
-import parse from "csv-parse/lib/sync";
-
-
-export const getSeedMutations = async () => {
+export const getSeedMutations: () => Promise<
+  { mutation: DocumentNode; variables: any }[]
+> = async () => {
   const res = await fetch(
-    'https://cdn.neo4jlabs.com/data/grandstack_businesses.csv'
+    "https://cdn.neo4jlabs.com/data/grandstack_businesses.csv"
   )
   const body = await res.text()
-  const records = parse(body, { columns: true })
-  const mutations = generateMutations(records)
+  const records = parse( body, { columns: true } )
+  const mutations = generateMutations( records )
 
   return mutations
 }
 
-const generateMutations = (records) => {
-  return records.map((rec) => {
-    Object.keys(rec).map((k) => {
-      if (k === 'latitude' || k === 'longitude' || k === 'reviewStars') {
-        rec[k] = parseFloat(rec[k])
-      } else if (k === 'reviewDate') {
-        const dateParts = rec[k].split('-')
-        rec['year'] = parseInt(dateParts[0])
-        rec['month'] = parseInt(dateParts[1])
-        rec['day'] = parseInt(dateParts[2])
-      } else if (k === 'categories') {
-        rec[k] = rec[k].split(',')
+const generateMutations: (
+  records
+) => { mutation: DocumentNode; variables: any }[] = ( records ) => {
+  return records.map(( rec ) => {
+    Object.keys( rec ).map(( k ) => {
+      if ( k === "latitude" || k === "longitude" || k === "reviewStars" ) {
+        rec[k] = parseFloat( rec[k] )
+      } else if ( k === "reviewDate" ) {
+        const dateParts = rec[k].split( "-" )
+        rec.year = parseInt( dateParts[0] )
+        rec.month = parseInt( dateParts[1] )
+        rec.day = parseInt( dateParts[2] )
+      } else if ( k === "categories" ) {
+        rec[k] = rec[k].split( "," )
       }
-    })
+    } )
 
     return {
       mutation: gql`
@@ -97,5 +99,5 @@ const generateMutations = (records) => {
       `,
       variables: rec,
     }
-  })
+  } )
 }

@@ -1,18 +1,23 @@
-import { Driver } from 'neo4j-driver'
-import { logger } from './index'
+import { Driver } from "neo4j-driver"
 
-export const initializeDatabase = (driver: Driver) => {
-  const initCypher = `CALL apoc.schema.assert({}, {User: ["userId"], Business: ["businessId"], Review: ["reviewId"], Category: ["name"]})`
+import { logger } from "./index"
 
-  const executeQuery = (_driver: Driver) => {
+export const initializeDatabase: ( driver: Driver ) => void = (
+  driver: Driver
+) => {
+  const initCypher =
+    "CALL apoc.schema.assert({}, {User: [\"userId\"], Business: [\"businessId\"], Review: [\"reviewId\"], Category: [\"name\"]})"
+
+  const executeQuery = ( _driver: Driver ) => {
     const session = driver.session()
-    return session
-      .writeTransaction((tx) => tx.run(initCypher))
+    return _driver
+      .session()
+      .writeTransaction(( tx ) => tx.run( initCypher ))
       .then()
       .finally(() => session.close())
   }
 
-  executeQuery(driver).catch((error) => {
-    logger.error('Database initialization failed to complete\n', error.message)
-  })
+  executeQuery( driver ).catch(( error ) => {
+    logger.error( "Database initialization failed to complete\n", error.message )
+  } )
 }

@@ -1,13 +1,23 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": ["plugin:@typescript-eslint/recommended"],
+  "plugins": ["simple-import-sort", "import"],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
-    "semi": [ "off", "always"],
-    "quotes": ["off", "double"],
+    "semi": [ "error", "never" ],
+    "quotes": [ "error", "double" ],
+    "comma-dangle": ["error", {
+        "arrays": "only-multiline",
+        "objects": "only-multiline",
+        "imports": "only-multiline",
+        "exports": "only-multiline",
+        "functions": "never"
+    }],
+    "space-in-parens":  [ "error", "always", { "exceptions": [ "()", "empty" ] } ],
+    "sort-imports": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": 1,
     "@typescript-eslint/no-inferrable-types": [
@@ -15,6 +25,11 @@
         "ignoreParameters": true
       }
     ],
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "simple-import-sort/sort": "error",
+    "import/order": "off",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error"
   }
 }
