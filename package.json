@@ -31,6 +31,9 @@
     "*.js": [
       "prettier --write",
       "eslint --fix"
+    ],
+    "*.ts": [
+      "tslint --fix"
     ]
   }
 }
