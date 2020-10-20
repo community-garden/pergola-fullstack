@@ -18,6 +18,7 @@
     "seedDb": "node scripts/seed.js",
     "start": "node scripts/start-dev.js",
     "build": "node scripts/build.js",
+    "install": "node scripts/deps.js",
     "format": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier --write",
     "format:log": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier",
     "inferschema:write": "node scripts/inferSchema.js"
@@ -28,11 +29,11 @@
     }
   },
   "lint-staged": {
-    "*.js": [
+    "api/**/*.js": [
       "prettier --write",
       "eslint --fix"
     ],
-    "*.ts": [
+    "api/**/*.ts": [
       "tslint --fix"
     ]
   }

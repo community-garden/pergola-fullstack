@@ -5,12 +5,12 @@ const { API_DIR, APP_DIR, runner, concurrentOpts } = require('./common')
 const jobs = [
   {
     name: 'api',
-    command: `cd ${API_DIR} && ${runner} run start:dev`,
+    command: `cd ${API_DIR} && ${runner} run build`,
     prefixColor: 'green',
   },
   {
-    name: 'fontend',
-    command: `cd ${APP_DIR} && ${runner} run start`,
+    name: 'frontend',
+    command: `cd ${APP_DIR} && ${runner} run build`,
     prefixColor: 'blue',
   },
 ]

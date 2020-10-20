@@ -5,13 +5,13 @@
 Install dependencies:
 
 ```
-npm install
+yarn install
 ```
 
 Start the GraphQL service:
 
 ```
-npm start
+yarn start
 ```
 
 This will start the GraphQL service (by default on localhost:4000) where you can issue GraphQL requests or access GraphQL Playground in the browser:
@@ -45,11 +45,6 @@ Please read this [write-up](auth0-howto.md) for more information on configuring 
 
 You can deploy to any service that hosts Node.js apps
 
-```
-vercel
-```
-
-to deploy your GraphQL service on Vercel. Once deployed you'll be given a fresh URL that represents the current state of your application where you can access your GraphQL endpoint and GraphQL Playgound. For example: https://grand-stack-starter-api-pqdeodpvok.vercel.sh/
 
 ## Seeding The Database
 
