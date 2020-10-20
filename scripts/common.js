@@ -2,7 +2,7 @@ const path = require('path')
 const execa = require('execa')
 
 const API_DIR = path.join(__dirname, '../api')
-const APP_DIR = path.join(__dirname, `../app`)
+const APP_DIR = path.join(__dirname, `../frontend`)
 
 const shouldUseYarn = () => {
   try {
