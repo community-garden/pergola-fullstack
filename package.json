@@ -1,6 +1,7 @@
 {
   "license": "GPLv3",
   "devDependencies": {
+    "concurrently": "^5.3.0",
     "execa": "^4.0.2",
     "grandstack": "^0.0.7",
     "dotenv": "^8.2.0",
