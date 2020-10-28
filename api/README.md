@@ -34,6 +34,13 @@ JWT_SECRET="-----BEGIN PUBLIC KEY-----<ACTUAL_PUBLIC_KEY_CONTENT_WITH_CRLF>-----
 
 The fastest way to spawn a database is using the `docker-compose.yml` in the root directory
 
+There is a `.env.example` that you can use if you want to quickly dive into development with the
+provided dockerized version of Neo4J.
+
+```
+cp .env{.example,}
+```
+
 ## Configuring Auth0 for Our Garden - GraphQL.
 
 Currently no Auth0 configured. Use the GRANDStack Starter Guide.
