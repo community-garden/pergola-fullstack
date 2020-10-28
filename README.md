@@ -98,10 +98,18 @@ It includes:
 
 ## Docker Compose
 
-You can quickly start via:
+A Redis(soon) and Neo4J Database instance is beeing provided for development purpose.
+
+You can quickly start it via:
 
 ```
 docker-compose up -d
+```
+
+or
+
+```
+yarn run docker:up
 ```
 
 If you want to load the example DB after the services have been started:
