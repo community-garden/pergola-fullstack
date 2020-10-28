@@ -1,9 +1,9 @@
 # Scripts
 
-This directory contains scripts for working with the Our-Garden monorepo and should be run as npm scripts from the root directory. For example
+This directory contains scripts for working with the Pergola monorepo and should be run as npm scripts from the root directory. For example
 
 ```
-npm run start
+yarn run start
 ```
 
 - `start-dev.js` - starts the GraphQL API and web-react servers
