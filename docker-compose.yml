@@ -19,6 +19,14 @@ services:
       - NEO4JLABS_PLUGINS=[\"apoc\"]
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - NEO4J_AUTH=none
+  keycloak:
+    image: jboss/keycloak:11.0.1
+    ports:
+      - "8080:8080"
+    environment:
+      DB_VENDOR: h2
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
 
 networks:
   internal:

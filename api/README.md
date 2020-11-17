@@ -58,5 +58,13 @@ You can deploy to any service that hosts Node.js apps
 Optionally you can seed the GraphQL service by executing mutations that will write sample data to the database:
 
 ```
-npm run seedDb
+yarn run seedDb
 ```
+
+To enable authentication a sample [realm-export.json](config/real-export.json) is being provided. Run
+
+```
+yarn run seedKeycloak
+```
+
+to initialize keycloak with the real-export configuration.

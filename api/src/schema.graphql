@@ -17,8 +17,8 @@ type User {
 type Business {
   businessId: ID!
   name: String!
-  address: String
-  city: String
+  address: String @hasRole(role: "developer")
+  city: String @hasRole(role: "developer")
   state: String
   location: Point
   avgStars: Float
@@ -28,6 +28,7 @@ type Business {
   reviews: [Review] @relation(name: "REVIEWS", direction: "IN")
   categories: [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
 }
+
 
 type Review {
   reviewId: ID!
