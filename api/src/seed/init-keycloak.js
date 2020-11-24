@@ -1,6 +1,6 @@
 const KeycloakAdmin = require( "keycloak-admin" ).default
 
-const realmExport = require( "../config/realm-export.json" )
+const realmExport = require( "../../config/realm-export.json" )
 
 // The public and bearer clients that will be set up
 const PUBLIC_CLIENT_NAME = `${realmExport.realm}-public`

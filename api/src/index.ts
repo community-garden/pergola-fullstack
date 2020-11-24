@@ -50,14 +50,9 @@ app.use( graphqlPath, keycloak.middleware())
  * https://grandstack.io/docs/neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema
  */
 
-const helloGQL = `
-    type Query {
-        hello: String @hasRole(role: "developer")
-    }
-`
-
 const schema = makeAugmentedSchema( {
   typeDefs:  `${KeycloakTypeDefs}\n${typeDefs}`,
+  schemaDirectives: KeycloakSchemaDirectives,
   config: {
     query: {
       exclude: ["RatingCount"],
@@ -110,19 +105,11 @@ init( neo4jdriver )
  * generated resolvers to connect to the database.
  */
 const server = new ApolloServer( {
-  typeDefs: [KeycloakTypeDefs, helloGQL],
-  resolvers: {
-    Query: {
-      hello: () => {
-        return "Hello World"
-      }
-    }
-  },
+  schema, 
   context: ( {req} ) => {return {
     kauth: new KeycloakContext( {req: req as GrantedRequest} ),
     driver: neo4jdriver,
     neo4jDatabase: process.env.NEO4J_DATABASE }},
-  schemaDirectives: KeycloakSchemaDirectives,
   introspection: true,
   playground: true,
 } )
