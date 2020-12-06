@@ -12,6 +12,7 @@ type User {
 
 type WateringTask {
    _id: Long!
+   date: String!
    done: String
    label: String!
    neo4jImportId: String!
