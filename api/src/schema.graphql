@@ -1,65 +1,55 @@
 type User {
-  userId: ID!
-  name: String
-  reviews: [Review] @relation(name: "WROTE", direction: "OUT")
-  avgStars: Float
-    @cypher(
-      statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN toFloat(avg(r.stars))"
-    )
-  numReviews: Int
-    @cypher(statement: "MATCH (this)-[:WROTE]->(r:Review) RETURN COUNT(r)")
-  recommendations(first: Int = 3): [Business]
-    @cypher(
-      statement: "MATCH (this)-[:WROTE]->(r:Review)-[:REVIEWS]->(:Business)<-[:REVIEWS]-(:Review)<-[:WROTE]-(:User)-[:WROTE]->(:Review)-[:REVIEWS]->(rec:Business) WHERE NOT EXISTS( (this)-[:WROTE]->(:Review)-[:REVIEWS]->(rec) ) WITH rec, COUNT(*) AS num ORDER BY num DESC LIMIT $first RETURN rec"
-    )
+   _id: Long!
+   label: String!
+   neo4jImportId: String!
+   type: String!
+   assigned: [WateringTask] @relation(name: "assigned", direction: OUT)
+   available: [WateringTask] @relation(name: "available", direction: OUT)
+   changerequests_requested_by: [ChangeRequest] @relation(name: "requested_by", direction: IN)
+   changerequests_requested_to: [ChangeRequest] @relation(name: "requested_to", direction: IN)
+   logevents_triggered_by: [LogEvent] @relation(name: "triggered_by", direction: IN)
 }
 
-type Business {
-  businessId: ID!
-  name: String!
-  address: String @hasRole(role: "developer")
-  city: String @hasRole(role: "developer")
-  state: String
-  location: Point
-  avgStars: Float
-    @cypher(
-      statement: "MATCH (this)<-[:REVIEWS]-(r:Review) RETURN coalesce(avg(r.stars),0.0)"
-    )
-  reviews: [Review] @relation(name: "REVIEWS", direction: "IN")
-  categories: [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
+type WateringTask {
+   _id: Long!
+   done: String
+   label: String!
+   neo4jImportId: String!
+   type: String!
+   users_assigned: [User] @relation(name: "assigned", direction: IN)
+   changerequests_requested_for: [ChangeRequest] @relation(name: "requested_for", direction: IN)
+   changerequests_requested_new_task: [ChangeRequest] @relation(name: "requested_new_task", direction: IN)
+   logevents_refers_to: [LogEvent] @relation(name: "refers_to", direction: IN)
+   users_available: [User] @relation(name: "available", direction: IN)
+}
+
+type ChangeRequest {
+   _id: Long!
+   label: String!
+   neo4jImportId: String!
+   type: String!
+   requested_by: [User] @relation(name: "requested_by", direction: OUT)
+   requested_for: [WateringTask] @relation(name: "requested_for", direction: OUT)
+   requested_to: [User] @relation(name: "requested_to", direction: OUT)
+   requested_new_task: [WateringTask] @relation(name: "requested_new_task", direction: OUT)
+}
+
+type LogEvent {
+   _id: Long!
+   date: String!
+   label: String!
+   neo4jImportId: String!
+   type: String!
+   triggered_by: [User] @relation(name: "triggered_by", direction: OUT)
+   refers_to: [WateringTask] @relation(name: "refers_to", direction: OUT)
 }
 
 
-type Review {
-  reviewId: ID!
-  stars: Float
-  text: String
-  date: Date
-  business: Business @relation(name: "REVIEWS", direction: "OUT")
-  user: User @relation(name: "WROTE", direction: "IN")
-}
 
-type Category {
-  name: ID!
-  businesses: [Business] @relation(name: "IN_CATEGORY", direction: "IN")
-}
 
-type RatingCount {
-  stars: Float!
-  count: Int!
-}
 
-type Mutation {
-  mergeBusinessCategory(categories: [String!]!, businessId: ID!): Business
-    @cypher(
-      statement: "MATCH (b:Business {businessId: $businessId}) UNWIND $categories AS cat MERGE (c:Category {name: cat}) MERGE (b)-[:IN_CATEGORY]->(c) RETURN b"
-    )
-}
 
-type Query {
-  userCount: Int! @cypher(statement: "MATCH (u:User) RETURN COUNT(u)")
-  ratingsCount: [RatingCount]
-    @cypher(
-      statement: "MATCH (r:Review) WITH r.stars AS stars, COUNT(*) AS count ORDER BY stars RETURN {stars: stars, count: count}"
-    )
-}
+
+
+
+
