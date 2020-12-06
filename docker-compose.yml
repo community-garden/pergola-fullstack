@@ -9,6 +9,7 @@ services:
     volumes:
       - neo4j_data:/data
       - neo4j_logs:/logs
+      - ./api/src/seed/data:/import
     #  - ./neo4j/conf:/var/lib/neo4j/conf
       - ./neo4j/plugins:/plugins
     environment:
