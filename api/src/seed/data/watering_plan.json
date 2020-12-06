@@ -1,17 +1,18 @@
-  {    "type": "node",    "id": "42",    "labels": [      "LogEvent"    ],    "properties": {      "date": "2020-12-24",      "label": "marked as done",      "type": "LogEvent"    }  }
-  {    "type": "node",    "id": "44",    "labels": [      "User"    ],    "properties": {      "label": "Franziska",      "type": "User"    }  }
-  {    "type": "node",    "id": "45",    "labels": [      "User"    ],    "properties": {      "label": "change request",      "type": "User"    }  }
-  {    "type": "node",    "id": "41",    "labels": [      "WateringTask"    ],    "properties": {      "label": "24.12.2020",      "type": "WateringTask"    }  }
-  {    "type": "node",    "id": "38",    "labels": [      "User"    ],    "properties": {      "label": "Günther",      "type": "User"    }  }
-  {    "type": "node",    "id": "43",    "labels": [      "WateringTask"    ],    "properties": {      "label": "31.12.2020",      "type": "WateringTask"    }  }
-  {    "type": "node",    "id": "44",    "labels": [      "User"    ],    "properties": {      "label": "Franziska",      "type": "User"    }  }
-  {    "id": "49",    "type": "relationship",    "label": "assigned",    "start": {      "id": "44",      "labels": [        "User"      ]    },    "end": {      "id": "43",      "labels": [        "User"      ]    }  }
-  {    "id": "50",    "type": "relationship",    "label": "requested_by",    "start": {      "id": "45",      "labels": [        "User"      ]    },    "end": {      "id": "38",      "labels": [        "User"      ]    }  }
-  {    "id": "51",    "type": "relationship",    "label": "requested_for",    "start": {      "id": "45",      "labels": [        "User"      ]    },    "end": {      "id": "41",      "labels": [        "User"      ]    }  }
-  {    "id": "52",    "type": "relationship",    "label": "requested_to",    "start": {      "id": "45",      "labels": [        "User"      ]    },    "end": {      "id": "44",      "labels": [        "User"      ]    }  }
-  {    "id": "53",    "type": "relationship",    "label": "requested_new_task",    "start": {      "id": "45",      "labels": [        "User"      ]    },    "end": {      "id": "43",      "labels": [        "User"      ]    }  }
-  {    "id": "43",    "type": "relationship",    "label": "assigned",    "start": {      "id": "42",      "labels": [        "User"      ]    },    "end": {      "id": "38",      "labels": [        "User"      ]    }  }
-  {    "id": "44",    "type": "relationship",    "label": "triggered_by",    "start": {      "id": "42",      "labels": [        "User"      ]    },    "end": {      "id": "38",      "labels": [        "User"      ]    }  }
-  {    "id": "45",    "type": "relationship",    "label": "refers_to",    "start": {      "id": "42",      "labels": [        "User"      ]    },    "end": {      "id": "41",      "labels": [        "User"      ]    }  }
-  {    "id": "46",    "type": "relationship",    "label": "available",    "start": {      "id": "44",      "labels": [        "User"      ]    },    "end": {      "id": "43",      "labels": [        "User"      ]    }  }
-  {    "id": "47",    "type": "relationship",    "label": "available",    "start": {      "id": "44",      "labels": [        "User"      ]    },    "end": {      "id": "41",      "labels": [        "User"      ]    }  }
+{"type":"node","id":"10","labels":["User"],"properties":{"label":"Günther","type":"User"}}
+{"type":"node","id":"11","labels":["User"],"properties":{"label":"Franziska","type":"User"}}
+{"type":"node","id":"20","labels":["WateringTask"],"properties":{"label":"24.12.2020","type":"WateringTask","done":"true"}}
+{"type":"node","id":"21","labels":["WateringTask"],"properties":{"label":"31.12.2020","type":"WateringTask"}}
+{"type":"node","id":"30","labels":["ChangeRequest"],"properties":{"label":"changerequest","type":"ChangeRequest"}}
+{"type":"node","id":"40","labels":["LogEvent"],"properties":{"date":"2020-12-24","label":"markedasdone","type":"LogEvent"}}
+{"id":"100","type":"relationship","label":"available","start":{"id":"10"},"end":{"id":"20"}}
+{"id":"101","type":"relationship","label":"available","start":{"id":"11"},"end":{"id":"21"}}
+{"id":"102","type":"relationship","label":"available","start":{"id":"10"},"end":{"id":"21"}}
+{"id":"103","type":"relationship","label":"available","start":{"id":"11"},"end":{"id":"20"}}
+{"id":"110","type":"relationship","label":"assigned","start":{"id":"10"},"end":{"id":"20"}}
+{"id":"111","type":"relationship","label":"assigned","start":{"id":"11"},"end":{"id":"21"}}
+{"id":"120","type":"relationship","label":"requested_by","start":{"id":"30"},"end":{"id":"10"}}
+{"id":"121","type":"relationship","label":"requested_to","start":{"id":"30"},"end":{"id":"11"}}
+{"id":"122","type":"relationship","label":"requested_for","start":{"id":"30"},"end":{"id":"20"}}
+{"id":"123","type":"relationship","label":"requested_new_task","start":{"id":"30"},"end":{"id":"21"}}
+{"id":"130","type":"relationship","label":"triggered_by","start":{"id":"40"},"end":{"id":"11"}}
+{"id":"131","type":"relationship","label":"refers_to","start":{"id":"40"},"end":{"id":"20"}}
