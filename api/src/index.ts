@@ -57,26 +57,27 @@ function neo4jDateInput2iso(date:Neo4jDateInput):string {
 const resolvers = {
   Mutation: {
     setUserAvailability: auth(async ( _, args, ctx, info ) => {
-      console.log(args.dates)
-
       const session = neo4jdriver.session()
+      const txc = session.beginTransaction()
       try {
-	const date = args.dates[0]
-        const result = await session.run(
-          'MERGE (user:User {id: $id}) SET user.label = $label ' +
-          'MERGE (task:WateringTask {date: date($date)}) SET task.label = $date ' +
-	  'MERGE (user)-[r:available]-(task) ' +
-	  'RETURN user, r, task',
-          { id: ctx.kauth.accessToken.content.sub,
-	    label: ctx.kauth.accessToken.content.preferred_username,
-	    date: neo4jDateInput2iso(date) })
-        console.log(result.records[0])
-	return true
+        args.dates.forEach(async (date:Neo4jDateInput) => {
+          txc.run(
+            'MERGE (user:User {id: $id}) SET user.label = $label ' +
+            'MERGE (task:WateringTask {date: date($date)}) SET task.label = $date ' +
+            'MERGE (user)-[r:available]-(task) ' +
+            'RETURN user, r, task',
+            { id: ctx.kauth.accessToken.content.sub,
+              label: ctx.kauth.accessToken.content.preferred_username,
+              date: neo4jDateInput2iso(date) })
+        })
+        await txc.commit()
+        return true
       } catch (e) {
-	console.error(e)
+        console.error(e)
+        await txc.rollback()
         return false
       } finally {
-        await session.close()
+        session.close()
       }
     })
   }
