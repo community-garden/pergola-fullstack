@@ -50,9 +50,19 @@ app.use( graphqlPath, keycloak.middleware())
  * https://grandstack.io/docs/neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema
  */
 
+const resolvers = {
+  Mutation: {
+    async setUserAvailability( _, args, ctx, info ) {
+      console.log(args.dates)
+      return true
+    }
+  }
+}
+
 const schema = makeAugmentedSchema( {
   typeDefs:  `${KeycloakTypeDefs}\n${typeDefs}`,
   schemaDirectives: KeycloakSchemaDirectives,
+  resolvers,
   config: {
     query: {
       exclude: ["RatingCount"],

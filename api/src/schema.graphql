@@ -44,12 +44,6 @@ type LogEvent {
    refers_to: [WateringTask] @relation(name: "refers_to", direction: OUT)
 }
 
-
-
-
-
-
-
-
-
-
+type Mutation {
+   setUserAvailability(dates: [Date]!): Boolean
+}
