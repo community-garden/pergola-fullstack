@@ -5,9 +5,9 @@ import expressPino from "express-pino-logger"
 import * as fs from "fs"
 // @ts-ignore
 import Keycloak, {GrantedRequest} from "keycloak-connect"
-import { KeycloakContext, KeycloakSchemaDirectives,KeycloakTypeDefs } from "keycloak-connect-graphql"
+import { KeycloakContext, KeycloakSchemaDirectives, KeycloakTypeDefs, auth, hasRole } from "keycloak-connect-graphql"
 import neo4j, { Driver } from "neo4j-driver"
-import { makeAugmentedSchema } from "neo4j-graphql-js"
+import { makeAugmentedSchema, Neo4jDateInput } from "neo4j-graphql-js"
 import path from "path"
 import pino from "pino"
 import PinoColada from "pino-colada"
@@ -50,12 +50,35 @@ app.use( graphqlPath, keycloak.middleware())
  * https://grandstack.io/docs/neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema
  */
 
+function neo4jDateInput2iso(date:Neo4jDateInput):string {
+  return parseInt(date.year) + '-' + parseInt(date.month) + '-' + parseInt(date.day)
+}
+
 const resolvers = {
   Mutation: {
-    async setUserAvailability( _, args, ctx, info ) {
+    setUserAvailability: auth(async ( _, args, ctx, info ) => {
       console.log(args.dates)
-      return true
-    }
+
+      const session = neo4jdriver.session()
+      try {
+	const date = args.dates[0]
+        const result = await session.run(
+          'MERGE (user:User {id: $id}) SET user.label = $label ' +
+          'MERGE (task:WateringTask {date: date($date)}) SET task.label = $date ' +
+	  'MERGE (user)-[r:available]-(task) ' +
+	  'RETURN user, r, task',
+          { id: ctx.kauth.accessToken.content.sub,
+	    label: ctx.kauth.accessToken.content.preferred_username,
+	    date: neo4jDateInput2iso(date) })
+        console.log(result.records[0])
+	return true
+      } catch (e) {
+	console.error(e)
+        return false
+      } finally {
+        await session.close()
+      }
+    })
   }
 }
 
