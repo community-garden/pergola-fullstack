@@ -1,19 +1,23 @@
-import { ApolloServer, gql } from "apollo-server-express"
+import { ApolloServer } from "apollo-server-express"
 import dotenv from "dotenv"
 import express from "express"
 import expressPino from "express-pino-logger"
 import * as fs from "fs"
-// @ts-ignore
-import Keycloak, {GrantedRequest} from "keycloak-connect"
-import { KeycloakContext, KeycloakSchemaDirectives, KeycloakTypeDefs, auth, hasRole } from "keycloak-connect-graphql"
-import neo4j, { Driver } from "neo4j-driver"
-import { makeAugmentedSchema, Neo4jDateInput } from "neo4j-graphql-js"
+import Keycloak from "keycloak-connect"
+import {
+  GrantedRequest,
+  KeycloakContext,
+  KeycloakSchemaDirectives,
+  KeycloakTypeDefs,
+} from "keycloak-connect-graphql"
+import { makeAugmentedSchema } from "neo4j-graphql-js"
 import path from "path"
 import pino from "pino"
 import PinoColada from "pino-colada"
 
-import { typeDefs } from "./graphql-schema"
+import { resolvers, typeDefs } from "./graphql"
 import { initializeDatabase } from "./initialize"
+import { neo4jdriver } from "./neo4j"
 
 export const logger = pino( {
   level: process.env.LOG_LEVEL || "info",
@@ -33,13 +37,17 @@ const host = process.env.GRAPHQL_SERVER_HOST || "0.0.0.0"
 dotenv.config()
 
 const app = express()
-const keycloakConfig = JSON.parse( fs.readFileSync( path.resolve( __dirname, "../config/keycloak.json" )).toString())
+const keycloakConfig = JSON.parse(
+  fs.readFileSync( path.resolve( __dirname, "../config/keycloak.json" )).toString()
+)
 const keycloak = new Keycloak( keycloakConfig )
 
 app.use( expressLogger )
-app.use( keycloak.middleware( {
-  admin: graphqlPath
-} ))
+app.use(
+  keycloak.middleware( {
+    admin: graphqlPath,
+  } )
+)
 app.use( graphqlPath, keycloak.middleware())
 
 /*
@@ -50,41 +58,8 @@ app.use( graphqlPath, keycloak.middleware())
  * https://grandstack.io/docs/neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema
  */
 
-function neo4jDateInput2iso(date:Neo4jDateInput):string {
-  return parseInt(date.year) + '-' + parseInt(date.month) + '-' + parseInt(date.day)
-}
-
-const resolvers = {
-  Mutation: {
-    setUserAvailability: auth(async ( _, args, ctx, info ) => {
-      const session = neo4jdriver.session()
-      const txc = session.beginTransaction()
-      try {
-        args.dates.forEach(async (date:Neo4jDateInput) => {
-          txc.run(
-            'MERGE (user:User {id: $id}) SET user.label = $label ' +
-            'MERGE (task:WateringTask {date: date($date)}) SET task.label = $date ' +
-            'MERGE (user)-[r:available]-(task) ' +
-            'RETURN user, r, task',
-            { id: ctx.kauth.accessToken.content.sub,
-              label: ctx.kauth.accessToken.content.preferred_username,
-              date: neo4jDateInput2iso(date) })
-        })
-        await txc.commit()
-        return true
-      } catch (e) {
-        console.error(e)
-        await txc.rollback()
-        return false
-      } finally {
-        session.close()
-      }
-    })
-  }
-}
-
 const schema = makeAugmentedSchema( {
-  typeDefs:  `${KeycloakTypeDefs}\n${typeDefs}`,
+  typeDefs: `${KeycloakTypeDefs}\n${typeDefs}`,
   schemaDirectives: KeycloakSchemaDirectives,
   resolvers,
   config: {
@@ -98,31 +73,9 @@ const schema = makeAugmentedSchema( {
 } )
 
 /*
- * Create a Neo4j driver instance to connect to the database
- * using credentials specified as environment variables
- * with fallback to defaults
- */
-const neo4jdriver = neo4j.driver(
-  process.env.NEO4J_URI || "bolt://localhost:7687",
-  neo4j.auth.basic(
-    process.env.NEO4J_USER || "neo4j",
-    process.env.NEO4J_PASSWORD || "neo4j"
-  ),
-  {
-    encrypted: process.env.NEO4J_ENCRYPTED ? "ENCRYPTION_ON" : "ENCRYPTION_OFF",
-  }
-)
-
-/*
  * Perform any database initialization steps such as
  * creating constraints or ensuring indexes are online
  *
- */
-const init = async ( driver: Driver ) => {
-  await initializeDatabase( driver )
-}
-
-/*
  * We catch any errors that occur during initialization
  * to handle cases where we still want the API to start
  * regardless, such as running with a read only user.
@@ -130,7 +83,7 @@ const init = async ( driver: Driver ) => {
  * have occurred
  */
 
-init( neo4jdriver )
+initializeDatabase( neo4jdriver )
 
 /*
  * Create a new ApolloServer instance, serving the GraphQL schema
@@ -139,15 +92,17 @@ init( neo4jdriver )
  * generated resolvers to connect to the database.
  */
 const server = new ApolloServer( {
-  schema, 
-  context: ( {req} ) => {return {
-    kauth: new KeycloakContext( {req: req as GrantedRequest} ),
-    driver: neo4jdriver,
-    neo4jDatabase: process.env.NEO4J_DATABASE }},
+  schema,
+  context: ( { req } ) => {
+    return {
+      kauth: new KeycloakContext( { req: req as GrantedRequest } ),
+      driver: neo4jdriver,
+      neo4jDatabase: process.env.NEO4J_DATABASE,
+    }
+  },
   introspection: true,
   playground: true,
 } )
-
 
 /*
  * Optionally, apply Express middleware for authentication, etc
