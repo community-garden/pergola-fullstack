@@ -14,7 +14,8 @@
     "watch-ts": "cross-env DEBUG=neo4j-graphql-js tsc -w",
     "watch": "nodemon src/index.ts",
     "seedDb": "ts-node src/seed/seed-db.ts",
-    "seedKeycloak": "node src/seed/init-keycloak.js"
+    "seedKeycloak": "node src/seed/init-keycloak.js",
+    "getToken": "npx ts-node src/scripts/getToken.ts"
   },
   "author": "William Lyon",
   "license": "GPLv3",

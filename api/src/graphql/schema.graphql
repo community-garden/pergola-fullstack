@@ -45,5 +45,6 @@ type LogEvent {
 }
 
 type Mutation {
+   seedNeo4jFromJSON: Boolean
    setUserAvailability(dates: [Date]!): Boolean
 }
