@@ -1,13 +1,50 @@
-import fs from "fs"
-import path from "path"
+import { readFileSync } from "fs"
+import { join } from "path"
 
-/*
- * Check for GRAPHQL_SCHEMA environment variable to specify schema file
- * fallback to schema.graphql if GRAPHQL_SCHEMA environment variable is not set
- */
+type SchemaString = string;
 
-export const typeDefs = fs
-  .readFileSync(
-    process.env.GRAPHQL_SCHEMA || path.join( __dirname, "schema.graphql" )
+type Path = string;
+type File = string;
+type RootFile = [Path, File];
+type MutationFile = [Path, File];
+
+export interface Schema {
+  root?: RootFile[];
+  mutation?: MutationFile[];
+}
+
+function mergeSubSchemata( schemata: Schema[], sub: string ) {
+  return {
+    [sub]: schemata
+      .map(( s ) => s[sub] )
+      .filter(( i ) => i )
+      .reduce(( acc, l ) => [].concat( acc, l ), [] ),
+  }
+}
+
+export function mergeSchemata( schemata: Schema[] ): Schema {
+  return {
+    ...mergeSubSchemata( schemata, "root" ),
+    ...mergeSubSchemata( schemata, "mutation" ),
+  }
+}
+
+function mergeFiles( files: [Path, File][] ): SchemaString {
+  const filenames = files.map(( f ) => join( ...f ))
+  const filecontents = filenames.map(( f ) =>
+    readFileSync( f ).toString( "utf-8" ).trim()
   )
-  .toString( "utf-8" )
+  return filecontents.join( "\n\n" )
+}
+
+/** Allows Schema to be specified as modularized resolvers + schema.graphql **/
+export function mergeTypeDefs( schemata: Schema[] ): SchemaString {
+  const schema = mergeSchemata( schemata )
+  const typeDefs =
+    mergeFiles( schema.root ) +
+    "\n\n" +
+    "type Mutation {\n" +
+    mergeFiles( schema.mutation ) +
+    "\n}"
+  return typeDefs
+}

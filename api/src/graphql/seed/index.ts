@@ -17,8 +17,11 @@ async function seedNeo4jFromJSON() {
   }
 }
 
-const mutations = {
+const Mutation = {
   seedNeo4jFromJSON: hasRole( ["developer"] )( seedNeo4jFromJSON ),
 }
 
-export default { mutations }
+export default {
+  resolvers: { Mutation },
+  schema: { mutation: [[__dirname, "mutation.schema.graphql"]] },
+}

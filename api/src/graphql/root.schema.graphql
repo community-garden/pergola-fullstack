@@ -43,8 +43,3 @@ type LogEvent {
    triggered_by: [User] @relation(name: "triggered_by", direction: OUT)
    refers_to: [WateringTask] @relation(name: "refers_to", direction: OUT)
 }
-
-type Mutation {
-   seedNeo4jFromJSON: Boolean
-   setUserAvailability(dates: [Date]!): Boolean
-}
