@@ -1,6 +1,6 @@
 import { hasRole } from "keycloak-connect-graphql"
 
-import { neo4jdriver } from "../../neo4j"
+import { neo4jdriver } from "../../config/neo4j"
 
 async function seedNeo4jFromJSON() {
   const session = neo4jdriver.session()

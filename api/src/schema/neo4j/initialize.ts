@@ -1,6 +1,6 @@
 import { Driver } from "neo4j-driver"
 
-import { logger } from "./index"
+import { logger } from "../../index"
 
 const initCypher =
   "CALL apoc.schema.assert({}, {User: [\"userId\"], Business: [\"businessId\"], Review: [\"reviewId\"], Category: [\"name\"]})"

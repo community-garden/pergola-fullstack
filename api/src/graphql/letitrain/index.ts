@@ -1,8 +1,8 @@
 import { auth } from "keycloak-connect-graphql"
 import { Neo4jDateInput } from "neo4j-graphql-js"
 
+import { neo4jdriver } from "../../config/neo4j"
 import { neo4jDateInput2iso } from "../../lib/neo4j"
-import { neo4jdriver } from "../../neo4j"
 
 const mutations = {
   setUserAvailability: auth( async ( _, args, ctx, info ) => {

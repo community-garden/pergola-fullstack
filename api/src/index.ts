@@ -15,9 +15,9 @@ import path from "path"
 import pino from "pino"
 import PinoColada from "pino-colada"
 
+import { neo4jdriver } from "./config/neo4j"
 import { resolvers, typeDefs } from "./graphql"
-import { initializeDatabase } from "./initialize"
-import { neo4jdriver } from "./neo4j"
+import { initializeDatabase } from "./schema/neo4j/initialize"
 
 export const logger = pino( {
   level: process.env.LOG_LEVEL || "info",
