@@ -13,6 +13,7 @@
     "seedDb": "node scripts/seed.js",
     "start": "node scripts/start-dev.js",
     "build": "node scripts/build.js",
+    "test": "(cd api; npm run test)",
     "install": "node scripts/deps.js",
     "format": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier --write",
     "format:log": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier",
@@ -20,7 +21,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npm run test"
     }
   },
   "lint-staged": {
