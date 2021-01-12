@@ -2,6 +2,7 @@ import { hasRole } from "keycloak-connect-graphql"
 
 import { exampleTasks } from "../../algo/letitrain/assignment/test-data"
 import { neo4jdriver } from "../../config/neo4j"
+import { presets } from "../../config/roles"
 import { withinTransaction } from "../../lib/neo4j"
 import { query } from "./setUserAvailability"
 
@@ -24,7 +25,7 @@ async function seedAvailabilitiesFromTests() {
 export default {
   resolvers: {
     Mutation: {
-      seedAvailabilitiesFromTests: hasRole( ["developer"] )(
+      seedAvailabilitiesFromTests: hasRole( presets.deployment_admin )(
         seedAvailabilitiesFromTests
       ),
     },

@@ -1,6 +1,7 @@
 import { hasRole } from "keycloak-connect-graphql"
 
 import { neo4jdriver } from "../../config/neo4j"
+import { presets } from "../../config/roles"
 
 async function seedNeo4jFromJSON() {
   const session = neo4jdriver.session()
@@ -19,7 +20,9 @@ async function seedNeo4jFromJSON() {
 
 export default {
   resolvers: {
-    Mutation: { seedNeo4jFromJSON: hasRole( ["developer"] )( seedNeo4jFromJSON ) },
+    Mutation: {
+      seedNeo4jFromJSON: hasRole( presets.deployment_admin )( seedNeo4jFromJSON ),
+    },
   },
   schema: { mutation: [[__dirname, "mutation.schema.graphql"]] },
 }
