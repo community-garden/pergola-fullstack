@@ -4,10 +4,11 @@ import { exampleTasks } from "../../algo/letitrain/assignment/test-data"
 import { neo4jdriver } from "../../config/neo4j"
 import { presets } from "../../config/roles"
 import { withinTransaction } from "../../lib/neo4j"
+import { merge_WateringTask_within_Period } from "./planWateringPeriods"
 import { query } from "./setUserAvailability"
 
 async function seedAvailabilitiesFromTests() {
-  const result = await withinTransaction( neo4jdriver.session(), ( tx ) =>
+  await withinTransaction( neo4jdriver.session(), ( tx ) => {
     exampleTasks.map( async ( task ) =>
       task.available.map(
         async ( person ) =>
@@ -18,8 +19,19 @@ async function seedAvailabilitiesFromTests() {
           } )
       )
     )
-  )
-  return result ? true : false
+    exampleTasks.map(
+      async ( task ) =>
+        await merge_WateringTask_within_Period(
+          tx,
+          {
+            from: exampleTasks[0].date,
+            till: exampleTasks[exampleTasks.length - 1].date,
+          },
+          task.date
+        )
+    )
+  } )
+  //return result ? true : false
 }
 
 export default {

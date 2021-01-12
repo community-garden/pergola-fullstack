@@ -1,6 +1,6 @@
 import { assert } from "console"
 
-import { concat, unique } from "../../util"
+import { apply, concat, unique } from "../../../lib/util"
 import { assignStrategyRandom } from "./strategies/random"
 import {
   AssignmentStats,
@@ -19,7 +19,10 @@ export function calcExplicitStates<date>(
   tasks: Task<date>[]
 ): [PersonState[], TaskState<date>[]] {
   const availablePersons: Person[] = unique(
-    concat( tasks.map(( t ) => t.available ))
+    apply(
+      concat,
+      tasks.map(( t ) => t.available )
+    )
   )
   const availablePersonsStates: PersonState[] = availablePersons.map(
     ( person ) => ( {
