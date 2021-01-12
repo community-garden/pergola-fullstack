@@ -1,5 +1,6 @@
 import { assert } from "console"
 
+import { concat, unique } from "../../util"
 import { assignStrategyRandom } from "./strategies/random"
 import {
   AssignmentStats,
@@ -10,7 +11,6 @@ import {
   Task,
   TaskState,
 } from "./types"
-import { concat,unique } from "./util"
 
 /** This helper function is for testing purposes and used in the first prototype.
  *  In the final implementation it is not required, since the state changes can easily be calculated in every step.
