@@ -3,7 +3,7 @@ import { Person, Task } from "./types"
 enum P {
   Claudia = "Claudia",
   Franziska = "Franziska",
-  Günter = "Günter",
+  Günther = "Günther",
   Jonas = "Jonas",
   Johannes = "Johannes",
   Philipp = "Philipp",
@@ -14,7 +14,7 @@ enum P {
 export const examplePersons: Person[] = [
   { id: P.Claudia, maximum_tasks: 2 },
   { id: P.Franziska, maximum_tasks: 3 },
-  { id: P.Günter, maximum_tasks: 3 },
+  { id: P.Günther, maximum_tasks: 3 },
   { id: P.Jonas, maximum_tasks: 3 },
   { id: P.Johannes, maximum_tasks: 1 },
   { id: P.Philipp, maximum_tasks: 2 },
@@ -24,15 +24,15 @@ export const examplePersons: Person[] = [
 
 export const exampleTasks: Task<string>[] = [
   {
-    date: "Mo",
+    date: "2020-01-01",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
-      [P.Claudia, P.Franziska, P.Günter].includes( p.id as P )
+      [P.Claudia, P.Franziska, P.Günther].includes( p.id as P )
     ),
   },
   {
-    date: "Di",
+    date: "2020-01-02",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -40,7 +40,7 @@ export const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "Mi",
+    date: "2020-01-03",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -48,15 +48,15 @@ export const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "Do",
+    date: "2020-01-04",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
-      [P.Franziska, P.Günter, P.Jonas].includes( p.id as P )
+      [P.Franziska, P.Günther, P.Jonas].includes( p.id as P )
     ),
   },
   {
-    date: "Fr",
+    date: "2020-01-05",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -64,7 +64,7 @@ export const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "Sa",
+    date: "2020-01-06",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -72,11 +72,11 @@ export const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "So",
+    date: "2020-01-07",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
-      [P.Günter, P.Jonas, P.Johannes].includes( p.id as P )
+      [P.Günther, P.Jonas, P.Johannes].includes( p.id as P )
     ),
   },
 ]

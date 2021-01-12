@@ -1,6 +1,12 @@
+import seedAvailabilitiesFromTests from "./seedAvailabilitiesFromTests"
 import setUserAvailability from "./setUserAvailability"
 
 export default {
-  resolvers: { ...setUserAvailability.resolvers },
+  resolvers: {
+    Mutation: {
+      ...setUserAvailability.resolvers.Mutation,
+      ...seedAvailabilitiesFromTests.resolvers.Mutation,
+    },
+  },
   schema: { mutation: [[__dirname, "mutation.schema.graphql"]] },
 }

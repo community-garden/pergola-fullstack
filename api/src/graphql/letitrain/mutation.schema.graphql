@@ -1,1 +1,2 @@
 setUserAvailability(dates: [Date]!): Boolean
+seedAvailabilitiesFromTests: Boolean

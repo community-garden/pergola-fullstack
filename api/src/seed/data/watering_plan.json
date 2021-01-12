@@ -1,5 +1,5 @@
-{"type":"node","id":"10","labels":["User"],"properties":{"label":"Günther","type":"User"}}
-{"type":"node","id":"11","labels":["User"],"properties":{"label":"Franziska","type":"User"}}
+{"type":"node","id":"10","labels":["User"],"properties":{"id":"Günther","label":"Günther","type":"User"}}
+{"type":"node","id":"11","labels":["User"],"properties":{"id":"Franziska","label":"Franziska","type":"User"}}
 {"type":"node","id":"20","labels":["WateringTask"],"properties":{"label":"24.12.2020","type":"WateringTask","date":"2020-12-24","done":"true"}}
 {"type":"node","id":"21","labels":["WateringTask"],"properties":{"label":"31.12.2020","type":"WateringTask","date":"2020-12-31"}}
 {"type":"node","id":"30","labels":["ChangeRequest"],"properties":{"label":"changerequest","type":"ChangeRequest"}}
