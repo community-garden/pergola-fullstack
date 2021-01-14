@@ -1,4 +1,4 @@
-import { apply, concat, groupBy, merge } from "./index"
+import { apply, concat, groupBy, map_vals, merge } from "./index"
 
 test( "concat", () => {
   expect( concat( [1, 2], undefined, null, [], [3, 4] )).toEqual( [1, 2, 3, 4] )
@@ -37,5 +37,12 @@ test( "groupBy", () => {
       [3, 6],
     ],
     4: [[4, 7]],
+  } )
+} )
+
+test( "map_vals", () => {
+  expect( map_vals( { 1: "a", 2: 3 }, JSON.stringify )).toEqual( {
+    1: "\"a\"",
+    2: "3",
   } )
 } )

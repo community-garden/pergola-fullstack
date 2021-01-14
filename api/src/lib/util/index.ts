@@ -26,3 +26,10 @@ export function groupBy( list: any[], f: GroupFn ) {
     return { ...acc, [group]: concat( acc[group], [item] ) }
   }, {} )
 }
+
+export function map_vals( map: any, f: any ) {
+  return apply(
+    merge,
+    Object.entries( map ).map(( [k, v] ) => ( { [k]: f( v ) } ))
+  )
+}
