@@ -1,0 +1,1 @@
+mergeUserSettings(settings: UserSettingsInput): UserSettings

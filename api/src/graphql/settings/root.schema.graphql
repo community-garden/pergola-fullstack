@@ -1,0 +1,13 @@
+## Neo4j allows only literals und arrays, but no maps as properties.
+## To keep the configurations of users in a uniform place, we create an node with label UserSetting per User.
+## The neo4j-schema, the graphql-type and the typesscript-type of UserSettings should be keept in consistancy.
+
+type UserSettings {
+   ui_locale: String
+   letitrain_maximum_tasks: Int
+}
+
+input UserSettingsInput {
+   ui_locale: String
+   letitrain_maximum_tasks: Int
+}
