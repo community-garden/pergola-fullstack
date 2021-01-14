@@ -1,4 +1,4 @@
-import { Person, Task } from "./types"
+import { Person, Task } from "../types"
 
 enum P {
   Claudia = "Claudia",
@@ -11,7 +11,7 @@ enum P {
   Stephanie = "Stephanie",
 }
 
-export const examplePersons: Person[] = [
+const examplePersons: Person[] = [
   { id: P.Claudia, maximum_tasks: 2 },
   { id: P.Franziska, maximum_tasks: 3 },
   { id: P.Günther, maximum_tasks: 3 },
@@ -22,7 +22,7 @@ export const examplePersons: Person[] = [
   { id: P.Stephanie, maximum_tasks: 1 },
 ]
 
-export const exampleTasks: Task<string>[] = [
+const exampleTasks: Task<string>[] = [
   {
     date: "2020-01-01",
     target_count: 2,
@@ -80,3 +80,5 @@ export const exampleTasks: Task<string>[] = [
     ),
   },
 ]
+
+export default exampleTasks

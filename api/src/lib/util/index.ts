@@ -33,3 +33,7 @@ export function map_vals( map: any, f: any ) {
     Object.entries( map ).map(( [k, v] ) => ( { [k]: f( v ) } ))
   )
 }
+
+export function random( items: any[] ) {
+  return items[Math.floor( Math.random() * items.length )]
+}

@@ -1,7 +1,5 @@
-import { assert } from "console"
-
 import { apply, concat, unique } from "../../../lib/util"
-import { assignStrategyRandom } from "./strategies/random"
+import { assignStrategyStrategic } from "./strategies/strategic"
 import {
   AssignmentStats,
   AssignStrategyFn,
@@ -52,13 +50,26 @@ export function calcExplicitStates<date>(
   return [availablePersonsStates, tasksStates]
 }
 
+export function preassignment_check(
+  task: Task<any>,
+  person: Person,
+  tasksStates: TaskState<any>[],
+  personsStates: PersonState[]
+) {
+  const personState =
+    personsStates[personsStates.findIndex(( p ) => p.id == person.id )]
+  return (
+    personListIncludesPerson( task.available, person ) &&
+    !personListIncludesPerson( task.assigned, person ) &&
+    personState.remaining_allowed_tasks >= 1
+  )
+}
+
 export function assign<date>(
   tasks: Task<date>[],
   task: Task<date>,
   person: Person
 ): Task<date>[] {
-  assert( personListIncludesPerson( task.available, person ))
-  assert( !personListIncludesPerson( task.assigned, person ))
   const updatedTasks = tasks.map(( t ) =>
     t.date == task.date ? { ...t, assigned: t.assigned.concat( person ) } : t
   )
@@ -68,17 +79,39 @@ export function assign<date>(
 /** The main planing function **/
 export function planAssignments<date>(
   tasks: Task<date>[],
-  assignStrategy: AssignStrategyFn<date> = assignStrategyRandom
+  assignStrategy: AssignStrategyFn<date> = assignStrategyStrategic
 ): Task<date>[] {
   const [personsStates, tasksStates] = calcExplicitStates( tasks )
-  const assignment = assignStrategy( tasksStates, personsStates )
-  /** when implementing more strategies, we might want check here, whether the assignment is valid **/
+  const assignablePersonsStates = personsStates.filter(
+    ( p ) => p.remaining_allowed_tasks > 0
+  )
+  const assignableTasksStates = tasksStates
+    .map(( t ) => ( {
+      ...t,
+      available: assignablePersonsStates.filter(( ps ) =>
+        preassignment_check( t, ps, tasksStates, assignablePersonsStates )
+      ),
+    } ))
+    .filter(( t ) => t.missing_count > 0 && t.remaining_possible_persons > 0 )
+  const assignment = assignStrategy(
+    assignableTasksStates,
+    assignablePersonsStates
+  )
   if ( !assignment ) return tasks
-  else {
-    const [task, person] = assignment
-    const updatedTasks = assign( tasks, task, person )
-    return planAssignments( updatedTasks, assignStrategy )
+
+  const [task, person] = assignment
+  const ok = preassignment_check( task, person, tasksStates, personsStates )
+  if ( !ok ) {
+    console.error(
+      "Assignment would contradict constrainst:",
+      task.date,
+      person.id
+    )
+    return tasks
   }
+
+  const updatedTasks = assign( tasks, task, person )
+  return planAssignments( updatedTasks, assignStrategy )
 }
 
 export function calcStats<date>(
@@ -102,6 +135,9 @@ export function calcStats<date>(
       .reduce(( sum, n ) => sum + n ),
     reserve: personsStates
       .map(( p ) => p.remaining_allowed_tasks )
+      .reduce(( sum, n ) => sum + n ),
+    optimum: tasksStates
+      .map(( t ) => Math.max( 0, t.target_count - t.available.length ))
       .reduce(( sum, n ) => sum + n ),
   }
 }

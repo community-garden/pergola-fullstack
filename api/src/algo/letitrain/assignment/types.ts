@@ -41,4 +41,5 @@ export interface AssignmentStats {
   available: number /** sum(taks.available.length) **/;
   missing: number /** sum(tasks.missing_count) **/;
   reserve: number /** sum(persons.remaining_allowed_tasks) **/;
+  optimum: number /** lower bound of achievable missing **/;
 }

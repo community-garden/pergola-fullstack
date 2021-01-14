@@ -8,8 +8,9 @@ import { merge_WateringTask_within_Period } from "./planWateringPeriods"
 import { query } from "./setUserAvailability"
 
 async function seedAvailabilitiesFromTests() {
+  const tasks = exampleTasks.simple
   await withinTransaction( neo4jdriver.session(), ( tx ) => {
-    exampleTasks.map( async ( task ) =>
+    tasks.map( async ( task ) =>
       task.available.map(
         async ( person ) =>
           await tx.run( query, {
@@ -19,19 +20,18 @@ async function seedAvailabilitiesFromTests() {
           } )
       )
     )
-    exampleTasks.map(
+    tasks.map(
       async ( task ) =>
         await merge_WateringTask_within_Period(
           tx,
           {
-            from: exampleTasks[0].date,
-            till: exampleTasks[exampleTasks.length - 1].date,
+            from: tasks[0].date,
+            till: tasks[tasks.length - 1].date,
           },
           task.date
         )
     )
   } )
-  //return result ? true : false
 }
 
 export default {
