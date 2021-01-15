@@ -26,13 +26,16 @@
     "dotenv": "^7.0.0",
     "express-pino-logger": "^5.0.0",
     "express-session": "^1.17.1",
+    "ical.js": "^1.4.0",
     "keycloak-connect": "^11.0.3",
     "keycloak-connect-graphql": "^0.6.3",
     "keycloak-request-token": "^0.1.0",
     "neo4j-driver": "^4.0.2",
     "neo4j-graphql-js": "^2.14.2",
     "pino": "^6.7.0",
-    "pino-colada": "^2.1.0"
+    "pino-colada": "^2.1.0",
+    "uuid": "^8.3.2",
+    "webdav-server": "^2.6.2"
   },
   "devDependencies": {
     "@apollo/client": "^3.1.3",

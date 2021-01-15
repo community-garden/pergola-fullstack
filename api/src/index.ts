@@ -18,6 +18,8 @@ import PinoColada from "pino-colada"
 import { neo4jdriver } from "./config/neo4j"
 import { resolvers, typeDefs } from "./graphql"
 import { initializeDatabase } from "./schema/neo4j/initialize"
+import { v2 as webdav } from 'webdav-server'
+import { useWebdavServer } from "./caldav"
 
 export const logger = pino( {
   level: process.env.LOG_LEVEL || "info",
@@ -37,12 +39,14 @@ const host = process.env.GRAPHQL_SERVER_HOST || "0.0.0.0"
 dotenv.config()
 
 const app = express()
+app.use( expressLogger )
+
+useWebdavServer(app, '/calendar')
+
 const keycloakConfig = JSON.parse(
   fs.readFileSync( path.resolve( __dirname, "../config/keycloak.json" )).toString()
 )
 const keycloak = new Keycloak( keycloakConfig )
-
-app.use( expressLogger )
 app.use(
   keycloak.middleware( {
     admin: graphqlPath,
