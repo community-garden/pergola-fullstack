@@ -8,7 +8,11 @@ import {
 import { assignStrategyForcing } from "./strategies/forcing"
 import { assignStrategyRandom } from "./strategies/random"
 import { assignStrategyStrategic } from "./strategies/strategic"
-import { exampleTasks } from "./test-data"
+import juli from "./test-data/juli"
+import simple from "./test-data/simple"
+
+//TODO: why is it not possible to import example tasks from test-data at the first place
+const exampleTasks = { simple, juli}
 
 test( "calcExplicitState() invariants over single assign() by assignStrategyRandom()", () => {
   const tasks = exampleTasks.simple
