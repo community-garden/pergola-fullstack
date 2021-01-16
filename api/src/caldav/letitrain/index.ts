@@ -11,13 +11,14 @@ export async function wateringTasks() {
   return groupBy(records, r => r.t.date)
 }
 
+
 export async function wateringTaskEventsPublic () {
   const jcal = ["vcalendar",[],
                  Object.entries(await wateringTasks()).map(([k,v]:[string, any[]]) => 
                    ["vevent",[["uid",{},"text", uuid.v4()],
                               ["dtstart",{},"date-time",new Date(k).toISOString()],
                               ["summary",{},"text",v.length+" Gießer"],
-                              ["x-pergola-watering-missing",{},"unknown",v.length]],
+                              ["x-pergola-watering-assigned-count",{},"unknown",v.length]],
                      []])]
   return new ICAL.Component(jcal).toString()
 }

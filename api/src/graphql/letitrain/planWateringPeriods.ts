@@ -26,7 +26,7 @@ interface PlaningConfig {
 
 /** planWateringPeriods for all periods, with period.from <= now+planning_ahead **/
 async function planPeriods( default_target_count = 2 ) {
-  const planablePeriods = [{ from: "2020-01-01", till: "2020-01-07" }] // TODO
+  const planablePeriods = [{ from: "2021-01-01", till: "2021-01-07" }] // TODO
   const periods = await Promise.all(
     planablePeriods.map( async ( p ) => {
       const period_records = (

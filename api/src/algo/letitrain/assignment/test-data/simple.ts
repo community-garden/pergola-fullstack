@@ -24,7 +24,7 @@ const examplePersons: Person[] = [
 
 const exampleTasks: Task<string>[] = [
   {
-    date: "2020-01-01",
+    date: "2021-01-01",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -32,7 +32,7 @@ const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "2020-01-02",
+    date: "2021-01-02",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -40,7 +40,7 @@ const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "2020-01-03",
+    date: "2021-01-03",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -48,7 +48,7 @@ const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "2020-01-04",
+    date: "2021-01-04",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -56,7 +56,7 @@ const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "2020-01-05",
+    date: "2021-01-05",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -64,7 +64,7 @@ const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "2020-01-06",
+    date: "2021-01-06",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
@@ -72,7 +72,7 @@ const exampleTasks: Task<string>[] = [
     ),
   },
   {
-    date: "2020-01-07",
+    date: "2021-01-07",
     target_count: 2,
     assigned: [],
     available: examplePersons.filter(( p ) =>
