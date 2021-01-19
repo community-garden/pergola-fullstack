@@ -6,6 +6,10 @@ const realmExport = require( "../../config/realm-export.json" )
 const PUBLIC_CLIENT_NAME = `${realmExport.realm}-public`
 const BEARER_CLIENT_NAME = `${realmExport.realm}-bearer`
 
+const keycloakUrl = process.env.REACT_APP_KEYCLOAK_URL || "http://localhost:8080"
+const keycloakUser = process.env.KEYCLOAK_USER || "admin"
+const keycloakPassword = process.env.KEYCLOAK_USER || "admin"
+
 // The client roles you want created for the bearer and public clients
 const clientRoleNames = [
   "admin",
@@ -25,7 +29,7 @@ const realmRoleNames = [
 const users = [
   {
     username: "developer",
-    password: "developer",
+    password: "developer" ,
     roles: [
       "developer"
     ]
@@ -40,11 +44,11 @@ const users = [
 ]
 
 async function initKeycloak() {
-  const kc = new KeycloakAdmin( {baseUrl: "http://localhost:8080/auth"} )
+  const kc = new KeycloakAdmin( {baseUrl: `${keycloakUrl}/auth`} )
 
   await kc.auth( {
-    username: "admin",
-    password: "admin",
+    username: keycloakUser,
+    password: keycloakPassword,
     grantType: "password",
     clientId: "admin-cli",
   } )
