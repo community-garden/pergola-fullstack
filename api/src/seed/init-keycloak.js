@@ -8,7 +8,7 @@ const BEARER_CLIENT_NAME = `${realmExport.realm}-bearer`
 
 const keycloakUrl = process.env.REACT_APP_KEYCLOAK_URL || "http://localhost:8080"
 const keycloakUser = process.env.KEYCLOAK_USER || "admin"
-const keycloakPassword = process.env.KEYCLOAK_USER || "admin"
+const keycloakPassword = process.env.KEYCLOAK_PASSWORD || "admin"
 
 // The client roles you want created for the bearer and public clients
 const clientRoleNames = [
