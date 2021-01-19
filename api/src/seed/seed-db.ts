@@ -22,12 +22,7 @@ const logger = pino( {
 
 dotenv.config()
 
-// Specify host, port and path for GraphQL endpoint
-const port = process.env.GRAPHQL_SERVER_PORT || 4001
-const path = process.env.GRAPHQL_SERVER_PATH || "/graphql"
-const host = process.env.GRAPHQL_SERVER_HOST || "0.0.0.0"
-
-const uri = `http://${host}:${port}${path}`
+const uri = process.env.GRAPHQL_SERVER_URL || "http://localhost:4001/graphql"
 
 const runMutations = async () => {
   const token = await getToken()
