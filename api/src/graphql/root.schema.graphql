@@ -25,6 +25,13 @@ type WateringTask {
    users_available: [User] @relation(name: "available", direction: IN) @hasRole(role: "developer")
 }
 
+type WateringPeriod {
+   _id: Long!
+   from: Date!
+   till: Date!
+   wateringtasks: [WateringTask] @relation(name: "within", direction: IN)
+}
+
 type ChangeRequest {
    _id: Long!
    label: String!
