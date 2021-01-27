@@ -9,6 +9,7 @@ import {
   Task,
   TaskState,
 } from "./types"
+import * as R from 'ramda'
 
 /** This helper function is for testing purposes and used in the first prototype.
  *  In the final implementation it is not required, since the state changes can easily be calculated in every step.
@@ -121,23 +122,11 @@ export function calcStats<date>(
   return {
     tasks: tasksStates.length,
     persons: personsStates.length,
-    required: tasksStates
-      .map(( t ) => t.target_count )
-      .reduce(( sum, n ) => sum + n ),
-    maximum: personsStates
-      .map(( p ) => p.maximum_tasks )
-      .reduce(( sum, n ) => sum + n ),
-    available: tasksStates
-      .map(( t ) => t.available.length )
-      .reduce(( sum, n ) => sum + n ),
-    missing: tasksStates
-      .map(( t ) => t.missing_count )
-      .reduce(( sum, n ) => sum + n ),
-    reserve: personsStates
-      .map(( p ) => p.remaining_allowed_tasks )
-      .reduce(( sum, n ) => sum + n ),
-    optimum: tasksStates
-      .map(( t ) => Math.max( 0, t.target_count - t.available.length ))
-      .reduce(( sum, n ) => sum + n ),
+    required: R.sum(tasksStates.map(( t ) => t.target_count )),
+    maximum: R.sum(personsStates.map(( p ) => p.maximum_tasks )),
+    available: R.sum(tasksStates.map(( t ) => t.available.length )),
+    missing: R.sum(tasksStates.map(( t ) => t.missing_count )),
+    reserve: R.sum(personsStates.map(( p ) => p.remaining_allowed_tasks )),
+    optimum: R.sum(tasksStates.map(( t ) => Math.max( 0, t.target_count - t.available.length )))
   }
 }

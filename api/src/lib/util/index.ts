@@ -13,7 +13,7 @@ export function unique<T>( vs: T[] ): T[] {
 }
 
 export function concat( ...vs: any[] ) {
-  return vs.filter(( i ) => i ).reduce(( acc, cur ) => acc.concat( cur ))
+  return vs.filter(( i ) => i ).reduce(( acc, cur ) => acc.concat( cur ), [])
 }
 
 export function merge( ...maps: any[] ) {

@@ -27,8 +27,13 @@ interface PlaningConfig {
 }
 
 /** planWateringPeriods for all periods, with period.from <= now+planning_ahead **/
-async function planPeriods( default_target_count = 2 ) {
-  const planablePeriods = [{ from: "2021-01-01", till: "2021-01-07" }] // TODO
+async function planPeriods( planning_ahead, default_target_count = 2 ) {
+  const planablePeriods = (await withinTransaction(neo4jdriver.session(), async ( tx ) =>
+    await tx.run( "MATCH (t:WateringTask)-[r:within]-(p:WateringPeriod) " +
+		  "WHERE not(exists((t)-[:assigned]-(:User))) " +
+		  "AND date(p.from) < date() + duration({days: $planning_ahead}) " +
+		  "RETURN DISTINCT p",
+                  {planning_ahead} ))).records.map(flatten).map(r => ({from: neo4jDateInput2iso(r.p.from), till: neo4jDateInput2iso(r.p.till)}))
   const periods = await Promise.all(
     planablePeriods.map( async ( p ) => {
       const period_records = (
@@ -91,7 +96,7 @@ async function planPeriods( default_target_count = 2 ) {
 
 async function calc_first_new_period_start( session ) {
   const regular = neo4jDateInput2Date((await withinTransaction( session, ( tx ) =>
-    tx.run("Match (t:WateringPeriod) return MAX(date(t.till)) + duration({days: 1})"))).records[0].get(0))
+    tx.run("Match (p:WateringPeriod) return MAX(date(p.till)) + duration({days: 1})"))).records[0].get(0))
   const today = new Date()
   return dayjs(regular > today ? regular : today).format('YYYY-MM-DD')
 }
