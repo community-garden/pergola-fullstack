@@ -10,5 +10,5 @@ export default {
       ...planWateringPeriods.resolvers.Mutation,
     },
   },
-  schema: { mutation: [[__dirname, "mutation.schema.graphql"]] },
+  schema: { mutation: [[__dirname, "mutation.schema.graphql"]], query: [[__dirname, "query.schema.graphql"]] },
 }
