@@ -10,10 +10,12 @@ import { neo4jdriver } from "../../config/neo4j"
 import { presets } from "../../config/roles"
 import {
   flatten,
-  neo4jDateInput2iso,
+  neo4jDateInput2iso, neo4jDateInput2Date,
   withinTransaction,
 } from "../../lib/neo4j"
 import { apply, groupBy } from "../../lib/util"
+import dayjs from 'dayjs'
+import * as R from 'ramda'
 
 type Days = number;
 type Periods = number;
@@ -87,6 +89,13 @@ async function planPeriods( default_target_count = 2 ) {
   }
 }
 
+async function calc_first_new_period_start( session ) {
+  const regular = neo4jDateInput2Date((await withinTransaction( session, ( tx ) =>
+    tx.run("Match (t:WateringPeriod) return MAX(date(t.till)) + duration({days: 1})"))).records[0].get(0))
+  const today = new Date()
+  return dayjs(regular > today ? regular : today).format('YYYY-MM-DD')
+}
+
 export async function merge_WateringTask_within_Period( tx, period, date ) {
   return tx.run(
     "MERGE (period:WateringPeriod{from: date($from), till: date($till)}) " +
@@ -96,23 +105,17 @@ export async function merge_WateringTask_within_Period( tx, period, date ) {
   )
 }
 
-async function createFuturePeriods() {
-  const first_new_period_start = "2020-02-01" // TODO max(today, 1+latest)
-  const new_periods = [
-    {
-      from: "2020-02-01",
-      till: "2020-02-07",
-      task_dates: [
-        "2020-02-01",
-        "2020-02-02",
-        "2020-02-03",
-        "2020-02-04",
-        "2020-02-05",
-        "2020-02-06",
-        "2020-02-07",
-      ],
-    },
-  ]
+async function createFuturePeriods(periods_predefined, period_length) {
+  const first_new_period_start = await calc_first_new_period_start(neo4jdriver.session())
+  const periods_to_create = periods_predefined - Math.ceil(dayjs(first_new_period_start).diff(dayjs(), 'days') / period_length)
+  const new_periods = R.range(0, periods_to_create).map(p => {
+    const period_start = dayjs(first_new_period_start).add(p*period_length, 'day')
+    return {
+      from: period_start.format('YYYY-MM-DD'),
+      till: period_start.add(period_length - 1, 'day').format('YYYY-MM-DD'),
+      task_dates: R.range(0, period_length).map(offset => period_start.add(offset, 'day').format('YYYY-MM-DD'))
+    }
+  })
   const result = await withinTransaction( neo4jdriver.session(), ( tx ) =>
     new_periods.map( async ( period ) =>
       period.task_dates.map( async ( date ) =>
@@ -135,8 +138,8 @@ const Mutation = {
         planning_ahead = 7,
         periods_predefined = 4,
       } = args
-      const result_period_planning = await planPeriods()
-      const result_period_creation = await createFuturePeriods()
+      const result_period_planning = await planPeriods(planning_ahead)
+      const result_period_creation = await createFuturePeriods(periods_predefined, period_length)
       return {
         config: { period_length, planning_ahead, periods_predefined },
         result_period_planning,
