@@ -10,6 +10,7 @@ type MutationFile = [Path, File];
 
 export interface Schema {
   root?: RootFile[];
+  query?: RootFile[];
   mutation?: MutationFile[];
 }
 
@@ -25,6 +26,7 @@ function mergeSubSchemata( schemata: Schema[], sub: string ) {
 export function mergeSchemata( schemata: Schema[] ): Schema {
   return {
     ...mergeSubSchemata( schemata, "root" ),
+    ...mergeSubSchemata( schemata, "query" ),
     ...mergeSubSchemata( schemata, "mutation" ),
   }
 }
@@ -42,6 +44,10 @@ export function mergeTypeDefs( schemata: Schema[] ): SchemaString {
   const schema = mergeSchemata( schemata )
   const typeDefs =
     mergeFiles( schema.root ) +
+    "\n\n" +
+    "type Query {\n" +
+    mergeFiles( schema.query ) +
+    "\n}" +
     "\n\n" +
     "type Mutation {\n" +
     mergeFiles( schema.mutation ) +
