@@ -1,7 +1,7 @@
-assignableWateringTimeWindow: [Int, Int] @cypher(statement:
+assignableWateringPeriod: WateringPeriod @cypher(statement:
 """
 MATCH (t:WateringTask)-[:within]-(p:WateringPeriod)
 WHERE not(exists((t)-[:assigned]-(:User))) AND date() < date(p.till)
-RETURN min(p.from), max(p.till)
+RETURN p
 """
 )
