@@ -27,11 +27,13 @@ interface PlaningConfig {
 }
 
 /** planWateringPeriods for all periods, with period.from <= now+planning_ahead **/
-async function planPeriods( planning_ahead, default_target_count = 2 ) {
+async function planPeriods( planning_ahead, default_target_count=2, fallback_maximum_tasks=3 ) {
   const planablePeriods = (await withinTransaction(neo4jdriver.session(), async ( tx ) =>
-    await tx.run( "MATCH (t:WateringTask)-[r:within]-(p:WateringPeriod) " +
-		  "WHERE not(exists((t)-[:assigned]-(:User))) " +
-		  "AND date(p.from) < date() + duration({days: $planning_ahead}) " +
+    await tx.run( "MATCH (p:WateringPeriod) " +
+                  "WHERE date(p.from) < date() + duration({days: $planning_ahead}) " +
+		  "CALL { WITH p MATCH (t:WateringTask)-[r:within]-(p:WateringPeriod) " +
+                  "       WITH exists((t)-[:assigned]-(:User)) AS x " +
+                  "       WHERE not(x) RETURN * } " +
 		  "RETURN DISTINCT p",
                   {planning_ahead} ))).records.map(flatten).map(r => ({from: neo4jDateInput2iso(r.p.from), till: neo4jDateInput2iso(r.p.till)}))
   const periods = await Promise.all(
@@ -41,10 +43,11 @@ async function planPeriods( planning_ahead, default_target_count = 2 ) {
           neo4jdriver.session(),
           async ( tx ) =>
             await tx.run(
-              "MATCH (period:WateringPeriod {from: date($from), till: date($till)})-[r:within]-(task:WateringTask) " +
-                "MATCH (task:WateringTask)-[w:within]-(period) " +
-                "MATCH (user:User)-[a:available]-(task) " +
-                "RETURN period, task, user",
+              "MATCH (period:WateringPeriod {from: date($from), till: date($till)})-[:within]-(task:WateringTask) " +
+              "MATCH (task:WateringTask)-[:within]-(period) " +
+              "MATCH (user:User)-[:available]-(task) " +
+	      "OPTIONAL MATCH (settings:UserSettings)-[:of]-(user) " +
+              "RETURN period, task, user, settings",
               p
             )
         )
@@ -60,8 +63,8 @@ async function planPeriods( planning_ahead, default_target_count = 2 ) {
       date: neo4jDateInput2iso( flattened_task[0].task.date ),
       available: Object.values( flattened_task ).map(( i ) => ( {
         id: i.user.id,
-        maximum_tasks: 3,
-      } )), // TODO
+        maximum_tasks: i.settings?.letitrain_maximum_tasks || fallback_maximum_tasks,
+      } )),
       assigned: [],
       target_count: default_target_count,
     } ))

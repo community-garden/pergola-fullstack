@@ -6,6 +6,6 @@ import { apply, merge } from "../util"
 export function flatten( record: Record ) {
   return apply(
     merge,
-    record.keys.map(( k ) => ( { [k]: record.get( k ).properties } ))
+    record.keys.map(( k ) => ( { [k]: record.get( k )?.properties } ))
   )
 }
