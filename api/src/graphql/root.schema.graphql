@@ -31,6 +31,7 @@ type WateringPeriod {
    from: Date!
    till: Date!
    wateringtasks: [WateringTask] @relation(name: "within", direction: IN)
+   hasUsersAssigned: Boolean @cypher(statement: "MATCH (t:WateringTask)-[:within]->(this) RETURN (EXISTS((t)-[:assigned]-(:User)))")
 }
 
 type ChangeRequest {
