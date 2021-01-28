@@ -23,6 +23,7 @@ type WateringTask {
    changerequests_requested_new_task: [ChangeRequest] @relation(name: "requested_new_task", direction: IN)
    logevents_refers_to: [LogEvent] @relation(name: "refers_to", direction: IN)
    users_available: [User] @relation(name: "available", direction: IN) @hasRole(role: "developer")
+   wateringperiod: [WateringPeriod] @relation(name: "within", direction: OUT)
 }
 
 type WateringPeriod {
