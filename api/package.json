@@ -9,6 +9,7 @@
     "build-ts": "tsc",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
     "serve": "ts-node src/index.ts",
+    "codegen": "gql-gen",
     "serve-debug": "node --inspect dist/index.js",
     "watch-debug": "nodemon --exec 'node --inspect=0.0.0.0:9229 --require ts-node/register src/index.ts'",
     "watch-ts": "cross-env DEBUG=neo4j-graphql-js tsc -w",
@@ -40,6 +41,9 @@
     "webdav-server": "^2.6.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.17.10",
+    "@graphql-codegen/typescript": "^1.17.10",
+    "@graphql-codegen/typescript-resolvers": "^1.17.10",
     "@apollo/client": "^3.1.3",
     "@types/async": "^3.2.3",
     "@types/eslint": "^7.2.4",
