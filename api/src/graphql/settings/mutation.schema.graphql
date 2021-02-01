@@ -1,1 +1,1 @@
-mergeUserSettings(settings: UserSettingsInput): UserSettings
+ownMergeUserSettings(settings: UserSettingsInput): UserSettings

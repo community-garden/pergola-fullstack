@@ -25,7 +25,7 @@ export function query( settings ) {
 }
 
 const Mutation = {
-  mergeUserSettings: auth( async ( _, { settings }, ctx, info ) => {
+  ownMergeUserSettings: auth( async ( _, { settings }, ctx, info ) => {
     const result = await withinTransaction( neo4jdriver.session(), ( tx ) =>
       tx.run( query( settings ), {
         ...settings,
