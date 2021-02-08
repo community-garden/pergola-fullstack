@@ -5,13 +5,13 @@ type SchemaString = string;
 
 type Path = string;
 type File = string;
-type RootFile = [Path, File];
-type MutationFile = [Path, File];
+type PathFile = [Path, File];
 
 export interface Schema {
-  root?: RootFile[];
-  query?: RootFile[];
-  mutation?: MutationFile[];
+  root?: PathFile[];
+  query?: PathFile[];
+  mutation?: PathFile[];
+  subscription?: PathFile[];
 }
 
 function mergeSubSchemata( schemata: Schema[], sub: string ) {
@@ -28,10 +28,12 @@ export function mergeSchemata( schemata: Schema[] ): Schema {
     ...mergeSubSchemata( schemata, "root" ),
     ...mergeSubSchemata( schemata, "query" ),
     ...mergeSubSchemata( schemata, "mutation" ),
+    ...mergeSubSchemata( schemata, "subscription" ),
   }
 }
 
-function mergeFiles( files: [Path, File][] ): SchemaString {
+function mergeFiles( files?: [Path, File][] ): SchemaString {
+  if( !files ) return ""
   const filenames = files.map(( f ) => join( ...f ))
   const filecontents = filenames.map(( f ) =>
     readFileSync( f ).toString( "utf-8" ).trim()
@@ -42,15 +44,15 @@ function mergeFiles( files: [Path, File][] ): SchemaString {
 /** Allows Schema to be specified as modularized resolvers + schema.graphql **/
 export function mergeTypeDefs( schemata: Schema[] ): SchemaString {
   const schema = mergeSchemata( schemata )
+  const { root, subscription, query, mutation } = schema
+  console.log( subscription )
+
+  const makeSchemePart = ( kind: string, parts?: PathFile[] ) => parts ? `\ntype ${kind} {\n ${mergeFiles( parts )} \n}\n` : ""
+
   const typeDefs =
-    mergeFiles( schema.root ) +
-    "\n\n" +
-    "type Query {\n" +
-    mergeFiles( schema.query ) +
-    "\n}" +
-    "\n\n" +
-    "type Mutation {\n" +
-    mergeFiles( schema.mutation ) +
-    "\n}"
+    mergeFiles( root ) +
+    makeSchemePart( "Subscription", subscription ) +
+    makeSchemePart( "Query", query ) +
+    makeSchemePart( "Mutation", mutation )
   return typeDefs
 }
