@@ -5,6 +5,7 @@ import { Neo4jDateInput } from "neo4j-graphql-js"
 import { neo4jdriver } from "../../config/neo4j"
 import { neo4jDateInput2iso,withinTransaction } from "../../lib/neo4j"
 import {MutationResolvers} from "../types/graphql"
+import {publishChange} from "./wateringTaskChange"
 
 export const deleteQuery = `
   MATCH (u:User {id: $id})-[r:available]-(t:WateringTask)
@@ -37,6 +38,7 @@ const { setUserAvailability }: MutationResolvers<{kauth: KeycloakContext}> = {
         } )
       } )
     } )
+    publishChange()
     return result ? true : false
 
   }

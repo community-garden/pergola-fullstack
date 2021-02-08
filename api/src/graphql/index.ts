@@ -11,6 +11,9 @@ export const typeDefs = mergeTypeDefs( [
 ] as Schema[] )
 
 export const resolvers = {
+  Subscription: {
+    ...letitrain.resolvers.Subscription
+  },
   Mutation: {
     ...settings.resolvers.Mutation,
     ...seed.resolvers.Mutation,

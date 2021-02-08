@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import express from "express"
 import expressPino from "express-pino-logger"
 import * as fs from "fs"
+import * as http from "http"
 import Keycloak from "keycloak-connect"
 import {
   GrantedRequest,
@@ -14,12 +15,12 @@ import { makeAugmentedSchema } from "neo4j-graphql-js"
 import path from "path"
 import pino from "pino"
 import PinoColada from "pino-colada"
+import { v2 as webdav } from "webdav-server"
 
+import { useWebdavServer } from "./caldav"
 import { neo4jdriver } from "./config/neo4j"
 import { resolvers, typeDefs } from "./graphql"
 import { initializeDatabase } from "./schema/neo4j/initialize"
-import { v2 as webdav } from 'webdav-server'
-import { useWebdavServer } from "./caldav"
 
 export const logger = pino( {
   level: process.env.LOG_LEVEL || "info",
@@ -41,7 +42,7 @@ dotenv.config()
 const app = express()
 app.use( expressLogger )
 
-useWebdavServer(app, '/calendar')
+useWebdavServer( app, "/calendar" )
 
 const keycloakConfig = JSON.parse(
   fs.readFileSync( path.resolve( __dirname, "../config/keycloak.json" )).toString()
@@ -106,6 +107,9 @@ const server = new ApolloServer( {
   },
   introspection: true,
   playground: true,
+  subscriptions: {
+    path: "/graphql"
+  }
 } )
 
 /*
@@ -113,7 +117,10 @@ const server = new ApolloServer( {
  * This also also allows us to specify a path for the GraphQL endpoint
  */
 server.applyMiddleware( { app, path: graphqlPath } )
+const httpServer = http.createServer( app )
+server.installSubscriptionHandlers( httpServer )
 
-app.listen( { host, port, path: graphqlPath }, () => {
+httpServer.listen( { host, port, path: graphqlPath }, () => {
   logger.info( `GraphQL server ready at http://${host}:${port}${graphqlPath}` )
+  logger.info( `GraphQL Subsciptions ready at ws://${host}:${port}${server.subscriptionsPath}` )
 } )
