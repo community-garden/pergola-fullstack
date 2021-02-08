@@ -2,6 +2,7 @@ scalar JSON  ## use this only for development, but never depend on values of thi
 
 type User {
    _id: Long!
+   id: String!
    label: String!
    neo4jImportId: String!
    type: String!
