@@ -1,5 +1,6 @@
 import { v2 as webdav } from 'webdav-server'
 import {wateringTaskEventsPublic} from './letitrain'
+import {exampleEventsPublic} from './example'
 import {Application} from "express"
 
 export async function createWebdavServer() {
@@ -8,6 +9,7 @@ export async function createWebdavServer() {
   server.rootFileSystem().addSubTree(server.createExternalContext(), {
     'public': {
       'wateringTasks.ics': await wateringTaskEventsPublic(),
+      'example.ics': await exampleEventsPublic(),
     }
   }, (e) => {if(e) console.error(e)})
 
