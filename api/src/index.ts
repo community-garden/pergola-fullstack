@@ -1,5 +1,6 @@
+import "dotenv/config"
+
 import { ApolloServer } from "apollo-server-express"
-import dotenv from "dotenv"
 import express from "express"
 import expressPino from "express-pino-logger"
 import * as fs from "fs"
@@ -15,12 +16,14 @@ import { makeAugmentedSchema } from "neo4j-graphql-js"
 import path from "path"
 import pino from "pino"
 import PinoColada from "pino-colada"
-import { v2 as webdav } from "webdav-server"
+import webPush from "web-push"
 
 import { useWebdavServer } from "./caldav"
 import { neo4jdriver } from "./config/neo4j"
 import { resolvers, typeDefs } from "./graphql"
 import { initializeDatabase } from "./schema/neo4j/initialize"
+
+//dotenv.config()
 
 export const logger = pino( {
   level: process.env.LOG_LEVEL || "info",
@@ -37,7 +40,6 @@ const graphqlPath = process.env.GRAPHQL_SERVER_PATH || "/graphql"
 const host = process.env.GRAPHQL_SERVER_HOST || "0.0.0.0"
 
 // set environment variables from .env
-dotenv.config()
 
 const app = express()
 app.use( expressLogger )
@@ -54,6 +56,12 @@ app.use(
   } )
 )
 app.use( graphqlPath, keycloak.middleware())
+
+
+//app.use( cors())
+//app.use( bodyParser.json())
+webPush.setVapidDetails( `mailto:${process.env.WEB_PUSH_MAIL}`, process.env.PUBLIC_VAPID_KEY, process.env.PRIVATE_VAPID_KEY )
+//app.post( "/reg", keycloak.protect(), subscriptionRequestHandler )
 
 /*
  * Create an executable GraphQL schema object from GraphQL type definitions
