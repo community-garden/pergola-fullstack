@@ -1,0 +1,3 @@
+pushSubscribe(subscription: PushSubscriptionInput): Boolean
+publishToAll(message: PushMessageInput): Boolean
+sendWelcomeMail: Boolean

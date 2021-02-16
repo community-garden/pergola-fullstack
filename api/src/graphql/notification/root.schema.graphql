@@ -1,0 +1,16 @@
+
+input PushKeyInput {
+  auth: String!
+  p256dh: String!
+}
+
+input PushSubscriptionInput {
+  endpoint: String!
+  expirationTime: Int
+  keys: PushKeyInput!
+}
+
+input PushMessageInput {
+  title: String!
+  message: String
+}

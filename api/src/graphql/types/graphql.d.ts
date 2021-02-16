@@ -1159,8 +1159,8 @@ export enum _UserOrdering {
   Neo4jImportIdDesc = 'neo4jImportId_desc',
   TypeAsc = 'type_asc',
   TypeDesc = 'type_desc',
-  _IdAsc = '_id_asc',
-  _IdDesc = '_id_desc'
+  IdAsc = '_id_asc',
+  IdDesc = '_id_desc'
 }
 
 export type _UserSettingsFilter = {
@@ -1420,6 +1420,9 @@ export type Mutation = {
   setUserAvailability?: Maybe<Scalars['Boolean']>;
   seedAvailabilitiesFromTests?: Maybe<Scalars['Boolean']>;
   planWateringPeriods?: Maybe<Scalars['JSON']>;
+  pushSubscribe?: Maybe<Scalars['Boolean']>;
+  publishToAll?: Maybe<Scalars['Boolean']>;
+  sendWelcomeMail?: Maybe<Scalars['Boolean']>;
   /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/##add--remove-relationship) for [creating](https://neo4j.com/docs/cypher-manual/4.1/clauses/create/#create-relationships) the assigned relationship. */
   AddUserAssigned?: Maybe<_AddUserAssignedPayload>;
   /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/##add--remove-relationship) for [deleting](https://neo4j.com/docs/cypher-manual/4.1/clauses/delete/#delete-delete-relationships-only) the assigned relationship. */
@@ -1577,6 +1580,16 @@ export type MutationPlanWateringPeriodsArgs = {
   period_length?: Maybe<Scalars['Int']>;
   planing_ahead?: Maybe<Scalars['Int']>;
   periods_predefined?: Maybe<Scalars['Int']>;
+};
+
+
+export type MutationPushSubscribeArgs = {
+  subscription?: Maybe<PushSubscriptionInput>;
+};
+
+
+export type MutationPublishToAllArgs = {
+  message?: Maybe<PushMessageInput>;
 };
 
 
@@ -2009,6 +2022,22 @@ export type MutationMergeUserSettingsArgs = {
   letitrain_maximum_tasks?: Maybe<Scalars['Int']>;
 };
 
+export type PushKeyInput = {
+  auth: Scalars['String'];
+  p256dh: Scalars['String'];
+};
+
+export type PushMessageInput = {
+  title: Scalars['String'];
+  message?: Maybe<Scalars['String']>;
+};
+
+export type PushSubscriptionInput = {
+  endpoint: Scalars['String'];
+  expirationTime?: Maybe<Scalars['Int']>;
+  keys: PushKeyInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   assignableWateringPeriod?: Maybe<WateringPeriod>;
@@ -2359,6 +2388,9 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   UserSettingsInput: UserSettingsInput;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
+  PushSubscriptionInput: PushSubscriptionInput;
+  PushKeyInput: PushKeyInput;
+  PushMessageInput: PushMessageInput;
   _UserInput: _UserInput;
   _WateringTaskInput: _WateringTaskInput;
   _AddUserAssignedPayload: ResolverTypeWrapper<_AddUserAssignedPayload>;
@@ -2451,6 +2483,9 @@ export type ResolversParentTypes = {
   Mutation: {};
   UserSettingsInput: UserSettingsInput;
   JSON: Scalars['JSON'];
+  PushSubscriptionInput: PushSubscriptionInput;
+  PushKeyInput: PushKeyInput;
+  PushMessageInput: PushMessageInput;
   _UserInput: _UserInput;
   _WateringTaskInput: _WateringTaskInput;
   _AddUserAssignedPayload: _AddUserAssignedPayload;
@@ -2957,6 +2992,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   setUserAvailability?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSetUserAvailabilityArgs, 'dates'>>;
   seedAvailabilitiesFromTests?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   planWateringPeriods?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<MutationPlanWateringPeriodsArgs, never>>;
+  pushSubscribe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationPushSubscribeArgs, never>>;
+  publishToAll?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationPublishToAllArgs, never>>;
+  sendWelcomeMail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   AddUserAssigned?: Resolver<Maybe<ResolversTypes['_AddUserAssignedPayload']>, ParentType, ContextType, RequireFields<MutationAddUserAssignedArgs, 'from' | 'to'>>;
   RemoveUserAssigned?: Resolver<Maybe<ResolversTypes['_RemoveUserAssignedPayload']>, ParentType, ContextType, RequireFields<MutationRemoveUserAssignedArgs, 'from' | 'to'>>;
   MergeUserAssigned?: Resolver<Maybe<ResolversTypes['_MergeUserAssignedPayload']>, ParentType, ContextType, RequireFields<MutationMergeUserAssignedArgs, 'from' | 'to'>>;
