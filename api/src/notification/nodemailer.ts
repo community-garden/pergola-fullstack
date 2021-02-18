@@ -20,7 +20,7 @@ const smtp = {
 }
 
 
-const from = "Pergola <noreply@pergola.gra.one.de>"
+const from =  process.env.FROM_MAIL_ADDRESS || "Pergola <noreply-pergola@gra.one>"
 
 const transport = createTransport( smtp )
 
