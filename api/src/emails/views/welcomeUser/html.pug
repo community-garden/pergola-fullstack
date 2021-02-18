@@ -1,0 +1,20 @@
+html
+  head
+    block head
+      meta(charset="utf-8")
+      meta(name="viewport", content="width=device-width")
+      meta(http-equiv="X-UA-Compatible", content="IE=edge")
+      meta(name="x-apple-disable-message-reformatting")
+      title= subject
+      link(rel="stylesheet", href="style.css", data-inline)
+  body
+    p
+      = t('hi', name)
+    p
+      = t('welcomeUserTextA', garden)
+    p
+      = t('welcomeUserTextB')
+    p
+      = t('greetings')
+      br
+      = t('YourTeam')
