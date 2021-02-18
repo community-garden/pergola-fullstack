@@ -1159,8 +1159,8 @@ export enum _UserOrdering {
   Neo4jImportIdDesc = 'neo4jImportId_desc',
   TypeAsc = 'type_asc',
   TypeDesc = 'type_desc',
-  IdAsc = '_id_asc',
-  IdDesc = '_id_desc'
+  _IdAsc = '_id_asc',
+  _IdDesc = '_id_desc'
 }
 
 export type _UserSettingsFilter = {
