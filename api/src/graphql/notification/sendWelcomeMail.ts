@@ -8,7 +8,7 @@ const { sendWelcomeMail }: MutationResolvers<{kauth: KeycloakContext}> = {
     const content = ( kauth?.accessToken as unknown as any )?.content
     const {sub: userId, preferred_username: name } = content
     userId && console.log( JSON.stringify( content?.email, null, 2 ))
-    await sendEMail( "welcomeUser", { to: "example@localhost" }, {locale: "en", name, garden: "Wurzelwerk"} )
+    await sendEMail( "welcomeUser", { to: "pergola@gra.one" }, {locale: "en", name, garden: "Wurzelwerk"} )
     return true
   }
 }
