@@ -28,6 +28,12 @@ services:
       DB_VENDOR: h2
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+  smtp_server:
+    image: reachfive/fake-smtp-server
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+    command: node index.js -a test:test
 
 networks:
   internal:
