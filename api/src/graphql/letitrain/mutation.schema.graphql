@@ -1,3 +1,4 @@
 setUserAvailability(dates: [Date]!, from: Date, till: Date): Boolean
 seedAvailabilitiesFromTests: Boolean
 planWateringPeriods(period_length: Int, planing_ahead: Int, periods_predefined: Int): JSON
+planWateringPeriod(periodId: String): JSON

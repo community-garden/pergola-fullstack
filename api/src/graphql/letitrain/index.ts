@@ -1,3 +1,4 @@
+import planWateringPeriod from "./planWateringPeriod"
 import planWateringPeriods from "./planWateringPeriods"
 import seedAvailabilitiesFromTests from "./seedAvailabilitiesFromTests"
 import setUserAvailability from "./setUserAvailability"
@@ -12,6 +13,7 @@ export default {
       ...setUserAvailability.resolvers.Mutation,
       ...seedAvailabilitiesFromTests.resolvers.Mutation,
       ...planWateringPeriods.resolvers.Mutation,
+      ...planWateringPeriod.resolvers.Mutation
     },
   },
   schema: {
