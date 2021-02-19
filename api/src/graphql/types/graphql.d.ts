@@ -1420,6 +1420,9 @@ export type Mutation = {
   setUserAvailability?: Maybe<Scalars['Boolean']>;
   seedAvailabilitiesFromTests?: Maybe<Scalars['Boolean']>;
   planWateringPeriods?: Maybe<Scalars['JSON']>;
+  planWateringPeriod?: Maybe<Scalars['JSON']>;
+  removeAssignment?: Maybe<Scalars['Boolean']>;
+  addAssignment?: Maybe<Scalars['Boolean']>;
   pushSubscribe?: Maybe<Scalars['Boolean']>;
   publishToAll?: Maybe<Scalars['Boolean']>;
   sendWelcomeMail?: Maybe<Scalars['Boolean']>;
@@ -1580,6 +1583,21 @@ export type MutationPlanWateringPeriodsArgs = {
   period_length?: Maybe<Scalars['Int']>;
   planing_ahead?: Maybe<Scalars['Int']>;
   periods_predefined?: Maybe<Scalars['Int']>;
+};
+
+
+export type MutationPlanWateringPeriodArgs = {
+  periodId: Scalars['String'];
+};
+
+
+export type MutationRemoveAssignmentArgs = {
+  date: _Neo4jDateInput;
+};
+
+
+export type MutationAddAssignmentArgs = {
+  date: _Neo4jDateInput;
 };
 
 
@@ -2992,6 +3010,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   setUserAvailability?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSetUserAvailabilityArgs, 'dates'>>;
   seedAvailabilitiesFromTests?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   planWateringPeriods?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<MutationPlanWateringPeriodsArgs, never>>;
+  planWateringPeriod?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<MutationPlanWateringPeriodArgs, 'periodId'>>;
+  removeAssignment?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationRemoveAssignmentArgs, 'date'>>;
+  addAssignment?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationAddAssignmentArgs, 'date'>>;
   pushSubscribe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationPushSubscribeArgs, never>>;
   publishToAll?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationPublishToAllArgs, never>>;
   sendWelcomeMail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
