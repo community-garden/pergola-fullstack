@@ -7,6 +7,8 @@ import { withinTransaction } from "../../lib/neo4j"
 import { merge_WateringTask_within_Period } from "./planWateringPeriods"
 import { query } from "./setUserAvailability"
 
+const gardenId = "ww"
+
 async function seedAvailabilitiesFromTests() {
   const tasks = exampleTasks.simple
   await withinTransaction( neo4jdriver.session(), ( tx ) => {
@@ -14,6 +16,7 @@ async function seedAvailabilitiesFromTests() {
       task.available.map(
         async ( person ) =>
           await tx.run( query, {
+            gardenId,
             id: person.id,
             label: person.id,
             date: task.date,
@@ -24,6 +27,7 @@ async function seedAvailabilitiesFromTests() {
       async ( task ) =>
         await merge_WateringTask_within_Period(
           tx,
+          gardenId,
           {
             from: tasks[0].date,
             till: tasks[tasks.length - 1].date,
