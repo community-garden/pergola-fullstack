@@ -55,3 +55,36 @@ type LogEvent {
    triggered_by: [User] @relation(name: "triggered_by", direction: OUT)
    refers_to: [WateringTask] @relation(name: "refers_to", direction: OUT)
 }
+
+
+interface GeoShape {
+   shapeId: ID! @id
+   points: [Point]!
+   belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+}
+
+type GardenLayer {
+   layerId: ID! @id
+   name: String!
+   date: Date
+   has_shape: [GeoShape]  @relation(name: "belongs_to", direction: IN)
+}
+
+
+type PolygonShape {
+   shapeId: ID! @id
+   points: [Point]!
+   belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+   startPoint: Point
+}
+
+extend type PolygonShape implements GeoShape
+
+type MarkerShape {
+   shapeId: ID! @id
+   points: [Point]!
+   belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+   icon: String!
+   point: Point!
+}
+extend type MarkerShape implements GeoShape
