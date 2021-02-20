@@ -19,11 +19,11 @@ type WateringTask {
    done: Boolean
    neo4jImportId: String!
    type: String!
-   users_assigned: [User] @relation(name: "assigned", direction: IN) @hasRole(role: "developer")
+   users_assigned: [User] @relation(name: "assigned", direction: IN)
    changerequests_requested_for: [ChangeRequest] @relation(name: "requested_for", direction: IN)
    changerequests_requested_new_task: [ChangeRequest] @relation(name: "requested_new_task", direction: IN)
    logevents_refers_to: [LogEvent] @relation(name: "refers_to", direction: IN)
-   users_available: [User] @relation(name: "available", direction: IN) @hasRole(role: "developer")
+   users_available: [User] @relation(name: "available", direction: IN)
    wateringperiod: [WateringPeriod] @relation(name: "within", direction: OUT)
 }
 
