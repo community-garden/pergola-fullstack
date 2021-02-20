@@ -1,5 +1,4 @@
 import addAssignment from "./addAssignment"
-import planWateringPeriod from "./planWateringPeriod"
 import planWateringPeriods from "./planWateringPeriods"
 import removeAssignment from "./removeAssignment"
 import seedAvailabilitiesFromTests from "./seedAvailabilitiesFromTests"
@@ -15,7 +14,6 @@ export default {
       ...setUserAvailability.resolvers.Mutation,
       ...seedAvailabilitiesFromTests.resolvers.Mutation,
       ...planWateringPeriods.resolvers.Mutation,
-      ...planWateringPeriod.resolvers.Mutation,
       ...removeAssignment.resolvers.Mutation,
       ...addAssignment.resolvers.Mutation
     },
