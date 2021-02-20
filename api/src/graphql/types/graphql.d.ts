@@ -330,6 +330,32 @@ export enum _ChangeRequestOrdering {
   IdDesc = '_id_desc'
 }
 
+export type _GardenFilter = {
+  AND?: Maybe<Array<_GardenFilter>>;
+  OR?: Maybe<Array<_GardenFilter>>;
+  label?: Maybe<Scalars['String']>;
+  label_not?: Maybe<Scalars['String']>;
+  label_in?: Maybe<Array<Scalars['String']>>;
+  label_not_in?: Maybe<Array<Scalars['String']>>;
+  label_contains?: Maybe<Scalars['String']>;
+  label_not_contains?: Maybe<Scalars['String']>;
+  label_starts_with?: Maybe<Scalars['String']>;
+  label_not_starts_with?: Maybe<Scalars['String']>;
+  label_ends_with?: Maybe<Scalars['String']>;
+  label_not_ends_with?: Maybe<Scalars['String']>;
+};
+
+export type _GardenInput = {
+  label: Scalars['String'];
+};
+
+export enum _GardenOrdering {
+  LabelAsc = 'label_asc',
+  LabelDesc = 'label_desc',
+  IdAsc = '_id_asc',
+  IdDesc = '_id_desc'
+}
+
 export type _LogEventFilter = {
   AND?: Maybe<Array<_LogEventFilter>>;
   OR?: Maybe<Array<_LogEventFilter>>;
@@ -1159,8 +1185,8 @@ export enum _UserOrdering {
   Neo4jImportIdDesc = 'neo4jImportId_desc',
   TypeAsc = 'type_asc',
   TypeDesc = 'type_desc',
-  _IdAsc = '_id_asc',
-  _IdDesc = '_id_desc'
+  IdAsc = '_id_asc',
+  IdDesc = '_id_desc'
 }
 
 export type _UserSettingsFilter = {
@@ -1384,6 +1410,13 @@ export type ChangeRequestRequested_New_TaskArgs = {
   filter?: Maybe<_WateringTaskFilter>;
 };
 
+export type Garden = {
+  __typename?: 'Garden';
+  /** Generated field for querying the Neo4j [system id](https://neo4j.com/docs/cypher-manual/current/functions/scalar/#functions-id) of this node. */
+  _id?: Maybe<Scalars['String']>;
+  label: Scalars['String'];
+};
+
 
 export type LogEvent = {
   __typename?: 'LogEvent';
@@ -1420,6 +1453,12 @@ export type Mutation = {
   setUserAvailability?: Maybe<Scalars['Boolean']>;
   seedAvailabilitiesFromTests?: Maybe<Scalars['Boolean']>;
   planWateringPeriods?: Maybe<Scalars['JSON']>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#create) for [creating](https://neo4j.com/docs/cypher-manual/4.1/clauses/create/#create-nodes) a Garden node. */
+  CreateGarden?: Maybe<Garden>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#delete) for [deleting](https://neo4j.com/docs/cypher-manual/4.1/clauses/delete/#delete-delete-single-node) a Garden node. */
+  DeleteGarden?: Maybe<Garden>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#merge) for [merging](https://neo4j.com/docs/cypher-manual/4.1/clauses/merge/#query-merge-node-derived) a Garden node. */
+  MergeGarden?: Maybe<Garden>;
   /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/##add--remove-relationship) for [creating](https://neo4j.com/docs/cypher-manual/4.1/clauses/create/#create-relationships) the assigned relationship. */
   AddUserAssigned?: Maybe<_AddUserAssignedPayload>;
   /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/##add--remove-relationship) for [deleting](https://neo4j.com/docs/cypher-manual/4.1/clauses/delete/#delete-delete-relationships-only) the assigned relationship. */
@@ -1567,6 +1606,7 @@ export type MutationOwnMergeUserSettingsArgs = {
 
 
 export type MutationSetUserAvailabilityArgs = {
+  gardenId: Scalars['ID'];
   dates: Array<Maybe<_Neo4jDateInput>>;
   from?: Maybe<_Neo4jDateInput>;
   till?: Maybe<_Neo4jDateInput>;
@@ -1574,9 +1614,25 @@ export type MutationSetUserAvailabilityArgs = {
 
 
 export type MutationPlanWateringPeriodsArgs = {
+  gardenId: Scalars['ID'];
   period_length?: Maybe<Scalars['Int']>;
   planing_ahead?: Maybe<Scalars['Int']>;
   periods_predefined?: Maybe<Scalars['Int']>;
+};
+
+
+export type MutationCreateGardenArgs = {
+  label: Scalars['String'];
+};
+
+
+export type MutationDeleteGardenArgs = {
+  label: Scalars['String'];
+};
+
+
+export type MutationMergeGardenArgs = {
+  label: Scalars['String'];
 };
 
 
@@ -2012,6 +2068,8 @@ export type MutationMergeUserSettingsArgs = {
 export type Query = {
   __typename?: 'Query';
   assignableWateringPeriod?: Maybe<WateringPeriod>;
+  /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for Garden type nodes. */
+  Garden?: Maybe<Array<Maybe<Garden>>>;
   /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for User type nodes. */
   User?: Maybe<Array<Maybe<User>>>;
   /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for WateringTask type nodes. */
@@ -2024,6 +2082,16 @@ export type Query = {
   LogEvent?: Maybe<Array<Maybe<LogEvent>>>;
   /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for UserSettings type nodes. */
   UserSettings?: Maybe<Array<Maybe<UserSettings>>>;
+};
+
+
+export type QueryGardenArgs = {
+  label?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<Maybe<_GardenOrdering>>>;
+  filter?: Maybe<_GardenFilter>;
 };
 
 
@@ -2353,11 +2421,15 @@ export type ResolversTypes = {
   _LogEventOrdering: _LogEventOrdering;
   LogEvent: ResolverTypeWrapper<LogEvent>;
   _WateringPeriodOrdering: _WateringPeriodOrdering;
+  _GardenOrdering: _GardenOrdering;
+  _GardenFilter: _GardenFilter;
+  Garden: ResolverTypeWrapper<Garden>;
   _UserSettingsOrdering: _UserSettingsOrdering;
   _UserSettingsFilter: _UserSettingsFilter;
   UserSettings: ResolverTypeWrapper<UserSettings>;
   Mutation: ResolverTypeWrapper<{}>;
   UserSettingsInput: UserSettingsInput;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   _UserInput: _UserInput;
   _WateringTaskInput: _WateringTaskInput;
@@ -2412,6 +2484,7 @@ export type ResolversTypes = {
   _RemoveLogEventRefers_toPayload: ResolverTypeWrapper<_RemoveLogEventRefers_ToPayload>;
   _MergeLogEventRefers_toPayload: ResolverTypeWrapper<_MergeLogEventRefers_ToPayload>;
   Subscription: ResolverTypeWrapper<{}>;
+  _GardenInput: _GardenInput;
   _UserSettingsInput: _UserSettingsInput;
   _Neo4jTimeInput: _Neo4jTimeInput;
   _Neo4jTime: ResolverTypeWrapper<_Neo4jTime>;
@@ -2446,10 +2519,13 @@ export type ResolversParentTypes = {
   User: User;
   ChangeRequest: ChangeRequest;
   LogEvent: LogEvent;
+  _GardenFilter: _GardenFilter;
+  Garden: Garden;
   _UserSettingsFilter: _UserSettingsFilter;
   UserSettings: UserSettings;
   Mutation: {};
   UserSettingsInput: UserSettingsInput;
+  ID: Scalars['ID'];
   JSON: Scalars['JSON'];
   _UserInput: _UserInput;
   _WateringTaskInput: _WateringTaskInput;
@@ -2504,6 +2580,7 @@ export type ResolversParentTypes = {
   _RemoveLogEventRefers_toPayload: _RemoveLogEventRefers_ToPayload;
   _MergeLogEventRefers_toPayload: _MergeLogEventRefers_ToPayload;
   Subscription: {};
+  _GardenInput: _GardenInput;
   _UserSettingsInput: _UserSettingsInput;
   _Neo4jTimeInput: _Neo4jTimeInput;
   _Neo4jTime: _Neo4jTime;
@@ -2936,6 +3013,12 @@ export type ChangeRequestResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type GardenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Garden'] = ResolversParentTypes['Garden']> = {
+  _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  label?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON';
 }
@@ -2954,9 +3037,12 @@ export type LogEventResolvers<ContextType = any, ParentType extends ResolversPar
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   ownMergeUserSettings?: Resolver<Maybe<ResolversTypes['UserSettings']>, ParentType, ContextType, RequireFields<MutationOwnMergeUserSettingsArgs, never>>;
   seedNeo4jFromJSON?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  setUserAvailability?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSetUserAvailabilityArgs, 'dates'>>;
+  setUserAvailability?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSetUserAvailabilityArgs, 'gardenId' | 'dates'>>;
   seedAvailabilitiesFromTests?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  planWateringPeriods?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<MutationPlanWateringPeriodsArgs, never>>;
+  planWateringPeriods?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<MutationPlanWateringPeriodsArgs, 'gardenId'>>;
+  CreateGarden?: Resolver<Maybe<ResolversTypes['Garden']>, ParentType, ContextType, RequireFields<MutationCreateGardenArgs, 'label'>>;
+  DeleteGarden?: Resolver<Maybe<ResolversTypes['Garden']>, ParentType, ContextType, RequireFields<MutationDeleteGardenArgs, 'label'>>;
+  MergeGarden?: Resolver<Maybe<ResolversTypes['Garden']>, ParentType, ContextType, RequireFields<MutationMergeGardenArgs, 'label'>>;
   AddUserAssigned?: Resolver<Maybe<ResolversTypes['_AddUserAssignedPayload']>, ParentType, ContextType, RequireFields<MutationAddUserAssignedArgs, 'from' | 'to'>>;
   RemoveUserAssigned?: Resolver<Maybe<ResolversTypes['_RemoveUserAssignedPayload']>, ParentType, ContextType, RequireFields<MutationRemoveUserAssignedArgs, 'from' | 'to'>>;
   MergeUserAssigned?: Resolver<Maybe<ResolversTypes['_MergeUserAssignedPayload']>, ParentType, ContextType, RequireFields<MutationMergeUserAssignedArgs, 'from' | 'to'>>;
@@ -3030,6 +3116,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   assignableWateringPeriod?: Resolver<Maybe<ResolversTypes['WateringPeriod']>, ParentType, ContextType>;
+  Garden?: Resolver<Maybe<Array<Maybe<ResolversTypes['Garden']>>>, ParentType, ContextType, RequireFields<QueryGardenArgs, never>>;
   User?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<QueryUserArgs, never>>;
   WateringTask?: Resolver<Maybe<Array<Maybe<ResolversTypes['WateringTask']>>>, ParentType, ContextType, RequireFields<QueryWateringTaskArgs, never>>;
   WateringPeriod?: Resolver<Maybe<Array<Maybe<ResolversTypes['WateringPeriod']>>>, ParentType, ContextType, RequireFields<QueryWateringPeriodArgs, never>>;
@@ -3143,6 +3230,7 @@ export type Resolvers<ContextType = any> = {
   _RemoveWateringTaskUsers_assignedPayload?: _RemoveWateringTaskUsers_AssignedPayloadResolvers<ContextType>;
   _RemoveWateringTaskUsers_availablePayload?: _RemoveWateringTaskUsers_AvailablePayloadResolvers<ContextType>;
   ChangeRequest?: ChangeRequestResolvers<ContextType>;
+  Garden?: GardenResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   LogEvent?: LogEventResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;

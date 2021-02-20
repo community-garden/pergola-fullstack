@@ -7,31 +7,38 @@ import { neo4jDateInput2iso,withinTransaction } from "../../lib/neo4j"
 import {MutationResolvers} from "../types/graphql"
 import {publishChange} from "./wateringTaskChange"
 
-export const deleteQuery = `
-  MATCH (u:User {id: $id})-[r:available]-(t:WateringTask)
+export const deleteQuery =
+ `MATCH (period:WateringPeriod)-[:at]-(garden:Garden {gardenId: $gardenId})
+  MATCH (t:WateringTask)-[:within]-(period)
+  MATCH (u:User {id: $id})-[r:available]-(t)
   WHERE not(exists((u)-[:assigned]-(t))) AND date($from) <= date(t.date) AND date($till) >= date(t.date)
   DELETE r
-`
+ `
 
 export const query =
-  "MERGE (user:User {id: $id}) SET user.label = $label " +
-  "MERGE (task:WateringTask {date: date($date)}) SET task.label = $date " +
-  "MERGE (user)-[r:available]-(task) " +
-  "RETURN user, r, task"
+ `MATCH (period:WateringPeriod)-[:at]-(garden:Garden {gardenId: $gardenId})
+  MATCH (task:WateringTask {date: date($date)})-[:within]-(period)
+  SET task.label = $date
+  MERGE (user:User {id: $id}) SET user.label = $label
+  MERGE (user)-[r:available]-(task)
+  RETURN user, r, task
+ `
 
 const { setUserAvailability }: MutationResolvers<{kauth: KeycloakContext}> = {
   setUserAvailability: async ( _, args, context, info ) =>  {
-    const result = await withinTransaction<any>( neo4jdriver.session(), ( tx ) => {
+    await withinTransaction<any>( neo4jdriver.session(), async ( tx ) => {
       const { content: { sub: id, preferred_username: label }} = context?.kauth?.accessToken as unknown as any
-      const {from, till, dates} = args
-      from && till && tx.run(
+      const {gardenId, from, till, dates} = args
+      from && till && await tx.run(
         deleteQuery, {
+	  gardenId,
           id,
           from: neo4jDateInput2iso( from ),
           till: neo4jDateInput2iso( till )
       } )
       dates.map( async ( date: Neo4jDateInput ) => {
         tx.run( query, {
+	  gardenId,
           id,
           label,
           date: neo4jDateInput2iso( date ),
@@ -39,8 +46,7 @@ const { setUserAvailability }: MutationResolvers<{kauth: KeycloakContext}> = {
       } )
     } )
     publishChange()
-    return result ? true : false
-
+    return true
   }
 }
 export default { resolvers: { Mutation: { setUserAvailability: auth ( setUserAvailability ) } } }

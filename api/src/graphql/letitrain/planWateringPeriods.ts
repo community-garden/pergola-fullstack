@@ -27,15 +27,17 @@ interface PlaningConfig {
 }
 
 /** planWateringPeriods for all periods, with period.from <= now+planning_ahead **/
-async function planPeriods( planning_ahead, default_target_count=2, fallback_maximum_tasks=3 ) {
+async function planPeriods( gardenId, planning_ahead, default_target_count=2, fallback_maximum_tasks=3 ) {
   const planablePeriods = (await withinTransaction(neo4jdriver.session(), async ( tx ) =>
-    await tx.run( "MATCH (p:WateringPeriod) " +
-                  "WHERE date(p.from) < date() + duration({days: $planning_ahead}) " +
-		  "CALL { WITH p MATCH (t:WateringTask)-[r:within]-(p:WateringPeriod) " +
-                  "       WITH exists((t)-[:assigned]-(:User)) AS x " +
-                  "       WHERE not(x) RETURN * } " +
-		  "RETURN DISTINCT p",
-                  {planning_ahead} ))).records.map(flatten).map(r => ({from: neo4jDateInput2iso(r.p.from), till: neo4jDateInput2iso(r.p.till)}))
+    await tx.run(`MATCH (p:WateringPeriod)-[:at]-(garden:Garden {gardenId: $gardenId})
+                  WHERE date(p.from) < date() + duration({days: $planning_ahead})
+		        AND date(p.till) >= date()
+		  CALL { WITH p MATCH (t:WateringTask)-[r:within]-(p:WateringPeriod)
+                         WITH exists((t)-[:assigned]-(:User)) AS x
+                         WHERE not(x) RETURN * }
+		  RETURN DISTINCT p
+		 `,
+                 {gardenId, planning_ahead} ))).records.map(flatten).map(r => ({from: neo4jDateInput2iso(r.p.from), till: neo4jDateInput2iso(r.p.till)}))
   const periods = await Promise.all(
     planablePeriods.map( async ( p ) => {
       const period_records = (
@@ -43,12 +45,13 @@ async function planPeriods( planning_ahead, default_target_count=2, fallback_max
           neo4jdriver.session(),
           async ( tx ) =>
             await tx.run(
-              "MATCH (period:WateringPeriod {from: date($from), till: date($till)})-[:within]-(task:WateringTask) " +
-              "MATCH (task:WateringTask)-[:within]-(period) " +
-              "MATCH (user:User)-[:available]-(task) " +
-	      "OPTIONAL MATCH (settings:UserSettings)-[:of]-(user) " +
-              "RETURN period, task, user, settings",
-              p
+              `MATCH (period:WateringPeriod {from: date($from), till: date($till)})-[:at]-(garden:Garden {gardenId: $gardenId})
+	       MATCH (task:WateringTask)-[:within]-(period)
+               MATCH (user:User)-[:available]-(task)
+	       OPTIONAL MATCH (settings:UserSettings)-[:of]-(user)
+               RETURN period, task, user, settings
+	      `,
+	      {...p, gardenId}
             )
         )
       ).records
@@ -75,15 +78,18 @@ async function planPeriods( planning_ahead, default_target_count=2, fallback_max
   const planning_stats = planning_results.map(( pr ) =>
     apply( calcStats, calcExplicitStates( pr ))
   )
+  console.log(planning_results)
   await withinTransaction( neo4jdriver.session(), async ( tx ) =>
     planning_results.map(( tasks ) =>
       tasks.map(( task ) =>
         task.assigned.map(( person ) =>
           tx.run(
-            "MERGE (user:User {id: $id}) " +
-              "MERGE (task:WateringTask {date: date($date)}) " +
-              "MERGE (user)-[r:assigned]-(task)",
-            { id: person.id, date: task.date }
+            `MATCH (period:WateringPeriod)-[:at]-(garden:Garden {gardenId: $gardenId})
+             MATCH (task:WateringTask {date: date($date)})-[:within]-(period)
+             MERGE (user:User {id: $id})
+             MERGE (user)-[r:assigned]-(task)
+	    `,
+            { gardenId, id: person.id, date: task.date }
           )
         )
       )
@@ -104,16 +110,19 @@ async function calc_first_new_period_start( session ) {
   return dayjs(regular > today ? regular : today).format('YYYY-MM-DD')
 }
 
-export async function merge_WateringTask_within_Period( tx, period, date ) {
+export async function merge_WateringTask_within_Period( tx, gardenId, period, date ) {
   return tx.run(
-    "MERGE (period:WateringPeriod{from: date($from), till: date($till)}) " +
-      "MERGE (task:WateringTask {date: date($date)}) SET task.label = $date " +
-      "MERGE (task)-[r:within]-(period)",
-    { ...period, date: date }
+    `MATCH (garden:Garden {gardenId: $gardenId})
+     MERGE (period:WateringPeriod{from: date($from), till: date($till)})
+     MERGE (period)-[:at]-(garden)
+     MERGE (task:WateringTask {date: date($date)}) SET task.label = $date
+     MERGE (task)-[:within]-(period)
+    `,
+    {...period, gardenId,  date: date }
   )
 }
 
-async function createFuturePeriods(periods_predefined, period_length) {
+async function createFuturePeriods(gardenId, periods_predefined, period_length) {
   const first_new_period_start = await calc_first_new_period_start(neo4jdriver.session())
   const periods_to_create = periods_predefined - Math.ceil(dayjs(first_new_period_start).diff(dayjs(), 'days') / period_length)
   const new_periods = R.range(0, periods_to_create).map(p => {
@@ -127,7 +136,7 @@ async function createFuturePeriods(periods_predefined, period_length) {
   const result = await withinTransaction( neo4jdriver.session(), ( tx ) =>
     new_periods.map( async ( period ) =>
       period.task_dates.map( async ( date ) =>
-        merge_WateringTask_within_Period( tx, period, date )
+        merge_WateringTask_within_Period( tx, gardenId, period, date )
       )
     )
   )
@@ -140,14 +149,14 @@ async function createFuturePeriods(periods_predefined, period_length) {
 
 const Mutation = {
   planWateringPeriods: hasRole( presets.garden_manager )(
-    async ( _, args: PlaningConfig, ctx, info ) => {
+    async ( _, args, ctx, info ) => {
       const {
         period_length = 7,
         planning_ahead = 7,
         periods_predefined = 4,
       } = args
-      const result_period_planning = await planPeriods(planning_ahead)
-      const result_period_creation = await createFuturePeriods(periods_predefined, period_length)
+      const result_period_planning = await planPeriods(args.gardenId, planning_ahead)
+      const result_period_creation = await createFuturePeriods(args.gardenId, periods_predefined, period_length)
       return {
         config: { period_length, planning_ahead, periods_predefined },
         result_period_planning,
