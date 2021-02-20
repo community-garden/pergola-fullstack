@@ -24,6 +24,9 @@ services:
     image: jboss/keycloak:11.0.1
     ports:
       - "8080:8080"
+    volumes:
+      - ./frontend/keycloak/themes/pergola:/opt/jboss/keycloak/themes/pergola
+      - ./frontend/keycloak/themes/material:/opt/jboss/keycloak/themes/material
     environment:
       DB_VENDOR: h2
       KEYCLOAK_USER: admin
