@@ -3,6 +3,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -106,6 +107,20 @@ export type _AddLogEventTriggered_ByPayload = {
    * [relationship](https://grandstack.io/docs/graphql-relationship-types) is going to.
    */
   to?: Maybe<User>;
+};
+
+export type _AddMarkerShapeBelongs_ToPayload = {
+  __typename?: '_AddMarkerShapeBelongs_toPayload';
+  /**
+   * Field for the MarkerShape node this belongs_to
+   * [relationship](https://grandstack.io/docs/graphql-relationship-types) is coming from.
+   */
+  from?: Maybe<MarkerShape>;
+  /**
+   * Field for the GardenLayer node this belongs_to
+   * [relationship](https://grandstack.io/docs/graphql-relationship-types) is going to.
+   */
+  to?: Maybe<GardenLayer>;
 };
 
 export type _AddUserAssignedPayload = {
@@ -330,6 +345,42 @@ export enum _ChangeRequestOrdering {
   IdDesc = '_id_desc'
 }
 
+export type _GardenLayerFilter = {
+  AND?: Maybe<Array<_GardenLayerFilter>>;
+  OR?: Maybe<Array<_GardenLayerFilter>>;
+  name?: Maybe<Scalars['String']>;
+  name_not?: Maybe<Scalars['String']>;
+  name_in?: Maybe<Array<Scalars['String']>>;
+  name_not_in?: Maybe<Array<Scalars['String']>>;
+  name_contains?: Maybe<Scalars['String']>;
+  name_not_contains?: Maybe<Scalars['String']>;
+  name_starts_with?: Maybe<Scalars['String']>;
+  name_not_starts_with?: Maybe<Scalars['String']>;
+  name_ends_with?: Maybe<Scalars['String']>;
+  name_not_ends_with?: Maybe<Scalars['String']>;
+  date?: Maybe<_Neo4jDateInput>;
+  date_not?: Maybe<_Neo4jDateInput>;
+  date_in?: Maybe<Array<_Neo4jDateInput>>;
+  date_not_in?: Maybe<Array<_Neo4jDateInput>>;
+  date_lt?: Maybe<_Neo4jDateInput>;
+  date_lte?: Maybe<_Neo4jDateInput>;
+  date_gt?: Maybe<_Neo4jDateInput>;
+  date_gte?: Maybe<_Neo4jDateInput>;
+};
+
+export type _GardenLayerInput = {
+  name: Scalars['String'];
+};
+
+export enum _GardenLayerOrdering {
+  NameAsc = 'name_asc',
+  NameDesc = 'name_desc',
+  DateAsc = 'date_asc',
+  DateDesc = 'date_desc',
+  IdAsc = '_id_asc',
+  IdDesc = '_id_desc'
+}
+
 export type _LogEventFilter = {
   AND?: Maybe<Array<_LogEventFilter>>;
   OR?: Maybe<Array<_LogEventFilter>>;
@@ -404,6 +455,47 @@ export enum _LogEventOrdering {
   Neo4jImportIdDesc = 'neo4jImportId_desc',
   TypeAsc = 'type_asc',
   TypeDesc = 'type_desc',
+  IdAsc = '_id_asc',
+  IdDesc = '_id_desc'
+}
+
+export type _MarkerShapeFilter = {
+  AND?: Maybe<Array<_MarkerShapeFilter>>;
+  OR?: Maybe<Array<_MarkerShapeFilter>>;
+  icon?: Maybe<Scalars['String']>;
+  icon_not?: Maybe<Scalars['String']>;
+  icon_in?: Maybe<Array<Scalars['String']>>;
+  icon_not_in?: Maybe<Array<Scalars['String']>>;
+  icon_contains?: Maybe<Scalars['String']>;
+  icon_not_contains?: Maybe<Scalars['String']>;
+  icon_starts_with?: Maybe<Scalars['String']>;
+  icon_not_starts_with?: Maybe<Scalars['String']>;
+  icon_ends_with?: Maybe<Scalars['String']>;
+  icon_not_ends_with?: Maybe<Scalars['String']>;
+  point?: Maybe<_Neo4jPointInput>;
+  point_not?: Maybe<_Neo4jPointInput>;
+  point_distance?: Maybe<_Neo4jPointDistanceFilter>;
+  point_distance_lt?: Maybe<_Neo4jPointDistanceFilter>;
+  point_distance_lte?: Maybe<_Neo4jPointDistanceFilter>;
+  point_distance_gt?: Maybe<_Neo4jPointDistanceFilter>;
+  point_distance_gte?: Maybe<_Neo4jPointDistanceFilter>;
+  belongs_to?: Maybe<_GardenLayerFilter>;
+  belongs_to_not?: Maybe<_GardenLayerFilter>;
+  belongs_to_in?: Maybe<Array<_GardenLayerFilter>>;
+  belongs_to_not_in?: Maybe<Array<_GardenLayerFilter>>;
+  belongs_to_some?: Maybe<_GardenLayerFilter>;
+  belongs_to_none?: Maybe<_GardenLayerFilter>;
+  belongs_to_single?: Maybe<_GardenLayerFilter>;
+  belongs_to_every?: Maybe<_GardenLayerFilter>;
+};
+
+export type _MarkerShapeInput = {
+  icon: Scalars['String'];
+};
+
+export enum _MarkerShapeOrdering {
+  IconAsc = 'icon_asc',
+  IconDesc = 'icon_desc',
   IdAsc = '_id_asc',
   IdDesc = '_id_desc'
 }
@@ -490,6 +582,20 @@ export type _MergeLogEventTriggered_ByPayload = {
    * [relationship](https://grandstack.io/docs/graphql-relationship-types) is going to.
    */
   to?: Maybe<User>;
+};
+
+export type _MergeMarkerShapeBelongs_ToPayload = {
+  __typename?: '_MergeMarkerShapeBelongs_toPayload';
+  /**
+   * Field for the MarkerShape node this belongs_to
+   * [relationship](https://grandstack.io/docs/graphql-relationship-types) is coming from.
+   */
+  from?: Maybe<MarkerShape>;
+  /**
+   * Field for the GardenLayer node this belongs_to
+   * [relationship](https://grandstack.io/docs/graphql-relationship-types) is going to.
+   */
+  to?: Maybe<GardenLayer>;
 };
 
 export type _MergeUserAssignedPayload = {
@@ -832,6 +938,38 @@ export type _Neo4jTimeInput = {
   formatted?: Maybe<Scalars['String']>;
 };
 
+export type _PolygonShapeFilter = {
+  AND?: Maybe<Array<_PolygonShapeFilter>>;
+  OR?: Maybe<Array<_PolygonShapeFilter>>;
+  startPoint?: Maybe<_Neo4jPointInput>;
+  startPoint_not?: Maybe<_Neo4jPointInput>;
+  startPoint_distance?: Maybe<_Neo4jPointDistanceFilter>;
+  startPoint_distance_lt?: Maybe<_Neo4jPointDistanceFilter>;
+  startPoint_distance_lte?: Maybe<_Neo4jPointDistanceFilter>;
+  startPoint_distance_gt?: Maybe<_Neo4jPointDistanceFilter>;
+  startPoint_distance_gte?: Maybe<_Neo4jPointDistanceFilter>;
+  points?: Maybe<Array<_Neo4jPointInput>>;
+  points_not?: Maybe<Array<_Neo4jPointInput>>;
+  points_distance?: Maybe<Array<_Neo4jPointDistanceFilter>>;
+  points_distance_lt?: Maybe<Array<_Neo4jPointDistanceFilter>>;
+  points_distance_lte?: Maybe<Array<_Neo4jPointDistanceFilter>>;
+  points_distance_gt?: Maybe<Array<_Neo4jPointDistanceFilter>>;
+  points_distance_gte?: Maybe<Array<_Neo4jPointDistanceFilter>>;
+  belongs_to?: Maybe<_GardenLayerFilter>;
+  belongs_to_not?: Maybe<_GardenLayerFilter>;
+  belongs_to_in?: Maybe<Array<_GardenLayerFilter>>;
+  belongs_to_not_in?: Maybe<Array<_GardenLayerFilter>>;
+  belongs_to_some?: Maybe<_GardenLayerFilter>;
+  belongs_to_none?: Maybe<_GardenLayerFilter>;
+  belongs_to_single?: Maybe<_GardenLayerFilter>;
+  belongs_to_every?: Maybe<_GardenLayerFilter>;
+};
+
+export enum _PolygonShapeOrdering {
+  IdAsc = '_id_asc',
+  IdDesc = '_id_desc'
+}
+
 export enum _RelationDirections {
   In = 'IN',
   Out = 'OUT'
@@ -919,6 +1057,20 @@ export type _RemoveLogEventTriggered_ByPayload = {
    * [relationship](https://grandstack.io/docs/graphql-relationship-types) is going to.
    */
   to?: Maybe<User>;
+};
+
+export type _RemoveMarkerShapeBelongs_ToPayload = {
+  __typename?: '_RemoveMarkerShapeBelongs_toPayload';
+  /**
+   * Field for the MarkerShape node this belongs_to
+   * [relationship](https://grandstack.io/docs/graphql-relationship-types) is coming from.
+   */
+  from?: Maybe<MarkerShape>;
+  /**
+   * Field for the GardenLayer node this belongs_to
+   * [relationship](https://grandstack.io/docs/graphql-relationship-types) is going to.
+   */
+  to?: Maybe<GardenLayer>;
 };
 
 export type _RemoveUserAssignedPayload = {
@@ -1384,6 +1536,23 @@ export type ChangeRequestRequested_New_TaskArgs = {
   filter?: Maybe<_WateringTaskFilter>;
 };
 
+export type GardenLayer = {
+  __typename?: 'GardenLayer';
+  /** Generated field for querying the Neo4j [system id](https://neo4j.com/docs/cypher-manual/current/functions/scalar/#functions-id) of this node. */
+  _id?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  date?: Maybe<_Neo4jDate>;
+  has_shape?: Maybe<Array<Maybe<GeoShape>>>;
+};
+
+
+export type GardenLayerHas_ShapeArgs = {
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type GeoShape = PolygonShape | MarkerShape;
+
 
 export type LogEvent = {
   __typename?: 'LogEvent';
@@ -1411,6 +1580,23 @@ export type LogEventRefers_ToArgs = {
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<Maybe<_WateringTaskOrdering>>>;
   filter?: Maybe<_WateringTaskFilter>;
+};
+
+export type MarkerShape = {
+  __typename?: 'MarkerShape';
+  /** Generated field for querying the Neo4j [system id](https://neo4j.com/docs/cypher-manual/current/functions/scalar/#functions-id) of this node. */
+  _id?: Maybe<Scalars['String']>;
+  icon: Scalars['String'];
+  point: _Neo4jPoint;
+  belongs_to?: Maybe<Array<Maybe<GardenLayer>>>;
+};
+
+
+export type MarkerShapeBelongs_ToArgs = {
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<Maybe<_GardenLayerOrdering>>>;
+  filter?: Maybe<_GardenLayerFilter>;
 };
 
 export type Mutation = {
@@ -1556,6 +1742,30 @@ export type Mutation = {
   DeleteLogEvent?: Maybe<LogEvent>;
   /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#merge) for [merging](https://neo4j.com/docs/cypher-manual/4.1/clauses/merge/#query-merge-node-derived) a LogEvent node. */
   MergeLogEvent?: Maybe<LogEvent>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#create) for [creating](https://neo4j.com/docs/cypher-manual/4.1/clauses/create/#create-nodes) a GardenLayer node. */
+  CreateGardenLayer?: Maybe<GardenLayer>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#update) for [updating](https://neo4j.com/docs/cypher-manual/4.1/clauses/set/#set-update-a-property) a GardenLayer node. */
+  UpdateGardenLayer?: Maybe<GardenLayer>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#delete) for [deleting](https://neo4j.com/docs/cypher-manual/4.1/clauses/delete/#delete-delete-single-node) a GardenLayer node. */
+  DeleteGardenLayer?: Maybe<GardenLayer>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#merge) for [merging](https://neo4j.com/docs/cypher-manual/4.1/clauses/merge/#query-merge-node-derived) a GardenLayer node. */
+  MergeGardenLayer?: Maybe<GardenLayer>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#create) for [creating](https://neo4j.com/docs/cypher-manual/4.1/clauses/create/#create-nodes) a PolygonShape node. */
+  CreatePolygonShape?: Maybe<PolygonShape>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/##add--remove-relationship) for [creating](https://neo4j.com/docs/cypher-manual/4.1/clauses/create/#create-relationships) the belongs_to relationship. */
+  AddMarkerShapeBelongs_to?: Maybe<_AddMarkerShapeBelongs_ToPayload>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/##add--remove-relationship) for [deleting](https://neo4j.com/docs/cypher-manual/4.1/clauses/delete/#delete-delete-relationships-only) the belongs_to relationship. */
+  RemoveMarkerShapeBelongs_to?: Maybe<_RemoveMarkerShapeBelongs_ToPayload>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/##merge-relationship) for [merging](https://neo4j.com/docs/cypher-manual/4.1/clauses/merge/#query-merge-relationships) the belongs_to relationship. */
+  MergeMarkerShapeBelongs_to?: Maybe<_MergeMarkerShapeBelongs_ToPayload>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#create) for [creating](https://neo4j.com/docs/cypher-manual/4.1/clauses/create/#create-nodes) a MarkerShape node. */
+  CreateMarkerShape?: Maybe<MarkerShape>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#update) for [updating](https://neo4j.com/docs/cypher-manual/4.1/clauses/set/#set-update-a-property) a MarkerShape node. */
+  UpdateMarkerShape?: Maybe<MarkerShape>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#delete) for [deleting](https://neo4j.com/docs/cypher-manual/4.1/clauses/delete/#delete-delete-single-node) a MarkerShape node. */
+  DeleteMarkerShape?: Maybe<MarkerShape>;
+  /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#merge) for [merging](https://neo4j.com/docs/cypher-manual/4.1/clauses/merge/#query-merge-node-derived) a MarkerShape node. */
+  MergeMarkerShape?: Maybe<MarkerShape>;
   /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#create) for [creating](https://neo4j.com/docs/cypher-manual/4.1/clauses/create/#create-nodes) a UserSettings node. */
   CreateUserSettings?: Maybe<UserSettings>;
   /** [Generated mutation](https://grandstack.io/docs/graphql-schema-generation-augmentation/#update) for [updating](https://neo4j.com/docs/cypher-manual/4.1/clauses/set/#set-update-a-property) a UserSettings node. */
@@ -2018,6 +2228,76 @@ export type MutationMergeLogEventArgs = {
 };
 
 
+export type MutationCreateGardenLayerArgs = {
+  name: Scalars['String'];
+  date?: Maybe<_Neo4jDateInput>;
+};
+
+
+export type MutationUpdateGardenLayerArgs = {
+  name: Scalars['String'];
+  date?: Maybe<_Neo4jDateInput>;
+};
+
+
+export type MutationDeleteGardenLayerArgs = {
+  name: Scalars['String'];
+};
+
+
+export type MutationMergeGardenLayerArgs = {
+  name: Scalars['String'];
+  date?: Maybe<_Neo4jDateInput>;
+};
+
+
+export type MutationCreatePolygonShapeArgs = {
+  startPoint?: Maybe<_Neo4jPointInput>;
+  points: Array<Maybe<_Neo4jPointInput>>;
+};
+
+
+export type MutationAddMarkerShapeBelongs_ToArgs = {
+  from: _MarkerShapeInput;
+  to: _GardenLayerInput;
+};
+
+
+export type MutationRemoveMarkerShapeBelongs_ToArgs = {
+  from: _MarkerShapeInput;
+  to: _GardenLayerInput;
+};
+
+
+export type MutationMergeMarkerShapeBelongs_ToArgs = {
+  from: _MarkerShapeInput;
+  to: _GardenLayerInput;
+};
+
+
+export type MutationCreateMarkerShapeArgs = {
+  icon: Scalars['String'];
+  point: _Neo4jPointInput;
+};
+
+
+export type MutationUpdateMarkerShapeArgs = {
+  icon: Scalars['String'];
+  point?: Maybe<_Neo4jPointInput>;
+};
+
+
+export type MutationDeleteMarkerShapeArgs = {
+  icon: Scalars['String'];
+};
+
+
+export type MutationMergeMarkerShapeArgs = {
+  icon: Scalars['String'];
+  point?: Maybe<_Neo4jPointInput>;
+};
+
+
 export type MutationCreateUserSettingsArgs = {
   ui_locale?: Maybe<Scalars['String']>;
   letitrain_maximum_tasks?: Maybe<Scalars['Int']>;
@@ -2038,6 +2318,23 @@ export type MutationDeleteUserSettingsArgs = {
 export type MutationMergeUserSettingsArgs = {
   ui_locale: Scalars['String'];
   letitrain_maximum_tasks?: Maybe<Scalars['Int']>;
+};
+
+export type PolygonShape = {
+  __typename?: 'PolygonShape';
+  /** Generated field for querying the Neo4j [system id](https://neo4j.com/docs/cypher-manual/current/functions/scalar/#functions-id) of this node. */
+  _id?: Maybe<Scalars['String']>;
+  startPoint?: Maybe<_Neo4jPoint>;
+  points: Array<Maybe<_Neo4jPoint>>;
+  belongs_to?: Maybe<Array<Maybe<GardenLayer>>>;
+};
+
+
+export type PolygonShapeBelongs_ToArgs = {
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<Maybe<_GardenLayerOrdering>>>;
+  filter?: Maybe<_GardenLayerFilter>;
 };
 
 export type PushKeyInput = {
@@ -2069,6 +2366,14 @@ export type Query = {
   ChangeRequest?: Maybe<Array<Maybe<ChangeRequest>>>;
   /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for LogEvent type nodes. */
   LogEvent?: Maybe<Array<Maybe<LogEvent>>>;
+  /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for GeoShape type nodes. */
+  GeoShape?: Maybe<Array<Maybe<GeoShape>>>;
+  /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for GardenLayer type nodes. */
+  GardenLayer?: Maybe<Array<Maybe<GardenLayer>>>;
+  /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for PolygonShape type nodes. */
+  PolygonShape?: Maybe<Array<Maybe<PolygonShape>>>;
+  /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for MarkerShape type nodes. */
+  MarkerShape?: Maybe<Array<Maybe<MarkerShape>>>;
   /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for UserSettings type nodes. */
   UserSettings?: Maybe<Array<Maybe<UserSettings>>>;
 };
@@ -2133,6 +2438,45 @@ export type QueryLogEventArgs = {
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<Maybe<_LogEventOrdering>>>;
   filter?: Maybe<_LogEventFilter>;
+};
+
+
+export type QueryGeoShapeArgs = {
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryGardenLayerArgs = {
+  name?: Maybe<Scalars['String']>;
+  date?: Maybe<_Neo4jDateInput>;
+  _id?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<Maybe<_GardenLayerOrdering>>>;
+  filter?: Maybe<_GardenLayerFilter>;
+};
+
+
+export type QueryPolygonShapeArgs = {
+  startPoint?: Maybe<_Neo4jPointInput>;
+  points?: Maybe<Array<Maybe<_Neo4jPointInput>>>;
+  _id?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<Maybe<_PolygonShapeOrdering>>>;
+  filter?: Maybe<_PolygonShapeFilter>;
+};
+
+
+export type QueryMarkerShapeArgs = {
+  icon?: Maybe<Scalars['String']>;
+  point?: Maybe<_Neo4jPointInput>;
+  _id?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<Maybe<_MarkerShapeOrdering>>>;
+  filter?: Maybe<_MarkerShapeFilter>;
 };
 
 
@@ -2400,6 +2744,20 @@ export type ResolversTypes = {
   _LogEventOrdering: _LogEventOrdering;
   LogEvent: ResolverTypeWrapper<LogEvent>;
   _WateringPeriodOrdering: _WateringPeriodOrdering;
+  GeoShape: ResolversTypes['PolygonShape'] | ResolversTypes['MarkerShape'];
+  PolygonShape: ResolverTypeWrapper<PolygonShape>;
+  _Neo4jPoint: ResolverTypeWrapper<_Neo4jPoint>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
+  _GardenLayerOrdering: _GardenLayerOrdering;
+  _GardenLayerFilter: _GardenLayerFilter;
+  GardenLayer: ResolverTypeWrapper<Omit<GardenLayer, 'has_shape'> & { has_shape?: Maybe<Array<Maybe<ResolversTypes['GeoShape']>>> }>;
+  MarkerShape: ResolverTypeWrapper<MarkerShape>;
+  _Neo4jPointInput: _Neo4jPointInput;
+  _PolygonShapeOrdering: _PolygonShapeOrdering;
+  _PolygonShapeFilter: _PolygonShapeFilter;
+  _Neo4jPointDistanceFilter: _Neo4jPointDistanceFilter;
+  _MarkerShapeOrdering: _MarkerShapeOrdering;
+  _MarkerShapeFilter: _MarkerShapeFilter;
   _UserSettingsOrdering: _UserSettingsOrdering;
   _UserSettingsFilter: _UserSettingsFilter;
   UserSettings: ResolverTypeWrapper<UserSettings>;
@@ -2461,6 +2819,11 @@ export type ResolversTypes = {
   _AddLogEventRefers_toPayload: ResolverTypeWrapper<_AddLogEventRefers_ToPayload>;
   _RemoveLogEventRefers_toPayload: ResolverTypeWrapper<_RemoveLogEventRefers_ToPayload>;
   _MergeLogEventRefers_toPayload: ResolverTypeWrapper<_MergeLogEventRefers_ToPayload>;
+  _MarkerShapeInput: _MarkerShapeInput;
+  _GardenLayerInput: _GardenLayerInput;
+  _AddMarkerShapeBelongs_toPayload: ResolverTypeWrapper<_AddMarkerShapeBelongs_ToPayload>;
+  _RemoveMarkerShapeBelongs_toPayload: ResolverTypeWrapper<_RemoveMarkerShapeBelongs_ToPayload>;
+  _MergeMarkerShapeBelongs_toPayload: ResolverTypeWrapper<_MergeMarkerShapeBelongs_ToPayload>;
   Subscription: ResolverTypeWrapper<{}>;
   _UserSettingsInput: _UserSettingsInput;
   _Neo4jTimeInput: _Neo4jTimeInput;
@@ -2471,10 +2834,6 @@ export type ResolversTypes = {
   _Neo4jLocalTime: ResolverTypeWrapper<_Neo4jLocalTime>;
   _Neo4jLocalDateTimeInput: _Neo4jLocalDateTimeInput;
   _Neo4jLocalDateTime: ResolverTypeWrapper<_Neo4jLocalDateTime>;
-  _Neo4jPointDistanceFilter: _Neo4jPointDistanceFilter;
-  _Neo4jPointInput: _Neo4jPointInput;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
-  _Neo4jPoint: ResolverTypeWrapper<_Neo4jPoint>;
   _RelationDirections: _RelationDirections;
 };
 
@@ -2496,6 +2855,17 @@ export type ResolversParentTypes = {
   User: User;
   ChangeRequest: ChangeRequest;
   LogEvent: LogEvent;
+  GeoShape: ResolversParentTypes['PolygonShape'] | ResolversParentTypes['MarkerShape'];
+  PolygonShape: PolygonShape;
+  _Neo4jPoint: _Neo4jPoint;
+  Float: Scalars['Float'];
+  _GardenLayerFilter: _GardenLayerFilter;
+  GardenLayer: Omit<GardenLayer, 'has_shape'> & { has_shape?: Maybe<Array<Maybe<ResolversParentTypes['GeoShape']>>> };
+  MarkerShape: MarkerShape;
+  _Neo4jPointInput: _Neo4jPointInput;
+  _PolygonShapeFilter: _PolygonShapeFilter;
+  _Neo4jPointDistanceFilter: _Neo4jPointDistanceFilter;
+  _MarkerShapeFilter: _MarkerShapeFilter;
   _UserSettingsFilter: _UserSettingsFilter;
   UserSettings: UserSettings;
   Mutation: {};
@@ -2556,6 +2926,11 @@ export type ResolversParentTypes = {
   _AddLogEventRefers_toPayload: _AddLogEventRefers_ToPayload;
   _RemoveLogEventRefers_toPayload: _RemoveLogEventRefers_ToPayload;
   _MergeLogEventRefers_toPayload: _MergeLogEventRefers_ToPayload;
+  _MarkerShapeInput: _MarkerShapeInput;
+  _GardenLayerInput: _GardenLayerInput;
+  _AddMarkerShapeBelongs_toPayload: _AddMarkerShapeBelongs_ToPayload;
+  _RemoveMarkerShapeBelongs_toPayload: _RemoveMarkerShapeBelongs_ToPayload;
+  _MergeMarkerShapeBelongs_toPayload: _MergeMarkerShapeBelongs_ToPayload;
   Subscription: {};
   _UserSettingsInput: _UserSettingsInput;
   _Neo4jTimeInput: _Neo4jTimeInput;
@@ -2566,10 +2941,6 @@ export type ResolversParentTypes = {
   _Neo4jLocalTime: _Neo4jLocalTime;
   _Neo4jLocalDateTimeInput: _Neo4jLocalDateTimeInput;
   _Neo4jLocalDateTime: _Neo4jLocalDateTime;
-  _Neo4jPointDistanceFilter: _Neo4jPointDistanceFilter;
-  _Neo4jPointInput: _Neo4jPointInput;
-  Float: Scalars['Float'];
-  _Neo4jPoint: _Neo4jPoint;
 };
 
 export type HasRoleDirectiveArgs = {   role?: Maybe<Array<Maybe<Scalars['String']>>>; };
@@ -2650,6 +3021,12 @@ export type _AddLogEventRefers_ToPayloadResolvers<ContextType = any, ParentType 
 export type _AddLogEventTriggered_ByPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['_AddLogEventTriggered_byPayload'] = ResolversParentTypes['_AddLogEventTriggered_byPayload']> = {
   from?: Resolver<Maybe<ResolversTypes['LogEvent']>, ParentType, ContextType>;
   to?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type _AddMarkerShapeBelongs_ToPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['_AddMarkerShapeBelongs_toPayload'] = ResolversParentTypes['_AddMarkerShapeBelongs_toPayload']> = {
+  from?: Resolver<Maybe<ResolversTypes['MarkerShape']>, ParentType, ContextType>;
+  to?: Resolver<Maybe<ResolversTypes['GardenLayer']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2746,6 +3123,12 @@ export type _MergeLogEventRefers_ToPayloadResolvers<ContextType = any, ParentTyp
 export type _MergeLogEventTriggered_ByPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['_MergeLogEventTriggered_byPayload'] = ResolversParentTypes['_MergeLogEventTriggered_byPayload']> = {
   from?: Resolver<Maybe<ResolversTypes['LogEvent']>, ParentType, ContextType>;
   to?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type _MergeMarkerShapeBelongs_ToPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['_MergeMarkerShapeBelongs_toPayload'] = ResolversParentTypes['_MergeMarkerShapeBelongs_toPayload']> = {
+  from?: Resolver<Maybe<ResolversTypes['MarkerShape']>, ParentType, ContextType>;
+  to?: Resolver<Maybe<ResolversTypes['GardenLayer']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -2917,6 +3300,12 @@ export type _RemoveLogEventTriggered_ByPayloadResolvers<ContextType = any, Paren
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type _RemoveMarkerShapeBelongs_ToPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['_RemoveMarkerShapeBelongs_toPayload'] = ResolversParentTypes['_RemoveMarkerShapeBelongs_toPayload']> = {
+  from?: Resolver<Maybe<ResolversTypes['MarkerShape']>, ParentType, ContextType>;
+  to?: Resolver<Maybe<ResolversTypes['GardenLayer']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type _RemoveUserAssignedPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['_RemoveUserAssignedPayload'] = ResolversParentTypes['_RemoveUserAssignedPayload']> = {
   from?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   to?: Resolver<Maybe<ResolversTypes['WateringTask']>, ParentType, ContextType>;
@@ -2989,6 +3378,18 @@ export type ChangeRequestResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type GardenLayerResolvers<ContextType = any, ParentType extends ResolversParentTypes['GardenLayer'] = ResolversParentTypes['GardenLayer']> = {
+  _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  date?: Resolver<Maybe<ResolversTypes['_Neo4jDate']>, ParentType, ContextType>;
+  has_shape?: Resolver<Maybe<Array<Maybe<ResolversTypes['GeoShape']>>>, ParentType, ContextType, RequireFields<GardenLayerHas_ShapeArgs, never>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GeoShapeResolvers<ContextType = any, ParentType extends ResolversParentTypes['GeoShape'] = ResolversParentTypes['GeoShape']> = {
+  __resolveType: TypeResolveFn<'PolygonShape' | 'MarkerShape', ParentType, ContextType>;
+};
+
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON';
 }
@@ -3001,6 +3402,14 @@ export type LogEventResolvers<ContextType = any, ParentType extends ResolversPar
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   triggered_by?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<LogEventTriggered_ByArgs, never>>;
   refers_to?: Resolver<Maybe<Array<Maybe<ResolversTypes['WateringTask']>>>, ParentType, ContextType, RequireFields<LogEventRefers_ToArgs, never>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MarkerShapeResolvers<ContextType = any, ParentType extends ResolversParentTypes['MarkerShape'] = ResolversParentTypes['MarkerShape']> = {
+  _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  icon?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  point?: Resolver<ResolversTypes['_Neo4jPoint'], ParentType, ContextType>;
+  belongs_to?: Resolver<Maybe<Array<Maybe<ResolversTypes['GardenLayer']>>>, ParentType, ContextType, RequireFields<MarkerShapeBelongs_ToArgs, never>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -3081,10 +3490,30 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   UpdateLogEvent?: Resolver<Maybe<ResolversTypes['LogEvent']>, ParentType, ContextType, RequireFields<MutationUpdateLogEventArgs, 'date'>>;
   DeleteLogEvent?: Resolver<Maybe<ResolversTypes['LogEvent']>, ParentType, ContextType, RequireFields<MutationDeleteLogEventArgs, 'date'>>;
   MergeLogEvent?: Resolver<Maybe<ResolversTypes['LogEvent']>, ParentType, ContextType, RequireFields<MutationMergeLogEventArgs, 'date'>>;
+  CreateGardenLayer?: Resolver<Maybe<ResolversTypes['GardenLayer']>, ParentType, ContextType, RequireFields<MutationCreateGardenLayerArgs, 'name'>>;
+  UpdateGardenLayer?: Resolver<Maybe<ResolversTypes['GardenLayer']>, ParentType, ContextType, RequireFields<MutationUpdateGardenLayerArgs, 'name'>>;
+  DeleteGardenLayer?: Resolver<Maybe<ResolversTypes['GardenLayer']>, ParentType, ContextType, RequireFields<MutationDeleteGardenLayerArgs, 'name'>>;
+  MergeGardenLayer?: Resolver<Maybe<ResolversTypes['GardenLayer']>, ParentType, ContextType, RequireFields<MutationMergeGardenLayerArgs, 'name'>>;
+  CreatePolygonShape?: Resolver<Maybe<ResolversTypes['PolygonShape']>, ParentType, ContextType, RequireFields<MutationCreatePolygonShapeArgs, 'points'>>;
+  AddMarkerShapeBelongs_to?: Resolver<Maybe<ResolversTypes['_AddMarkerShapeBelongs_toPayload']>, ParentType, ContextType, RequireFields<MutationAddMarkerShapeBelongs_ToArgs, 'from' | 'to'>>;
+  RemoveMarkerShapeBelongs_to?: Resolver<Maybe<ResolversTypes['_RemoveMarkerShapeBelongs_toPayload']>, ParentType, ContextType, RequireFields<MutationRemoveMarkerShapeBelongs_ToArgs, 'from' | 'to'>>;
+  MergeMarkerShapeBelongs_to?: Resolver<Maybe<ResolversTypes['_MergeMarkerShapeBelongs_toPayload']>, ParentType, ContextType, RequireFields<MutationMergeMarkerShapeBelongs_ToArgs, 'from' | 'to'>>;
+  CreateMarkerShape?: Resolver<Maybe<ResolversTypes['MarkerShape']>, ParentType, ContextType, RequireFields<MutationCreateMarkerShapeArgs, 'icon' | 'point'>>;
+  UpdateMarkerShape?: Resolver<Maybe<ResolversTypes['MarkerShape']>, ParentType, ContextType, RequireFields<MutationUpdateMarkerShapeArgs, 'icon'>>;
+  DeleteMarkerShape?: Resolver<Maybe<ResolversTypes['MarkerShape']>, ParentType, ContextType, RequireFields<MutationDeleteMarkerShapeArgs, 'icon'>>;
+  MergeMarkerShape?: Resolver<Maybe<ResolversTypes['MarkerShape']>, ParentType, ContextType, RequireFields<MutationMergeMarkerShapeArgs, 'icon'>>;
   CreateUserSettings?: Resolver<Maybe<ResolversTypes['UserSettings']>, ParentType, ContextType, RequireFields<MutationCreateUserSettingsArgs, never>>;
   UpdateUserSettings?: Resolver<Maybe<ResolversTypes['UserSettings']>, ParentType, ContextType, RequireFields<MutationUpdateUserSettingsArgs, 'ui_locale'>>;
   DeleteUserSettings?: Resolver<Maybe<ResolversTypes['UserSettings']>, ParentType, ContextType, RequireFields<MutationDeleteUserSettingsArgs, 'ui_locale'>>;
   MergeUserSettings?: Resolver<Maybe<ResolversTypes['UserSettings']>, ParentType, ContextType, RequireFields<MutationMergeUserSettingsArgs, 'ui_locale'>>;
+};
+
+export type PolygonShapeResolvers<ContextType = any, ParentType extends ResolversParentTypes['PolygonShape'] = ResolversParentTypes['PolygonShape']> = {
+  _id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  startPoint?: Resolver<Maybe<ResolversTypes['_Neo4jPoint']>, ParentType, ContextType>;
+  points?: Resolver<Array<Maybe<ResolversTypes['_Neo4jPoint']>>, ParentType, ContextType>;
+  belongs_to?: Resolver<Maybe<Array<Maybe<ResolversTypes['GardenLayer']>>>, ParentType, ContextType, RequireFields<PolygonShapeBelongs_ToArgs, never>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -3094,6 +3523,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   WateringPeriod?: Resolver<Maybe<Array<Maybe<ResolversTypes['WateringPeriod']>>>, ParentType, ContextType, RequireFields<QueryWateringPeriodArgs, never>>;
   ChangeRequest?: Resolver<Maybe<Array<Maybe<ResolversTypes['ChangeRequest']>>>, ParentType, ContextType, RequireFields<QueryChangeRequestArgs, never>>;
   LogEvent?: Resolver<Maybe<Array<Maybe<ResolversTypes['LogEvent']>>>, ParentType, ContextType, RequireFields<QueryLogEventArgs, never>>;
+  GeoShape?: Resolver<Maybe<Array<Maybe<ResolversTypes['GeoShape']>>>, ParentType, ContextType, RequireFields<QueryGeoShapeArgs, never>>;
+  GardenLayer?: Resolver<Maybe<Array<Maybe<ResolversTypes['GardenLayer']>>>, ParentType, ContextType, RequireFields<QueryGardenLayerArgs, never>>;
+  PolygonShape?: Resolver<Maybe<Array<Maybe<ResolversTypes['PolygonShape']>>>, ParentType, ContextType, RequireFields<QueryPolygonShapeArgs, never>>;
+  MarkerShape?: Resolver<Maybe<Array<Maybe<ResolversTypes['MarkerShape']>>>, ParentType, ContextType, RequireFields<QueryMarkerShapeArgs, never>>;
   UserSettings?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserSettings']>>>, ParentType, ContextType, RequireFields<QueryUserSettingsArgs, never>>;
 };
 
@@ -3153,6 +3586,7 @@ export type Resolvers<ContextType = any> = {
   _AddChangeRequestRequested_toPayload?: _AddChangeRequestRequested_ToPayloadResolvers<ContextType>;
   _AddLogEventRefers_toPayload?: _AddLogEventRefers_ToPayloadResolvers<ContextType>;
   _AddLogEventTriggered_byPayload?: _AddLogEventTriggered_ByPayloadResolvers<ContextType>;
+  _AddMarkerShapeBelongs_toPayload?: _AddMarkerShapeBelongs_ToPayloadResolvers<ContextType>;
   _AddUserAssignedPayload?: _AddUserAssignedPayloadResolvers<ContextType>;
   _AddUserAvailablePayload?: _AddUserAvailablePayloadResolvers<ContextType>;
   _AddUserChangerequests_requested_byPayload?: _AddUserChangerequests_Requested_ByPayloadResolvers<ContextType>;
@@ -3169,6 +3603,7 @@ export type Resolvers<ContextType = any> = {
   _MergeChangeRequestRequested_toPayload?: _MergeChangeRequestRequested_ToPayloadResolvers<ContextType>;
   _MergeLogEventRefers_toPayload?: _MergeLogEventRefers_ToPayloadResolvers<ContextType>;
   _MergeLogEventTriggered_byPayload?: _MergeLogEventTriggered_ByPayloadResolvers<ContextType>;
+  _MergeMarkerShapeBelongs_toPayload?: _MergeMarkerShapeBelongs_ToPayloadResolvers<ContextType>;
   _MergeUserAssignedPayload?: _MergeUserAssignedPayloadResolvers<ContextType>;
   _MergeUserAvailablePayload?: _MergeUserAvailablePayloadResolvers<ContextType>;
   _MergeUserChangerequests_requested_byPayload?: _MergeUserChangerequests_Requested_ByPayloadResolvers<ContextType>;
@@ -3191,6 +3626,7 @@ export type Resolvers<ContextType = any> = {
   _RemoveChangeRequestRequested_toPayload?: _RemoveChangeRequestRequested_ToPayloadResolvers<ContextType>;
   _RemoveLogEventRefers_toPayload?: _RemoveLogEventRefers_ToPayloadResolvers<ContextType>;
   _RemoveLogEventTriggered_byPayload?: _RemoveLogEventTriggered_ByPayloadResolvers<ContextType>;
+  _RemoveMarkerShapeBelongs_toPayload?: _RemoveMarkerShapeBelongs_ToPayloadResolvers<ContextType>;
   _RemoveUserAssignedPayload?: _RemoveUserAssignedPayloadResolvers<ContextType>;
   _RemoveUserAvailablePayload?: _RemoveUserAvailablePayloadResolvers<ContextType>;
   _RemoveUserChangerequests_requested_byPayload?: _RemoveUserChangerequests_Requested_ByPayloadResolvers<ContextType>;
@@ -3202,9 +3638,13 @@ export type Resolvers<ContextType = any> = {
   _RemoveWateringTaskUsers_assignedPayload?: _RemoveWateringTaskUsers_AssignedPayloadResolvers<ContextType>;
   _RemoveWateringTaskUsers_availablePayload?: _RemoveWateringTaskUsers_AvailablePayloadResolvers<ContextType>;
   ChangeRequest?: ChangeRequestResolvers<ContextType>;
+  GardenLayer?: GardenLayerResolvers<ContextType>;
+  GeoShape?: GeoShapeResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   LogEvent?: LogEventResolvers<ContextType>;
+  MarkerShape?: MarkerShapeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PolygonShape?: PolygonShapeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
