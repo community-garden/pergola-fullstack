@@ -5,7 +5,8 @@
 {"type":"node","id":"30","labels":["ChangeRequest"],"properties":{"label":"changerequest","type":"ChangeRequest"}}
 {"type":"node","id":"40","labels":["LogEvent"],"properties":{"label":"markedasdone","type":"LogEvent","date":"2020-12-24"}}
 {"type":"node","id": "50","labels":["WateringPeriod"],"properties":{"label": "kw 52+53","type": "WateringPeriod","from": "2020-12-20","till": "2021-01-02"}}
-{"type":"node","id": "60","labels":["Garden"],"properties":{"label": "Wurzelwerk", "gardenId": "ww" ,"type": "Garden"}}
+{"type":"node","id": "60","labels":["Garden"],"properties":{"label": "Wurzelwerk", "gardenId": "wurzelwerk" ,"type": "Garden"}}
+{"type":"node","id": "61","labels":["Garden"],"properties":{"label": "Pippilotta", "gardenId": "pippilotta" ,"type": "Garden"}}
 {"id":"100","type":"relationship","label":"available","start":{"id":"10"},"end":{"id":"20"}}
 {"id":"101","type":"relationship","label":"available","start":{"id":"11"},"end":{"id":"21"}}
 {"id":"102","type":"relationship","label":"available","start":{"id":"10"},"end":{"id":"21"}}
