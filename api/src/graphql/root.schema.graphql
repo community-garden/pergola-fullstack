@@ -2,6 +2,7 @@ scalar JSON  ## use this only for development, but never depend on values of thi
 
 type Garden {
   _id: Long!
+  gardenId: ID!
   label: String!
 }
 
@@ -36,6 +37,7 @@ type WateringPeriod {
    _id: Long!
    from: Date!
    till: Date!
+   at: Garden @relation(name: "at", direction: OUT)
    wateringtasks: [WateringTask] @relation(name: "within", direction: IN)
    hasUsersAssigned: Boolean @cypher(statement: "MATCH (t:WateringTask)-[:within]->(this) RETURN (EXISTS((t)-[:assigned]-(:User)))")
 }
