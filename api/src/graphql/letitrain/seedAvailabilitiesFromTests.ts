@@ -7,7 +7,7 @@ import { withinTransaction } from "../../lib/neo4j"
 import { merge_WateringTask_within_Period } from "./planWateringPeriods"
 import { query } from "./setUserAvailability"
 
-const gardenId = "ww"
+const gardenId = "wurzelwerk"
 
 async function seedAvailabilitiesFromTests() {
   const tasks = exampleTasks.simple
