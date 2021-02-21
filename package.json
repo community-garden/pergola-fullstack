@@ -17,7 +17,8 @@
     "install": "node scripts/deps.js",
     "format": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier --write",
     "format:log": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier",
-    "inferschema:write": "node scripts/inferSchema.js"
+    "inferschema:write": "node scripts/inferSchema.js",
+    "generateVAPID": "npx web-push generate-vapid-keys"
   },
   "husky": {
     "hooks": {
