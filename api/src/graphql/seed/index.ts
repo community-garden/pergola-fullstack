@@ -9,6 +9,7 @@ async function seedNeo4jFromJSON() {
     await session.run( "MATCH (n) DETACH DELETE n" )
     await session.run( "CALL apoc.import.json(\"file:///watering_plan.json\")" )
     await session.run( "MATCH (w:WateringTask) SET w.date = date(w.date)" )
+    await session.run( "MATCH (w:WateringPeriod) SET w.from = date(w.from) SET w.to = date(w.to)" )
     return true
   } catch ( e ) {
     console.error( e )

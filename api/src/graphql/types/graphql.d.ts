@@ -1640,18 +1640,20 @@ export type MutationSetUserAvailabilityArgs = {
 export type MutationPlanWateringPeriodsArgs = {
   gardenId: Scalars['ID'];
   period_length?: Maybe<Scalars['Int']>;
-  planing_ahead?: Maybe<Scalars['Int']>;
+  planning_ahead?: Maybe<Scalars['Int']>;
   periods_predefined?: Maybe<Scalars['Int']>;
 };
 
 
 export type MutationRemoveAssignmentArgs = {
   date: _Neo4jDateInput;
+  gardenId: Scalars['ID'];
 };
 
 
 export type MutationAddAssignmentArgs = {
   date: _Neo4jDateInput;
+  gardenId: Scalars['ID'];
 };
 
 
@@ -3127,8 +3129,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   setUserAvailability?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSetUserAvailabilityArgs, 'gardenId' | 'dates'>>;
   seedAvailabilitiesFromTests?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   planWateringPeriods?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<MutationPlanWateringPeriodsArgs, 'gardenId'>>;
-  removeAssignment?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationRemoveAssignmentArgs, 'date'>>;
-  addAssignment?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationAddAssignmentArgs, 'date'>>;
+  removeAssignment?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationRemoveAssignmentArgs, 'date' | 'gardenId'>>;
+  addAssignment?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationAddAssignmentArgs, 'date' | 'gardenId'>>;
   pushSubscribe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationPushSubscribeArgs, never>>;
   publishToAll?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationPublishToAllArgs, never>>;
   sendWelcomeMail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
