@@ -1,6 +1,6 @@
-assignableWateringPeriod: WateringPeriod @cypher(statement:
+assignableWateringPeriod(gardenId: ID!): WateringPeriod @cypher(statement:
 """
-MATCH (t:WateringTask)-[:within]-(p:WateringPeriod)
+MATCH (t:WateringTask)-[:within]-(p:WateringPeriod {gardenId: $gardenId})
 WHERE not(exists((t)-[:assigned]-(:User))) AND date() < date(p.till)
 RETURN p
 """
