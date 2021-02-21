@@ -1,4 +1,6 @@
+import dayjs from "dayjs"
 import { hasRole } from "keycloak-connect-graphql"
+import * as R from "ramda"
 
 import {
   calcExplicitStates,
@@ -10,13 +12,11 @@ import { neo4jdriver } from "../../config/neo4j"
 import { presets } from "../../config/roles"
 import {
   flatten,
-  neo4jDateInput2iso, neo4jDateInput2Date,
-  withinTransaction,
+neo4jDateInput2Date,
+  neo4jDateInput2iso,   withinTransaction,
 } from "../../lib/neo4j"
 import { apply, groupBy } from "../../lib/util"
-import dayjs from 'dayjs'
-import * as R from 'ramda'
-import {publishChange} from "./wateringTaskChange"
+import { publishChange } from "./wateringTaskChange"
 
 type Days = number;
 type Periods = number;
@@ -29,8 +29,8 @@ interface PlaningConfig {
 
 /** planWateringPeriods for all periods, with period.from <= now+planning_ahead **/
 async function planPeriods( gardenId, planning_ahead, default_target_count=2, fallback_maximum_tasks=3 ) {
-  const planablePeriods = (await withinTransaction(neo4jdriver.session(), async ( tx ) =>
-    await tx.run(`MATCH (p:WateringPeriod)-[:at]-(garden:Garden {gardenId: $gardenId})
+  const planablePeriods = ( await withinTransaction( neo4jdriver.session(), async ( tx ) =>
+    await tx.run( `MATCH (p:WateringPeriod)-[:at]-(garden:Garden {gardenId: $gardenId})
                   WHERE date(p.from) < date() + duration({days: $planning_ahead})
 		        AND date(p.till) >= date()
 		  CALL { WITH p MATCH (t:WateringTask)-[r:within]-(p:WateringPeriod)
@@ -38,7 +38,7 @@ async function planPeriods( gardenId, planning_ahead, default_target_count=2, fa
                          WHERE not(x) RETURN * }
 		  RETURN DISTINCT p
 		 `,
-                 {gardenId, planning_ahead} ))).records.map(flatten).map(r => ({from: neo4jDateInput2iso(r.p.from), till: neo4jDateInput2iso(r.p.till)}))
+                 {gardenId, planning_ahead} ))).records.map( flatten ).map( r => ( {from: neo4jDateInput2iso( r.p.from ), till: neo4jDateInput2iso( r.p.till )} ))
   const periods = await Promise.all(
     planablePeriods.map( async ( p ) => {
       const period_records = (
@@ -79,7 +79,7 @@ async function planPeriods( gardenId, planning_ahead, default_target_count=2, fa
   const planning_stats = planning_results.map(( pr ) =>
     apply( calcStats, calcExplicitStates( pr ))
   )
-  console.log(planning_results)
+  console.log( planning_results )
   await withinTransaction( neo4jdriver.session(), async ( tx ) =>
     planning_results.map(( tasks ) =>
       tasks.map(( task ) =>
@@ -105,10 +105,10 @@ async function planPeriods( gardenId, planning_ahead, default_target_count=2, fa
 }
 
 async function calc_first_new_period_start( session ) {
-  const regular = neo4jDateInput2Date((await withinTransaction( session, ( tx ) =>
-    tx.run("Match (p:WateringPeriod) return MAX(date(p.till)) + duration({days: 1})"))).records[0].get(0))
+  const regular = neo4jDateInput2Date(( await withinTransaction( session, ( tx ) =>
+    tx.run( "Match (p:WateringPeriod) return MAX(date(p.till)) + duration({days: 1})" ))).records[0].get( 0 ))
   const today = new Date()
-  return dayjs(regular > today ? regular : today).format('YYYY-MM-DD')
+  return dayjs( regular > today ? regular : today ).format( "YYYY-MM-DD" )
 }
 
 export async function merge_WateringTask_within_Period( tx, gardenId, period, date ) {
@@ -123,17 +123,17 @@ export async function merge_WateringTask_within_Period( tx, gardenId, period, da
   )
 }
 
-async function createFuturePeriods(gardenId, periods_predefined, period_length) {
-  const first_new_period_start = await calc_first_new_period_start(neo4jdriver.session())
-  const periods_to_create = periods_predefined - Math.ceil(dayjs(first_new_period_start).diff(dayjs(), 'days') / period_length)
-  const new_periods = R.range(0, periods_to_create).map(p => {
-    const period_start = dayjs(first_new_period_start).add(p*period_length, 'day')
+async function createFuturePeriods( gardenId, periods_predefined, period_length ) {
+  const first_new_period_start = await calc_first_new_period_start( neo4jdriver.session())
+  const periods_to_create = periods_predefined - Math.ceil( dayjs( first_new_period_start ).diff( dayjs(), "days" ) / period_length )
+  const new_periods = R.range( 0, periods_to_create ).map( p => {
+    const period_start = dayjs( first_new_period_start ).add( p*period_length, "day" )
     return {
-      from: period_start.format('YYYY-MM-DD'),
-      till: period_start.add(period_length - 1, 'day').format('YYYY-MM-DD'),
-      task_dates: R.range(0, period_length).map(offset => period_start.add(offset, 'day').format('YYYY-MM-DD'))
+      from: period_start.format( "YYYY-MM-DD" ),
+      till: period_start.add( period_length - 1, "day" ).format( "YYYY-MM-DD" ),
+      task_dates: R.range( 0, period_length ).map( offset => period_start.add( offset, "day" ).format( "YYYY-MM-DD" ))
     }
-  })
+  } )
   const result = await withinTransaction( neo4jdriver.session(), ( tx ) =>
     new_periods.map( async ( period ) =>
       period.task_dates.map( async ( date ) =>
@@ -156,8 +156,8 @@ const Mutation = {
         planning_ahead = 7,
         periods_predefined = 4,
       } = args
-      const result_period_planning = await planPeriods(args.gardenId, planning_ahead)
-      const result_period_creation = await createFuturePeriods(args.gardenId, periods_predefined, period_length)
+      const result_period_planning = await planPeriods( args.gardenId, planning_ahead )
+      const result_period_creation = await createFuturePeriods( args.gardenId, periods_predefined, period_length )
       publishChange()
       return {
         config: { period_length, planning_ahead, periods_predefined },
