@@ -16,7 +16,7 @@ export function query( settings ) {
   }
 
   return (
-    "MERGE (user:User {id: $id}) SET user.label = $label " +
+    "MERGE (user:User {id: $id}) SET user.label = $label SET user.email = $email " +
     "MERGE (settings:UserSettings)-[r:of]-(user) " +
     keys_checked.map(( k ) => "SET settings." + k + " = $" + k ).join( " " ) +
     " " +
@@ -26,11 +26,13 @@ export function query( settings ) {
 
 const Mutation = {
   ownMergeUserSettings: auth( async ( _, { settings }, ctx, info ) => {
+    const {content: {sub: id, preferred_username: label, email}} = ctx?.kauth?.accessToken as unknown as any
     const result = await withinTransaction( neo4jdriver.session(), ( tx ) =>
       tx.run( query( settings ), {
         ...settings,
-        id: ctx.kauth.accessToken.content.sub,
-        label: ctx.kauth.accessToken.content.preferred_username,
+        id,
+        label,
+        email
       } )
     )
     return flatten( result.records[0] ).settings
