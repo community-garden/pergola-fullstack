@@ -2137,7 +2137,7 @@ export type PushSubscriptionInput = {
 
 export type Query = {
   __typename?: 'Query';
-  assignableWateringPeriod?: Maybe<WateringPeriod>;
+  assignableWateringPeriod?: Maybe<Array<Maybe<WateringPeriod>>>;
   /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for Garden type nodes. */
   Garden?: Maybe<Array<Maybe<Garden>>>;
   /** [Generated query](https://grandstack.io/docs/graphql-schema-generation-augmentation#generated-queries) for User type nodes. */
@@ -2157,6 +2157,9 @@ export type Query = {
 
 export type QueryAssignableWateringPeriodArgs = {
   gardenId: Scalars['ID'];
+  first?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<Maybe<_WateringPeriodOrdering>>>;
 };
 
 
@@ -2484,10 +2487,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
+  _WateringPeriodOrdering: _WateringPeriodOrdering;
   WateringPeriod: ResolverTypeWrapper<WateringPeriod>;
   String: ResolverTypeWrapper<Scalars['String']>;
   _Neo4jDate: ResolverTypeWrapper<_Neo4jDate>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   _GardenFilter: _GardenFilter;
   Garden: ResolverTypeWrapper<Garden>;
   _WateringTaskOrdering: _WateringTaskOrdering;
@@ -2505,7 +2509,6 @@ export type ResolversTypes = {
   ChangeRequest: ResolverTypeWrapper<ChangeRequest>;
   _LogEventOrdering: _LogEventOrdering;
   LogEvent: ResolverTypeWrapper<LogEvent>;
-  _WateringPeriodOrdering: _WateringPeriodOrdering;
   _GardenOrdering: _GardenOrdering;
   _UserSettingsOrdering: _UserSettingsOrdering;
   _UserSettingsFilter: _UserSettingsFilter;
@@ -2590,10 +2593,10 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Query: {};
   ID: Scalars['ID'];
+  Int: Scalars['Int'];
   WateringPeriod: WateringPeriod;
   String: Scalars['String'];
   _Neo4jDate: _Neo4jDate;
-  Int: Scalars['Int'];
   _GardenFilter: _GardenFilter;
   Garden: Garden;
   _WateringTaskFilter: _WateringTaskFilter;
@@ -3210,7 +3213,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  assignableWateringPeriod?: Resolver<Maybe<ResolversTypes['WateringPeriod']>, ParentType, ContextType, RequireFields<QueryAssignableWateringPeriodArgs, 'gardenId'>>;
+  assignableWateringPeriod?: Resolver<Maybe<Array<Maybe<ResolversTypes['WateringPeriod']>>>, ParentType, ContextType, RequireFields<QueryAssignableWateringPeriodArgs, 'gardenId'>>;
   Garden?: Resolver<Maybe<Array<Maybe<ResolversTypes['Garden']>>>, ParentType, ContextType, RequireFields<QueryGardenArgs, never>>;
   User?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<QueryUserArgs, never>>;
   WateringTask?: Resolver<Maybe<Array<Maybe<ResolversTypes['WateringTask']>>>, ParentType, ContextType, RequireFields<QueryWateringTaskArgs, never>>;
