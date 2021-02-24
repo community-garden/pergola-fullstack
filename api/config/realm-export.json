@@ -1017,6 +1017,9 @@
         "phone",
         "offline_access",
         "microprofile-jwt"
+      ],
+      "defaultRoles": [
+        "user"
       ]
     },
     {
@@ -1204,6 +1207,9 @@
         "phone",
         "offline_access",
         "microprofile-jwt"
+      ],
+      "defaultRoles": [
+        "user"
       ]
     },
     {

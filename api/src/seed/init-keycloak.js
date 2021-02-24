@@ -14,6 +14,7 @@ const keycloakPassword = process.env.KEYCLOAK_PASSWORD || "admin"
 const clientRoleNames = [
   "admin",
   "developer",
+  "user"
 ]
 
 // The realm roles we want for the realm
@@ -91,7 +92,7 @@ async function initKeycloak() {
       const role = await kc.clients.createRole( {
         id: client.id,
         name: clientRole,
-        clientRole: false,
+        clientRole: false,  // why?
         realm: realmExport.realm
       } ).catch(( err ) => {
         if ( err.response.status !== 409 ) {
