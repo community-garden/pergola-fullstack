@@ -68,12 +68,14 @@ interface GeoShape {
    shapeId: ID! @id
    points: [Point]!
    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+   feature: GardenFeature @relation(name: "has_shape", direction: IN)
 }
 
 type GardenLayer {
    layerId: ID! @id
    name: String!
    date: Date
+   at: Garden @relation(name: "at", direction: OUT)
    has_shape: [GeoShape]  @relation(name: "belongs_to", direction: IN)
 }
 
@@ -83,6 +85,7 @@ type PolygonShape {
    points: [Point]!
    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
    startPoint: Point
+   feature: GardenFeature @relation(name: "has_shape", direction: IN)
 }
 
 extend type PolygonShape implements GeoShape
@@ -93,5 +96,15 @@ type MarkerShape {
    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
    icon: String!
    point: Point!
+   feature: GardenFeature @relation(name: "has_shape", direction: IN)
 }
 extend type MarkerShape implements GeoShape
+
+type GardenFeature {
+   featureId: ID! @id
+   shape: [GeoShape] @relation(name: "has_shape", direction: OUT )
+   infoText: String
+   label: String!
+   featureType: String!
+   plants: [String]!
+}
