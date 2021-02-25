@@ -14,6 +14,7 @@
     legacyPackages.x86_64-linux = {
       inherit pkgs;
       trivial = import ./api/nix/trivial/shell.nix { inherit pkgs; };
+      update-deps = import ./api/nix/tools/node2nix/shell.nix { inherit pkgs; };
     };
     defaultPackage.x86_64-linux = legacyPackages.x86_64-linux.trivial;
   };
