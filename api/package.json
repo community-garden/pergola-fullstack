@@ -7,7 +7,7 @@
     "test": "jest",
     "start": "npm run serve",
     "build-ts": "npm run prepare-build && tsc",
-    "prepare-build": "cpy --parents --cwd=src emails ../dist/",
+    "prepare-build": "cpy --parents --cwd=src emails graphql ../dist/",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
     "serve": "ts-node src/index.ts",
     "codegen": "gql-gen",
