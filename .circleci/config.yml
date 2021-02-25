@@ -1,0 +1,119 @@
+trversion: 2.1
+jobs:
+  build:
+    docker:
+      - image: johannesloetzsch/nix-flake:latest
+    steps:
+      - run:
+          name: Disable Sandbox
+          command: mkdir -p ~/.config/nix/; echo 'sandbox = false' >> ~/.config/nix/nix.conf;
+      - run:
+          name: Allow qemu to be used in dockerTools.buildImage.runAsRoot
+          command: mkdir -p ~/.config/nix/; echo 'system-features = kvm' >> ~/.config/nix/nix.conf;
+      - checkout
+      - restore_cache:
+          keys:
+            - nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}
+            - nix-{{ checksum "flake.lock" }}  ## the cache will be cleaned on updates
+      - run:
+          name: Trivial build
+          command: |
+            cd api
+            nix develop ..#trivial --command npx yarn run build-ts
+            nix-store --delete /nix/store/*-dist || true
+            nix-store --add dist
+      - run:
+          name: Pure build
+          command: echo TODO
+      - save_cache:
+          ## As long as we want reuse nonpure builds, we always save
+          key: nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}-{{ .BuildNum }}
+          paths:
+            - /nix/
+  deploy-experimental:
+    docker:
+      - image: johannesloetzsch/nix-flake:latest
+    steps:
+      - run:
+          name: Disable Sandbox
+          command: mkdir -p ~/.config/nix/; echo 'sandbox = false' >> ~/.config/nix/nix.conf;
+      - checkout
+      - restore_cache:
+          keys:
+            - nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}
+            - nix
+      - add_ssh_keys
+      - run:
+          name: CD
+          command: |
+            cat .circleci/known_hosts >> ~/.ssh/known_hosts
+            git config --global user.email "build@circleci.com"
+            git config --global user.name "CI/CD"
+            git switch -c experimental
+            cp -r /nix/store/*-dist dist
+            git add -f dist
+            git commit -m build
+            git remote add deployment deploy-pergola@experimental.pergola.wald.email:~/experimental/fullstack
+            git push --force deployment
+      - run:
+          name: Check Availability
+          command: |
+            URL="https://experimental-api.pergola.wald.email/"
+            TIMEOUT=60
+            (for i in $(seq $TIMEOUT); do
+              [ $(nix shell nixpkgs#curl --command curl -s -o /dev/null -w "%{http_code}" $URL) = "200" ] && echo online && exit 0
+              echo -n .; sleep 1
+             done && echo offline && false
+            )
+  android_build-deploy:
+    docker:
+      - image: johannesloetzsch/nix-flake:latest
+    steps:
+      - run:
+          name: Disable Sandbox
+          command: mkdir -p ~/.config/nix/; echo 'sandbox = false' >> ~/.config/nix/nix.conf;
+      - checkout
+      - restore_cache:
+          keys:
+            - nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}
+            - nix
+      - run:
+          name: Trivial build
+          command: |
+            nix develop .#trivial-android --command npx yarn run build-prod-cordova-android
+            cp cordova/platforms/android/app/build/outputs/apk/*/*.apk pergola.apk
+      - run:
+          name: Pure build
+          command: echo TODO
+      - run: nix shell .#deploy --command deploy ./pergola.apk pergola.apk
+      - add_ssh_keys
+      - run:
+          name: CD
+          command: |
+            cat .circleci/known_hosts >> ~/.ssh/known_hosts
+            git config --global user.email "build@circleci.com"
+            git config --global user.name "CI/CD"
+            git switch -c fdroid
+            git add -f *.apk
+            git commit -m 'apk build'
+            git remote add deployment deploy-pergola@live.pergola.gra.one:~/live/fdroid
+            git push --force deployment
+workflows:
+  version: 2
+  build+test+deploy:
+    jobs:
+      - build:
+          filters:  ## tags + branches
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+#      - deploy-experimental:  ## test it after the demoweek
+#          requires:
+#            - build
+#          filters:  ## master
+#            tags:
+#              ignore: /.*/
+#            branches:
+#              only:
+#                - master
