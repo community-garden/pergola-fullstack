@@ -28,7 +28,6 @@ jobs:
             nix-channel --add https://nixos.org/channels/nixos-unstable nixos
             nix-channel --update
             export NIX_PATH=/nix/var/nix/profiles/per-user/root/channels/nixos
-            cp api/package.json api/nix/deps/
             nix-build api/nix/pergola-api.nix
       - save_cache:
           ## As long as we want reuse nonpure builds, we always save

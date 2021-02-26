@@ -15,7 +15,7 @@ stdenv.mkDerivation {
     export PATH="${nodeDependencies}/bin:$PATH"
 
     #npm run build-ts
-    mkdir dist
+    [ -d dist ] || mkdir dist
     npm run prepare-build
     tsc
   '';
