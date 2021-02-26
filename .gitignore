@@ -28,3 +28,5 @@ yarn-error.log*
 
 api/dist
 
+# nix
+result

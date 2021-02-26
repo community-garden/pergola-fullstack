@@ -20,11 +20,16 @@ jobs:
           command: |
             cd api
             nix develop ..#trivial --command npx yarn run build-ts
-            nix-store --delete /nix/store/*-dist || true
-            nix-store --add dist
+            #nix-store --delete /nix/store/*-dist || true
+            #nix-store --add dist
       - run:
           name: Pure build
-          command: echo TODO
+          command: |  ## TODO use flake
+            nix-channel --add https://nixos.org/channels/nixos-unstable nixos
+            nix-channel --update
+            export NIX_PATH=/nix/var/nix/profiles/per-user/root/channels/nixos
+            cp api/package.json api/nix/deps/
+            nix-build api/nix/pergola-api.nix
       - save_cache:
           ## As long as we want reuse nonpure builds, we always save
           key: nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}-{{ .BuildNum }}
@@ -50,7 +55,8 @@ jobs:
             git config --global user.email "build@circleci.com"
             git config --global user.name "CI/CD"
             git switch -c experimental
-            cp -r /nix/store/*-dist dist
+            #cp -r /nix/store/*-dist dist
+            cp -r /nix/store/*-pergola-api/dist .
             git add -f dist
             git commit -m build
             git remote add deployment deploy-pergola@experimental.pergola.wald.email:~/experimental/fullstack

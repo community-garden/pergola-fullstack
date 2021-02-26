@@ -10827,7 +10827,7 @@ let
     name = "our-garden-api";
     packageName = "our-garden-api";
     version = "0.0.1";
-    src = ./..;
+    src = ./.;
     dependencies = [
       (sources."@apollo/client-3.3.11" // {
         dependencies = [

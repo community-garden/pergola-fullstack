@@ -8,14 +8,14 @@ pkgs.mkShell {
       exit
     fi
 
-    ## deleting seems to be the only way of getting rid of previously installed and optional deps
-    rm -r node_modules yarn.lock
+    cp package.json nix/deps
+    cd nix/deps
+
     npx yarn --ignore-optional
-
     npx synp -f -s yarn.lock
+    rm yarn.lock
 
-    cd nix
-    node2nix --command node2nix -i ../package.json -l ../package-lock.json --development --strip-optional-dependencies
+    node2nix --command node2nix -l package-lock.json --development --strip-optional-dependencies
 
     exit
   '';
