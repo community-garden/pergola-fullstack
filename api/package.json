@@ -52,6 +52,7 @@
     "@types/node": "^14.11.8",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
+    "cpy-cli": "^3.1.1",
     "cross-env": "^7.0.2",
     "cross-fetch": "^3.0.6",
     "eslint": "^7.11.0",
@@ -67,13 +68,15 @@
     "shx": "^0.3.2",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.3",
-    "cpy-cli": "^3.1.1"
+    "typescript": "^4.0.3"
   },
   "optionalDevDependencies": {
     "nodemon": "^2.0.6",
     "@graphql-codegen/cli": "^1.17.10",
     "@graphql-codegen/typescript": "^1.17.10",
     "@graphql-codegen/typescript-resolvers": "^1.17.10"
+  },
+  "resolutions": {
+    "ts-invariant": ">=0.6.0"
   }
 }

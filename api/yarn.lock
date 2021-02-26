@@ -1047,6 +1047,11 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
 
+"@types/ungap__global-this@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@types/ungap__global-this/-/ungap__global-this-0.3.1.tgz#18ce9f657da556037a29d50604335614ce703f4c"
+  integrity sha512-+/DsiV4CxXl6ZWefwHZDXSe1Slitz21tom38qPCaG0DYCS1NnDPIQDTKcmQ/tvK/edJUKkmuIDBJbmKDiB0r/g==
+
 "@types/ws@^7.0.0":
   version "7.2.7"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-7.2.7.tgz#362ad1a1d62721bdb725e72c8cccf357078cf5a3"
@@ -1174,6 +1179,11 @@
   dependencies:
     "@typescript-eslint/types" "4.5.0"
     eslint-visitor-keys "^2.0.0"
+
+"@ungap/global-this@^0.4.2":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@ungap/global-this/-/global-this-0.4.4.tgz#8a1b2cfcd3e26e079a847daba879308c924dd695"
+  integrity sha512-mHkm6FvepJECMNthFuIgpAEFmPOk71UyXuIxYfjytvFTnSDBIz7jmViO+LfHI/AjrazWije0PnSP3+/NlwzqtA==
 
 "@wry/context@^0.5.2":
   version "0.5.2"
@@ -7662,6 +7672,15 @@ trim-newlines@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-3.0.0.tgz#79726304a6a898aa8373427298d54c2ee8b1cb30"
   integrity sha512-C4+gOpvmxaSMKuEf9Qc134F1ZuOHVXKRbtEflf4NTtuuJDEIJ9p5PXsalL8SkeRw+qit1Mo+yuvMPAKwWg/1hA==
+
+ts-invariant@>=0.6.0:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/ts-invariant/-/ts-invariant-0.6.1.tgz#eb4c52b45daaca8367abbfd6cff998ea871d592d"
+  integrity sha512-QQgN33g8E8yrdDuH29HASveLtbzMnRRgWh0i/JNTW4+zcLsdIOnfsgEDi/NKx4UckQyuMFt9Ujm6TWLWQ58Kvg==
+  dependencies:
+    "@types/ungap__global-this" "^0.3.1"
+    "@ungap/global-this" "^0.4.2"
+    tslib "^1.9.3"
 
 ts-invariant@^0.4.0, ts-invariant@^0.4.4:
   version "0.4.4"

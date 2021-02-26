@@ -16,7 +16,6 @@
       trivial = import ./api/nix/trivial/shell.nix { inherit pkgs; };
       update-deps = import ./api/nix/tools/node2nix/shell.nix { inherit pkgs; };
 
-      ## the following builds till now only work with nix-build without the flake
       shell = (import ./api/nix/deps/default.nix { inherit pkgs; }).shell;
       nodeDependencies = (import ./api/nix/deps/default.nix { inherit pkgs; }).shell.nodeDependencies;
       pergola-api = import ./api/nix/pergola-api.nix { inherit pkgs; };

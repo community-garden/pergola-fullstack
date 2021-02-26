@@ -9985,15 +9985,6 @@ let
         sha1 = "79726304a6a898aa8373427298d54c2ee8b1cb30";
       };
     };
-    "ts-invariant-0.4.4" = {
-      name = "ts-invariant";
-      packageName = "ts-invariant";
-      version = "0.4.4";
-      src = fetchurl {
-        url = "https://registry.yarnpkg.com/ts-invariant/-/ts-invariant-0.4.4.tgz";
-        sha1 = "97a523518688f93aafad01b0e80eb803eb2abd86";
-      };
-    };
     "ts-invariant-0.6.1" = {
       name = "ts-invariant";
       packageName = "ts-invariant";
@@ -10831,7 +10822,6 @@ let
     dependencies = [
       (sources."@apollo/client-3.3.11" // {
         dependencies = [
-          sources."ts-invariant-0.6.1"
           sources."tslib-1.14.1"
         ];
       })
@@ -12534,7 +12524,7 @@ let
       sources."tough-cookie-2.5.0"
       sources."tr46-2.0.2"
       sources."trim-newlines-3.0.0"
-      (sources."ts-invariant-0.4.4" // {
+      (sources."ts-invariant-0.6.1" // {
         dependencies = [
           sources."tslib-1.14.1"
         ];

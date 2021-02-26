@@ -24,11 +24,7 @@ jobs:
             #nix-store --add dist
       - run:
           name: Pure build
-          command: |  ## TODO use flake
-            nix-channel --add https://nixos.org/channels/nixos-unstable nixos
-            nix-channel --update
-            export NIX_PATH=/nix/var/nix/profiles/per-user/root/channels/nixos
-            nix-build api/nix/pergola-api.nix
+          command: nix build .#pergola-api
       - save_cache:
           ## As long as we want reuse nonpure builds, we always save
           key: nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}-{{ .BuildNum }}

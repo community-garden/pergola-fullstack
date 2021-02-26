@@ -1,6 +1,6 @@
 {pkgs ? import <nixpkgs> {},
  stdenv ? pkgs.stdenv,
- nodejs ? pkgs.nodejs,
+ nodejs ? pkgs.nodejs-12_x,
  ...}:
 
 let
@@ -17,6 +17,7 @@ stdenv.mkDerivation {
     #npm run build-ts
     [ -d dist ] || mkdir dist
     npm run prepare-build
+    node --version
     tsc
   '';
   installPhase = ''
