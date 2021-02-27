@@ -47,7 +47,10 @@ app.use( expressLogger )
 useWebdavServer( app, "/calendar" )
 
 const keycloakConfig = JSON.parse(
-  fs.readFileSync( path.resolve( __dirname, "../config/keycloak.json" )).toString()
+  fs.readFileSync( process.env.KEYCLOAK_CONFIG ?
+                   process.env.KEYCLOAK_CONFIG :
+		   path.resolve( __dirname, "../config/keycloak.json" )
+		 ).toString()
 )
 const keycloak = new Keycloak( keycloakConfig )
 app.use(
