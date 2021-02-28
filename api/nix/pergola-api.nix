@@ -1,18 +1,21 @@
 {pkgs ? import <nixpkgs> {},
- stdenv ? pkgs.stdenv,
  nodejs ? pkgs.nodejs-12_x,
+ stdenv ? pkgs.stdenv,
+ lib ? pkgs.lib,
  ...}:
 
 let
   nodeDependencies = (pkgs.callPackage ./deps/default.nix {}).shell.nodeDependencies;
 
+  deps = [ nodejs ] ++ (with pkgs; [ which coreutils ]);
+
   pergolaApiNode = stdenv.mkDerivation {
     name = "pergola-api-node";
     src = ./..;
-    buildInputs = [ nodejs ] ++ (with pkgs; [ which ]);
+    buildInputs = deps;
     buildPhase = ''
-      ln -s ${nodeDependencies}/lib/node_modules ./node_modules
       export PATH="${nodeDependencies}/bin:$PATH"
+      ln -s ${nodeDependencies}/lib/node_modules ./node_modules
 
       #npm run build-ts
       [ -d dist ] || mkdir dist
@@ -26,13 +29,15 @@ let
     '';
   };
 in
-(pkgs.writeScriptBin "pergola-api" ''
-  #!${pkgs.runtimeShell} -xe
+lib.mergeAttrs
+  (pkgs.writeScriptBin "pergola-api" ''
+    #!${pkgs.runtimeShell} -e
 
-  ln -s ${nodeDependencies}/lib/node_modules ./node_modules
-  export PATH="${nodeDependencies}/bin:$PATH"
+    export PATH="${nodeDependencies}/bin:${lib.makeBinPath deps}:$PATH"
+    ln -s ${nodeDependencies}/lib/node_modules ./node_modules
 
-  export KEYCLOAK_CONFIG="''${KEYCLOAK_CONFIG:-"config/keycloak.json"}"
-  ts-node ${pergolaApiNode}/dist/index.js
-  ''
-)
+    export KEYCLOAK_CONFIG="''${KEYCLOAK_CONFIG:-"config/keycloak.json"}"
+    ts-node ${pergolaApiNode}/dist/index.js
+    ''
+  )
+  { inherit pergolaApiNode; }

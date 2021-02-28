@@ -19,7 +19,8 @@
       shell = (import ./api/nix/deps/default.nix { inherit pkgs; }).shell;
       nodeDependencies = (import ./api/nix/deps/default.nix { inherit pkgs; }).shell.nodeDependencies;
       pergola-api = import ./api/nix/pergola-api.nix { inherit pkgs; };
+      pergola-api-docker = import ./api/nix/pergola-api-docker.nix { inherit pkgs; };
     };
-    defaultPackage.x86_64-linux = legacyPackages.x86_64-linux.trivial;
+    defaultPackage.x86_64-linux = legacyPackages.x86_64-linux.pergola-api;
   };
 }
