@@ -1,9 +1,15 @@
+/** You can use curl instead:
+
+    curl -d 'client_id=keycloak-connect-graphql-public' -d 'username=developer' -d 'password=developer' -d 'grant_type=password' \
+    'https://keycloak.pergola.gra.one/auth/realms/keycloak-connect-graphql/protocol/openid-connect/token'
+**/
+
 import tokenRequester from "keycloak-request-token"
 
 const username = process.argv[2]
 const password = process.argv[3]
 
-const baseUrl = "http://localhost:8080/auth"
+const baseUrl = process.env.KEYCLOAK_URL || "http://localhost:8080/auth"
 const settings = {
   username: username || "developer",
   password: password || "developer",

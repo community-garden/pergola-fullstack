@@ -34,9 +34,10 @@ lib.mergeAttrs
     #!${pkgs.runtimeShell} -e
 
     export PATH="${nodeDependencies}/bin:${lib.makeBinPath deps}:$PATH"
-    ln -s ${nodeDependencies}/lib/node_modules ./node_modules
+    export NODE_PATH=${nodeDependencies}/lib/node_modules
+    #ln -s ${nodeDependencies}/lib/node_modules ./node_modules
 
-    export KEYCLOAK_CONFIG="''${KEYCLOAK_CONFIG:-"config/keycloak.json"}"
+    export KEYCLOAK_CONFIG="''${KEYCLOAK_CONFIG:-"./keycloak.json"}"
     ts-node ${pergolaApiNode}/dist/index.js
     ''
   )

@@ -1031,8 +1031,6 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost:4000",
-        "http://localhost:4000/*",
         "http://localhost:8081",
         "http://localhost:8081/*"
       ],

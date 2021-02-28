@@ -6,7 +6,7 @@ const realmExport = require( "../../config/realm-export.json" )
 const PUBLIC_CLIENT_NAME = `${realmExport.realm}-public`
 const BEARER_CLIENT_NAME = `${realmExport.realm}-bearer`
 
-const keycloakUrl = process.env.REACT_APP_KEYCLOAK_URL || "http://localhost:8080"
+const keycloakUrl = process.env.KEYCLOAK_URL || "http://localhost:8080"
 const keycloakUser = process.env.KEYCLOAK_USER || "admin"
 const keycloakPassword = process.env.KEYCLOAK_PASSWORD || "admin"
 

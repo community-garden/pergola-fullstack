@@ -49,7 +49,7 @@ useWebdavServer( app, "/calendar" )
 const keycloakConfig = JSON.parse(
   fs.readFileSync( process.env.KEYCLOAK_CONFIG ?
                    process.env.KEYCLOAK_CONFIG :
-		   path.resolve( __dirname, "../config/keycloak.json" )
+		   path.resolve( __dirname, "../keycloak.json" )
 		 ).toString()
 )
 const keycloak = new Keycloak( keycloakConfig )
