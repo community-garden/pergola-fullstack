@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "jest",
+    "test-without-db": "jest --config jest-without-db.config.js",
     "start": "npm run serve",
     "build-ts": "mkdir dist; npm run prepare-build && tsc",
     "prepare-build": "cp -r src/emails src/graphql dist/",

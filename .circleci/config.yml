@@ -1,6 +1,6 @@
 trversion: 2.1
 jobs:
-  build:
+  build+test:
     docker:
       - image: johannesloetzsch/nix-flake:latest
     steps:
@@ -22,6 +22,11 @@ jobs:
             nix develop ..#trivial --command npx yarn run build-ts
             #nix-store --delete /nix/store/*-dist || true
             #nix-store --add dist
+      - run:
+          name: Test cases without DB access
+          command: |
+            cd api
+            nix develop ..#trivial --command npm run test-without-db
       - run:
           name: Pure build
           command: nix build .#pergola-api
@@ -103,7 +108,7 @@ workflows:
   version: 2
   build+test+deploy:
     jobs:
-      - build:
+      - build+test:
           filters:  ## tags + branches
             tags:
               only: /.*/
