@@ -39,7 +39,7 @@ services:
       - "1080:1080"
     command: node index.js -a test:test
   pergola-api:
-    image: pergola-api:latest
+    image: communitygarden/pergola-api:latest
     volumes:
       - ./api/config:/config
       - ./api/config/keycloak.docker.json:/keycloak.json

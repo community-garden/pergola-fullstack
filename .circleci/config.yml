@@ -32,6 +32,15 @@ jobs:
       - run:
           name: Pure build
           command: nix build .#pergola-api
+      - setup_remote_docker:
+          version: 20.10.2
+      - run:
+          name: Pure docker build
+          command: |
+            nix build .#pergola-api-docker
+            nix run .#pkgs.docker -- load < result
+            echo "$DOCKERHUB_PASSWORD" | nix run .#pkgs.docker -- login -u "$DOCKERHUB_USER" --password-stdin
+            nix run .#pkgs.docker -- push communitygarden/pergola-api:latest
       - save_cache:
           ## As long as we want reuse nonpure builds, we always save
           key: nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}-{{ .BuildNum }}
@@ -73,44 +82,12 @@ jobs:
               echo -n .; sleep 1
              done && echo offline && false
             )
-  android_build-deploy:
-    docker:
-      - image: johannesloetzsch/nix-flake:latest
-    steps:
-      - run:
-          name: Disable Sandbox
-          command: mkdir -p ~/.config/nix/; echo 'sandbox = false' >> ~/.config/nix/nix.conf;
-      - checkout
-      - restore_cache:
-          keys:
-            - nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}
-            - nix
-      - run:
-          name: Trivial build
-          command: |
-            nix develop .#trivial-android --command npx yarn run build-prod-cordova-android
-            cp cordova/platforms/android/app/build/outputs/apk/*/*.apk pergola.apk
-      - run:
-          name: Pure build
-          command: echo TODO
-      - run: nix shell .#deploy --command deploy ./pergola.apk pergola.apk
-      - add_ssh_keys
-      - run:
-          name: CD
-          command: |
-            cat .circleci/known_hosts >> ~/.ssh/known_hosts
-            git config --global user.email "build@circleci.com"
-            git config --global user.name "CI/CD"
-            git switch -c fdroid
-            git add -f *.apk
-            git commit -m 'apk build'
-            git remote add deployment deploy-pergola@live.pergola.gra.one:~/live/fdroid
-            git push --force deployment
 workflows:
   version: 2
   build+test+deploy:
     jobs:
       - build+test:
+          context: deployment
           filters:  ## tags + branches
             tags:
               only: /.*/
