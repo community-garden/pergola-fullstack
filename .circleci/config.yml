@@ -27,6 +27,8 @@ jobs:
           command: |
             cd api
             nix develop ..#trivial --command npm run test-without-db
+      - store_test_results:
+          path: ./api/test-results
       - run:
           name: Pure build
           command: nix build .#pergola-api

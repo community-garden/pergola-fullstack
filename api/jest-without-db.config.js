@@ -5,5 +5,6 @@ module.exports = {
     "/node_modules/",
     "/dist",
     ".*db.test.ts"
-  ]
+  ],
+  setupFilesAfterEnv: ["./.setup-jasmine-env.js"]
 }
