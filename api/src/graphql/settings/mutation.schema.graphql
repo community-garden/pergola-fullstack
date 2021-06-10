@@ -1,1 +1,2 @@
 ownMergeUserSettings(settings: UserSettingsInput): UserSettings
+mergeGardenSettings(settings: GardenSettingsInput): JSON

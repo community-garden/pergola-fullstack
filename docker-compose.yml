@@ -51,22 +51,22 @@ services:
       - "1025:1025"
       - "1080:1080"
     command: node index.js -a test:test
-  pergola-api:
-    image: communitygarden/pergola-api:latest
-    volumes:
-      - ./api/config:/config
-      - ./api/config/keycloak.docker.json:/keycloak.json
-#      - ./api/config/keycloak.live.json:/keycloak.json
-      - ./api/src/scripts:/scripts
-    environment:
-      - PRIVATE_VAPID_KEY=gmpZChx8tfCFthx_Luzg0lWvwPitJomORVVa0ZhrY_I
-      - PUBLIC_VAPID_KEY=BOdc3JEajKRqhb7-oNxhCELHnqfReH_A6iZA9T5hULc6L8vb4tAMyD28j2JG_mMQcwuKX-1jkp2xQ4u8Qgq0LCo
-      - NEO4J_URI=bolt://neo4j:7687
-      - NEO4J_USER=neo4j
-      - NEO4J_PASSWORD=admin
-    ports:
-      - "4001:4001"
-    command: bash -c 'sleep 30; pergola-api'  ## TODO allow reconnects to neo4j
+#  pergola-api:
+#    image: communitygarden/pergola-api:latest
+#    volumes:
+#      - ./api/config:/config
+#      - ./api/config/keycloak.docker.json:/keycloak.json
+##      - ./api/config/keycloak.live.json:/keycloak.json
+#      - ./api/src/scripts:/scripts
+#    environment:
+#      - PRIVATE_VAPID_KEY=gmpZChx8tfCFthx_Luzg0lWvwPitJomORVVa0ZhrY_I
+#      - PUBLIC_VAPID_KEY=BOdc3JEajKRqhb7-oNxhCELHnqfReH_A6iZA9T5hULc6L8vb4tAMyD28j2JG_mMQcwuKX-1jkp2xQ4u8Qgq0LCo
+#      - NEO4J_URI=bolt://neo4j:7687
+#      - NEO4J_USER=neo4j
+#      - NEO4J_PASSWORD=admin
+#    ports:
+#      - "4001:4001"
+#    command: bash -c 'sleep 30; pergola-api'  ## TODO allow reconnects to neo4j
 
 networks:
   internal:

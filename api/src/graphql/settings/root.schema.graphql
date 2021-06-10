@@ -11,3 +11,13 @@ input UserSettingsInput {
    ui_locale: String
    letitrain_maximum_tasks: Int
 }
+
+input GardenSettingsInput {
+   gardenId: ID!
+   name: String
+   infoPageMarkdown: String
+   shortDescription: String
+   homepageUrl: String
+   logoUrl: String
+   location: Point
+}

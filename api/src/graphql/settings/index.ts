@@ -2,12 +2,14 @@
  *  Settings for module specific Objects should be places in the directory of the modules resolvers.
  **/
 
+import mergeGardenSettings from "./mergeGardenSettings"
 import mergeUserSettings from "./mergeUserSettings"
 
 export default {
   resolvers: {
     Mutation: {
       ...mergeUserSettings.resolvers.Mutation,
+      ...mergeGardenSettings.resolvers.Mutation,
     },
   },
   schema: {

@@ -1,110 +1,122 @@
 scalar JSON  ## use this only for development, but never depend on values of this type
 
 type Garden {
-  _id: Long!
-  gardenId: ID!
-  label: String!
+    _id: Long!
+    gardenId: ID!
+    label: String!
+    settings: GardenSettings @relation(name: "of", direction: IN)
+}
+
+type GardenSettings {
+    _id: Long!
+    garden: Garden! @relation(name: "of", direction: OUT)
+    name: String
+    shortDescription: String
+    infoPageMarkdown: String
+    homepageUrl: String
+    logoUrl: String
+    location: Point
 }
 
 type User {
-   _id: Long!
-   id: String!
-   label: String!
-   neo4jImportId: String!
-   type: String!
-   assigned: [WateringTask] @relation(name: "assigned", direction: OUT)
-   available: [WateringTask] @relation(name: "available", direction: OUT)
-   changerequests_requested_by: [ChangeRequest] @relation(name: "requested_by", direction: IN)
-   changerequests_requested_to: [ChangeRequest] @relation(name: "requested_to", direction: IN)
-   logevents_triggered_by: [LogEvent] @relation(name: "triggered_by", direction: IN)
+    _id: Long!
+    id: String!
+    label: String!
+    neo4jImportId: String!
+    type: String!
+    assigned: [WateringTask] @relation(name: "assigned", direction: OUT)
+    available: [WateringTask] @relation(name: "available", direction: OUT)
+    changerequests_requested_by: [ChangeRequest] @relation(name: "requested_by", direction: IN)
+    changerequests_requested_to: [ChangeRequest] @relation(name: "requested_to", direction: IN)
+    logevents_triggered_by: [LogEvent] @relation(name: "triggered_by", direction: IN)
 }
 
 type WateringTask {
-   _id: Long!
-   date: Date!
-   done: Boolean
-   neo4jImportId: String!
-   type: String!
-   users_assigned: [User] @relation(name: "assigned", direction: IN)
-   changerequests_requested_for: [ChangeRequest] @relation(name: "requested_for", direction: IN)
-   changerequests_requested_new_task: [ChangeRequest] @relation(name: "requested_new_task", direction: IN)
-   logevents_refers_to: [LogEvent] @relation(name: "refers_to", direction: IN)
-   users_available: [User] @relation(name: "available", direction: IN)
-   wateringperiod: [WateringPeriod] @relation(name: "within", direction: OUT)
+    _id: Long!
+    date: Date!
+    done: Boolean
+    neo4jImportId: String!
+    type: String!
+    users_assigned: [User] @relation(name: "assigned", direction: IN)
+    changerequests_requested_for: [ChangeRequest] @relation(name: "requested_for", direction: IN)
+    changerequests_requested_new_task: [ChangeRequest] @relation(name: "requested_new_task", direction: IN)
+    logevents_refers_to: [LogEvent] @relation(name: "refers_to", direction: IN)
+    users_available: [User] @relation(name: "available", direction: IN)
+    wateringperiod: [WateringPeriod] @relation(name: "within", direction: OUT)
 }
 
 type WateringPeriod {
-   _id: Long!
-   from: Date!
-   till: Date!
-   at: Garden @relation(name: "at", direction: OUT)
-   wateringtasks: [WateringTask] @relation(name: "within", direction: IN)
-   hasUsersAssigned: Boolean @cypher(statement: "MATCH (t:WateringTask)-[:within]->(this) RETURN (EXISTS((t)-[:assigned]-(:User)))")
+    _id: Long!
+    from: Date!
+    till: Date!
+    at: Garden @relation(name: "at", direction: OUT)
+    wateringtasks: [WateringTask] @relation(name: "within", direction: IN)
+    hasUsersAssigned: Boolean @cypher(statement: "MATCH (t:WateringTask)-[:within]->(this) RETURN (EXISTS((t)-[:assigned]-(:User)))")
 }
 
 type ChangeRequest {
-   _id: Long!
-   label: String!
-   neo4jImportId: String!
-   type: String!
-   requested_by: [User] @relation(name: "requested_by", direction: OUT)
-   requested_for: [WateringTask] @relation(name: "requested_for", direction: OUT)
-   requested_to: [User] @relation(name: "requested_to", direction: OUT)
-   requested_new_task: [WateringTask] @relation(name: "requested_new_task", direction: OUT)
+    _id: Long!
+    label: String!
+    neo4jImportId: String!
+    type: String!
+    requested_by: [User] @relation(name: "requested_by", direction: OUT)
+    requested_for: [WateringTask] @relation(name: "requested_for", direction: OUT)
+    requested_to: [User] @relation(name: "requested_to", direction: OUT)
+    requested_new_task: [WateringTask] @relation(name: "requested_new_task", direction: OUT)
 }
 
 type LogEvent {
-   _id: Long!
-   date: String!
-   label: String!
-   neo4jImportId: String!
-   type: String!
-   triggered_by: [User] @relation(name: "triggered_by", direction: OUT)
-   refers_to: [WateringTask] @relation(name: "refers_to", direction: OUT)
+    _id: Long!
+    date: String!
+    label: String!
+    neo4jImportId: String!
+    type: String!
+    triggered_by: [User] @relation(name: "triggered_by", direction: OUT)
+    refers_to: [WateringTask] @relation(name: "refers_to", direction: OUT)
 }
 
 
 interface GeoShape {
-   shapeId: ID! @id
-   points: [Point]!
-   belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
-   feature: GardenFeature @relation(name: "has_shape", direction: IN)
+    shapeId: ID! @id
+    points: [Point]!
+    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+    feature: GardenFeature @relation(name: "has_shape", direction: IN)
 }
 
 type GardenLayer {
-   layerId: ID! @id
-   name: String!
-   date: Date
-   at: Garden @relation(name: "at", direction: OUT)
-   has_shape: [GeoShape]  @relation(name: "belongs_to", direction: IN)
+    layerId: ID! @id
+    name: String!
+    date: Date
+    at: Garden @relation(name: "at", direction: OUT)
+    has_shape: [GeoShape]  @relation(name: "belongs_to", direction: IN)
 }
 
 
 type PolygonShape {
-   shapeId: ID! @id
-   points: [Point]!
-   belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
-   startPoint: Point
-   feature: GardenFeature @relation(name: "has_shape", direction: IN)
+    shapeId: ID! @id
+    points: [Point]!
+    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+    startPoint: Point
+    feature: GardenFeature @relation(name: "has_shape", direction: IN)
 }
 
 extend type PolygonShape implements GeoShape
 
 type MarkerShape {
-   shapeId: ID! @id
-   points: [Point]!
-   belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
-   icon: String!
-   point: Point!
-   feature: GardenFeature @relation(name: "has_shape", direction: IN)
+    shapeId: ID! @id
+    points: [Point]!
+    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+    icon: String!
+    point: Point!
+    feature: GardenFeature @relation(name: "has_shape", direction: IN)
 }
 extend type MarkerShape implements GeoShape
 
 type GardenFeature {
-   featureId: ID! @id
-   shape: [GeoShape] @relation(name: "has_shape", direction: OUT )
-   infoText: String
-   label: String!
-   featureType: String!
-   plants: [String]!
+    featureId: ID! @id
+    shape: [GeoShape] @relation(name: "has_shape", direction: OUT )
+    infoText: String
+    label: String!
+    featureType: String!
+    plants: [String]!
 }
