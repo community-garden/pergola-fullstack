@@ -47,10 +47,13 @@ app.use( expressLogger )
 useWebdavServer( app, "/calendar" )
 
 const keycloakConfig = JSON.parse(
-  fs.readFileSync( process.env.KEYCLOAK_CONFIG ?
-                   process.env.KEYCLOAK_CONFIG :
-		   path.resolve( __dirname, "../keycloak.json" )
-		 ).toString()
+  fs
+    .readFileSync(
+      process.env.KEYCLOAK_CONFIG
+        ? process.env.KEYCLOAK_CONFIG
+        : path.resolve( __dirname, "../keycloak.json" )
+    )
+    .toString()
 )
 const keycloak = new Keycloak( keycloakConfig )
 app.use(
@@ -60,10 +63,13 @@ app.use(
 )
 app.use( graphqlPath, keycloak.middleware())
 
-
-//app.use( cors())
+app.use( cors())
 //app.use( bodyParser.json())
-webPush.setVapidDetails( `mailto:${process.env.WEB_PUSH_MAIL}`, process.env.PUBLIC_VAPID_KEY, process.env.PRIVATE_VAPID_KEY )
+webPush.setVapidDetails(
+  `mailto:${process.env.WEB_PUSH_MAIL}`,
+  process.env.PUBLIC_VAPID_KEY,
+  process.env.PRIVATE_VAPID_KEY
+)
 //app.post( "/reg", keycloak.protect(), subscriptionRequestHandler )
 
 /*
@@ -119,8 +125,8 @@ const server = new ApolloServer( {
   introspection: true,
   playground: true,
   subscriptions: {
-    path: "/graphql"
-  }
+    path: "/graphql",
+  },
 } )
 
 /*
@@ -133,5 +139,7 @@ server.installSubscriptionHandlers( httpServer )
 
 httpServer.listen( { host, port, path: graphqlPath }, () => {
   logger.info( `GraphQL server ready at http://${host}:${port}${graphqlPath}` )
-  logger.info( `GraphQL Subsciptions ready at ws://${host}:${port}${server.subscriptionsPath}` )
+  logger.info(
+    `GraphQL Subsciptions ready at ws://${host}:${port}${server.subscriptionsPath}`
+  )
 } )
