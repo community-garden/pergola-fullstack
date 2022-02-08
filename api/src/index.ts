@@ -1,6 +1,7 @@
 import "dotenv/config"
 
 import { ApolloServer } from "apollo-server-express"
+import cors from "cors"
 import express from "express"
 import expressPino from "express-pino-logger"
 import * as fs from "fs"
