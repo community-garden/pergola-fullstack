@@ -119,4 +119,55 @@ type GardenFeature {
     label: String!
     featureType: String!
     plants: [String]!
+    contains: [Container] @relation(name: "stored_in", direction: IN)
 }
+
+type Container {
+    containerType: String!
+    storageLocation: [GardenFeature] @relation(name: "stored_in", direction: OUT)
+}
+
+interface PositiveNeighborhood  @relationshipProperties {
+    weight: Int
+}
+interface CropRotation  @relationshipProperties {
+    weight: Int
+}
+
+type Category {
+    label: String!
+    description: String
+    parentCategory: Category @relation(name: "parent", direction: IN)
+    childCategories: [Category] @relation(name: "parent", direction: OUT)
+    species: [PlantSpecies] @relation(name: "has_category", direction: IN)
+}
+
+type PlantSpecies {
+    label: String!
+    description: String
+    infoText: String
+    icon: String
+    categories: [Category] @relation(name: "has_category", direction: OUT)
+    positiveNeighborhood: [PlantSpecies] @relation(name: "positive_neighbor", direction: OUT, queryDirection: DEFAULT_DIRECTED, properties: PositiveNeighborhood)
+    cropRotationFactor: [PlantSpecies] @relation(name: "crop_rotation_factor", direction: OUT, queryDirection: DEFAULT_DIRECTED, properties: CropRotation)
+    varieties: [PlantVariety] @relation(name: "part_of_species", direction: IN)
+}
+
+type PlantVariety {
+    label: String!
+    description: String
+    species: PlantSpecies! @relation(name: "part_of_species", direction: OUT)
+    infoText: String
+    icon: String
+
+}
+
+type Seed {
+    variety: PlantVariety!
+    amount: Int
+    unit: String
+    containedIn: Container @relation(name: "contains", direction: IN)
+}
+
+
+
