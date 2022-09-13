@@ -11,7 +11,7 @@ services:
       - neo4j_logs:/logs
       - ./api/src/seed/data:/import
       #  - ./neo4j/conf:/var/lib/neo4j/conf
-      - ./neo4j/plugins:/plugins
+      - ./neo4j/plugins:/var/lib/neo4j/plugins
     environment:
       #- NEO4J_AUTH=neo4j/admin
       - NEO4J_apoc_export_file_enabled=true
@@ -19,6 +19,7 @@ services:
       - NEO4J_apoc_import_file_use__neo4j__config=true
       - NEO4JLABS_PLUGINS=[\"apoc\"]
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_dbms_directories_import=/import
       - NEO4J_AUTH=none
   keycloak:
     image: jboss/keycloak:11.0.1
