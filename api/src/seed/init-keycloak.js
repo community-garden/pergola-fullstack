@@ -1,14 +1,23 @@
 const KeycloakAdmin = require( "keycloak-admin" ).default
 
-const realmExport = require( "../../config/realm-export.json" )
+const realmExportRaw = require( "../../config/realm-export.json" )
 
-// The public and bearer clients that will be set up
-const PUBLIC_CLIENT_NAME = `${realmExport.realm}-public`
-const BEARER_CLIENT_NAME = `${realmExport.realm}-bearer`
 
 const keycloakUrl = process.env.KEYCLOAK_URL || "http://localhost:8080"
 const keycloakUser = process.env.KEYCLOAK_USER || "admin"
 const keycloakPassword = process.env.KEYCLOAK_PASSWORD || "admin"
+const frontendUrl = process.env.PERGOLA_APP_URL || keycloakUrl.replace( ":8080", ":8081" )
+
+const realmExport = {
+  ...realmExportRaw,
+  clients: realmExportRaw.clients.map( client =>
+      client.clientId === "keycloak-connect-graphql-public"
+          ? {...client,
+            redirectUris: [ frontendUrl, `${frontendUrl}/*` ]}
+          : client )}
+// The public and bearer clients that will be set up
+const PUBLIC_CLIENT_NAME = `${realmExport.realm}-public`
+const BEARER_CLIENT_NAME = `${realmExport.realm}-bearer`
 
 // The client roles you want created for the bearer and public clients
 const clientRoleNames = [
