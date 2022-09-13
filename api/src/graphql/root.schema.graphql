@@ -1,15 +1,15 @@
 scalar JSON  ## use this only for development, but never depend on values of this type
 
 type Garden {
-    _id: Long!
+    _id: ID!
     gardenId: ID!
     label: String!
-    settings: GardenSettings @relation(name: "of", direction: IN)
+    settings: GardenSettings @relationship(type: "of", direction: IN)
 }
 
 type GardenSettings {
-    _id: Long!
-    garden: Garden! @relation(name: "of", direction: OUT)
+    _id: ID!
+    garden: Garden! @relationship(type: "of", direction: OUT)
     name: String
     shortDescription: String
     infoPageMarkdown: String
@@ -19,85 +19,86 @@ type GardenSettings {
 }
 
 type User {
-    _id: Long!
+    _id: ID!
     id: String!
     label: String!
     neo4jImportId: String!
     type: String!
-    assigned: [WateringTask] @relation(name: "assigned", direction: OUT)
-    available: [WateringTask] @relation(name: "available", direction: OUT)
-    changerequests_requested_by: [ChangeRequest] @relation(name: "requested_by", direction: IN)
-    changerequests_requested_to: [ChangeRequest] @relation(name: "requested_to", direction: IN)
-    logevents_triggered_by: [LogEvent] @relation(name: "triggered_by", direction: IN)
+    assigned: [WateringTask!]! @relationship(type: "assigned", direction: OUT)
+    available: [WateringTask!]! @relationship(type: "available", direction: OUT)
+    changerequests_requested_by: [ChangeRequest!]! @relationship(type: "requested_by", direction: IN)
+    changerequests_requested_to: [ChangeRequest!]! @relationship(type: "requested_to", direction: IN)
+    logevents_triggered_by: [LogEvent!]! @relationship(type: "triggered_by", direction: IN)
 }
 
 type WateringTask {
-    _id: Long!
+    _id: ID!
     date: Date!
     done: Boolean
     neo4jImportId: String!
     type: String!
-    users_assigned: [User] @relation(name: "assigned", direction: IN)
-    changerequests_requested_for: [ChangeRequest] @relation(name: "requested_for", direction: IN)
-    changerequests_requested_new_task: [ChangeRequest] @relation(name: "requested_new_task", direction: IN)
-    logevents_refers_to: [LogEvent] @relation(name: "refers_to", direction: IN)
-    users_available: [User] @relation(name: "available", direction: IN)
-    wateringperiod: [WateringPeriod] @relation(name: "within", direction: OUT)
+    label: String
+    users_assigned: [User!]! @relationship(type: "assigned", direction: IN)
+    changerequests_requested_for: [ChangeRequest!]! @relationship(type: "requested_for", direction: IN)
+    changerequests_requested_new_task: [ChangeRequest!]! @relationship(type: "requested_new_task", direction: IN)
+    logevents_refers_to: [LogEvent!]! @relationship(type: "refers_to", direction: IN)
+    users_available: [User!]! @relationship(type: "available", direction: IN)
+    wateringperiod: [WateringPeriod!]! @relationship(type: "within", direction: OUT)
 }
 
 type WateringPeriod {
-    _id: Long!
+    _id: ID!
     from: Date!
     till: Date!
-    at: Garden @relation(name: "at", direction: OUT)
-    wateringtasks: [WateringTask] @relation(name: "within", direction: IN)
+    at: Garden @relationship(type: "at", direction: OUT)
+    wateringtasks: [WateringTask!]! @relationship(type: "within", direction: IN)
     hasUsersAssigned: Boolean @cypher(statement: "MATCH (t:WateringTask)-[:within]->(this) RETURN (EXISTS((t)-[:assigned]-(:User)))")
 }
 
 type ChangeRequest {
-    _id: Long!
+    _id: ID!
     label: String!
     neo4jImportId: String!
     type: String!
-    requested_by: [User] @relation(name: "requested_by", direction: OUT)
-    requested_for: [WateringTask] @relation(name: "requested_for", direction: OUT)
-    requested_to: [User] @relation(name: "requested_to", direction: OUT)
-    requested_new_task: [WateringTask] @relation(name: "requested_new_task", direction: OUT)
+    requested_by: [User!]! @relationship(type: "requested_by", direction: OUT)
+    requested_for: [WateringTask!]! @relationship(type: "requested_for", direction: OUT)
+    requested_to: [User!]! @relationship(type: "requested_to", direction: OUT)
+    requested_new_task: [WateringTask!]! @relationship(type: "requested_new_task", direction: OUT)
 }
 
 type LogEvent {
-    _id: Long!
+    _id: ID!
     date: String!
     label: String!
     neo4jImportId: String!
     type: String!
-    triggered_by: [User] @relation(name: "triggered_by", direction: OUT)
-    refers_to: [WateringTask] @relation(name: "refers_to", direction: OUT)
+    triggered_by: [User!]! @relationship(type: "triggered_by", direction: OUT)
+    refers_to: [WateringTask!]! @relationship(type: "refers_to", direction: OUT)
 }
 
 
 interface GeoShape {
     shapeId: ID! @id
     points: [Point]!
-    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
-    feature: GardenFeature @relation(name: "has_shape", direction: IN)
+    belongs_to: [GardenLayer!]! @relationship(type: "belongs_to", direction: OUT)
+    feature: GardenFeature @relationship(type: "has_shape", direction: IN)
 }
 
 type GardenLayer {
     layerId: ID! @id
     name: String!
     date: Date
-    at: Garden @relation(name: "at", direction: OUT)
-    has_shape: [GeoShape]  @relation(name: "belongs_to", direction: IN)
+    at: Garden @relationship(type: "at", direction: OUT)
+    has_shape: [GeoShape!]!  @relationship(type: "belongs_to", direction: IN)
 }
 
 
 type PolygonShape {
     shapeId: ID! @id
     points: [Point]!
-    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+    belongs_to: [GardenLayer!]! @relationship(type: "belongs_to", direction: OUT)
     startPoint: Point
-    feature: GardenFeature @relation(name: "has_shape", direction: IN)
+    feature: GardenFeature @relationship(type: "has_shape", direction: IN)
 }
 
 extend type PolygonShape implements GeoShape
@@ -105,26 +106,26 @@ extend type PolygonShape implements GeoShape
 type MarkerShape {
     shapeId: ID! @id
     points: [Point]!
-    belongs_to: [GardenLayer] @relation(name: "belongs_to", direction: OUT)
+    belongs_to: [GardenLayer!]! @relationship(type: "belongs_to", direction: OUT)
     icon: String!
     point: Point!
-    feature: GardenFeature @relation(name: "has_shape", direction: IN)
+    feature: GardenFeature @relationship(type: "has_shape", direction: IN)
 }
 extend type MarkerShape implements GeoShape
 
 type GardenFeature {
     featureId: ID! @id
-    shape: [GeoShape] @relation(name: "has_shape", direction: OUT )
+    shape: [GeoShape!]! @relationship(type: "has_shape", direction: OUT )
     infoText: String
     label: String!
     featureType: String!
     plants: [String]!
-    contains: [Container] @relation(name: "stored_in", direction: IN)
+    contains: [Container!]! @relationship(type: "stored_in", direction: IN)
 }
 
 type Container {
     containerType: String!
-    storageLocation: [GardenFeature] @relation(name: "stored_in", direction: OUT)
+    storageLocation: [GardenFeature!]! @relationship(type: "stored_in", direction: OUT)
 }
 
 interface PositiveNeighborhood  @relationshipProperties {
@@ -137,9 +138,9 @@ interface CropRotation  @relationshipProperties {
 type Category {
     label: String!
     description: String
-    parentCategory: Category @relation(name: "parent", direction: IN)
-    childCategories: [Category] @relation(name: "parent", direction: OUT)
-    species: [PlantSpecies] @relation(name: "has_category", direction: IN)
+    parentCategory: Category @relationship(type: "parent", direction: IN)
+    childCategories: [Category!]! @relationship(type: "parent", direction: OUT)
+    species: [PlantSpecies!]! @relationship(type: "has_category", direction: IN)
 }
 
 type PlantSpecies {
@@ -147,16 +148,16 @@ type PlantSpecies {
     description: String
     infoText: String
     icon: String
-    categories: [Category] @relation(name: "has_category", direction: OUT)
-    positiveNeighborhood: [PlantSpecies] @relation(name: "positive_neighbor", direction: OUT, queryDirection: DEFAULT_DIRECTED, properties: PositiveNeighborhood)
-    cropRotationFactor: [PlantSpecies] @relation(name: "crop_rotation_factor", direction: OUT, queryDirection: DEFAULT_DIRECTED, properties: CropRotation)
-    varieties: [PlantVariety] @relation(name: "part_of_species", direction: IN)
+    categories: [Category!]! @relationship(type: "has_category", direction: OUT)
+    positiveNeighborhood: [PlantSpecies!]! @relationship(type: "positive_neighbor", direction: OUT, queryDirection: DEFAULT_DIRECTED, properties: "PositiveNeighborhood")
+    cropRotationFactor: [PlantSpecies!]! @relationship(type: "crop_rotation_factor", direction: OUT, queryDirection: DEFAULT_DIRECTED, properties: "CropRotation")
+    varieties: [PlantVariety!]! @relationship(type: "part_of_species", direction: IN)
 }
 
 type PlantVariety {
     label: String!
     description: String
-    species: PlantSpecies! @relation(name: "part_of_species", direction: OUT)
+    species: PlantSpecies! @relationship(type: "part_of_species", direction: OUT)
     infoText: String
     icon: String
 
@@ -166,7 +167,7 @@ type Seed {
     variety: PlantVariety!
     amount: Int
     unit: String
-    containedIn: Container @relation(name: "contains", direction: IN)
+    containedIn: Container @relationship(type: "contains", direction: IN)
 }
 
 

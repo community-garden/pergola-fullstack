@@ -1,4 +1,4 @@
-setUserAvailability(gardenId: ID!, dates: [Date]!, from: Date, till: Date): Boolean
+setUserAvailability(gardenId: ID!, dates: [Date!]!, from: Date, till: Date): Boolean
 seedAvailabilitiesFromTests: Boolean
 planWateringPeriods(gardenId: ID!, period_length: Int, planning_ahead: Int, periods_predefined: Int): JSON
 removeAssignment(date: Date!, gardenId: ID!): Boolean

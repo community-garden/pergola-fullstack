@@ -19,5 +19,5 @@ input GardenSettingsInput {
    shortDescription: String
    homepageUrl: String
    logoUrl: String
-   location: Point
+   location: PointInput
 }

@@ -1,5 +1,6 @@
 import "dotenv/config"
 
+import { Neo4jGraphQL } from "@neo4j/graphql"
 import { ApolloServer } from "apollo-server-express"
 import cors from "cors"
 import express from "express"
@@ -13,7 +14,6 @@ import {
   KeycloakSchemaDirectives,
   KeycloakTypeDefs,
 } from "keycloak-connect-graphql"
-import { makeAugmentedSchema } from "neo4j-graphql-js"
 import path from "path"
 import pino from "pino"
 import PinoColada from "pino-colada"
@@ -65,12 +65,14 @@ app.use(
 app.use( graphqlPath, keycloak.middleware())
 
 app.use( cors())
+
 //app.use( bodyParser.json())
+
 webPush.setVapidDetails(
   `mailto:${process.env.WEB_PUSH_MAIL}`,
   process.env.PUBLIC_VAPID_KEY,
   process.env.PRIVATE_VAPID_KEY
-)
+);
 //app.post( "/reg", keycloak.protect(), subscriptionRequestHandler )
 
 /*
@@ -81,66 +83,60 @@ webPush.setVapidDetails(
  * https://grandstack.io/docs/neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema
  */
 
-const schema = makeAugmentedSchema( {
+( new Neo4jGraphQL( {
   typeDefs: `${KeycloakTypeDefs}\n${typeDefs}`,
-  schemaDirectives: KeycloakSchemaDirectives,
-  resolvers,
-  config: {
-    query: {
-      exclude: ["RatingCount"],
+  resolvers
+} )).getSchema().then( schema => {
+
+  /*
+   * Perform any database initialization steps such as
+   * creating constraints or ensuring indexes are online
+   *
+   * We catch any errors that occur during initialization
+   * to handle cases where we still want the API to start
+   * regardless, such as running with a read only user.
+   * In this case, ensure that any desired initialization steps
+   * have occurred
+   */
+
+  initializeDatabase( neo4jdriver )
+
+  /*
+   * Create a new ApolloServer instance, serving the GraphQL schema
+   * created using makeAugmentedSchema above and injecting the Neo4j driver
+   * instance into the context object so it is available in the
+   * generated resolvers to connect to the database.
+   */
+  const server = new ApolloServer( {
+    schema,
+    schemaDirectives: KeycloakSchemaDirectives,
+    context: ( { req } ) => {
+      return {
+        kauth: new KeycloakContext( { req: req as GrantedRequest } ),
+        driver: neo4jdriver,
+        neo4jDatabase: process.env.NEO4J_DATABASE,
+      }
     },
-    mutation: {
-      exclude: ["RatingCount"],
+    introspection: true,
+    playground: true,
+    subscriptions: {
+      path: "/graphql",
     },
-  },
-} )
+  } )
 
-/*
- * Perform any database initialization steps such as
- * creating constraints or ensuring indexes are online
- *
- * We catch any errors that occur during initialization
- * to handle cases where we still want the API to start
- * regardless, such as running with a read only user.
- * In this case, ensure that any desired initialization steps
- * have occurred
- */
+  /*
+   * Optionally, apply Express middleware for authentication, etc
+   * This also also allows us to specify a path for the GraphQL endpoint
+   */
+  server.applyMiddleware( { app, path: graphqlPath } )
+  const httpServer = http.createServer( app )
+  server.installSubscriptionHandlers( httpServer )
 
-initializeDatabase( neo4jdriver )
+  httpServer.listen( { host, port, path: graphqlPath }, () => {
+    logger.info( `GraphQL server ready at http://${host}:${port}${graphqlPath}` )
+    logger.info(
+      `GraphQL Subsciptions ready at ws://${host}:${port}${server.subscriptionsPath}`
+    )
+  } )
 
-/*
- * Create a new ApolloServer instance, serving the GraphQL schema
- * created using makeAugmentedSchema above and injecting the Neo4j driver
- * instance into the context object so it is available in the
- * generated resolvers to connect to the database.
- */
-const server = new ApolloServer( {
-  schema,
-  context: ( { req } ) => {
-    return {
-      kauth: new KeycloakContext( { req: req as GrantedRequest } ),
-      driver: neo4jdriver,
-      neo4jDatabase: process.env.NEO4J_DATABASE,
-    }
-  },
-  introspection: true,
-  playground: true,
-  subscriptions: {
-    path: "/graphql",
-  },
-} )
-
-/*
- * Optionally, apply Express middleware for authentication, etc
- * This also also allows us to specify a path for the GraphQL endpoint
- */
-server.applyMiddleware( { app, path: graphqlPath } )
-const httpServer = http.createServer( app )
-server.installSubscriptionHandlers( httpServer )
-
-httpServer.listen( { host, port, path: graphqlPath }, () => {
-  logger.info( `GraphQL server ready at http://${host}:${port}${graphqlPath}` )
-  logger.info(
-    `GraphQL Subsciptions ready at ws://${host}:${port}${server.subscriptionsPath}`
-  )
 } )
