@@ -5,7 +5,7 @@
 
 ## Quickstart
 
-The easiest way to get started with the Pergolga Stack is to create a Neo4j Sandbox instance and populate the database with example data 
+The easiest way to get started with the Pergola Stack is to create a Neo4j Sandbox instance and populate the database with example data 
 
 (If you have a running Neo4j database on localhost via Neo4j Desktop or a Neo4j server installation, change the password in `api/.env`)
 
@@ -36,7 +36,6 @@ yarn run seedDb
 
 ## Overview
 
-The Pergola Starter is a monorepo that includes a GraphQL API application and client web applications for React (default) and Angular for a business reviews dashboard.
 
 ### `/` - Project Root
 
@@ -81,7 +80,6 @@ You can open the GraphQL Playground in the Browser with the url [localhost:4001/
 
 ### [`/frontend`](./frontend)
 
-![](img/grandstack-app.png)
 
 The frontend for Pergola 
 
@@ -89,16 +87,16 @@ It includes:
 
 - UI Framework (to be decided)
     - Material UI
-    - Framework7
 - React router
 - Apollo Client / React Hooks
+- Codegen
 - ESLint (.eslintrc.json) for code linting
 - Prettier (.prettierrc.json) for code formatting
 
 
 ## Docker Compose
 
-A Redis(soon) and Neo4J Database instance is beeing provided for development purpose.
+A Neo4J Database instance is beeing provided for development purpose.
 
 You can quickly start it via:
 
@@ -119,6 +117,19 @@ yarn run seedDb
 ```
 
 You can find instructions for other ways to use Neo4j (Neo4j Desktop, Neo4j Aura, and other cloud services) in the [Neo4j directory README.](./neo4j)
+
+
+# Authentification
+
+Pergola uses Keycloak for rights- and user management. Keycloak offers a lot of authentication possibilities, that can be adopted to the needs of the garden community.
+Social identity provider like github, twitter, google or nextcloud can be used for user authentication. 
+
+To bootstrap a simple keycloak config on a newly created Pergola instance run the folllowing commad:
+
+```
+yarn run initKeycloak
+```
+
 
 ## Forked from Template
 
