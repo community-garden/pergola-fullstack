@@ -1,5 +1,5 @@
-import { Neo4jPointInput } from "neo4j-graphql-js"
+import {Point} from "neo4j-driver"
 
-export function neo4jPointInput2geo_2d( point: Neo4jPointInput ): string {
-  return `point({latitude: ${point.latitude}, longitude: ${point.longitude} }) AS geo_2d`
+export function neo4jPointInput2geo_2d( point: Point ): string {
+  return `point({latitude: ${point.x}, longitude: ${point.y} }) AS geo_2d`
 }

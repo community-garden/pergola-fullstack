@@ -1,10 +1,10 @@
-{"type":"node","id":"10","labels":["User"],"properties":{"id":"Günther","label":"Günther","type":"User"}}
+"type":"node","id":"10","labels":["User"],"properties":{"id":"Günther","label":"Günther","type":"User"}}
 {"type":"node","id":"11","labels":["User"],"properties":{"id":"Franziska","label":"Franziska","type":"User"}}
-{"type":"node","id":"20","labels":["WateringTask"],"properties":{"label":"24.12.2020","type":"WateringTask","date":"2020-12-24","done":"true"}}
-{"type":"node","id":"21","labels":["WateringTask"],"properties":{"label":"31.12.2020","type":"WateringTask","date":"2020-12-31"}}
+{"type":"node","id":"20","labels":["WateringTask"],"properties":{"label":"24.12.2020","type":"WateringTask","date":"2022-09-24","done":"true"}}
+{"type":"node","id":"21","labels":["WateringTask"],"properties":{"label":"31.12.2020","type":"WateringTask","date":"2022-09-30"}}
 {"type":"node","id":"30","labels":["ChangeRequest"],"properties":{"label":"changerequest","type":"ChangeRequest"}}
-{"type":"node","id":"40","labels":["LogEvent"],"properties":{"label":"markedasdone","type":"LogEvent","date":"2020-12-24"}}
-{"type":"node","id": "50","labels":["WateringPeriod"],"properties":{"label": "kw 52+53","type": "WateringPeriod","from": "2020-12-20","till": "2021-01-02"}}
+{"type":"node","id":"40","labels":["LogEvent"],"properties":{"label":"markedasdone","type":"LogEvent","date":"2022-09-24"}}
+{"type":"node","id": "50","labels":["WateringPeriod"],"properties":{"label": "kw 52+53","type": "WateringPeriod","from": "2022-09-20","till": "2022-10-02"}}
 {"type":"node","id": "60","labels":["Garden"],"properties":{"label": "Wurzelwerk", "gardenId": "wurzelwerk" ,"type": "Garden"}}
 {"type":"node","id": "61","labels":["Garden"],"properties":{"label": "Pippilotta", "gardenId": "pippilotta" ,"type": "Garden"}}
 {"id":"100","type":"relationship","label":"available","start":{"id":"10"},"end":{"id":"20"}}

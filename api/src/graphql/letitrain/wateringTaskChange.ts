@@ -10,9 +10,11 @@ export const publishChange = () => {
   pubsub.publish( TOPIC, {WateringTaskChange: true} )
 }
 
+
 const { WateringTaskChange } : SubscriptionResolvers = {
   WateringTaskChange: {
-    subscribe: () => pubsub.asyncIterator( [TOPIC] )
+    //@ts-ignore
+    subscribe: async () => pubsub.asyncIterator( TOPIC )
   }
 }
 

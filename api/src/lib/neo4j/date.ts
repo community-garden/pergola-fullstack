@@ -1,11 +1,11 @@
-import { Neo4jDateInput } from "neo4j-graphql-js"
+import {Date as Neo4jDate } from "neo4j-driver"
 
-export function neo4jDateInput2iso( date: Neo4jDateInput ): string {
+export function neo4jDateInput2iso( date: Neo4jDate ): string {
   return (
-    parseInt( date.year ) + "-" + parseInt( date.month ) + "-" + parseInt( date.day )
+    String( date.year ) + "-" + String( date.month ) + "-" + String( date.day )
   )
 }
 
-export function neo4jDateInput2Date( date: Neo4jDateInput): Date {
-  return new Date(neo4jDateInput2iso(date))
+export function neo4jDateInput2Date( date: Neo4jDate ): Date {
+  return new Date( neo4jDateInput2iso( date ))
 }

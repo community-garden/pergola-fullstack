@@ -1,5 +1,5 @@
 import {auth, KeycloakContext} from "keycloak-connect-graphql"
-import {Neo4jDateInput} from "neo4j-graphql-js"
+import {Date as Neo4jDate} from "neo4j-driver"
 
 import {neo4jdriver} from "../../config/neo4j"
 import {neo4jDateInput2iso, withinTransaction} from "../../lib/neo4j"
@@ -37,7 +37,7 @@ const {setUserAvailability}: MutationResolvers<{ kauth: KeycloakContext }> = {
           from: neo4jDateInput2iso( from ),
           till: neo4jDateInput2iso( till )
         } )
-      dates.map(( date: Neo4jDateInput ) =>
+      dates.map(( date: Neo4jDate ) =>
         tx.run( query, {
           gardenId,
           id,
