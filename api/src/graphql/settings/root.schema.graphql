@@ -5,6 +5,7 @@
 type UserSettings {
    ui_locale: String
    letitrain_maximum_tasks: Int
+   email: String
 }
 
 input UserSettingsInput {
