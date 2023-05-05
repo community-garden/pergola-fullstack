@@ -85,7 +85,10 @@ webPush.setVapidDetails(
 
 ( new Neo4jGraphQL( {
   typeDefs: `${KeycloakTypeDefs}\n${typeDefs}`,
-  resolvers
+  resolvers,
+  config: {
+    enableDebug: true
+  }
 } )).getSchema().then( schema => {
 
   /*
