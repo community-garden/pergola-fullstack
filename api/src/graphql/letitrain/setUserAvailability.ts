@@ -1,4 +1,3 @@
-import {GraphQLObjectResolver} from "apollo-graphql/lib/schema/resolveObject"
 import {auth, KeycloakContext} from "keycloak-connect-graphql"
 import {Neo4jDateInput} from "neo4j-graphql-js"
 
