@@ -8,7 +8,7 @@ export function query( settings ) {
   /** To prevent injections, we ensure only known keys are joined.
    *  TODO: Better do runtime checks against the typescript types **/
   const keys = Object.keys( settings )
-  const keys_trusted = ["ui_locale", "letitrain_maximum_tasks"]
+  const keys_trusted = ["ui_locale", "letitrain_maximum_tasks", "email", "label"]
   const keys_checked = keys.filter(( k ) => keys_trusted.includes( k ))
   if ( keys_checked.length != keys.length ) {
     console.warn( "UNTRUSTED key in", keys )
@@ -16,7 +16,7 @@ export function query( settings ) {
   }
 
   return (
-    "MERGE (user:User {id: $id}) SET user.label = $label SET user.email = $email " +
+    "MERGE (user:User {id: $id}) " +
     "MERGE (settings:UserSettings)-[r:of]-(user) " +
     keys_checked.map(( k ) => "SET settings." + k + " = $" + k ).join( " " ) +
     " " +
@@ -31,8 +31,8 @@ const Mutation = {
       tx.run( query( settings ), {
         ...settings,
         id,
-        label,
-        email
+        email,
+        label
       } )
     )
     return flatten( result.records[0] ).settings
