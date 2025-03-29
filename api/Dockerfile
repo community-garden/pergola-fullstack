@@ -1,7 +1,7 @@
-FROM node:12
+FROM node:16
 
-RUN mkdir -p /app
-WORKDIR /app
+RUN mkdir -p /api
+WORKDIR /api
 
 COPY package.json .
 RUN npm install

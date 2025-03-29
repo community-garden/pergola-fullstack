@@ -26,6 +26,7 @@
       }
     ],
     "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/ban-ts-comment": "off",
     "simple-import-sort/sort": "error",
     "import/order": "off",
     "import/first": "error",
