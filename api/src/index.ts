@@ -1,19 +1,18 @@
 import "dotenv/config"
 
+import {
+  GrantedRequest,
+  KeycloakContext,
+  KeycloakTypeDefs,
+} from "@dbateman/keycloak-connect-graphql"
 import { Neo4jGraphQL } from "@neo4j/graphql"
 import { ApolloServer } from "apollo-server-express"
 import cors from "cors"
-import express from "express"
+import express, { Application } from "express"
 import expressPino from "express-pino-logger"
 import * as fs from "fs"
 import * as http from "http"
 import Keycloak from "keycloak-connect"
-import {
-  GrantedRequest,
-  KeycloakContext,
-  KeycloakSchemaDirectives,
-  KeycloakTypeDefs,
-} from "keycloak-connect-graphql"
 import path from "path"
 import pino from "pino"
 import PinoColada from "pino-colada"
@@ -42,7 +41,7 @@ const host = process.env.GRAPHQL_SERVER_HOST || "0.0.0.0"
 
 // set environment variables from .env
 
-const app = express()
+const app: Application = express()
 app.use( expressLogger )
 
 useWebdavServer( app, "/calendar" )
@@ -112,7 +111,6 @@ webPush.setVapidDetails(
    */
   const server = new ApolloServer( {
     schema,
-    schemaDirectives: KeycloakSchemaDirectives,
     context: ( { req } ) => {
       return {
         kauth: new KeycloakContext( { req: req as GrantedRequest } ),
@@ -120,26 +118,19 @@ webPush.setVapidDetails(
         neo4jDatabase: process.env.NEO4J_DATABASE,
       }
     },
-    introspection: true,
-    playground: true,
-    subscriptions: {
-      path: "/graphql",
-    },
+    introspection: true
   } )
 
+  server.start().then( () => {
   /*
    * Optionally, apply Express middleware for authentication, etc
    * This also also allows us to specify a path for the GraphQL endpoint
    */
   server.applyMiddleware( { app, path: graphqlPath } )
   const httpServer = http.createServer( app )
-  server.installSubscriptionHandlers( httpServer )
 
   httpServer.listen( { host, port, path: graphqlPath }, () => {
     logger.info( `GraphQL server ready at http://${host}:${port}${graphqlPath}` )
-    logger.info(
-      `GraphQL Subsciptions ready at ws://${host}:${port}${server.subscriptionsPath}`
-    )
   } )
-
+  } )
 } )

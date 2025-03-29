@@ -1,4 +1,4 @@
-import { hasRole } from "keycloak-connect-graphql"
+import { hasRole } from "@dbateman/keycloak-connect-graphql"
 
 import { neo4jdriver } from "../../config/neo4j"
 import { presets } from "../../config/roles"

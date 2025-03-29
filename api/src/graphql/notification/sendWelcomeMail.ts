@@ -1,4 +1,4 @@
-import {auth, KeycloakContext} from "keycloak-connect-graphql"
+import {auth, KeycloakContext} from "@dbateman/keycloak-connect-graphql"
 
 import {sendEMail} from "../../notification/nodemailer"
 import {MutationResolvers} from "../types/graphql"

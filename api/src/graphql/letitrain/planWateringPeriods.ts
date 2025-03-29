@@ -1,5 +1,6 @@
+import { hasRole } from "@dbateman/keycloak-connect-graphql"
 import dayjs from "dayjs"
-import { hasRole } from "keycloak-connect-graphql"
+import {Session} from "neo4j-driver"
 import * as R from "ramda"
 
 import {
@@ -104,9 +105,9 @@ async function planPeriods( gardenId, planning_ahead, default_target_count=2, fa
   }
 }
 
-async function calc_first_new_period_start( session ) {
+async function calc_first_new_period_start( session: Session ) {
   const regular = neo4jDateInput2Date(( await withinTransaction( session, ( tx ) =>
-    tx.run( "Match (p:WateringPeriod) return MAX(date(p.till)) + duration({days: 1})" ))).records[0].get( 0 ))
+    tx.run( "Match (p:WateringPeriod) return MAX(date(p.till)) + duration({days: 1})" )))?.records[0].get( 0 )  || 0 )
   const today = new Date()
   return dayjs( regular > today ? regular : today ).format( "YYYY-MM-DD" )
 }

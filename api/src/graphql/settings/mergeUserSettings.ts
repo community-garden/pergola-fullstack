@@ -1,18 +1,17 @@
-import { auth } from "keycloak-connect-graphql"
+import { auth } from "@dbateman/keycloak-connect-graphql"
 
 import { neo4jdriver } from "../../config/neo4j"
 import { withinTransaction } from "../../lib/neo4j"
 import { flatten } from "../../lib/neo4j/record"
 
-export function query( settings ) {
+export function query( settings: any ) {
   /** To prevent injections, we ensure only known keys are joined.
    *  TODO: Better do runtime checks against the typescript types **/
   const keys = Object.keys( settings )
   const keys_trusted = ["ui_locale", "letitrain_maximum_tasks", "email", "label"]
   const keys_checked = keys.filter(( k ) => keys_trusted.includes( k ))
   if ( keys_checked.length != keys.length ) {
-    console.warn( "UNTRUSTED key in", keys )
-    return null
+    throw new Error( "UNTRUSTED key in settings" )
   }
 
   return (

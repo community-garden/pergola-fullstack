@@ -1,4 +1,4 @@
-import { hasRole } from "keycloak-connect-graphql"
+import { hasRole } from "@dbateman/keycloak-connect-graphql"
 
 import { exampleTasks } from "../../algo/letitrain/assignment/test-data"
 import { neo4jdriver } from "../../config/neo4j"

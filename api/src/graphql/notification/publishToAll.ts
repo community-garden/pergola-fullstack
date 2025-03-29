@@ -1,4 +1,4 @@
-import {auth, KeycloakContext} from "keycloak-connect-graphql"
+import {auth, KeycloakContext} from "@dbateman/keycloak-connect-graphql"
 
 import publishPushNotification from "../../notification/publishPushNotification"
 import {MutationResolvers} from "../types/graphql"

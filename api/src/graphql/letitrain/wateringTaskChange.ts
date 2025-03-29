@@ -1,20 +1,18 @@
-import { PubSub } from "apollo-server-express"
-
 import {SubscriptionResolvers} from "../types/graphql"
 
-const pubsub = new PubSub()
+//const pubsub = new PubSub()
 const TOPIC = "WATERING_TASK_CHANGE"
 
 
 export const publishChange = () => {
-  pubsub.publish( TOPIC, {WateringTaskChange: true} )
+  console.warn( "publishing currently disabled until a replacement for the deprecated apollo-server PubSub is found" )
+  //pubsub.publish( TOPIC, {WateringTaskChange: true} )
 }
-
 
 const { WateringTaskChange } : SubscriptionResolvers = {
   WateringTaskChange: {
-    //@ts-ignore
-    subscribe: async () => pubsub.asyncIterator( TOPIC )
+  // @ts-ignore
+   subscribe: async () => console.warn( "subscription currently disabled until a replacement for the deprecated apollo-server PubSub is found" )
   }
 }
 

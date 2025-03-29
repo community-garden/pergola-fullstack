@@ -1,5 +1,5 @@
+import {hasRole} from "@dbateman/keycloak-connect-graphql"
 import { ApolloError } from "apollo-server-errors"
-import {hasRole} from "keycloak-connect-graphql"
 import * as R from "rambda"
 
 import { neo4jdriver } from "../../config/neo4j"
@@ -29,7 +29,7 @@ const Mutation = {
       let res = {}
       try {
         const result = await  merge_GardenSettings( settings )
-        res = result.records?.[0] ? flatten( result.records[0] ).settings : {}
+        res = result?.records[0] ? flatten( result.records[0] ).settings : {}
       } catch( e ) {
         console.error( "cannot execute mergeGardenSettings query", e )
         throw new ApolloError( "cannot execute mergeGardenSettings query", "TRANSACTION_ERROR", e.message )

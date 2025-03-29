@@ -1,4 +1,4 @@
-import {auth, KeycloakContext} from "keycloak-connect-graphql"
+import {auth, KeycloakContext} from "@dbateman/keycloak-connect-graphql"
 
 import {neo4jdriver} from "../../config/neo4j"
 import {neo4jDateInput2iso, withinTransaction} from "../../lib/neo4j"
