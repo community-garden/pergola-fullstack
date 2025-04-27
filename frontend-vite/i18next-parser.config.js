@@ -1,0 +1,38 @@
+export default {
+  contextSeparator: '_',
+  createOldCatalogs: false,
+  defaultNamespace: 'translation',
+  defaultValue: '',
+  indentation: 2,
+  keepRemoved: false,
+  keySeparator: '.',
+  lexers: {
+    js: ['JavascriptLexer'],
+    jsx: ['JsxLexer'],
+    ts: ['JavascriptLexer'],
+    tsx: ['JsxLexer'],
+    default: ['JavascriptLexer']
+  },
+  lineEnding: 'auto',
+  locales: ['en', 'de'],
+  namespaceSeparator: ':',
+  output: 'src/i18n/$LOCALE/$NAMESPACE.json',
+  pluralSeparator: '_',
+  input: [
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.test.{js,jsx,ts,tsx}',
+    '!src/**/*.spec.{js,jsx,ts,tsx}',
+    '!src/**/*.stories.{js,jsx,ts,tsx}',
+    '!src/**/__tests__/**',
+    '!src/**/__mocks__/**',
+    '!src/**/__generated__/**',
+    '!src/**/node_modules/**'
+  ],
+  sort: true,
+  skipDefaultValues: false,
+  useKeysAsDefaultValue: true,
+  verbose: true,
+  failOnWarnings: false,
+  removeUnusedKeys: true,
+  customValueTemplate: null,
+}; 

@@ -1,0 +1,28 @@
+{
+  "frequency": {
+    "description": "Wir planen dich ein für höchstens...",
+    "question": "Wie oft möchtest du maximal gießen?",
+    "timesPerWeek_one": "einmal pro Woche",
+    "timesPerWeek_other": "{{count}} mal pro Woche"
+  },
+  "notifications": {
+    "question": "Wie sollen wir dich erinnern?"
+  },
+  "wizard": {
+    "buttons": {
+      "back": "Zurück",
+      "finish": "Fertig",
+      "next": "Weiter"
+    },
+    "headlines": {
+      "availability": "Verfügbarkeit angeben",
+      "frequency": "Häufigkeit angeben",
+      "notification": "Erinnerung angeben"
+    },
+    "steps": {
+      "availability": "Verfügbarkeit",
+      "frequency": "Häufigkeit",
+      "notification": "Erinnerung"
+    }
+  }
+}

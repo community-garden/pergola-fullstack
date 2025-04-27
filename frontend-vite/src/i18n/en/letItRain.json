@@ -1,0 +1,28 @@
+{
+  "frequency": {
+    "description": "We will schedule you for a maximum of...",
+    "question": "How often would you like to water at most?",
+    "timesPerWeek_one": "once per week",
+    "timesPerWeek_other": "{{count}} times per week"
+  },
+  "notifications": {
+    "question": "How should we remind you?"
+  },
+  "wizard": {
+    "buttons": {
+      "back": "Back",
+      "finish": "Finish",
+      "next": "Next"
+    },
+    "headlines": {
+      "availability": "Specify availability",
+      "frequency": "Specify frequency",
+      "notification": "Specify reminder"
+    },
+    "steps": {
+      "availability": "Availability",
+      "frequency": "Frequency",
+      "notification": "Reminder"
+    }
+  }
+}
