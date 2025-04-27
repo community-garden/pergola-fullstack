@@ -13,7 +13,8 @@ import {
   Notifications,
   Settings,
   GardenSettings,
-  LandingPage
+  LandingPage,
+  WateringWizard
 } from './pages';
 import './i18n';
 
@@ -41,6 +42,8 @@ const App = () => {
                 <Route path="home" element={<Home />} />
                 <Route path="map" element={<GardenMap />} />
                 <Route path="watering" element={<Watering />} />
+                <Route path="watering/wizard" element={<WateringWizard />} />
+                <Route path="watering/wizard/:stepNumber" element={<WateringWizard />} />
                 <Route path="notifications" element={<Notifications />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="garden-settings" element={<GardenSettings />} />

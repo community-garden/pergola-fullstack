@@ -1,9 +1,5 @@
 {
   "appName": "Pergola",
-  "noLocationData": "Keine Standortdaten verfügbar",
-  "settings": {
-    "language": "Sprache"
-  },
   "common": {
     "gardenSettings": "Garten Einstellungen",
     "language": "Sprache",
@@ -11,5 +7,9 @@
     "logout": "Logout",
     "myProfile": "Mein Profil",
     "userMenu": "Anwendender"
+  },
+  "noLocationData": "Keine Standortdaten verfügbar",
+  "settings": {
+    "language": "Sprache"
   }
 }

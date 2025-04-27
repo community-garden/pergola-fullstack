@@ -6,7 +6,13 @@
     "timesPerWeek_other": "{{count}} mal pro Woche"
   },
   "notifications": {
-    "question": "Wie sollen wir dich erinnern?"
+    "question": "Wie sollen wir dich erinnern?",
+    "email": "Email",
+    "push": "Push Benachrichtigung",
+    "saveToProfile": "In Profil speichern",
+    "beforeEachTask": "Vor jeder Aufgabe",
+    "beforeEachWeek": "Vor jeder Woche",
+    "days": "Tage"
   },
   "wizard": {
     "buttons": {

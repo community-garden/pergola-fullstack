@@ -1,3 +1,5 @@
+import { TFunction } from "i18next";
+
 // JSON Schema for the notification settings form
 export const notificationSchema = {
   type: 'object',
@@ -56,7 +58,7 @@ export const notificationSchema = {
 };
 
 // UI Schema for controlling the layout and appearance
-export const notificationUiSchema = {
+export const notificationUiSchema = (t: TFunction) => ({
   type: 'VerticalLayout',
   elements: [
     {
@@ -69,7 +71,7 @@ export const notificationUiSchema = {
             {
               type: 'Control',
               scope: '#/properties/notificationMethods/properties/email',
-              label: 'notifications.email',
+              label: t('notifications.email'),
               options: {
                 showUnfocusedDescription: false
               }
@@ -77,7 +79,7 @@ export const notificationUiSchema = {
             {
               type: 'Control',
               scope: '#/properties/notificationMethods/properties/push',
-              label: 'notifications.push',
+              label: t('notifications.push'),
               options: {
                 showUnfocusedDescription: false
               }
@@ -105,15 +107,18 @@ export const notificationUiSchema = {
             {
               type: 'Control',
               scope: '#/properties/reminders/properties/beforeEachTask/properties/enabled',
-              label: 'notifications.beforeEachTask'
+              label: t('notifications.beforeEachTask')
             },
             {
               type: 'Control',
               scope: '#/properties/reminders/properties/beforeEachTask/properties/days',
-              label: '',
-              options: {
-                showIfProperty: '#/properties/reminders/properties/beforeEachTask/properties/enabled',
-                showUnfocusedDescription: false
+              label: t('notifications.days'),
+              rule: {
+                effect: 'SHOW',
+                condition: {
+                  scope: '#/properties/reminders/properties/beforeEachTask/properties/enabled',
+                  schema: { const: true }
+                }
               }
             }
           ]
@@ -124,15 +129,18 @@ export const notificationUiSchema = {
             {
               type: 'Control',
               scope: '#/properties/reminders/properties/beforeEachWeek/properties/enabled',
-              label: 'notifications.beforeEachWeek'
+              label: t('notifications.beforeEachWeek')
             },
             {
               type: 'Control',
               scope: '#/properties/reminders/properties/beforeEachWeek/properties/days',
-              label: '',
-              options: {
-                showIfProperty: '#/properties/reminders/properties/beforeEachWeek/properties/enabled',
-                showUnfocusedDescription: false
+              label: t('notifications.days'),
+              rule: {
+                effect: 'SHOW',
+                condition: {
+                  scope: '#/properties/reminders/properties/beforeEachWeek/properties/enabled',
+                  schema: { const: true }
+                }
               }
             }
           ]
@@ -145,7 +153,7 @@ export const notificationUiSchema = {
       label: 'notifications.saveToProfile'
     }
   ]
-};
+});
 
 // Initial data for the form
 export const initialData = {

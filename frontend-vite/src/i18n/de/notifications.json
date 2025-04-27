@@ -1,0 +1,8 @@
+
+{
+  "notifications": {
+    "email": "Email",
+    "push": "Push Benachrichtigung",
+    "saveToProfile": "In Profil speichern"
+  }
+}

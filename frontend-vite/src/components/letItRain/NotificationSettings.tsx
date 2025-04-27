@@ -46,7 +46,7 @@ interface NotificationSettingsProps {
 }
 
 export function NotificationSettings({ onChange, initialSettings }: NotificationSettingsProps) {
-  const { t } = useTranslation('letItRain');
+  const { t, i18n } = useTranslation('letItRain');
   const [data, setData] = useState(initialSettings || initialData);
 
   const handleChange = (newData: any) => {
@@ -56,6 +56,7 @@ export function NotificationSettings({ onChange, initialSettings }: Notification
     }
   };
 
+
   return (
     <StyledBox>
       <StyledHeading variant="h3">
@@ -64,7 +65,7 @@ export function NotificationSettings({ onChange, initialSettings }: Notification
       
       <JsonForms
         schema={notificationSchema}
-        uischema={notificationUiSchema}
+        uischema={notificationUiSchema(t)}
         data={data}
         renderers={renderers}
         cells={materialCells}

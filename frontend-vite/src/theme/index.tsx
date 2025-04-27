@@ -1,4 +1,4 @@
-import { createContext, ReactNode } from 'react';
+import React, { createContext, ReactNode } from 'react';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material';
 
 // Create a basic theme context for compatibility

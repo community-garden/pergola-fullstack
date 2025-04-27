@@ -14,11 +14,14 @@ import {
   getMonth, 
   getWeek, 
   setWeek, 
-  setDay, 
-  isSameDay,
-  parseISO 
-} from 'date-fns';
+  setDay,
+  addDays,
+  startOfYear,
+  addMonths,
+  getYear,
+  } from 'date-fns';
 import React, { useState } from 'react';
+import { differenceInDays } from 'date-fns';
 
 interface Props {
   dates: Date[];
@@ -50,8 +53,15 @@ export function Calendar({
   };
 
   const dateIncluded = (dates: Date[], date: Date): boolean => {
-    const dateStr = format(date, 'yyyy-MM-dd');
-    return dates.map((d) => format(d, 'yyyy-MM-dd')).includes(dateStr);
+    try {
+      console.log('date', date)
+
+      const dateStr = format(date, 'yyyy-MM-dd');
+      return dates.map((d) => format(d, 'yyyy-MM-dd')).includes(dateStr);
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return false;
+    }
   };
   
   const getDateKey = (date: Date): string => {
@@ -65,14 +75,6 @@ export function Calendar({
 
   const [firstDate] = dates;
   const lastDate = dates[dates.length - 1];
-
-  const datesByWeeks: Map<number, Array<Date>> = dates.reduce((map, date) => {
-    const weekNum = getWeek(date);
-    map.has(weekNum) || map.set(weekNum, []);
-    map.get(weekNum)?.push(date);
-
-    return map;
-  }, new Map());
 
   const handleAllChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // (un)check all dates
@@ -200,6 +202,11 @@ export function Calendar({
     );
   }
 
+  const startOfMonth = new Date().setDate(1);
+  const nextNextMonth = addMonths(startOfMonth, 2);
+  const lastDateOfMonth = new Date(nextNextMonth).setDate(0);
+  const dayDifference = differenceInDays(lastDateOfMonth, startOfMonth);
+  const weeks = Math.ceil(dayDifference / 7);
   return (
     <>
       <Typography variant="h3" sx={questionStyles}>
@@ -222,53 +229,31 @@ export function Calendar({
               <TableCell align="center" sx={{ padding: '4px', width: '40px' }}>
                 <AllCheckBox />
               </TableCell>
-              {[...new Array(7)].map((_, index) => (
-                <TableCell key={index} align="center" sx={{ padding: '4px', width: '40px' }}>
+              {[1, 2, 3, 4, 5, 6, 7].map((dayOfWeek) => (
+                <TableCell key={dayOfWeek} align="center" sx={{ padding: '4px', width: '40px' }}>
                   <DayCheckBox
-                    dayOfWeek={index}
-                    label={format(setDay(new Date(), index + 1), 'EEEE').substring(0, 2)}
+                    dayOfWeek={dayOfWeek}
+                    label={format(setDay(new Date(), dayOfWeek), 'EEEE').substring(0, 2)}
                   />
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {Array.from(datesByWeeks.keys())
-              .sort()
-              .reverse()
-              .map((cw) => (
-                <TableRow key={cw}>
+            {Array.from(new Array(weeks))
+              .map((_, weekIndex) => (
+                <TableRow key={weekIndex}>
                   <TableCell align="center" sx={{ padding: '4px' }}>
-                    <CwCheckBox cw={cw} />
+                    <CwCheckBox cw={weekIndex + 1} />
                   </TableCell>
                   {[...new Array(7)].map((_, dayOfWeek) => {
-                    const datesOfWeek = datesByWeeks.get(cw);
-                    if (datesOfWeek) {
-                      // Find a date in this week that matches the day of week
-                      let date = datesOfWeek.find(date => {
-                        const day = new Date(date).getDay();
-                        // Convert Sunday (0) to 6 to match the expected format where Monday is 0
-                        const adjustedDay = day === 0 ? 6 : day - 1;
-                        return adjustedDay === dayOfWeek;
-                      });
-                      
-                      const dateAvailable = !!date;
-                      if (!date) {
-                        // Provide missing date by week and day number
-                        const baseDate = new Date();
-                        // Set to the beginning of the week (Monday)
-                        const weekDate = setWeek(baseDate, cw);
-                        // Then set to the correct day (dayOfWeek + 1 because setDay uses 1 for Monday)
-                        date = setDay(weekDate, dayOfWeek + 1);
-                      }
-                      
-                      return (
-                        <TableCell key={format(date, 'dd-MM-yyyy')} align="center" sx={{ padding: '4px' }}>
-                          <DateCheckBox date={date} disabled={!dateAvailable} />
-                        </TableCell>
-                      );
-                    }
-                    return <TableCell key={`empty-${cw}-${dayOfWeek}`} sx={{ padding: '4px' }} />;
+                    const date = addDays(startOfMonth, weekIndex * 7 + dayOfWeek);
+                    const dateAvailable = dateIncluded(dates, date);
+                    return (
+                      <TableCell key={format(date, 'dd-MM-yyyy')} align="center" sx={{ padding: '4px' }}>
+                        <DateCheckBox date={date} disabled={!dateAvailable} />
+                      </TableCell>
+                    );
                   })}
                 </TableRow>
               ))}

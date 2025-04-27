@@ -1,0 +1,40 @@
+{
+  "calendar": {
+    "today": "heute",
+    "weekdays": {
+      "friday": "Fr",
+      "monday": "Mo",
+      "saturday": "Sa",
+      "sunday": "So",
+      "thursday": "Do",
+      "tuesday": "Di",
+      "wednesday": "Mi"
+    }
+  },
+  "page": {
+    "helpDialog": {
+      "closeButton": "Schließen",
+      "conclusion": "Nach Abschluss dieser Schritte wird das System dir basierend auf deiner Verfügbarkeit und den Bedürfnissen des Gartens Gießtage zuweisen. Du kannst deine Einstellungen jederzeit aktualisieren.",
+      "step1": {
+        "description": "Entscheide, wie viele Tage pro Woche du bereit bist, den Garten zu gießen.",
+        "title": "Schritt 1: Lege deine Gießhäufigkeit fest"
+      },
+      "step2": {
+        "description": "Wähle die Tage im Kalender aus, an denen du verfügbar bist, um den Garten zu gießen.",
+        "title": "Schritt 2: Markiere deine Verfügbarkeit"
+      },
+      "step3": {
+        "description": "Wähle aus, wie du an deine Gießaufgaben erinnert werden möchtest.",
+        "title": "Schritt 3: Richte Benachrichtigungen ein"
+      },
+      "stepsTitle": "Folge diesen Schritten zur Teilnahme:",
+      "title": "Wie du am Gießplan teilnehmen kannst"
+    },
+    "infoArea": {
+      "description": "Beteilige dich am gemeinschaftlichen Gießplan, für eine gute Ernte. Wähle deine Verfügbarkeit und Präferenzen, um zu beginnen.",
+      "registerButton": "In den Gießplan eintragen",
+      "title": "Teilnahme am Gießplan"
+    },
+    "title": "Gießplan"
+  }
+}

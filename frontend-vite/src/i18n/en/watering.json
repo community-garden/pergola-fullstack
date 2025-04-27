@@ -1,0 +1,40 @@
+{
+  "calendar": {
+    "today": "today",
+    "weekdays": {
+      "friday": "Fri",
+      "monday": "Mon",
+      "saturday": "Sat",
+      "sunday": "Sun",
+      "thursday": "Thu",
+      "tuesday": "Tue",
+      "wednesday": "Wed"
+    }
+  },
+  "page": {
+    "helpDialog": {
+      "closeButton": "Close",
+      "conclusion": "After completing these steps, the system will assign you watering days based on your availability and the garden's needs. You can always update your preferences later.",
+      "step1": {
+        "description": "Decide how many days per week you are willing to water the garden.",
+        "title": "Step 1: Set your watering frequency"
+      },
+      "step2": {
+        "description": "Select the days when you are available to water the garden on the calendar.",
+        "title": "Step 2: Mark your availability"
+      },
+      "step3": {
+        "description": "Choose how you want to be reminded about your watering duties.",
+        "title": "Step 3: Set up notifications"
+      },
+      "stepsTitle": "Follow these steps to participate:",
+      "title": "How to Participate in the Watering Schedule"
+    },
+    "infoArea": {
+      "description": "Join the community watering schedule to help maintain the garden. Select your availability and preferences to get started.",
+      "registerButton": "Register for Watering Schedule",
+      "title": "Watering Schedule Participation"
+    },
+    "title": "Watering Schedule"
+  }
+}
