@@ -3,5 +3,13 @@
   "noLocationData": "No location data available",
   "settings": {
     "language": "Language"
+  },
+  "common": { 
+    "gardenSettings": "Garden Settings",
+    "language": "Language",
+    "login": "Login",
+    "logout": "Logout",
+    "myProfile": "My Profile",
+    "userMenu": "User Menu"
   }
 }

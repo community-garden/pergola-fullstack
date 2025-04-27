@@ -25,9 +25,6 @@ const Watering = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography variant="h4" gutterBottom align="center">
-        {t('navigation:watering')}
-      </Typography>
       
       <ContentPaper>
         <Typography variant="h6" gutterBottom>

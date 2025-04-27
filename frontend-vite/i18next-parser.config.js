@@ -1,7 +1,7 @@
 export default {
   contextSeparator: '_',
   createOldCatalogs: false,
-  defaultNamespace: 'translation',
+  defaultNamespace: 'common',
   defaultValue: '',
   indentation: 2,
   keepRemoved: false,

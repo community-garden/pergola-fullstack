@@ -1,5 +1,5 @@
 import { createContext, ReactNode } from 'react';
-import { ThemeProvider, createTheme, Theme, ThemeOptions } from '@mui/material';
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material';
 
 // Create a basic theme context for compatibility
 export const ColorModeContext = createContext({
@@ -12,94 +12,189 @@ interface ThemeContextProviderProps {
   children: ReactNode;
 }
 
-// Define the theme
-const theme = createTheme({
+const headingsFontFamily = [
+  'Oswald',
+  'Arial',
+  'sans-serif',
+  '"Apple Color Emoji"',
+  '"Segoe UI Emoji"',
+  '"Segoe UI Symbol"',
+].join(',');
+
+// Create the theme based on the original frontend/src/theme.ts
+const customTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   palette: {
     primary: {
-      light: '#5c9ead',
-      main: '#326273',
-      dark: '#0c374b',
-      contrastText: '#ffffff',
+      light: '#b1e5d6',
+      main: '#009e7e',
+      dark: '#006f52',
+      contrastText: '#fff',
     },
     secondary: {
-      light: '#e6e6e6',
-      main: '#b4b4b4',
-      dark: '#848484',
-      contrastText: '#000000',
+      light: '#ffbd4e',
+      main: '#eb8d17',
+      dark: '#b35f00',
+      contrastText: '#fff',
     },
-    background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
+    grey: {
+      200: '#eee', // light
+      400: '#bdbdbd', // main
+      800: '#424242', // dark
     },
   },
   typography: {
-    fontSize: 14,
-    fontFamily: '"Open Sans", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontSize: '2.5rem',
-      fontFamily: '"Oswald", "Helvetica", "Arial", sans-serif',
-    },
-    h2: {
-      fontSize: '2rem',
-      fontFamily: '"Oswald", "Helvetica", "Arial", sans-serif',
-    },
-    h3: {
-      fontSize: '1.75rem',
-      fontFamily: '"Oswald", "Helvetica", "Arial", sans-serif',
-    },
-    h4: {
-      fontSize: '1.5rem',
-      fontFamily: '"Oswald", "Helvetica", "Arial", sans-serif',
-    },
-    h5: {
-      fontSize: '1.25rem',
-      fontFamily: '"Oswald", "Helvetica", "Arial", sans-serif',
-      textTransform: 'none',
-    },
-    h6: {
-      fontSize: '1rem',
-      fontFamily: '"Oswald", "Helvetica", "Arial", sans-serif',
-    },
+    fontSize: 16,
+    fontFamily: [
+      'Open Sans',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
     body1: {
       fontSize: '1rem',
     },
     body2: {
-      fontSize: '0.875rem',
+      // Body tag font size!
+      fontSize: '.875rem',
+    },
+    h1: {
+      fontSize: '5.5625rem',
+      fontFamily: headingsFontFamily,
+    },
+    h2: {
+      fontSize: '3.4375rem',
+      fontFamily: headingsFontFamily,
+    },
+    h3: {
+      fontSize: '2.75rem',
+      fontFamily: headingsFontFamily,
+    },
+    h4: {
+      fontSize: '1.9375rem',
+      fontFamily: headingsFontFamily,
+    },
+    h5: {
+      textTransform: 'uppercase' as 'uppercase',
+      fontSize: '1.375rem',
+      fontFamily: headingsFontFamily,
+    },
+    h6: {
+      textTransform: 'uppercase' as 'uppercase',
+      fontSize: '1.125rem',
+      fontFamily: headingsFontFamily,
     },
     button: {
-      textTransform: 'none',
+      textTransform: 'uppercase' as 'uppercase',
+      fontWeight: 700,
+    },
+    caption: {
+      fontSize: '.625rem',
     },
     subtitle1: {
-      fontSize: '1rem',
+      fontSize: '.9375rem',
+      fontFamily: headingsFontFamily,
     },
     subtitle2: {
-      fontSize: '0.875rem',
+      fontSize: '.8125rem',
+      fontFamily: headingsFontFamily,
     },
   },
   components: {
-    MuiButton: {
+    MuiDialogContent: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          '@media (max-width:320px)': {
+            padding: '0 1rem',
+          },
         },
       },
     },
-    MuiPaper: {
+    MuiDialogActions: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          padding: 0,
         },
       },
     },
-    MuiCard: {
+    MuiFilledInput: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          backgroundColor: 'white!important',
+        },
+      },
+    },
+    MuiSlider: {
+      styleOverrides: {
+        root: {
+          width: '75%',
+          height: '10px',
+          margin: '2rem 0 0',
+        },
+        rail: {
+          height: '10px',
+          '&:before,&:after': {
+            content: '""',
+            position: 'absolute',
+            display: 'inline-block',
+            width: '12px',
+            height: '10px',
+            borderRadius: '5px',
+          },
+          '&:before': {
+            left: '-4px',
+            background: 'currentColor',
+          },
+          '&:after': {
+            right: '-9px',
+            background: 'currentColor',
+          },
+        },
+        track: {
+          height: '10px',
+          '&:before': {
+            content: '""',
+            position: 'absolute',
+            left: '-4px',
+            display: 'inline-block',
+            width: '12px',
+            height: '10px',
+            borderRadius: '5px',
+            background: 'currentColor',
+          },
+        },
+        mark: {
+          width: '4px',
+          height: '4px',
+          marginTop: '3px',
+          borderRadius: '100%',
+        },
+        thumb: {
+          width: '18px',
+          height: '18px',
+          marginTop: '-4px',
+          border: '2px solid #fff',
+        },
+        valueLabel: {
+          left: 'calc(-50% - 2px)',
         },
       },
     },
   },
 });
+
+// Apply responsive font sizes
+const theme = responsiveFontSizes(customTheme);
 
 // Simple theme context provider component
 export const ThemeContextProvider = ({ children }: ThemeContextProviderProps) => {
