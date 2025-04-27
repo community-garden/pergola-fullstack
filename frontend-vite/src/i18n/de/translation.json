@@ -1,0 +1,10 @@
+{
+  "common": {
+    "gardenSettings": "Garten Einstellungen",
+    "language": "Sprache",
+    "login": "Login",
+    "logout": "Logout",
+    "myProfile": "Mein Profil",
+    "userMenu": "Anwendender"
+  }
+}
