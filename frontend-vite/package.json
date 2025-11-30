@@ -10,8 +10,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "extract-translations": "npx i18next-parser -c i18next-parser.config.js"
-
+    "extract-translations": "npx i18next-parser -c i18next-parser.config.js",
+    "generate-pwa-assets": "node generate-pwa-assets.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -31,6 +31,9 @@
     "i18next": "^25.0.1",
     "i18next-browser-languagedetector": "^8.0.5",
     "i18next-parser": "^9.3.0",
+    "lodash-es": "^4.17.21",
+    "maplibre-gl": "^5.13.0",
+    "material-react-table": "^3.2.1",
     "oidc-client-ts": "^3.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -51,6 +54,7 @@
     "@storybook/test": "^8.6.12",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@vite-pwa/assets-generator": "^1.0.0",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/browser": "^3.1.2",
     "@vitest/coverage-v8": "^3.1.2",
@@ -64,6 +68,7 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1",
+    "vite-plugin-pwa": "^1.0.0",
     "vitest": "^3.1.2"
   },
   "eslintConfig": {

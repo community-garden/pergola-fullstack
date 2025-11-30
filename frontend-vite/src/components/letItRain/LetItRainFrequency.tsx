@@ -33,21 +33,32 @@ export function LetItRainFrequency({ onChange, frequency: _frequency }: LetItRai
           {t('frequency.question')}
         </StyledQuestion>
         <Typography variant="body1">{t('frequency.description')}</Typography>
-        <Slider
-          min={1}
-          max={7}
-          value={daysPerWeek}
-          onChange={(_, value) => {
-            const v = typeof value === 'number' ? value : 1;
-            setFrequency(v);
-            onChange?.(v);
-          }}
-          aria-labelledby="discrete-slider-always"
-          step={1}
-          valueLabelDisplay="on"
-          marks={true}
-          sx={{ my: 3 }}
-        />
+        <Box sx={{ 
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          px: 2
+        }}>
+          <Slider
+            min={1}
+            max={7}
+            value={daysPerWeek}
+            onChange={(_, value) => {
+              const v = typeof value === 'number' ? value : 1;
+              setFrequency(v);
+              onChange?.(v);
+            }}
+            aria-labelledby="discrete-slider-always"
+            step={1}
+            valueLabelDisplay="on"
+            marks={true}
+            sx={{ 
+              width: '100%',
+              maxWidth: '600px',
+              my: 3 
+            }}
+          />
+        </Box>
         <Typography variant="body1">{t('frequency.timesPerWeek', { count: daysPerWeek })}</Typography>
       </Box>
       

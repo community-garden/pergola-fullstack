@@ -131,6 +131,7 @@ const Watering = () => {
       
       
       {/* Watering Calendar */}
+      <ContentPaper sx={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
         <Box sx={{ mb: 2 }}>
           <WateringCalendar
             variant="horizontal"
@@ -139,6 +140,7 @@ const Watering = () => {
             allowVariantToggle={false}
           />
         </Box>
+      </ContentPaper>
       
     </Box>
   );
