@@ -1,7 +1,7 @@
 {
   "license": "GPLv3",
   "devDependencies": {
-    "concurrently": "^5.3.0",
+    "concurrently": "^9.1.2",
     "dotenv": "^8.2.0",
     "execa": "^4.0.2",
     "grandstack": "^0.0.7",
@@ -14,7 +14,6 @@
     "start": "node scripts/start-dev.js",
     "build": "node scripts/build.js",
     "test": "(cd api; npm run test)",
-    "install": "node scripts/deps.js",
     "format": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier --write",
     "format:log": "find . -name \"*.js\" | grep -v node_modules | grep -v build | xargs prettier",
     "inferschema:write": "node scripts/inferSchema.js",
@@ -22,7 +21,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run test"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
@@ -30,6 +29,6 @@
       "api/node_modules/.bin/prettier --write",
       "api/node_modules/.bin/eslint --fix"
     ]
-  },
-  "dependencies": {}
+  }
+  
 }

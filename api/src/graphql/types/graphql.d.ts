@@ -137,6 +137,7 @@ export type CategoryCategoryParentCategoryNodeAggregateSelection = {
 
 export type CategoryChildCategoriesAggregateInput = {
   AND?: InputMaybe<Array<CategoryChildCategoriesAggregateInput>>;
+  NOT?: InputMaybe<CategoryChildCategoriesAggregateInput>;
   OR?: InputMaybe<Array<CategoryChildCategoriesAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -148,6 +149,8 @@ export type CategoryChildCategoriesAggregateInput = {
 
 export type CategoryChildCategoriesConnectFieldInput = {
   connect?: InputMaybe<Array<CategoryConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<CategoryConnectWhere>;
 };
 
@@ -164,9 +167,9 @@ export type CategoryChildCategoriesConnectionSort = {
 
 export type CategoryChildCategoriesConnectionWhere = {
   AND?: InputMaybe<Array<CategoryChildCategoriesConnectionWhere>>;
+  NOT?: InputMaybe<CategoryChildCategoriesConnectionWhere>;
   OR?: InputMaybe<Array<CategoryChildCategoriesConnectionWhere>>;
   node?: InputMaybe<CategoryWhere>;
-  node_NOT?: InputMaybe<CategoryWhere>;
 };
 
 export type CategoryChildCategoriesCreateFieldInput = {
@@ -190,47 +193,38 @@ export type CategoryChildCategoriesFieldInput = {
 
 export type CategoryChildCategoriesNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<CategoryChildCategoriesNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<CategoryChildCategoriesNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<CategoryChildCategoriesNodeAggregationWhereInput>>;
-  description_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  description_EQUAL?: InputMaybe<Scalars['String']>;
-  description_GT?: InputMaybe<Scalars['Int']>;
-  description_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  description_LT?: InputMaybe<Scalars['Int']>;
-  description_LTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  description_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  description_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type CategoryChildCategoriesRelationship = {
@@ -297,6 +291,7 @@ export type CategoryOptions = {
 
 export type CategoryParentCategoryAggregateInput = {
   AND?: InputMaybe<Array<CategoryParentCategoryAggregateInput>>;
+  NOT?: InputMaybe<CategoryParentCategoryAggregateInput>;
   OR?: InputMaybe<Array<CategoryParentCategoryAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -308,6 +303,8 @@ export type CategoryParentCategoryAggregateInput = {
 
 export type CategoryParentCategoryConnectFieldInput = {
   connect?: InputMaybe<CategoryConnectInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<CategoryConnectWhere>;
 };
 
@@ -324,9 +321,9 @@ export type CategoryParentCategoryConnectionSort = {
 
 export type CategoryParentCategoryConnectionWhere = {
   AND?: InputMaybe<Array<CategoryParentCategoryConnectionWhere>>;
+  NOT?: InputMaybe<CategoryParentCategoryConnectionWhere>;
   OR?: InputMaybe<Array<CategoryParentCategoryConnectionWhere>>;
   node?: InputMaybe<CategoryWhere>;
-  node_NOT?: InputMaybe<CategoryWhere>;
 };
 
 export type CategoryParentCategoryCreateFieldInput = {
@@ -350,47 +347,38 @@ export type CategoryParentCategoryFieldInput = {
 
 export type CategoryParentCategoryNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<CategoryParentCategoryNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<CategoryParentCategoryNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<CategoryParentCategoryNodeAggregationWhereInput>>;
-  description_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  description_EQUAL?: InputMaybe<Scalars['String']>;
-  description_GT?: InputMaybe<Scalars['Int']>;
-  description_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  description_LT?: InputMaybe<Scalars['Int']>;
-  description_LTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  description_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  description_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type CategoryParentCategoryRelationship = {
@@ -440,6 +428,7 @@ export type CategorySort = {
 
 export type CategorySpeciesAggregateInput = {
   AND?: InputMaybe<Array<CategorySpeciesAggregateInput>>;
+  NOT?: InputMaybe<CategorySpeciesAggregateInput>;
   OR?: InputMaybe<Array<CategorySpeciesAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -451,6 +440,8 @@ export type CategorySpeciesAggregateInput = {
 
 export type CategorySpeciesConnectFieldInput = {
   connect?: InputMaybe<Array<PlantSpeciesConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<PlantSpeciesConnectWhere>;
 };
 
@@ -467,9 +458,9 @@ export type CategorySpeciesConnectionSort = {
 
 export type CategorySpeciesConnectionWhere = {
   AND?: InputMaybe<Array<CategorySpeciesConnectionWhere>>;
+  NOT?: InputMaybe<CategorySpeciesConnectionWhere>;
   OR?: InputMaybe<Array<CategorySpeciesConnectionWhere>>;
   node?: InputMaybe<PlantSpeciesWhere>;
-  node_NOT?: InputMaybe<PlantSpeciesWhere>;
 };
 
 export type CategorySpeciesCreateFieldInput = {
@@ -493,87 +484,68 @@ export type CategorySpeciesFieldInput = {
 
 export type CategorySpeciesNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<CategorySpeciesNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<CategorySpeciesNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<CategorySpeciesNodeAggregationWhereInput>>;
-  description_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  description_EQUAL?: InputMaybe<Scalars['String']>;
-  description_GT?: InputMaybe<Scalars['Int']>;
-  description_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  description_LT?: InputMaybe<Scalars['Int']>;
-  description_LTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  icon_EQUAL?: InputMaybe<Scalars['String']>;
-  icon_GT?: InputMaybe<Scalars['Int']>;
-  icon_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_LT?: InputMaybe<Scalars['Int']>;
-  icon_LTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  description_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  description_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  icon_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type CategorySpeciesRelationship = {
@@ -605,11 +577,16 @@ export type CategoryUpdateInput = {
 
 export type CategoryWhere = {
   AND?: InputMaybe<Array<CategoryWhere>>;
+  NOT?: InputMaybe<CategoryWhere>;
   OR?: InputMaybe<Array<CategoryWhere>>;
   childCategoriesAggregate?: InputMaybe<CategoryChildCategoriesAggregateInput>;
+  /** Return Categories where all of the related CategoryChildCategoriesConnections match this filter */
   childCategoriesConnection_ALL?: InputMaybe<CategoryChildCategoriesConnectionWhere>;
+  /** Return Categories where none of the related CategoryChildCategoriesConnections match this filter */
   childCategoriesConnection_NONE?: InputMaybe<CategoryChildCategoriesConnectionWhere>;
+  /** Return Categories where one of the related CategoryChildCategoriesConnections match this filter */
   childCategoriesConnection_SINGLE?: InputMaybe<CategoryChildCategoriesConnectionWhere>;
+  /** Return Categories where some of the related CategoryChildCategoriesConnections match this filter */
   childCategoriesConnection_SOME?: InputMaybe<CategoryChildCategoriesConnectionWhere>;
   /** Return Categories where all of the related Categories match this filter */
   childCategories_ALL?: InputMaybe<CategoryWhere>;
@@ -623,21 +600,11 @@ export type CategoryWhere = {
   description_CONTAINS?: InputMaybe<Scalars['String']>;
   description_ENDS_WITH?: InputMaybe<Scalars['String']>;
   description_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  description_NOT?: InputMaybe<Scalars['String']>;
-  description_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  description_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  description_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  description_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   description_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   parentCategory?: InputMaybe<CategoryWhere>;
   parentCategoryAggregate?: InputMaybe<CategoryParentCategoryAggregateInput>;
@@ -645,9 +612,13 @@ export type CategoryWhere = {
   parentCategoryConnection_NOT?: InputMaybe<CategoryParentCategoryConnectionWhere>;
   parentCategory_NOT?: InputMaybe<CategoryWhere>;
   speciesAggregate?: InputMaybe<CategorySpeciesAggregateInput>;
+  /** Return Categories where all of the related CategorySpeciesConnections match this filter */
   speciesConnection_ALL?: InputMaybe<CategorySpeciesConnectionWhere>;
+  /** Return Categories where none of the related CategorySpeciesConnections match this filter */
   speciesConnection_NONE?: InputMaybe<CategorySpeciesConnectionWhere>;
+  /** Return Categories where one of the related CategorySpeciesConnections match this filter */
   speciesConnection_SINGLE?: InputMaybe<CategorySpeciesConnectionWhere>;
+  /** Return Categories where some of the related CategorySpeciesConnections match this filter */
   speciesConnection_SOME?: InputMaybe<CategorySpeciesConnectionWhere>;
   /** Return Categories where all of the related PlantSpecies match this filter */
   species_ALL?: InputMaybe<PlantSpeciesWhere>;
@@ -834,6 +805,7 @@ export type ChangeRequestRelationInput = {
 
 export type ChangeRequestRequested_ByAggregateInput = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ByAggregateInput>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ByAggregateInput>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ByAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -845,6 +817,8 @@ export type ChangeRequestRequested_ByAggregateInput = {
 
 export type ChangeRequestRequested_ByConnectFieldInput = {
   connect?: InputMaybe<Array<UserConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<UserConnectWhere>;
 };
 
@@ -861,9 +835,9 @@ export type ChangeRequestRequested_ByConnectionSort = {
 
 export type ChangeRequestRequested_ByConnectionWhere = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ByConnectionWhere>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ByConnectionWhere>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ByConnectionWhere>>;
   node?: InputMaybe<UserWhere>;
-  node_NOT?: InputMaybe<UserWhere>;
 };
 
 export type ChangeRequestRequested_ByCreateFieldInput = {
@@ -887,88 +861,68 @@ export type ChangeRequestRequested_ByFieldInput = {
 
 export type ChangeRequestRequested_ByNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ByNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ByNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ByNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  id_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  id_EQUAL?: InputMaybe<Scalars['String']>;
-  id_GT?: InputMaybe<Scalars['Int']>;
-  id_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  id_LT?: InputMaybe<Scalars['Int']>;
-  id_LTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  id_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  id_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type ChangeRequestRequested_ByRelationship = {
@@ -992,6 +946,7 @@ export type ChangeRequestRequested_ByUpdateFieldInput = {
 
 export type ChangeRequestRequested_ForAggregateInput = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ForAggregateInput>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ForAggregateInput>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ForAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -1003,6 +958,8 @@ export type ChangeRequestRequested_ForAggregateInput = {
 
 export type ChangeRequestRequested_ForConnectFieldInput = {
   connect?: InputMaybe<Array<WateringTaskConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<WateringTaskConnectWhere>;
 };
 
@@ -1019,9 +976,9 @@ export type ChangeRequestRequested_ForConnectionSort = {
 
 export type ChangeRequestRequested_ForConnectionWhere = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ForConnectionWhere>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ForConnectionWhere>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ForConnectionWhere>>;
   node?: InputMaybe<WateringTaskWhere>;
-  node_NOT?: InputMaybe<WateringTaskWhere>;
 };
 
 export type ChangeRequestRequested_ForCreateFieldInput = {
@@ -1045,68 +1002,53 @@ export type ChangeRequestRequested_ForFieldInput = {
 
 export type ChangeRequestRequested_ForNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ForNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ForNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ForNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type ChangeRequestRequested_ForRelationship = {
@@ -1130,6 +1072,7 @@ export type ChangeRequestRequested_ForUpdateFieldInput = {
 
 export type ChangeRequestRequested_New_TaskAggregateInput = {
   AND?: InputMaybe<Array<ChangeRequestRequested_New_TaskAggregateInput>>;
+  NOT?: InputMaybe<ChangeRequestRequested_New_TaskAggregateInput>;
   OR?: InputMaybe<Array<ChangeRequestRequested_New_TaskAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -1141,6 +1084,8 @@ export type ChangeRequestRequested_New_TaskAggregateInput = {
 
 export type ChangeRequestRequested_New_TaskConnectFieldInput = {
   connect?: InputMaybe<Array<WateringTaskConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<WateringTaskConnectWhere>;
 };
 
@@ -1157,9 +1102,9 @@ export type ChangeRequestRequested_New_TaskConnectionSort = {
 
 export type ChangeRequestRequested_New_TaskConnectionWhere = {
   AND?: InputMaybe<Array<ChangeRequestRequested_New_TaskConnectionWhere>>;
+  NOT?: InputMaybe<ChangeRequestRequested_New_TaskConnectionWhere>;
   OR?: InputMaybe<Array<ChangeRequestRequested_New_TaskConnectionWhere>>;
   node?: InputMaybe<WateringTaskWhere>;
-  node_NOT?: InputMaybe<WateringTaskWhere>;
 };
 
 export type ChangeRequestRequested_New_TaskCreateFieldInput = {
@@ -1183,68 +1128,53 @@ export type ChangeRequestRequested_New_TaskFieldInput = {
 
 export type ChangeRequestRequested_New_TaskNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<ChangeRequestRequested_New_TaskNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<ChangeRequestRequested_New_TaskNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<ChangeRequestRequested_New_TaskNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type ChangeRequestRequested_New_TaskRelationship = {
@@ -1268,6 +1198,7 @@ export type ChangeRequestRequested_New_TaskUpdateFieldInput = {
 
 export type ChangeRequestRequested_ToAggregateInput = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ToAggregateInput>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ToAggregateInput>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ToAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -1279,6 +1210,8 @@ export type ChangeRequestRequested_ToAggregateInput = {
 
 export type ChangeRequestRequested_ToConnectFieldInput = {
   connect?: InputMaybe<Array<UserConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<UserConnectWhere>;
 };
 
@@ -1295,9 +1228,9 @@ export type ChangeRequestRequested_ToConnectionSort = {
 
 export type ChangeRequestRequested_ToConnectionWhere = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ToConnectionWhere>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ToConnectionWhere>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ToConnectionWhere>>;
   node?: InputMaybe<UserWhere>;
-  node_NOT?: InputMaybe<UserWhere>;
 };
 
 export type ChangeRequestRequested_ToCreateFieldInput = {
@@ -1321,88 +1254,68 @@ export type ChangeRequestRequested_ToFieldInput = {
 
 export type ChangeRequestRequested_ToNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<ChangeRequestRequested_ToNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<ChangeRequestRequested_ToNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<ChangeRequestRequested_ToNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  id_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  id_EQUAL?: InputMaybe<Scalars['String']>;
-  id_GT?: InputMaybe<Scalars['Int']>;
-  id_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  id_LT?: InputMaybe<Scalars['Int']>;
-  id_LTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  id_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  id_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type ChangeRequestRequested_ToRelationship = {
@@ -1503,41 +1416,31 @@ export type ChangeRequestWateringTaskRequested_New_TaskNodeAggregateSelection = 
 
 export type ChangeRequestWhere = {
   AND?: InputMaybe<Array<ChangeRequestWhere>>;
+  NOT?: InputMaybe<ChangeRequestWhere>;
   OR?: InputMaybe<Array<ChangeRequestWhere>>;
   _id?: InputMaybe<Scalars['ID']>;
   _id_CONTAINS?: InputMaybe<Scalars['ID']>;
   _id_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   _id_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT?: InputMaybe<Scalars['ID']>;
-  _id_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  _id_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  _id_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   _id_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId?: InputMaybe<Scalars['String']>;
   neo4jImportId_CONTAINS?: InputMaybe<Scalars['String']>;
   neo4jImportId_ENDS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId_IN?: InputMaybe<Array<Scalars['String']>>;
-  neo4jImportId_NOT?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  neo4jImportId_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId_STARTS_WITH?: InputMaybe<Scalars['String']>;
   requested_byAggregate?: InputMaybe<ChangeRequestRequested_ByAggregateInput>;
+  /** Return ChangeRequests where all of the related ChangeRequestRequested_byConnections match this filter */
   requested_byConnection_ALL?: InputMaybe<ChangeRequestRequested_ByConnectionWhere>;
+  /** Return ChangeRequests where none of the related ChangeRequestRequested_byConnections match this filter */
   requested_byConnection_NONE?: InputMaybe<ChangeRequestRequested_ByConnectionWhere>;
+  /** Return ChangeRequests where one of the related ChangeRequestRequested_byConnections match this filter */
   requested_byConnection_SINGLE?: InputMaybe<ChangeRequestRequested_ByConnectionWhere>;
+  /** Return ChangeRequests where some of the related ChangeRequestRequested_byConnections match this filter */
   requested_byConnection_SOME?: InputMaybe<ChangeRequestRequested_ByConnectionWhere>;
   /** Return ChangeRequests where all of the related Users match this filter */
   requested_by_ALL?: InputMaybe<UserWhere>;
@@ -1548,9 +1451,13 @@ export type ChangeRequestWhere = {
   /** Return ChangeRequests where some of the related Users match this filter */
   requested_by_SOME?: InputMaybe<UserWhere>;
   requested_forAggregate?: InputMaybe<ChangeRequestRequested_ForAggregateInput>;
+  /** Return ChangeRequests where all of the related ChangeRequestRequested_forConnections match this filter */
   requested_forConnection_ALL?: InputMaybe<ChangeRequestRequested_ForConnectionWhere>;
+  /** Return ChangeRequests where none of the related ChangeRequestRequested_forConnections match this filter */
   requested_forConnection_NONE?: InputMaybe<ChangeRequestRequested_ForConnectionWhere>;
+  /** Return ChangeRequests where one of the related ChangeRequestRequested_forConnections match this filter */
   requested_forConnection_SINGLE?: InputMaybe<ChangeRequestRequested_ForConnectionWhere>;
+  /** Return ChangeRequests where some of the related ChangeRequestRequested_forConnections match this filter */
   requested_forConnection_SOME?: InputMaybe<ChangeRequestRequested_ForConnectionWhere>;
   /** Return ChangeRequests where all of the related WateringTasks match this filter */
   requested_for_ALL?: InputMaybe<WateringTaskWhere>;
@@ -1561,9 +1468,13 @@ export type ChangeRequestWhere = {
   /** Return ChangeRequests where some of the related WateringTasks match this filter */
   requested_for_SOME?: InputMaybe<WateringTaskWhere>;
   requested_new_taskAggregate?: InputMaybe<ChangeRequestRequested_New_TaskAggregateInput>;
+  /** Return ChangeRequests where all of the related ChangeRequestRequested_new_taskConnections match this filter */
   requested_new_taskConnection_ALL?: InputMaybe<ChangeRequestRequested_New_TaskConnectionWhere>;
+  /** Return ChangeRequests where none of the related ChangeRequestRequested_new_taskConnections match this filter */
   requested_new_taskConnection_NONE?: InputMaybe<ChangeRequestRequested_New_TaskConnectionWhere>;
+  /** Return ChangeRequests where one of the related ChangeRequestRequested_new_taskConnections match this filter */
   requested_new_taskConnection_SINGLE?: InputMaybe<ChangeRequestRequested_New_TaskConnectionWhere>;
+  /** Return ChangeRequests where some of the related ChangeRequestRequested_new_taskConnections match this filter */
   requested_new_taskConnection_SOME?: InputMaybe<ChangeRequestRequested_New_TaskConnectionWhere>;
   /** Return ChangeRequests where all of the related WateringTasks match this filter */
   requested_new_task_ALL?: InputMaybe<WateringTaskWhere>;
@@ -1574,9 +1485,13 @@ export type ChangeRequestWhere = {
   /** Return ChangeRequests where some of the related WateringTasks match this filter */
   requested_new_task_SOME?: InputMaybe<WateringTaskWhere>;
   requested_toAggregate?: InputMaybe<ChangeRequestRequested_ToAggregateInput>;
+  /** Return ChangeRequests where all of the related ChangeRequestRequested_toConnections match this filter */
   requested_toConnection_ALL?: InputMaybe<ChangeRequestRequested_ToConnectionWhere>;
+  /** Return ChangeRequests where none of the related ChangeRequestRequested_toConnections match this filter */
   requested_toConnection_NONE?: InputMaybe<ChangeRequestRequested_ToConnectionWhere>;
+  /** Return ChangeRequests where one of the related ChangeRequestRequested_toConnections match this filter */
   requested_toConnection_SINGLE?: InputMaybe<ChangeRequestRequested_ToConnectionWhere>;
+  /** Return ChangeRequests where some of the related ChangeRequestRequested_toConnections match this filter */
   requested_toConnection_SOME?: InputMaybe<ChangeRequestRequested_ToConnectionWhere>;
   /** Return ChangeRequests where all of the related Users match this filter */
   requested_to_ALL?: InputMaybe<UserWhere>;
@@ -1590,11 +1505,6 @@ export type ChangeRequestWhere = {
   type_CONTAINS?: InputMaybe<Scalars['String']>;
   type_ENDS_WITH?: InputMaybe<Scalars['String']>;
   type_IN?: InputMaybe<Array<Scalars['String']>>;
-  type_NOT?: InputMaybe<Scalars['String']>;
-  type_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  type_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  type_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  type_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   type_STARTS_WITH?: InputMaybe<Scalars['String']>;
 };
 
@@ -1704,6 +1614,7 @@ export type ContainerSort = {
 
 export type ContainerStorageLocationAggregateInput = {
   AND?: InputMaybe<Array<ContainerStorageLocationAggregateInput>>;
+  NOT?: InputMaybe<ContainerStorageLocationAggregateInput>;
   OR?: InputMaybe<Array<ContainerStorageLocationAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -1715,6 +1626,8 @@ export type ContainerStorageLocationAggregateInput = {
 
 export type ContainerStorageLocationConnectFieldInput = {
   connect?: InputMaybe<Array<GardenFeatureConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<GardenFeatureConnectWhere>;
 };
 
@@ -1740,9 +1653,9 @@ export type ContainerStorageLocationConnectionSort = {
 
 export type ContainerStorageLocationConnectionWhere = {
   AND?: InputMaybe<Array<ContainerStorageLocationConnectionWhere>>;
+  NOT?: InputMaybe<ContainerStorageLocationConnectionWhere>;
   OR?: InputMaybe<Array<ContainerStorageLocationConnectionWhere>>;
   node?: InputMaybe<GardenFeatureWhere>;
-  node_NOT?: InputMaybe<GardenFeatureWhere>;
 };
 
 export type ContainerStorageLocationCreateFieldInput = {
@@ -1767,68 +1680,53 @@ export type ContainerStorageLocationFieldInput = {
 
 export type ContainerStorageLocationNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<ContainerStorageLocationNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<ContainerStorageLocationNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<ContainerStorageLocationNodeAggregationWhereInput>>;
-  featureId_EQUAL?: InputMaybe<Scalars['ID']>;
-  featureType_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  featureType_EQUAL?: InputMaybe<Scalars['String']>;
-  featureType_GT?: InputMaybe<Scalars['Int']>;
-  featureType_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  featureType_LT?: InputMaybe<Scalars['Int']>;
-  featureType_LTE?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  featureType_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  featureType_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type ContainerStorageLocationRelationship = {
@@ -1858,21 +1756,21 @@ export type ContainerUpdateInput = {
 
 export type ContainerWhere = {
   AND?: InputMaybe<Array<ContainerWhere>>;
+  NOT?: InputMaybe<ContainerWhere>;
   OR?: InputMaybe<Array<ContainerWhere>>;
   containerType?: InputMaybe<Scalars['String']>;
   containerType_CONTAINS?: InputMaybe<Scalars['String']>;
   containerType_ENDS_WITH?: InputMaybe<Scalars['String']>;
   containerType_IN?: InputMaybe<Array<Scalars['String']>>;
-  containerType_NOT?: InputMaybe<Scalars['String']>;
-  containerType_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  containerType_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  containerType_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  containerType_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   containerType_STARTS_WITH?: InputMaybe<Scalars['String']>;
   storageLocationAggregate?: InputMaybe<ContainerStorageLocationAggregateInput>;
+  /** Return Containers where all of the related ContainerStorageLocationConnections match this filter */
   storageLocationConnection_ALL?: InputMaybe<ContainerStorageLocationConnectionWhere>;
+  /** Return Containers where none of the related ContainerStorageLocationConnections match this filter */
   storageLocationConnection_NONE?: InputMaybe<ContainerStorageLocationConnectionWhere>;
+  /** Return Containers where one of the related ContainerStorageLocationConnections match this filter */
   storageLocationConnection_SINGLE?: InputMaybe<ContainerStorageLocationConnectionWhere>;
+  /** Return Containers where some of the related ContainerStorageLocationConnections match this filter */
   storageLocationConnection_SOME?: InputMaybe<ContainerStorageLocationConnectionWhere>;
   /** Return Containers where all of the related GardenFeatures match this filter */
   storageLocation_ALL?: InputMaybe<GardenFeatureWhere>;
@@ -2020,6 +1918,7 @@ export type CropRotationUpdateInput = {
 
 export type CropRotationWhere = {
   AND?: InputMaybe<Array<CropRotationWhere>>;
+  NOT?: InputMaybe<CropRotationWhere>;
   OR?: InputMaybe<Array<CropRotationWhere>>;
   weight?: InputMaybe<Scalars['Int']>;
   weight_GT?: InputMaybe<Scalars['Int']>;
@@ -2027,8 +1926,6 @@ export type CropRotationWhere = {
   weight_IN?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   weight_LT?: InputMaybe<Scalars['Int']>;
   weight_LTE?: InputMaybe<Scalars['Int']>;
-  weight_NOT?: InputMaybe<Scalars['Int']>;
-  weight_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
 };
 
 export type DeleteInfo = {
@@ -2194,6 +2091,7 @@ export type GardenFeatureContainerContainsNodeAggregateSelection = {
 
 export type GardenFeatureContainsAggregateInput = {
   AND?: InputMaybe<Array<GardenFeatureContainsAggregateInput>>;
+  NOT?: InputMaybe<GardenFeatureContainsAggregateInput>;
   OR?: InputMaybe<Array<GardenFeatureContainsAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -2205,6 +2103,8 @@ export type GardenFeatureContainsAggregateInput = {
 
 export type GardenFeatureContainsConnectFieldInput = {
   connect?: InputMaybe<Array<ContainerConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<ContainerConnectWhere>;
 };
 
@@ -2221,9 +2121,9 @@ export type GardenFeatureContainsConnectionSort = {
 
 export type GardenFeatureContainsConnectionWhere = {
   AND?: InputMaybe<Array<GardenFeatureContainsConnectionWhere>>;
+  NOT?: InputMaybe<GardenFeatureContainsConnectionWhere>;
   OR?: InputMaybe<Array<GardenFeatureContainsConnectionWhere>>;
   node?: InputMaybe<ContainerWhere>;
-  node_NOT?: InputMaybe<ContainerWhere>;
 };
 
 export type GardenFeatureContainsCreateFieldInput = {
@@ -2247,27 +2147,23 @@ export type GardenFeatureContainsFieldInput = {
 
 export type GardenFeatureContainsNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<GardenFeatureContainsNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<GardenFeatureContainsNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<GardenFeatureContainsNodeAggregationWhereInput>>;
-  containerType_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  containerType_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  containerType_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  containerType_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  containerType_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  containerType_EQUAL?: InputMaybe<Scalars['String']>;
-  containerType_GT?: InputMaybe<Scalars['Int']>;
-  containerType_GTE?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  containerType_LT?: InputMaybe<Scalars['Int']>;
-  containerType_LTE?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  containerType_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  containerType_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  containerType_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  containerType_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  containerType_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  containerType_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  containerType_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  containerType_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  containerType_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  containerType_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type GardenFeatureContainsRelationship = {
@@ -2351,9 +2247,9 @@ export type GardenFeatureShapeConnectionSort = {
 
 export type GardenFeatureShapeConnectionWhere = {
   AND?: InputMaybe<Array<GardenFeatureShapeConnectionWhere>>;
+  NOT?: InputMaybe<GardenFeatureShapeConnectionWhere>;
   OR?: InputMaybe<Array<GardenFeatureShapeConnectionWhere>>;
   node?: InputMaybe<GeoShapeWhere>;
-  node_NOT?: InputMaybe<GeoShapeWhere>;
 };
 
 export type GardenFeatureShapeCreateFieldInput = {
@@ -2419,11 +2315,16 @@ export type GardenFeatureUpdateInput = {
 
 export type GardenFeatureWhere = {
   AND?: InputMaybe<Array<GardenFeatureWhere>>;
+  NOT?: InputMaybe<GardenFeatureWhere>;
   OR?: InputMaybe<Array<GardenFeatureWhere>>;
   containsAggregate?: InputMaybe<GardenFeatureContainsAggregateInput>;
+  /** Return GardenFeatures where all of the related GardenFeatureContainsConnections match this filter */
   containsConnection_ALL?: InputMaybe<GardenFeatureContainsConnectionWhere>;
+  /** Return GardenFeatures where none of the related GardenFeatureContainsConnections match this filter */
   containsConnection_NONE?: InputMaybe<GardenFeatureContainsConnectionWhere>;
+  /** Return GardenFeatures where one of the related GardenFeatureContainsConnections match this filter */
   containsConnection_SINGLE?: InputMaybe<GardenFeatureContainsConnectionWhere>;
+  /** Return GardenFeatures where some of the related GardenFeatureContainsConnections match this filter */
   containsConnection_SOME?: InputMaybe<GardenFeatureContainsConnectionWhere>;
   /** Return GardenFeatures where all of the related Containers match this filter */
   contains_ALL?: InputMaybe<ContainerWhere>;
@@ -2437,49 +2338,31 @@ export type GardenFeatureWhere = {
   featureId_CONTAINS?: InputMaybe<Scalars['ID']>;
   featureId_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   featureId_IN?: InputMaybe<Array<Scalars['ID']>>;
-  featureId_NOT?: InputMaybe<Scalars['ID']>;
-  featureId_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  featureId_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  featureId_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  featureId_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   featureId_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   featureType?: InputMaybe<Scalars['String']>;
   featureType_CONTAINS?: InputMaybe<Scalars['String']>;
   featureType_ENDS_WITH?: InputMaybe<Scalars['String']>;
   featureType_IN?: InputMaybe<Array<Scalars['String']>>;
-  featureType_NOT?: InputMaybe<Scalars['String']>;
-  featureType_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  featureType_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  featureType_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  featureType_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   featureType_STARTS_WITH?: InputMaybe<Scalars['String']>;
   infoText?: InputMaybe<Scalars['String']>;
   infoText_CONTAINS?: InputMaybe<Scalars['String']>;
   infoText_ENDS_WITH?: InputMaybe<Scalars['String']>;
   infoText_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  infoText_NOT?: InputMaybe<Scalars['String']>;
-  infoText_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  infoText_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  infoText_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  infoText_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   infoText_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   plants?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   plants_INCLUDES?: InputMaybe<Scalars['String']>;
-  plants_NOT?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  plants_NOT_INCLUDES?: InputMaybe<Scalars['String']>;
+  /** Return GardenFeatures where all of the related GardenFeatureShapeConnections match this filter */
   shapeConnection_ALL?: InputMaybe<GardenFeatureShapeConnectionWhere>;
+  /** Return GardenFeatures where none of the related GardenFeatureShapeConnections match this filter */
   shapeConnection_NONE?: InputMaybe<GardenFeatureShapeConnectionWhere>;
+  /** Return GardenFeatures where one of the related GardenFeatureShapeConnections match this filter */
   shapeConnection_SINGLE?: InputMaybe<GardenFeatureShapeConnectionWhere>;
+  /** Return GardenFeatures where some of the related GardenFeatureShapeConnections match this filter */
   shapeConnection_SOME?: InputMaybe<GardenFeatureShapeConnectionWhere>;
 };
 
@@ -2565,6 +2448,7 @@ export type GardenLayerAggregateSelection = {
 
 export type GardenLayerAtAggregateInput = {
   AND?: InputMaybe<Array<GardenLayerAtAggregateInput>>;
+  NOT?: InputMaybe<GardenLayerAtAggregateInput>;
   OR?: InputMaybe<Array<GardenLayerAtAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -2576,6 +2460,8 @@ export type GardenLayerAtAggregateInput = {
 
 export type GardenLayerAtConnectFieldInput = {
   connect?: InputMaybe<GardenConnectInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<GardenConnectWhere>;
 };
 
@@ -2592,9 +2478,9 @@ export type GardenLayerAtConnectionSort = {
 
 export type GardenLayerAtConnectionWhere = {
   AND?: InputMaybe<Array<GardenLayerAtConnectionWhere>>;
+  NOT?: InputMaybe<GardenLayerAtConnectionWhere>;
   OR?: InputMaybe<Array<GardenLayerAtConnectionWhere>>;
   node?: InputMaybe<GardenWhere>;
-  node_NOT?: InputMaybe<GardenWhere>;
 };
 
 export type GardenLayerAtCreateFieldInput = {
@@ -2618,29 +2504,23 @@ export type GardenLayerAtFieldInput = {
 
 export type GardenLayerAtNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<GardenLayerAtNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<GardenLayerAtNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<GardenLayerAtNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  gardenId_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type GardenLayerAtRelationship = {
@@ -2729,9 +2609,9 @@ export type GardenLayerHas_ShapeConnectionSort = {
 
 export type GardenLayerHas_ShapeConnectionWhere = {
   AND?: InputMaybe<Array<GardenLayerHas_ShapeConnectionWhere>>;
+  NOT?: InputMaybe<GardenLayerHas_ShapeConnectionWhere>;
   OR?: InputMaybe<Array<GardenLayerHas_ShapeConnectionWhere>>;
   node?: InputMaybe<GeoShapeWhere>;
-  node_NOT?: InputMaybe<GeoShapeWhere>;
 };
 
 export type GardenLayerHas_ShapeCreateFieldInput = {
@@ -2809,6 +2689,7 @@ export type GardenLayerUpdateInput = {
 
 export type GardenLayerWhere = {
   AND?: InputMaybe<Array<GardenLayerWhere>>;
+  NOT?: InputMaybe<GardenLayerWhere>;
   OR?: InputMaybe<Array<GardenLayerWhere>>;
   at?: InputMaybe<GardenWhere>;
   atAggregate?: InputMaybe<GardenLayerAtAggregateInput>;
@@ -2821,31 +2702,23 @@ export type GardenLayerWhere = {
   date_IN?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
   date_LT?: InputMaybe<Scalars['Date']>;
   date_LTE?: InputMaybe<Scalars['Date']>;
-  date_NOT?: InputMaybe<Scalars['Date']>;
-  date_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['Date']>>>;
+  /** Return GardenLayers where all of the related GardenLayerHas_shapeConnections match this filter */
   has_shapeConnection_ALL?: InputMaybe<GardenLayerHas_ShapeConnectionWhere>;
+  /** Return GardenLayers where none of the related GardenLayerHas_shapeConnections match this filter */
   has_shapeConnection_NONE?: InputMaybe<GardenLayerHas_ShapeConnectionWhere>;
+  /** Return GardenLayers where one of the related GardenLayerHas_shapeConnections match this filter */
   has_shapeConnection_SINGLE?: InputMaybe<GardenLayerHas_ShapeConnectionWhere>;
+  /** Return GardenLayers where some of the related GardenLayerHas_shapeConnections match this filter */
   has_shapeConnection_SOME?: InputMaybe<GardenLayerHas_ShapeConnectionWhere>;
   layerId?: InputMaybe<Scalars['ID']>;
   layerId_CONTAINS?: InputMaybe<Scalars['ID']>;
   layerId_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   layerId_IN?: InputMaybe<Array<Scalars['ID']>>;
-  layerId_NOT?: InputMaybe<Scalars['ID']>;
-  layerId_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  layerId_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  layerId_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  layerId_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   layerId_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
   name_CONTAINS?: InputMaybe<Scalars['String']>;
   name_ENDS_WITH?: InputMaybe<Scalars['String']>;
   name_IN?: InputMaybe<Array<Scalars['String']>>;
-  name_NOT?: InputMaybe<Scalars['String']>;
-  name_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  name_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  name_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  name_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   name_STARTS_WITH?: InputMaybe<Scalars['String']>;
 };
 
@@ -2905,6 +2778,7 @@ export type GardenSettingsGardenConnectionArgs = {
 
 export type GardenSettingsAggregateInput = {
   AND?: InputMaybe<Array<GardenSettingsAggregateInput>>;
+  NOT?: InputMaybe<GardenSettingsAggregateInput>;
   OR?: InputMaybe<Array<GardenSettingsAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -2927,6 +2801,8 @@ export type GardenSettingsAggregateSelection = {
 
 export type GardenSettingsConnectFieldInput = {
   connect?: InputMaybe<GardenSettingsConnectInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<GardenSettingsConnectWhere>;
 };
 
@@ -2951,9 +2827,9 @@ export type GardenSettingsConnectionSort = {
 
 export type GardenSettingsConnectionWhere = {
   AND?: InputMaybe<Array<GardenSettingsConnectionWhere>>;
+  NOT?: InputMaybe<GardenSettingsConnectionWhere>;
   OR?: InputMaybe<Array<GardenSettingsConnectionWhere>>;
   node?: InputMaybe<GardenSettingsWhere>;
-  node_NOT?: InputMaybe<GardenSettingsWhere>;
 };
 
 export type GardenSettingsCreateFieldInput = {
@@ -3002,6 +2878,7 @@ export type GardenSettingsFieldInput = {
 
 export type GardenSettingsGardenAggregateInput = {
   AND?: InputMaybe<Array<GardenSettingsGardenAggregateInput>>;
+  NOT?: InputMaybe<GardenSettingsGardenAggregateInput>;
   OR?: InputMaybe<Array<GardenSettingsGardenAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -3013,6 +2890,8 @@ export type GardenSettingsGardenAggregateInput = {
 
 export type GardenSettingsGardenConnectFieldInput = {
   connect?: InputMaybe<GardenConnectInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<GardenConnectWhere>;
 };
 
@@ -3029,9 +2908,9 @@ export type GardenSettingsGardenConnectionSort = {
 
 export type GardenSettingsGardenConnectionWhere = {
   AND?: InputMaybe<Array<GardenSettingsGardenConnectionWhere>>;
+  NOT?: InputMaybe<GardenSettingsGardenConnectionWhere>;
   OR?: InputMaybe<Array<GardenSettingsGardenConnectionWhere>>;
   node?: InputMaybe<GardenWhere>;
-  node_NOT?: InputMaybe<GardenWhere>;
 };
 
 export type GardenSettingsGardenCreateFieldInput = {
@@ -3068,29 +2947,23 @@ export type GardenSettingsGardenGardenNodeAggregateSelection = {
 
 export type GardenSettingsGardenNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<GardenSettingsGardenNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<GardenSettingsGardenNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<GardenSettingsGardenNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  gardenId_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type GardenSettingsGardenRelationship = {
@@ -3124,108 +2997,83 @@ export type GardenSettingsInput = {
 
 export type GardenSettingsNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<GardenSettingsNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<GardenSettingsNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<GardenSettingsNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  homepageUrl_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  homepageUrl_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  homepageUrl_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  homepageUrl_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  homepageUrl_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  homepageUrl_EQUAL?: InputMaybe<Scalars['String']>;
-  homepageUrl_GT?: InputMaybe<Scalars['Int']>;
-  homepageUrl_GTE?: InputMaybe<Scalars['Int']>;
-  homepageUrl_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  homepageUrl_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  homepageUrl_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  homepageUrl_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  homepageUrl_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  homepageUrl_LT?: InputMaybe<Scalars['Int']>;
-  homepageUrl_LTE?: InputMaybe<Scalars['Int']>;
-  homepageUrl_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  homepageUrl_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  homepageUrl_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  homepageUrl_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  homepageUrl_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoPageMarkdown_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoPageMarkdown_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoPageMarkdown_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoPageMarkdown_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoPageMarkdown_EQUAL?: InputMaybe<Scalars['String']>;
-  infoPageMarkdown_GT?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_GTE?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_LT?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_LTE?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoPageMarkdown_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  logoUrl_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  logoUrl_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  logoUrl_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  logoUrl_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  logoUrl_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  logoUrl_EQUAL?: InputMaybe<Scalars['String']>;
-  logoUrl_GT?: InputMaybe<Scalars['Int']>;
-  logoUrl_GTE?: InputMaybe<Scalars['Int']>;
-  logoUrl_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  logoUrl_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  logoUrl_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  logoUrl_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  logoUrl_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  logoUrl_LT?: InputMaybe<Scalars['Int']>;
-  logoUrl_LTE?: InputMaybe<Scalars['Int']>;
-  logoUrl_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  logoUrl_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  logoUrl_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  logoUrl_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  logoUrl_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  name_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  name_EQUAL?: InputMaybe<Scalars['String']>;
-  name_GT?: InputMaybe<Scalars['Int']>;
-  name_GTE?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  name_LT?: InputMaybe<Scalars['Int']>;
-  name_LTE?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  shortDescription_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  shortDescription_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  shortDescription_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  shortDescription_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  shortDescription_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  shortDescription_EQUAL?: InputMaybe<Scalars['String']>;
-  shortDescription_GT?: InputMaybe<Scalars['Int']>;
-  shortDescription_GTE?: InputMaybe<Scalars['Int']>;
-  shortDescription_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  shortDescription_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  shortDescription_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  shortDescription_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  shortDescription_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  shortDescription_LT?: InputMaybe<Scalars['Int']>;
-  shortDescription_LTE?: InputMaybe<Scalars['Int']>;
-  shortDescription_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  shortDescription_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  shortDescription_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  shortDescription_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  shortDescription_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  homepageUrl_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  homepageUrl_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  homepageUrl_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  homepageUrl_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  homepageUrl_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  homepageUrl_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  homepageUrl_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  homepageUrl_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  homepageUrl_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  homepageUrl_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  homepageUrl_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  homepageUrl_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  homepageUrl_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  homepageUrl_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  homepageUrl_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoPageMarkdown_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoPageMarkdown_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoPageMarkdown_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoPageMarkdown_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoPageMarkdown_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoPageMarkdown_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  logoUrl_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  logoUrl_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  logoUrl_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  logoUrl_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  logoUrl_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  logoUrl_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  logoUrl_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  logoUrl_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  logoUrl_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  logoUrl_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  logoUrl_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  logoUrl_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  logoUrl_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  logoUrl_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  logoUrl_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  name_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  name_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  shortDescription_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  shortDescription_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  shortDescription_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  shortDescription_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  shortDescription_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  shortDescription_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  shortDescription_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  shortDescription_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  shortDescription_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  shortDescription_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  shortDescription_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  shortDescription_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  shortDescription_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  shortDescription_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  shortDescription_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type GardenSettingsOptions = {
@@ -3282,16 +3130,12 @@ export type GardenSettingsUpdateInput = {
 
 export type GardenSettingsWhere = {
   AND?: InputMaybe<Array<GardenSettingsWhere>>;
+  NOT?: InputMaybe<GardenSettingsWhere>;
   OR?: InputMaybe<Array<GardenSettingsWhere>>;
   _id?: InputMaybe<Scalars['ID']>;
   _id_CONTAINS?: InputMaybe<Scalars['ID']>;
   _id_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   _id_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT?: InputMaybe<Scalars['ID']>;
-  _id_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  _id_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  _id_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   _id_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   garden?: InputMaybe<GardenWhere>;
   gardenAggregate?: InputMaybe<GardenSettingsGardenAggregateInput>;
@@ -3302,21 +3146,11 @@ export type GardenSettingsWhere = {
   homepageUrl_CONTAINS?: InputMaybe<Scalars['String']>;
   homepageUrl_ENDS_WITH?: InputMaybe<Scalars['String']>;
   homepageUrl_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  homepageUrl_NOT?: InputMaybe<Scalars['String']>;
-  homepageUrl_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  homepageUrl_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  homepageUrl_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  homepageUrl_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   homepageUrl_STARTS_WITH?: InputMaybe<Scalars['String']>;
   infoPageMarkdown?: InputMaybe<Scalars['String']>;
   infoPageMarkdown_CONTAINS?: InputMaybe<Scalars['String']>;
   infoPageMarkdown_ENDS_WITH?: InputMaybe<Scalars['String']>;
   infoPageMarkdown_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  infoPageMarkdown_NOT?: InputMaybe<Scalars['String']>;
-  infoPageMarkdown_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  infoPageMarkdown_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  infoPageMarkdown_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  infoPageMarkdown_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   infoPageMarkdown_STARTS_WITH?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<PointInput>;
   location_DISTANCE?: InputMaybe<PointDistance>;
@@ -3325,37 +3159,20 @@ export type GardenSettingsWhere = {
   location_IN?: InputMaybe<Array<InputMaybe<PointInput>>>;
   location_LT?: InputMaybe<PointDistance>;
   location_LTE?: InputMaybe<PointDistance>;
-  location_NOT?: InputMaybe<PointInput>;
-  location_NOT_IN?: InputMaybe<Array<InputMaybe<PointInput>>>;
   logoUrl?: InputMaybe<Scalars['String']>;
   logoUrl_CONTAINS?: InputMaybe<Scalars['String']>;
   logoUrl_ENDS_WITH?: InputMaybe<Scalars['String']>;
   logoUrl_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  logoUrl_NOT?: InputMaybe<Scalars['String']>;
-  logoUrl_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  logoUrl_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  logoUrl_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  logoUrl_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   logoUrl_STARTS_WITH?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   name_CONTAINS?: InputMaybe<Scalars['String']>;
   name_ENDS_WITH?: InputMaybe<Scalars['String']>;
   name_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  name_NOT?: InputMaybe<Scalars['String']>;
-  name_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  name_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  name_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  name_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   name_STARTS_WITH?: InputMaybe<Scalars['String']>;
   shortDescription?: InputMaybe<Scalars['String']>;
   shortDescription_CONTAINS?: InputMaybe<Scalars['String']>;
   shortDescription_ENDS_WITH?: InputMaybe<Scalars['String']>;
   shortDescription_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  shortDescription_NOT?: InputMaybe<Scalars['String']>;
-  shortDescription_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  shortDescription_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  shortDescription_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  shortDescription_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   shortDescription_STARTS_WITH?: InputMaybe<Scalars['String']>;
 };
 
@@ -3375,36 +3192,22 @@ export type GardenUpdateInput = {
 
 export type GardenWhere = {
   AND?: InputMaybe<Array<GardenWhere>>;
+  NOT?: InputMaybe<GardenWhere>;
   OR?: InputMaybe<Array<GardenWhere>>;
   _id?: InputMaybe<Scalars['ID']>;
   _id_CONTAINS?: InputMaybe<Scalars['ID']>;
   _id_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   _id_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT?: InputMaybe<Scalars['ID']>;
-  _id_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  _id_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  _id_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   _id_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   gardenId?: InputMaybe<Scalars['ID']>;
   gardenId_CONTAINS?: InputMaybe<Scalars['ID']>;
   gardenId_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   gardenId_IN?: InputMaybe<Array<Scalars['ID']>>;
-  gardenId_NOT?: InputMaybe<Scalars['ID']>;
-  gardenId_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  gardenId_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  gardenId_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  gardenId_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   gardenId_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   settings?: InputMaybe<GardenSettingsWhere>;
   settingsAggregate?: InputMaybe<GardenSettingsAggregateInput>;
@@ -3463,6 +3266,7 @@ export type GeoShapeFeatureConnectionArgs = {
 
 export type GeoShapeBelongs_ToAggregateInput = {
   AND?: InputMaybe<Array<GeoShapeBelongs_ToAggregateInput>>;
+  NOT?: InputMaybe<GeoShapeBelongs_ToAggregateInput>;
   OR?: InputMaybe<Array<GeoShapeBelongs_ToAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -3474,6 +3278,8 @@ export type GeoShapeBelongs_ToAggregateInput = {
 
 export type GeoShapeBelongs_ToConnectFieldInput = {
   connect?: InputMaybe<Array<GardenLayerConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<GardenLayerConnectWhere>;
 };
 
@@ -3499,9 +3305,9 @@ export type GeoShapeBelongs_ToConnectionSort = {
 
 export type GeoShapeBelongs_ToConnectionWhere = {
   AND?: InputMaybe<Array<GeoShapeBelongs_ToConnectionWhere>>;
+  NOT?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
   OR?: InputMaybe<Array<GeoShapeBelongs_ToConnectionWhere>>;
   node?: InputMaybe<GardenLayerWhere>;
-  node_NOT?: InputMaybe<GardenLayerWhere>;
 };
 
 export type GeoShapeBelongs_ToCreateFieldInput = {
@@ -3526,28 +3332,23 @@ export type GeoShapeBelongs_ToFieldInput = {
 
 export type GeoShapeBelongs_ToNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<GeoShapeBelongs_ToNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<GeoShapeBelongs_ToNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<GeoShapeBelongs_ToNodeAggregationWhereInput>>;
-  layerId_EQUAL?: InputMaybe<Scalars['ID']>;
-  name_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  name_EQUAL?: InputMaybe<Scalars['String']>;
-  name_GT?: InputMaybe<Scalars['Int']>;
-  name_GTE?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  name_LT?: InputMaybe<Scalars['Int']>;
-  name_LTE?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  name_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  name_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type GeoShapeBelongs_ToRelationship = {
@@ -3599,6 +3400,7 @@ export type GeoShapeDisconnectInput = {
 
 export type GeoShapeFeatureAggregateInput = {
   AND?: InputMaybe<Array<GeoShapeFeatureAggregateInput>>;
+  NOT?: InputMaybe<GeoShapeFeatureAggregateInput>;
   OR?: InputMaybe<Array<GeoShapeFeatureAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -3610,6 +3412,8 @@ export type GeoShapeFeatureAggregateInput = {
 
 export type GeoShapeFeatureConnectFieldInput = {
   connect?: InputMaybe<GardenFeatureConnectInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<GardenFeatureConnectWhere>;
 };
 
@@ -3635,9 +3439,9 @@ export type GeoShapeFeatureConnectionSort = {
 
 export type GeoShapeFeatureConnectionWhere = {
   AND?: InputMaybe<Array<GeoShapeFeatureConnectionWhere>>;
+  NOT?: InputMaybe<GeoShapeFeatureConnectionWhere>;
   OR?: InputMaybe<Array<GeoShapeFeatureConnectionWhere>>;
   node?: InputMaybe<GardenFeatureWhere>;
-  node_NOT?: InputMaybe<GardenFeatureWhere>;
 };
 
 export type GeoShapeFeatureCreateFieldInput = {
@@ -3662,68 +3466,53 @@ export type GeoShapeFeatureFieldInput = {
 
 export type GeoShapeFeatureNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<GeoShapeFeatureNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<GeoShapeFeatureNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<GeoShapeFeatureNodeAggregationWhereInput>>;
-  featureId_EQUAL?: InputMaybe<Scalars['ID']>;
-  featureType_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  featureType_EQUAL?: InputMaybe<Scalars['String']>;
-  featureType_GT?: InputMaybe<Scalars['Int']>;
-  featureType_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  featureType_LT?: InputMaybe<Scalars['Int']>;
-  featureType_LTE?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  featureType_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  featureType_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type GeoShapeFeatureRelationship = {
@@ -3793,9 +3582,13 @@ export type GeoShapeUpdateInput = {
 export type GeoShapeWhere = {
   _on?: InputMaybe<GeoShapeImplementationsWhere>;
   belongs_toAggregate?: InputMaybe<GeoShapeBelongs_ToAggregateInput>;
+  /** Return GeoShapes where all of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_ALL?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return GeoShapes where none of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_NONE?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return GeoShapes where one of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_SINGLE?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return GeoShapes where some of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_SOME?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
   /** Return GeoShapes where all of the related GardenLayers match this filter */
   belongs_to_ALL?: InputMaybe<GardenLayerWhere>;
@@ -3812,17 +3605,10 @@ export type GeoShapeWhere = {
   feature_NOT?: InputMaybe<GardenFeatureWhere>;
   points?: InputMaybe<Array<InputMaybe<PointInput>>>;
   points_INCLUDES?: InputMaybe<PointInput>;
-  points_NOT?: InputMaybe<Array<InputMaybe<PointInput>>>;
-  points_NOT_INCLUDES?: InputMaybe<PointInput>;
   shapeId?: InputMaybe<Scalars['ID']>;
   shapeId_CONTAINS?: InputMaybe<Scalars['ID']>;
   shapeId_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   shapeId_IN?: InputMaybe<Array<Scalars['ID']>>;
-  shapeId_NOT?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  shapeId_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   shapeId_STARTS_WITH?: InputMaybe<Scalars['ID']>;
 };
 
@@ -3953,6 +3739,7 @@ export type LogEventOptions = {
 
 export type LogEventRefers_ToAggregateInput = {
   AND?: InputMaybe<Array<LogEventRefers_ToAggregateInput>>;
+  NOT?: InputMaybe<LogEventRefers_ToAggregateInput>;
   OR?: InputMaybe<Array<LogEventRefers_ToAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -3964,6 +3751,8 @@ export type LogEventRefers_ToAggregateInput = {
 
 export type LogEventRefers_ToConnectFieldInput = {
   connect?: InputMaybe<Array<WateringTaskConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<WateringTaskConnectWhere>;
 };
 
@@ -3980,9 +3769,9 @@ export type LogEventRefers_ToConnectionSort = {
 
 export type LogEventRefers_ToConnectionWhere = {
   AND?: InputMaybe<Array<LogEventRefers_ToConnectionWhere>>;
+  NOT?: InputMaybe<LogEventRefers_ToConnectionWhere>;
   OR?: InputMaybe<Array<LogEventRefers_ToConnectionWhere>>;
   node?: InputMaybe<WateringTaskWhere>;
-  node_NOT?: InputMaybe<WateringTaskWhere>;
 };
 
 export type LogEventRefers_ToCreateFieldInput = {
@@ -4006,68 +3795,53 @@ export type LogEventRefers_ToFieldInput = {
 
 export type LogEventRefers_ToNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<LogEventRefers_ToNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<LogEventRefers_ToNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<LogEventRefers_ToNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type LogEventRefers_ToRelationship = {
@@ -4105,6 +3879,7 @@ export type LogEventSort = {
 
 export type LogEventTriggered_ByAggregateInput = {
   AND?: InputMaybe<Array<LogEventTriggered_ByAggregateInput>>;
+  NOT?: InputMaybe<LogEventTriggered_ByAggregateInput>;
   OR?: InputMaybe<Array<LogEventTriggered_ByAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -4116,6 +3891,8 @@ export type LogEventTriggered_ByAggregateInput = {
 
 export type LogEventTriggered_ByConnectFieldInput = {
   connect?: InputMaybe<Array<UserConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<UserConnectWhere>;
 };
 
@@ -4132,9 +3909,9 @@ export type LogEventTriggered_ByConnectionSort = {
 
 export type LogEventTriggered_ByConnectionWhere = {
   AND?: InputMaybe<Array<LogEventTriggered_ByConnectionWhere>>;
+  NOT?: InputMaybe<LogEventTriggered_ByConnectionWhere>;
   OR?: InputMaybe<Array<LogEventTriggered_ByConnectionWhere>>;
   node?: InputMaybe<UserWhere>;
-  node_NOT?: InputMaybe<UserWhere>;
 };
 
 export type LogEventTriggered_ByCreateFieldInput = {
@@ -4158,88 +3935,68 @@ export type LogEventTriggered_ByFieldInput = {
 
 export type LogEventTriggered_ByNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<LogEventTriggered_ByNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<LogEventTriggered_ByNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<LogEventTriggered_ByNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  id_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  id_EQUAL?: InputMaybe<Scalars['String']>;
-  id_GT?: InputMaybe<Scalars['Int']>;
-  id_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  id_LT?: InputMaybe<Scalars['Int']>;
-  id_LTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  id_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  id_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type LogEventTriggered_ByRelationship = {
@@ -4302,51 +4059,36 @@ export type LogEventWateringTaskRefers_ToNodeAggregateSelection = {
 
 export type LogEventWhere = {
   AND?: InputMaybe<Array<LogEventWhere>>;
+  NOT?: InputMaybe<LogEventWhere>;
   OR?: InputMaybe<Array<LogEventWhere>>;
   _id?: InputMaybe<Scalars['ID']>;
   _id_CONTAINS?: InputMaybe<Scalars['ID']>;
   _id_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   _id_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT?: InputMaybe<Scalars['ID']>;
-  _id_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  _id_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  _id_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   _id_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   date?: InputMaybe<Scalars['String']>;
   date_CONTAINS?: InputMaybe<Scalars['String']>;
   date_ENDS_WITH?: InputMaybe<Scalars['String']>;
   date_IN?: InputMaybe<Array<Scalars['String']>>;
-  date_NOT?: InputMaybe<Scalars['String']>;
-  date_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  date_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  date_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  date_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   date_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId?: InputMaybe<Scalars['String']>;
   neo4jImportId_CONTAINS?: InputMaybe<Scalars['String']>;
   neo4jImportId_ENDS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId_IN?: InputMaybe<Array<Scalars['String']>>;
-  neo4jImportId_NOT?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  neo4jImportId_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId_STARTS_WITH?: InputMaybe<Scalars['String']>;
   refers_toAggregate?: InputMaybe<LogEventRefers_ToAggregateInput>;
+  /** Return LogEvents where all of the related LogEventRefers_toConnections match this filter */
   refers_toConnection_ALL?: InputMaybe<LogEventRefers_ToConnectionWhere>;
+  /** Return LogEvents where none of the related LogEventRefers_toConnections match this filter */
   refers_toConnection_NONE?: InputMaybe<LogEventRefers_ToConnectionWhere>;
+  /** Return LogEvents where one of the related LogEventRefers_toConnections match this filter */
   refers_toConnection_SINGLE?: InputMaybe<LogEventRefers_ToConnectionWhere>;
+  /** Return LogEvents where some of the related LogEventRefers_toConnections match this filter */
   refers_toConnection_SOME?: InputMaybe<LogEventRefers_ToConnectionWhere>;
   /** Return LogEvents where all of the related WateringTasks match this filter */
   refers_to_ALL?: InputMaybe<WateringTaskWhere>;
@@ -4357,9 +4099,13 @@ export type LogEventWhere = {
   /** Return LogEvents where some of the related WateringTasks match this filter */
   refers_to_SOME?: InputMaybe<WateringTaskWhere>;
   triggered_byAggregate?: InputMaybe<LogEventTriggered_ByAggregateInput>;
+  /** Return LogEvents where all of the related LogEventTriggered_byConnections match this filter */
   triggered_byConnection_ALL?: InputMaybe<LogEventTriggered_ByConnectionWhere>;
+  /** Return LogEvents where none of the related LogEventTriggered_byConnections match this filter */
   triggered_byConnection_NONE?: InputMaybe<LogEventTriggered_ByConnectionWhere>;
+  /** Return LogEvents where one of the related LogEventTriggered_byConnections match this filter */
   triggered_byConnection_SINGLE?: InputMaybe<LogEventTriggered_ByConnectionWhere>;
+  /** Return LogEvents where some of the related LogEventTriggered_byConnections match this filter */
   triggered_byConnection_SOME?: InputMaybe<LogEventTriggered_ByConnectionWhere>;
   /** Return LogEvents where all of the related Users match this filter */
   triggered_by_ALL?: InputMaybe<UserWhere>;
@@ -4373,11 +4119,6 @@ export type LogEventWhere = {
   type_CONTAINS?: InputMaybe<Scalars['String']>;
   type_ENDS_WITH?: InputMaybe<Scalars['String']>;
   type_IN?: InputMaybe<Array<Scalars['String']>>;
-  type_NOT?: InputMaybe<Scalars['String']>;
-  type_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  type_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  type_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  type_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   type_STARTS_WITH?: InputMaybe<Scalars['String']>;
 };
 
@@ -4455,6 +4196,7 @@ export type MarkerShapeAggregateSelection = {
 
 export type MarkerShapeBelongs_ToAggregateInput = {
   AND?: InputMaybe<Array<MarkerShapeBelongs_ToAggregateInput>>;
+  NOT?: InputMaybe<MarkerShapeBelongs_ToAggregateInput>;
   OR?: InputMaybe<Array<MarkerShapeBelongs_ToAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -4466,28 +4208,23 @@ export type MarkerShapeBelongs_ToAggregateInput = {
 
 export type MarkerShapeBelongs_ToNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<MarkerShapeBelongs_ToNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<MarkerShapeBelongs_ToNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<MarkerShapeBelongs_ToNodeAggregationWhereInput>>;
-  layerId_EQUAL?: InputMaybe<Scalars['ID']>;
-  name_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  name_EQUAL?: InputMaybe<Scalars['String']>;
-  name_GT?: InputMaybe<Scalars['Int']>;
-  name_GTE?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  name_LT?: InputMaybe<Scalars['Int']>;
-  name_LTE?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  name_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  name_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type MarkerShapeConnectInput = {
@@ -4526,6 +4263,7 @@ export type MarkerShapeEdge = {
 
 export type MarkerShapeFeatureAggregateInput = {
   AND?: InputMaybe<Array<MarkerShapeFeatureAggregateInput>>;
+  NOT?: InputMaybe<MarkerShapeFeatureAggregateInput>;
   OR?: InputMaybe<Array<MarkerShapeFeatureAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -4537,68 +4275,53 @@ export type MarkerShapeFeatureAggregateInput = {
 
 export type MarkerShapeFeatureNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<MarkerShapeFeatureNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<MarkerShapeFeatureNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<MarkerShapeFeatureNodeAggregationWhereInput>>;
-  featureId_EQUAL?: InputMaybe<Scalars['ID']>;
-  featureType_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  featureType_EQUAL?: InputMaybe<Scalars['String']>;
-  featureType_GT?: InputMaybe<Scalars['Int']>;
-  featureType_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  featureType_LT?: InputMaybe<Scalars['Int']>;
-  featureType_LTE?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  featureType_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  featureType_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type MarkerShapeGardenFeatureFeatureAggregationSelection = {
@@ -4658,11 +4381,16 @@ export type MarkerShapeUpdateInput = {
 
 export type MarkerShapeWhere = {
   AND?: InputMaybe<Array<MarkerShapeWhere>>;
+  NOT?: InputMaybe<MarkerShapeWhere>;
   OR?: InputMaybe<Array<MarkerShapeWhere>>;
   belongs_toAggregate?: InputMaybe<MarkerShapeBelongs_ToAggregateInput>;
+  /** Return MarkerShapes where all of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_ALL?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return MarkerShapes where none of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_NONE?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return MarkerShapes where one of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_SINGLE?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return MarkerShapes where some of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_SOME?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
   /** Return MarkerShapes where all of the related GardenLayers match this filter */
   belongs_to_ALL?: InputMaybe<GardenLayerWhere>;
@@ -4681,11 +4409,6 @@ export type MarkerShapeWhere = {
   icon_CONTAINS?: InputMaybe<Scalars['String']>;
   icon_ENDS_WITH?: InputMaybe<Scalars['String']>;
   icon_IN?: InputMaybe<Array<Scalars['String']>>;
-  icon_NOT?: InputMaybe<Scalars['String']>;
-  icon_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  icon_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  icon_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  icon_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   icon_STARTS_WITH?: InputMaybe<Scalars['String']>;
   point?: InputMaybe<PointInput>;
   point_DISTANCE?: InputMaybe<PointDistance>;
@@ -4694,21 +4417,12 @@ export type MarkerShapeWhere = {
   point_IN?: InputMaybe<Array<PointInput>>;
   point_LT?: InputMaybe<PointDistance>;
   point_LTE?: InputMaybe<PointDistance>;
-  point_NOT?: InputMaybe<PointInput>;
-  point_NOT_IN?: InputMaybe<Array<PointInput>>;
   points?: InputMaybe<Array<InputMaybe<PointInput>>>;
   points_INCLUDES?: InputMaybe<PointInput>;
-  points_NOT?: InputMaybe<Array<InputMaybe<PointInput>>>;
-  points_NOT_INCLUDES?: InputMaybe<PointInput>;
   shapeId?: InputMaybe<Scalars['ID']>;
   shapeId_CONTAINS?: InputMaybe<Scalars['ID']>;
   shapeId_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   shapeId_IN?: InputMaybe<Array<Scalars['ID']>>;
-  shapeId_NOT?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  shapeId_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   shapeId_STARTS_WITH?: InputMaybe<Scalars['ID']>;
 };
 
@@ -5316,6 +5030,7 @@ export type PlantSpeciesAggregateSelection = {
 
 export type PlantSpeciesCategoriesAggregateInput = {
   AND?: InputMaybe<Array<PlantSpeciesCategoriesAggregateInput>>;
+  NOT?: InputMaybe<PlantSpeciesCategoriesAggregateInput>;
   OR?: InputMaybe<Array<PlantSpeciesCategoriesAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -5327,6 +5042,8 @@ export type PlantSpeciesCategoriesAggregateInput = {
 
 export type PlantSpeciesCategoriesConnectFieldInput = {
   connect?: InputMaybe<Array<CategoryConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<CategoryConnectWhere>;
 };
 
@@ -5343,9 +5060,9 @@ export type PlantSpeciesCategoriesConnectionSort = {
 
 export type PlantSpeciesCategoriesConnectionWhere = {
   AND?: InputMaybe<Array<PlantSpeciesCategoriesConnectionWhere>>;
+  NOT?: InputMaybe<PlantSpeciesCategoriesConnectionWhere>;
   OR?: InputMaybe<Array<PlantSpeciesCategoriesConnectionWhere>>;
   node?: InputMaybe<CategoryWhere>;
-  node_NOT?: InputMaybe<CategoryWhere>;
 };
 
 export type PlantSpeciesCategoriesCreateFieldInput = {
@@ -5369,47 +5086,38 @@ export type PlantSpeciesCategoriesFieldInput = {
 
 export type PlantSpeciesCategoriesNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<PlantSpeciesCategoriesNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<PlantSpeciesCategoriesNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<PlantSpeciesCategoriesNodeAggregationWhereInput>>;
-  description_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  description_EQUAL?: InputMaybe<Scalars['String']>;
-  description_GT?: InputMaybe<Scalars['Int']>;
-  description_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  description_LT?: InputMaybe<Scalars['Int']>;
-  description_LTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  description_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  description_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type PlantSpeciesCategoriesRelationship = {
@@ -5474,6 +5182,7 @@ export type PlantSpeciesCreateInput = {
 
 export type PlantSpeciesCropRotationFactorAggregateInput = {
   AND?: InputMaybe<Array<PlantSpeciesCropRotationFactorAggregateInput>>;
+  NOT?: InputMaybe<PlantSpeciesCropRotationFactorAggregateInput>;
   OR?: InputMaybe<Array<PlantSpeciesCropRotationFactorAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -5487,6 +5196,8 @@ export type PlantSpeciesCropRotationFactorAggregateInput = {
 export type PlantSpeciesCropRotationFactorConnectFieldInput = {
   connect?: InputMaybe<Array<PlantSpeciesConnectInput>>;
   edge?: InputMaybe<CropRotationCreateInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<PlantSpeciesConnectWhere>;
 };
 
@@ -5504,11 +5215,10 @@ export type PlantSpeciesCropRotationFactorConnectionSort = {
 
 export type PlantSpeciesCropRotationFactorConnectionWhere = {
   AND?: InputMaybe<Array<PlantSpeciesCropRotationFactorConnectionWhere>>;
+  NOT?: InputMaybe<PlantSpeciesCropRotationFactorConnectionWhere>;
   OR?: InputMaybe<Array<PlantSpeciesCropRotationFactorConnectionWhere>>;
   edge?: InputMaybe<CropRotationWhere>;
-  edge_NOT?: InputMaybe<CropRotationWhere>;
   node?: InputMaybe<PlantSpeciesWhere>;
-  node_NOT?: InputMaybe<PlantSpeciesWhere>;
 };
 
 export type PlantSpeciesCropRotationFactorCreateFieldInput = {
@@ -5528,17 +5238,13 @@ export type PlantSpeciesCropRotationFactorDisconnectFieldInput = {
 
 export type PlantSpeciesCropRotationFactorEdgeAggregationWhereInput = {
   AND?: InputMaybe<Array<PlantSpeciesCropRotationFactorEdgeAggregationWhereInput>>;
+  NOT?: InputMaybe<PlantSpeciesCropRotationFactorEdgeAggregationWhereInput>;
   OR?: InputMaybe<Array<PlantSpeciesCropRotationFactorEdgeAggregationWhereInput>>;
   weight_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
   weight_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
   weight_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
   weight_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
   weight_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  weight_EQUAL?: InputMaybe<Scalars['Int']>;
-  weight_GT?: InputMaybe<Scalars['Int']>;
-  weight_GTE?: InputMaybe<Scalars['Int']>;
-  weight_LT?: InputMaybe<Scalars['Int']>;
-  weight_LTE?: InputMaybe<Scalars['Int']>;
   weight_MAX_EQUAL?: InputMaybe<Scalars['Int']>;
   weight_MAX_GT?: InputMaybe<Scalars['Int']>;
   weight_MAX_GTE?: InputMaybe<Scalars['Int']>;
@@ -5563,87 +5269,68 @@ export type PlantSpeciesCropRotationFactorFieldInput = {
 
 export type PlantSpeciesCropRotationFactorNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<PlantSpeciesCropRotationFactorNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<PlantSpeciesCropRotationFactorNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<PlantSpeciesCropRotationFactorNodeAggregationWhereInput>>;
-  description_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  description_EQUAL?: InputMaybe<Scalars['String']>;
-  description_GT?: InputMaybe<Scalars['Int']>;
-  description_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  description_LT?: InputMaybe<Scalars['Int']>;
-  description_LTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  icon_EQUAL?: InputMaybe<Scalars['String']>;
-  icon_GT?: InputMaybe<Scalars['Int']>;
-  icon_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_LT?: InputMaybe<Scalars['Int']>;
-  icon_LTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  description_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  description_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  icon_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type PlantSpeciesCropRotationFactorRelationship = CropRotation & {
@@ -5750,6 +5437,7 @@ export type PlantSpeciesPlantVarietyVarietiesNodeAggregateSelection = {
 
 export type PlantSpeciesPositiveNeighborhoodAggregateInput = {
   AND?: InputMaybe<Array<PlantSpeciesPositiveNeighborhoodAggregateInput>>;
+  NOT?: InputMaybe<PlantSpeciesPositiveNeighborhoodAggregateInput>;
   OR?: InputMaybe<Array<PlantSpeciesPositiveNeighborhoodAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -5763,6 +5451,8 @@ export type PlantSpeciesPositiveNeighborhoodAggregateInput = {
 export type PlantSpeciesPositiveNeighborhoodConnectFieldInput = {
   connect?: InputMaybe<Array<PlantSpeciesConnectInput>>;
   edge?: InputMaybe<PositiveNeighborhoodCreateInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<PlantSpeciesConnectWhere>;
 };
 
@@ -5780,11 +5470,10 @@ export type PlantSpeciesPositiveNeighborhoodConnectionSort = {
 
 export type PlantSpeciesPositiveNeighborhoodConnectionWhere = {
   AND?: InputMaybe<Array<PlantSpeciesPositiveNeighborhoodConnectionWhere>>;
+  NOT?: InputMaybe<PlantSpeciesPositiveNeighborhoodConnectionWhere>;
   OR?: InputMaybe<Array<PlantSpeciesPositiveNeighborhoodConnectionWhere>>;
   edge?: InputMaybe<PositiveNeighborhoodWhere>;
-  edge_NOT?: InputMaybe<PositiveNeighborhoodWhere>;
   node?: InputMaybe<PlantSpeciesWhere>;
-  node_NOT?: InputMaybe<PlantSpeciesWhere>;
 };
 
 export type PlantSpeciesPositiveNeighborhoodCreateFieldInput = {
@@ -5804,17 +5493,13 @@ export type PlantSpeciesPositiveNeighborhoodDisconnectFieldInput = {
 
 export type PlantSpeciesPositiveNeighborhoodEdgeAggregationWhereInput = {
   AND?: InputMaybe<Array<PlantSpeciesPositiveNeighborhoodEdgeAggregationWhereInput>>;
+  NOT?: InputMaybe<PlantSpeciesPositiveNeighborhoodEdgeAggregationWhereInput>;
   OR?: InputMaybe<Array<PlantSpeciesPositiveNeighborhoodEdgeAggregationWhereInput>>;
   weight_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
   weight_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
   weight_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
   weight_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
   weight_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  weight_EQUAL?: InputMaybe<Scalars['Int']>;
-  weight_GT?: InputMaybe<Scalars['Int']>;
-  weight_GTE?: InputMaybe<Scalars['Int']>;
-  weight_LT?: InputMaybe<Scalars['Int']>;
-  weight_LTE?: InputMaybe<Scalars['Int']>;
   weight_MAX_EQUAL?: InputMaybe<Scalars['Int']>;
   weight_MAX_GT?: InputMaybe<Scalars['Int']>;
   weight_MAX_GTE?: InputMaybe<Scalars['Int']>;
@@ -5839,87 +5524,68 @@ export type PlantSpeciesPositiveNeighborhoodFieldInput = {
 
 export type PlantSpeciesPositiveNeighborhoodNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<PlantSpeciesPositiveNeighborhoodNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<PlantSpeciesPositiveNeighborhoodNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<PlantSpeciesPositiveNeighborhoodNodeAggregationWhereInput>>;
-  description_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  description_EQUAL?: InputMaybe<Scalars['String']>;
-  description_GT?: InputMaybe<Scalars['Int']>;
-  description_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  description_LT?: InputMaybe<Scalars['Int']>;
-  description_LTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  icon_EQUAL?: InputMaybe<Scalars['String']>;
-  icon_GT?: InputMaybe<Scalars['Int']>;
-  icon_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_LT?: InputMaybe<Scalars['Int']>;
-  icon_LTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  description_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  description_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  icon_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type PlantSpeciesPositiveNeighborhoodRelationship = PositiveNeighborhood & {
@@ -5971,6 +5637,7 @@ export type PlantSpeciesUpdateInput = {
 
 export type PlantSpeciesVarietiesAggregateInput = {
   AND?: InputMaybe<Array<PlantSpeciesVarietiesAggregateInput>>;
+  NOT?: InputMaybe<PlantSpeciesVarietiesAggregateInput>;
   OR?: InputMaybe<Array<PlantSpeciesVarietiesAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -5982,6 +5649,8 @@ export type PlantSpeciesVarietiesAggregateInput = {
 
 export type PlantSpeciesVarietiesConnectFieldInput = {
   connect?: InputMaybe<Array<PlantVarietyConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<PlantVarietyConnectWhere>;
 };
 
@@ -5998,9 +5667,9 @@ export type PlantSpeciesVarietiesConnectionSort = {
 
 export type PlantSpeciesVarietiesConnectionWhere = {
   AND?: InputMaybe<Array<PlantSpeciesVarietiesConnectionWhere>>;
+  NOT?: InputMaybe<PlantSpeciesVarietiesConnectionWhere>;
   OR?: InputMaybe<Array<PlantSpeciesVarietiesConnectionWhere>>;
   node?: InputMaybe<PlantVarietyWhere>;
-  node_NOT?: InputMaybe<PlantVarietyWhere>;
 };
 
 export type PlantSpeciesVarietiesCreateFieldInput = {
@@ -6024,87 +5693,68 @@ export type PlantSpeciesVarietiesFieldInput = {
 
 export type PlantSpeciesVarietiesNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<PlantSpeciesVarietiesNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<PlantSpeciesVarietiesNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<PlantSpeciesVarietiesNodeAggregationWhereInput>>;
-  description_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  description_EQUAL?: InputMaybe<Scalars['String']>;
-  description_GT?: InputMaybe<Scalars['Int']>;
-  description_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  description_LT?: InputMaybe<Scalars['Int']>;
-  description_LTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  icon_EQUAL?: InputMaybe<Scalars['String']>;
-  icon_GT?: InputMaybe<Scalars['Int']>;
-  icon_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_LT?: InputMaybe<Scalars['Int']>;
-  icon_LTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  description_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  description_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  icon_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type PlantSpeciesVarietiesRelationship = {
@@ -6128,11 +5778,16 @@ export type PlantSpeciesVarietiesUpdateFieldInput = {
 
 export type PlantSpeciesWhere = {
   AND?: InputMaybe<Array<PlantSpeciesWhere>>;
+  NOT?: InputMaybe<PlantSpeciesWhere>;
   OR?: InputMaybe<Array<PlantSpeciesWhere>>;
   categoriesAggregate?: InputMaybe<PlantSpeciesCategoriesAggregateInput>;
+  /** Return PlantSpecies where all of the related PlantSpeciesCategoriesConnections match this filter */
   categoriesConnection_ALL?: InputMaybe<PlantSpeciesCategoriesConnectionWhere>;
+  /** Return PlantSpecies where none of the related PlantSpeciesCategoriesConnections match this filter */
   categoriesConnection_NONE?: InputMaybe<PlantSpeciesCategoriesConnectionWhere>;
+  /** Return PlantSpecies where one of the related PlantSpeciesCategoriesConnections match this filter */
   categoriesConnection_SINGLE?: InputMaybe<PlantSpeciesCategoriesConnectionWhere>;
+  /** Return PlantSpecies where some of the related PlantSpeciesCategoriesConnections match this filter */
   categoriesConnection_SOME?: InputMaybe<PlantSpeciesCategoriesConnectionWhere>;
   /** Return PlantSpecies where all of the related Categories match this filter */
   categories_ALL?: InputMaybe<CategoryWhere>;
@@ -6143,9 +5798,13 @@ export type PlantSpeciesWhere = {
   /** Return PlantSpecies where some of the related Categories match this filter */
   categories_SOME?: InputMaybe<CategoryWhere>;
   cropRotationFactorAggregate?: InputMaybe<PlantSpeciesCropRotationFactorAggregateInput>;
+  /** Return PlantSpecies where all of the related PlantSpeciesCropRotationFactorConnections match this filter */
   cropRotationFactorConnection_ALL?: InputMaybe<PlantSpeciesCropRotationFactorConnectionWhere>;
+  /** Return PlantSpecies where none of the related PlantSpeciesCropRotationFactorConnections match this filter */
   cropRotationFactorConnection_NONE?: InputMaybe<PlantSpeciesCropRotationFactorConnectionWhere>;
+  /** Return PlantSpecies where one of the related PlantSpeciesCropRotationFactorConnections match this filter */
   cropRotationFactorConnection_SINGLE?: InputMaybe<PlantSpeciesCropRotationFactorConnectionWhere>;
+  /** Return PlantSpecies where some of the related PlantSpeciesCropRotationFactorConnections match this filter */
   cropRotationFactorConnection_SOME?: InputMaybe<PlantSpeciesCropRotationFactorConnectionWhere>;
   /** Return PlantSpecies where all of the related PlantSpecies match this filter */
   cropRotationFactor_ALL?: InputMaybe<PlantSpeciesWhere>;
@@ -6159,46 +5818,30 @@ export type PlantSpeciesWhere = {
   description_CONTAINS?: InputMaybe<Scalars['String']>;
   description_ENDS_WITH?: InputMaybe<Scalars['String']>;
   description_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  description_NOT?: InputMaybe<Scalars['String']>;
-  description_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  description_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  description_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  description_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   description_STARTS_WITH?: InputMaybe<Scalars['String']>;
   icon?: InputMaybe<Scalars['String']>;
   icon_CONTAINS?: InputMaybe<Scalars['String']>;
   icon_ENDS_WITH?: InputMaybe<Scalars['String']>;
   icon_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  icon_NOT?: InputMaybe<Scalars['String']>;
-  icon_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  icon_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  icon_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  icon_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   icon_STARTS_WITH?: InputMaybe<Scalars['String']>;
   infoText?: InputMaybe<Scalars['String']>;
   infoText_CONTAINS?: InputMaybe<Scalars['String']>;
   infoText_ENDS_WITH?: InputMaybe<Scalars['String']>;
   infoText_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  infoText_NOT?: InputMaybe<Scalars['String']>;
-  infoText_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  infoText_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  infoText_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  infoText_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   infoText_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   positiveNeighborhoodAggregate?: InputMaybe<PlantSpeciesPositiveNeighborhoodAggregateInput>;
+  /** Return PlantSpecies where all of the related PlantSpeciesPositiveNeighborhoodConnections match this filter */
   positiveNeighborhoodConnection_ALL?: InputMaybe<PlantSpeciesPositiveNeighborhoodConnectionWhere>;
+  /** Return PlantSpecies where none of the related PlantSpeciesPositiveNeighborhoodConnections match this filter */
   positiveNeighborhoodConnection_NONE?: InputMaybe<PlantSpeciesPositiveNeighborhoodConnectionWhere>;
+  /** Return PlantSpecies where one of the related PlantSpeciesPositiveNeighborhoodConnections match this filter */
   positiveNeighborhoodConnection_SINGLE?: InputMaybe<PlantSpeciesPositiveNeighborhoodConnectionWhere>;
+  /** Return PlantSpecies where some of the related PlantSpeciesPositiveNeighborhoodConnections match this filter */
   positiveNeighborhoodConnection_SOME?: InputMaybe<PlantSpeciesPositiveNeighborhoodConnectionWhere>;
   /** Return PlantSpecies where all of the related PlantSpecies match this filter */
   positiveNeighborhood_ALL?: InputMaybe<PlantSpeciesWhere>;
@@ -6209,9 +5852,13 @@ export type PlantSpeciesWhere = {
   /** Return PlantSpecies where some of the related PlantSpecies match this filter */
   positiveNeighborhood_SOME?: InputMaybe<PlantSpeciesWhere>;
   varietiesAggregate?: InputMaybe<PlantSpeciesVarietiesAggregateInput>;
+  /** Return PlantSpecies where all of the related PlantSpeciesVarietiesConnections match this filter */
   varietiesConnection_ALL?: InputMaybe<PlantSpeciesVarietiesConnectionWhere>;
+  /** Return PlantSpecies where none of the related PlantSpeciesVarietiesConnections match this filter */
   varietiesConnection_NONE?: InputMaybe<PlantSpeciesVarietiesConnectionWhere>;
+  /** Return PlantSpecies where one of the related PlantSpeciesVarietiesConnections match this filter */
   varietiesConnection_SINGLE?: InputMaybe<PlantSpeciesVarietiesConnectionWhere>;
+  /** Return PlantSpecies where some of the related PlantSpeciesVarietiesConnections match this filter */
   varietiesConnection_SOME?: InputMaybe<PlantSpeciesVarietiesConnectionWhere>;
   /** Return PlantSpecies where all of the related PlantVarieties match this filter */
   varieties_ALL?: InputMaybe<PlantVarietyWhere>;
@@ -6337,6 +5984,7 @@ export type PlantVarietySort = {
 
 export type PlantVarietySpeciesAggregateInput = {
   AND?: InputMaybe<Array<PlantVarietySpeciesAggregateInput>>;
+  NOT?: InputMaybe<PlantVarietySpeciesAggregateInput>;
   OR?: InputMaybe<Array<PlantVarietySpeciesAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -6348,6 +5996,8 @@ export type PlantVarietySpeciesAggregateInput = {
 
 export type PlantVarietySpeciesConnectFieldInput = {
   connect?: InputMaybe<PlantSpeciesConnectInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<PlantSpeciesConnectWhere>;
 };
 
@@ -6364,9 +6014,9 @@ export type PlantVarietySpeciesConnectionSort = {
 
 export type PlantVarietySpeciesConnectionWhere = {
   AND?: InputMaybe<Array<PlantVarietySpeciesConnectionWhere>>;
+  NOT?: InputMaybe<PlantVarietySpeciesConnectionWhere>;
   OR?: InputMaybe<Array<PlantVarietySpeciesConnectionWhere>>;
   node?: InputMaybe<PlantSpeciesWhere>;
-  node_NOT?: InputMaybe<PlantSpeciesWhere>;
 };
 
 export type PlantVarietySpeciesCreateFieldInput = {
@@ -6390,87 +6040,68 @@ export type PlantVarietySpeciesFieldInput = {
 
 export type PlantVarietySpeciesNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<PlantVarietySpeciesNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<PlantVarietySpeciesNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<PlantVarietySpeciesNodeAggregationWhereInput>>;
-  description_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  description_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  description_EQUAL?: InputMaybe<Scalars['String']>;
-  description_GT?: InputMaybe<Scalars['Int']>;
-  description_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  description_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  description_LT?: InputMaybe<Scalars['Int']>;
-  description_LTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  description_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  icon_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  icon_EQUAL?: InputMaybe<Scalars['String']>;
-  icon_GT?: InputMaybe<Scalars['Int']>;
-  icon_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  icon_LT?: InputMaybe<Scalars['Int']>;
-  icon_LTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  icon_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  description_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  description_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  description_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  description_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  icon_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  icon_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  icon_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type PlantVarietySpeciesRelationship = {
@@ -6502,46 +6133,27 @@ export type PlantVarietyUpdateInput = {
 
 export type PlantVarietyWhere = {
   AND?: InputMaybe<Array<PlantVarietyWhere>>;
+  NOT?: InputMaybe<PlantVarietyWhere>;
   OR?: InputMaybe<Array<PlantVarietyWhere>>;
   description?: InputMaybe<Scalars['String']>;
   description_CONTAINS?: InputMaybe<Scalars['String']>;
   description_ENDS_WITH?: InputMaybe<Scalars['String']>;
   description_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  description_NOT?: InputMaybe<Scalars['String']>;
-  description_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  description_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  description_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  description_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   description_STARTS_WITH?: InputMaybe<Scalars['String']>;
   icon?: InputMaybe<Scalars['String']>;
   icon_CONTAINS?: InputMaybe<Scalars['String']>;
   icon_ENDS_WITH?: InputMaybe<Scalars['String']>;
   icon_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  icon_NOT?: InputMaybe<Scalars['String']>;
-  icon_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  icon_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  icon_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  icon_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   icon_STARTS_WITH?: InputMaybe<Scalars['String']>;
   infoText?: InputMaybe<Scalars['String']>;
   infoText_CONTAINS?: InputMaybe<Scalars['String']>;
   infoText_ENDS_WITH?: InputMaybe<Scalars['String']>;
   infoText_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  infoText_NOT?: InputMaybe<Scalars['String']>;
-  infoText_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  infoText_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  infoText_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  infoText_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   infoText_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   species?: InputMaybe<PlantSpeciesWhere>;
   speciesAggregate?: InputMaybe<PlantVarietySpeciesAggregateInput>;
@@ -6636,6 +6248,7 @@ export type PolygonShapeAggregateSelection = {
 
 export type PolygonShapeBelongs_ToAggregateInput = {
   AND?: InputMaybe<Array<PolygonShapeBelongs_ToAggregateInput>>;
+  NOT?: InputMaybe<PolygonShapeBelongs_ToAggregateInput>;
   OR?: InputMaybe<Array<PolygonShapeBelongs_ToAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -6647,28 +6260,23 @@ export type PolygonShapeBelongs_ToAggregateInput = {
 
 export type PolygonShapeBelongs_ToNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<PolygonShapeBelongs_ToNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<PolygonShapeBelongs_ToNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<PolygonShapeBelongs_ToNodeAggregationWhereInput>>;
-  layerId_EQUAL?: InputMaybe<Scalars['ID']>;
-  name_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  name_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  name_EQUAL?: InputMaybe<Scalars['String']>;
-  name_GT?: InputMaybe<Scalars['Int']>;
-  name_GTE?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  name_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  name_LT?: InputMaybe<Scalars['Int']>;
-  name_LTE?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  name_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  name_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  name_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  name_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  name_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  name_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type PolygonShapeConnectInput = {
@@ -6706,6 +6314,7 @@ export type PolygonShapeEdge = {
 
 export type PolygonShapeFeatureAggregateInput = {
   AND?: InputMaybe<Array<PolygonShapeFeatureAggregateInput>>;
+  NOT?: InputMaybe<PolygonShapeFeatureAggregateInput>;
   OR?: InputMaybe<Array<PolygonShapeFeatureAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -6717,68 +6326,53 @@ export type PolygonShapeFeatureAggregateInput = {
 
 export type PolygonShapeFeatureNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<PolygonShapeFeatureNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<PolygonShapeFeatureNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<PolygonShapeFeatureNodeAggregationWhereInput>>;
-  featureId_EQUAL?: InputMaybe<Scalars['ID']>;
-  featureType_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  featureType_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  featureType_EQUAL?: InputMaybe<Scalars['String']>;
-  featureType_GT?: InputMaybe<Scalars['Int']>;
-  featureType_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  featureType_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  featureType_LT?: InputMaybe<Scalars['Int']>;
-  featureType_LTE?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  featureType_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  infoText_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  infoText_EQUAL?: InputMaybe<Scalars['String']>;
-  infoText_GT?: InputMaybe<Scalars['Int']>;
-  infoText_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_LT?: InputMaybe<Scalars['Int']>;
-  infoText_LTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  infoText_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  featureType_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  featureType_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  featureType_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  featureType_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  featureType_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  infoText_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  infoText_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  infoText_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type PolygonShapeGardenFeatureFeatureAggregationSelection = {
@@ -6836,11 +6430,16 @@ export type PolygonShapeUpdateInput = {
 
 export type PolygonShapeWhere = {
   AND?: InputMaybe<Array<PolygonShapeWhere>>;
+  NOT?: InputMaybe<PolygonShapeWhere>;
   OR?: InputMaybe<Array<PolygonShapeWhere>>;
   belongs_toAggregate?: InputMaybe<PolygonShapeBelongs_ToAggregateInput>;
+  /** Return PolygonShapes where all of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_ALL?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return PolygonShapes where none of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_NONE?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return PolygonShapes where one of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_SINGLE?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
+  /** Return PolygonShapes where some of the related GeoShapeBelongs_toConnections match this filter */
   belongs_toConnection_SOME?: InputMaybe<GeoShapeBelongs_ToConnectionWhere>;
   /** Return PolygonShapes where all of the related GardenLayers match this filter */
   belongs_to_ALL?: InputMaybe<GardenLayerWhere>;
@@ -6857,17 +6456,10 @@ export type PolygonShapeWhere = {
   feature_NOT?: InputMaybe<GardenFeatureWhere>;
   points?: InputMaybe<Array<InputMaybe<PointInput>>>;
   points_INCLUDES?: InputMaybe<PointInput>;
-  points_NOT?: InputMaybe<Array<InputMaybe<PointInput>>>;
-  points_NOT_INCLUDES?: InputMaybe<PointInput>;
   shapeId?: InputMaybe<Scalars['ID']>;
   shapeId_CONTAINS?: InputMaybe<Scalars['ID']>;
   shapeId_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   shapeId_IN?: InputMaybe<Array<Scalars['ID']>>;
-  shapeId_NOT?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  shapeId_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  shapeId_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   shapeId_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   startPoint?: InputMaybe<PointInput>;
   startPoint_DISTANCE?: InputMaybe<PointDistance>;
@@ -6876,8 +6468,6 @@ export type PolygonShapeWhere = {
   startPoint_IN?: InputMaybe<Array<InputMaybe<PointInput>>>;
   startPoint_LT?: InputMaybe<PointDistance>;
   startPoint_LTE?: InputMaybe<PointDistance>;
-  startPoint_NOT?: InputMaybe<PointInput>;
-  startPoint_NOT_IN?: InputMaybe<Array<InputMaybe<PointInput>>>;
 };
 
 export type PolygonShapesConnection = {
@@ -6907,6 +6497,7 @@ export type PositiveNeighborhoodUpdateInput = {
 
 export type PositiveNeighborhoodWhere = {
   AND?: InputMaybe<Array<PositiveNeighborhoodWhere>>;
+  NOT?: InputMaybe<PositiveNeighborhoodWhere>;
   OR?: InputMaybe<Array<PositiveNeighborhoodWhere>>;
   weight?: InputMaybe<Scalars['Int']>;
   weight_GT?: InputMaybe<Scalars['Int']>;
@@ -6914,8 +6505,6 @@ export type PositiveNeighborhoodWhere = {
   weight_IN?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   weight_LT?: InputMaybe<Scalars['Int']>;
   weight_LTE?: InputMaybe<Scalars['Int']>;
-  weight_NOT?: InputMaybe<Scalars['Int']>;
-  weight_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
 };
 
 export type PushKeyInput = {
@@ -7363,6 +6952,7 @@ export type SeedConnectInput = {
 
 export type SeedContainedInAggregateInput = {
   AND?: InputMaybe<Array<SeedContainedInAggregateInput>>;
+  NOT?: InputMaybe<SeedContainedInAggregateInput>;
   OR?: InputMaybe<Array<SeedContainedInAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -7374,6 +6964,8 @@ export type SeedContainedInAggregateInput = {
 
 export type SeedContainedInConnectFieldInput = {
   connect?: InputMaybe<ContainerConnectInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<ContainerConnectWhere>;
 };
 
@@ -7390,9 +6982,9 @@ export type SeedContainedInConnectionSort = {
 
 export type SeedContainedInConnectionWhere = {
   AND?: InputMaybe<Array<SeedContainedInConnectionWhere>>;
+  NOT?: InputMaybe<SeedContainedInConnectionWhere>;
   OR?: InputMaybe<Array<SeedContainedInConnectionWhere>>;
   node?: InputMaybe<ContainerWhere>;
-  node_NOT?: InputMaybe<ContainerWhere>;
 };
 
 export type SeedContainedInCreateFieldInput = {
@@ -7416,27 +7008,23 @@ export type SeedContainedInFieldInput = {
 
 export type SeedContainedInNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<SeedContainedInNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<SeedContainedInNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<SeedContainedInNodeAggregationWhereInput>>;
-  containerType_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  containerType_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  containerType_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  containerType_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  containerType_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  containerType_EQUAL?: InputMaybe<Scalars['String']>;
-  containerType_GT?: InputMaybe<Scalars['Int']>;
-  containerType_GTE?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  containerType_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  containerType_LT?: InputMaybe<Scalars['Int']>;
-  containerType_LTE?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  containerType_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  containerType_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  containerType_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  containerType_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  containerType_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  containerType_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  containerType_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  containerType_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  containerType_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  containerType_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  containerType_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  containerType_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type SeedContainedInRelationship = {
@@ -7516,6 +7104,7 @@ export type SeedUpdateInput = {
 
 export type SeedWhere = {
   AND?: InputMaybe<Array<SeedWhere>>;
+  NOT?: InputMaybe<SeedWhere>;
   OR?: InputMaybe<Array<SeedWhere>>;
   amount?: InputMaybe<Scalars['Int']>;
   amount_GT?: InputMaybe<Scalars['Int']>;
@@ -7523,8 +7112,6 @@ export type SeedWhere = {
   amount_IN?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   amount_LT?: InputMaybe<Scalars['Int']>;
   amount_LTE?: InputMaybe<Scalars['Int']>;
-  amount_NOT?: InputMaybe<Scalars['Int']>;
-  amount_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   containedIn?: InputMaybe<ContainerWhere>;
   containedInAggregate?: InputMaybe<SeedContainedInAggregateInput>;
   containedInConnection?: InputMaybe<SeedContainedInConnectionWhere>;
@@ -7534,11 +7121,6 @@ export type SeedWhere = {
   unit_CONTAINS?: InputMaybe<Scalars['String']>;
   unit_ENDS_WITH?: InputMaybe<Scalars['String']>;
   unit_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  unit_NOT?: InputMaybe<Scalars['String']>;
-  unit_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  unit_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  unit_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  unit_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   unit_STARTS_WITH?: InputMaybe<Scalars['String']>;
 };
 
@@ -7830,6 +7412,7 @@ export type UserAggregateSelection = {
 
 export type UserAssignedAggregateInput = {
   AND?: InputMaybe<Array<UserAssignedAggregateInput>>;
+  NOT?: InputMaybe<UserAssignedAggregateInput>;
   OR?: InputMaybe<Array<UserAssignedAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -7841,6 +7424,8 @@ export type UserAssignedAggregateInput = {
 
 export type UserAssignedConnectFieldInput = {
   connect?: InputMaybe<Array<WateringTaskConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<WateringTaskConnectWhere>;
 };
 
@@ -7857,9 +7442,9 @@ export type UserAssignedConnectionSort = {
 
 export type UserAssignedConnectionWhere = {
   AND?: InputMaybe<Array<UserAssignedConnectionWhere>>;
+  NOT?: InputMaybe<UserAssignedConnectionWhere>;
   OR?: InputMaybe<Array<UserAssignedConnectionWhere>>;
   node?: InputMaybe<WateringTaskWhere>;
-  node_NOT?: InputMaybe<WateringTaskWhere>;
 };
 
 export type UserAssignedCreateFieldInput = {
@@ -7883,68 +7468,53 @@ export type UserAssignedFieldInput = {
 
 export type UserAssignedNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<UserAssignedNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<UserAssignedNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<UserAssignedNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type UserAssignedRelationship = {
@@ -7968,6 +7538,7 @@ export type UserAssignedUpdateFieldInput = {
 
 export type UserAvailableAggregateInput = {
   AND?: InputMaybe<Array<UserAvailableAggregateInput>>;
+  NOT?: InputMaybe<UserAvailableAggregateInput>;
   OR?: InputMaybe<Array<UserAvailableAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -7979,6 +7550,8 @@ export type UserAvailableAggregateInput = {
 
 export type UserAvailableConnectFieldInput = {
   connect?: InputMaybe<Array<WateringTaskConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<WateringTaskConnectWhere>;
 };
 
@@ -7995,9 +7568,9 @@ export type UserAvailableConnectionSort = {
 
 export type UserAvailableConnectionWhere = {
   AND?: InputMaybe<Array<UserAvailableConnectionWhere>>;
+  NOT?: InputMaybe<UserAvailableConnectionWhere>;
   OR?: InputMaybe<Array<UserAvailableConnectionWhere>>;
   node?: InputMaybe<WateringTaskWhere>;
-  node_NOT?: InputMaybe<WateringTaskWhere>;
 };
 
 export type UserAvailableCreateFieldInput = {
@@ -8021,68 +7594,53 @@ export type UserAvailableFieldInput = {
 
 export type UserAvailableNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<UserAvailableNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<UserAvailableNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<UserAvailableNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type UserAvailableRelationship = {
@@ -8134,6 +7692,7 @@ export type UserChangeRequestChangerequests_Requested_ToNodeAggregateSelection =
 
 export type UserChangerequests_Requested_ByAggregateInput = {
   AND?: InputMaybe<Array<UserChangerequests_Requested_ByAggregateInput>>;
+  NOT?: InputMaybe<UserChangerequests_Requested_ByAggregateInput>;
   OR?: InputMaybe<Array<UserChangerequests_Requested_ByAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -8145,6 +7704,8 @@ export type UserChangerequests_Requested_ByAggregateInput = {
 
 export type UserChangerequests_Requested_ByConnectFieldInput = {
   connect?: InputMaybe<Array<ChangeRequestConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<ChangeRequestConnectWhere>;
 };
 
@@ -8161,9 +7722,9 @@ export type UserChangerequests_Requested_ByConnectionSort = {
 
 export type UserChangerequests_Requested_ByConnectionWhere = {
   AND?: InputMaybe<Array<UserChangerequests_Requested_ByConnectionWhere>>;
+  NOT?: InputMaybe<UserChangerequests_Requested_ByConnectionWhere>;
   OR?: InputMaybe<Array<UserChangerequests_Requested_ByConnectionWhere>>;
   node?: InputMaybe<ChangeRequestWhere>;
-  node_NOT?: InputMaybe<ChangeRequestWhere>;
 };
 
 export type UserChangerequests_Requested_ByCreateFieldInput = {
@@ -8187,68 +7748,53 @@ export type UserChangerequests_Requested_ByFieldInput = {
 
 export type UserChangerequests_Requested_ByNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<UserChangerequests_Requested_ByNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<UserChangerequests_Requested_ByNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<UserChangerequests_Requested_ByNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type UserChangerequests_Requested_ByRelationship = {
@@ -8272,6 +7818,7 @@ export type UserChangerequests_Requested_ByUpdateFieldInput = {
 
 export type UserChangerequests_Requested_ToAggregateInput = {
   AND?: InputMaybe<Array<UserChangerequests_Requested_ToAggregateInput>>;
+  NOT?: InputMaybe<UserChangerequests_Requested_ToAggregateInput>;
   OR?: InputMaybe<Array<UserChangerequests_Requested_ToAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -8283,6 +7830,8 @@ export type UserChangerequests_Requested_ToAggregateInput = {
 
 export type UserChangerequests_Requested_ToConnectFieldInput = {
   connect?: InputMaybe<Array<ChangeRequestConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<ChangeRequestConnectWhere>;
 };
 
@@ -8299,9 +7848,9 @@ export type UserChangerequests_Requested_ToConnectionSort = {
 
 export type UserChangerequests_Requested_ToConnectionWhere = {
   AND?: InputMaybe<Array<UserChangerequests_Requested_ToConnectionWhere>>;
+  NOT?: InputMaybe<UserChangerequests_Requested_ToConnectionWhere>;
   OR?: InputMaybe<Array<UserChangerequests_Requested_ToConnectionWhere>>;
   node?: InputMaybe<ChangeRequestWhere>;
-  node_NOT?: InputMaybe<ChangeRequestWhere>;
 };
 
 export type UserChangerequests_Requested_ToCreateFieldInput = {
@@ -8325,68 +7874,53 @@ export type UserChangerequests_Requested_ToFieldInput = {
 
 export type UserChangerequests_Requested_ToNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<UserChangerequests_Requested_ToNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<UserChangerequests_Requested_ToNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<UserChangerequests_Requested_ToNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type UserChangerequests_Requested_ToRelationship = {
@@ -8472,6 +8006,7 @@ export type UserLogEventLogevents_Triggered_ByNodeAggregateSelection = {
 
 export type UserLogevents_Triggered_ByAggregateInput = {
   AND?: InputMaybe<Array<UserLogevents_Triggered_ByAggregateInput>>;
+  NOT?: InputMaybe<UserLogevents_Triggered_ByAggregateInput>;
   OR?: InputMaybe<Array<UserLogevents_Triggered_ByAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -8483,6 +8018,8 @@ export type UserLogevents_Triggered_ByAggregateInput = {
 
 export type UserLogevents_Triggered_ByConnectFieldInput = {
   connect?: InputMaybe<Array<LogEventConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<LogEventConnectWhere>;
 };
 
@@ -8499,9 +8036,9 @@ export type UserLogevents_Triggered_ByConnectionSort = {
 
 export type UserLogevents_Triggered_ByConnectionWhere = {
   AND?: InputMaybe<Array<UserLogevents_Triggered_ByConnectionWhere>>;
+  NOT?: InputMaybe<UserLogevents_Triggered_ByConnectionWhere>;
   OR?: InputMaybe<Array<UserLogevents_Triggered_ByConnectionWhere>>;
   node?: InputMaybe<LogEventWhere>;
-  node_NOT?: InputMaybe<LogEventWhere>;
 };
 
 export type UserLogevents_Triggered_ByCreateFieldInput = {
@@ -8525,88 +8062,68 @@ export type UserLogevents_Triggered_ByFieldInput = {
 
 export type UserLogevents_Triggered_ByNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<UserLogevents_Triggered_ByNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<UserLogevents_Triggered_ByNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<UserLogevents_Triggered_ByNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  date_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  date_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  date_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  date_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  date_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  date_EQUAL?: InputMaybe<Scalars['String']>;
-  date_GT?: InputMaybe<Scalars['Int']>;
-  date_GTE?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  date_LT?: InputMaybe<Scalars['Int']>;
-  date_LTE?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  date_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  date_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  date_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  date_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  date_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  date_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  date_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  date_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  date_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  date_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type UserLogevents_Triggered_ByRelationship = {
@@ -8706,16 +8223,12 @@ export type UserSettingsUpdateInput = {
 
 export type UserSettingsWhere = {
   AND?: InputMaybe<Array<UserSettingsWhere>>;
+  NOT?: InputMaybe<UserSettingsWhere>;
   OR?: InputMaybe<Array<UserSettingsWhere>>;
   email?: InputMaybe<Scalars['String']>;
   email_CONTAINS?: InputMaybe<Scalars['String']>;
   email_ENDS_WITH?: InputMaybe<Scalars['String']>;
   email_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  email_NOT?: InputMaybe<Scalars['String']>;
-  email_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  email_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  email_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  email_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   email_STARTS_WITH?: InputMaybe<Scalars['String']>;
   letitrain_maximum_tasks?: InputMaybe<Scalars['Int']>;
   letitrain_maximum_tasks_GT?: InputMaybe<Scalars['Int']>;
@@ -8723,17 +8236,10 @@ export type UserSettingsWhere = {
   letitrain_maximum_tasks_IN?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   letitrain_maximum_tasks_LT?: InputMaybe<Scalars['Int']>;
   letitrain_maximum_tasks_LTE?: InputMaybe<Scalars['Int']>;
-  letitrain_maximum_tasks_NOT?: InputMaybe<Scalars['Int']>;
-  letitrain_maximum_tasks_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   ui_locale?: InputMaybe<Scalars['String']>;
   ui_locale_CONTAINS?: InputMaybe<Scalars['String']>;
   ui_locale_ENDS_WITH?: InputMaybe<Scalars['String']>;
   ui_locale_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ui_locale_NOT?: InputMaybe<Scalars['String']>;
-  ui_locale_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  ui_locale_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  ui_locale_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ui_locale_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   ui_locale_STARTS_WITH?: InputMaybe<Scalars['String']>;
 };
 
@@ -8789,21 +8295,21 @@ export type UserWateringTaskAvailableNodeAggregateSelection = {
 
 export type UserWhere = {
   AND?: InputMaybe<Array<UserWhere>>;
+  NOT?: InputMaybe<UserWhere>;
   OR?: InputMaybe<Array<UserWhere>>;
   _id?: InputMaybe<Scalars['ID']>;
   _id_CONTAINS?: InputMaybe<Scalars['ID']>;
   _id_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   _id_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT?: InputMaybe<Scalars['ID']>;
-  _id_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  _id_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  _id_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   _id_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   assignedAggregate?: InputMaybe<UserAssignedAggregateInput>;
+  /** Return Users where all of the related UserAssignedConnections match this filter */
   assignedConnection_ALL?: InputMaybe<UserAssignedConnectionWhere>;
+  /** Return Users where none of the related UserAssignedConnections match this filter */
   assignedConnection_NONE?: InputMaybe<UserAssignedConnectionWhere>;
+  /** Return Users where one of the related UserAssignedConnections match this filter */
   assignedConnection_SINGLE?: InputMaybe<UserAssignedConnectionWhere>;
+  /** Return Users where some of the related UserAssignedConnections match this filter */
   assignedConnection_SOME?: InputMaybe<UserAssignedConnectionWhere>;
   /** Return Users where all of the related WateringTasks match this filter */
   assigned_ALL?: InputMaybe<WateringTaskWhere>;
@@ -8814,9 +8320,13 @@ export type UserWhere = {
   /** Return Users where some of the related WateringTasks match this filter */
   assigned_SOME?: InputMaybe<WateringTaskWhere>;
   availableAggregate?: InputMaybe<UserAvailableAggregateInput>;
+  /** Return Users where all of the related UserAvailableConnections match this filter */
   availableConnection_ALL?: InputMaybe<UserAvailableConnectionWhere>;
+  /** Return Users where none of the related UserAvailableConnections match this filter */
   availableConnection_NONE?: InputMaybe<UserAvailableConnectionWhere>;
+  /** Return Users where one of the related UserAvailableConnections match this filter */
   availableConnection_SINGLE?: InputMaybe<UserAvailableConnectionWhere>;
+  /** Return Users where some of the related UserAvailableConnections match this filter */
   availableConnection_SOME?: InputMaybe<UserAvailableConnectionWhere>;
   /** Return Users where all of the related WateringTasks match this filter */
   available_ALL?: InputMaybe<WateringTaskWhere>;
@@ -8827,9 +8337,13 @@ export type UserWhere = {
   /** Return Users where some of the related WateringTasks match this filter */
   available_SOME?: InputMaybe<WateringTaskWhere>;
   changerequests_requested_byAggregate?: InputMaybe<UserChangerequests_Requested_ByAggregateInput>;
+  /** Return Users where all of the related UserChangerequests_requested_byConnections match this filter */
   changerequests_requested_byConnection_ALL?: InputMaybe<UserChangerequests_Requested_ByConnectionWhere>;
+  /** Return Users where none of the related UserChangerequests_requested_byConnections match this filter */
   changerequests_requested_byConnection_NONE?: InputMaybe<UserChangerequests_Requested_ByConnectionWhere>;
+  /** Return Users where one of the related UserChangerequests_requested_byConnections match this filter */
   changerequests_requested_byConnection_SINGLE?: InputMaybe<UserChangerequests_Requested_ByConnectionWhere>;
+  /** Return Users where some of the related UserChangerequests_requested_byConnections match this filter */
   changerequests_requested_byConnection_SOME?: InputMaybe<UserChangerequests_Requested_ByConnectionWhere>;
   /** Return Users where all of the related ChangeRequests match this filter */
   changerequests_requested_by_ALL?: InputMaybe<ChangeRequestWhere>;
@@ -8840,9 +8354,13 @@ export type UserWhere = {
   /** Return Users where some of the related ChangeRequests match this filter */
   changerequests_requested_by_SOME?: InputMaybe<ChangeRequestWhere>;
   changerequests_requested_toAggregate?: InputMaybe<UserChangerequests_Requested_ToAggregateInput>;
+  /** Return Users where all of the related UserChangerequests_requested_toConnections match this filter */
   changerequests_requested_toConnection_ALL?: InputMaybe<UserChangerequests_Requested_ToConnectionWhere>;
+  /** Return Users where none of the related UserChangerequests_requested_toConnections match this filter */
   changerequests_requested_toConnection_NONE?: InputMaybe<UserChangerequests_Requested_ToConnectionWhere>;
+  /** Return Users where one of the related UserChangerequests_requested_toConnections match this filter */
   changerequests_requested_toConnection_SINGLE?: InputMaybe<UserChangerequests_Requested_ToConnectionWhere>;
+  /** Return Users where some of the related UserChangerequests_requested_toConnections match this filter */
   changerequests_requested_toConnection_SOME?: InputMaybe<UserChangerequests_Requested_ToConnectionWhere>;
   /** Return Users where all of the related ChangeRequests match this filter */
   changerequests_requested_to_ALL?: InputMaybe<ChangeRequestWhere>;
@@ -8856,26 +8374,20 @@ export type UserWhere = {
   id_CONTAINS?: InputMaybe<Scalars['String']>;
   id_ENDS_WITH?: InputMaybe<Scalars['String']>;
   id_IN?: InputMaybe<Array<Scalars['String']>>;
-  id_NOT?: InputMaybe<Scalars['String']>;
-  id_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  id_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  id_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  id_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   id_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   logevents_triggered_byAggregate?: InputMaybe<UserLogevents_Triggered_ByAggregateInput>;
+  /** Return Users where all of the related UserLogevents_triggered_byConnections match this filter */
   logevents_triggered_byConnection_ALL?: InputMaybe<UserLogevents_Triggered_ByConnectionWhere>;
+  /** Return Users where none of the related UserLogevents_triggered_byConnections match this filter */
   logevents_triggered_byConnection_NONE?: InputMaybe<UserLogevents_Triggered_ByConnectionWhere>;
+  /** Return Users where one of the related UserLogevents_triggered_byConnections match this filter */
   logevents_triggered_byConnection_SINGLE?: InputMaybe<UserLogevents_Triggered_ByConnectionWhere>;
+  /** Return Users where some of the related UserLogevents_triggered_byConnections match this filter */
   logevents_triggered_byConnection_SOME?: InputMaybe<UserLogevents_Triggered_ByConnectionWhere>;
   /** Return Users where all of the related LogEvents match this filter */
   logevents_triggered_by_ALL?: InputMaybe<LogEventWhere>;
@@ -8889,21 +8401,11 @@ export type UserWhere = {
   neo4jImportId_CONTAINS?: InputMaybe<Scalars['String']>;
   neo4jImportId_ENDS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId_IN?: InputMaybe<Array<Scalars['String']>>;
-  neo4jImportId_NOT?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  neo4jImportId_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId_STARTS_WITH?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   type_CONTAINS?: InputMaybe<Scalars['String']>;
   type_ENDS_WITH?: InputMaybe<Scalars['String']>;
   type_IN?: InputMaybe<Array<Scalars['String']>>;
-  type_NOT?: InputMaybe<Scalars['String']>;
-  type_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  type_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  type_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  type_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   type_STARTS_WITH?: InputMaybe<Scalars['String']>;
 };
 
@@ -8980,6 +8482,7 @@ export type WateringPeriodAggregateSelection = {
 
 export type WateringPeriodAtAggregateInput = {
   AND?: InputMaybe<Array<WateringPeriodAtAggregateInput>>;
+  NOT?: InputMaybe<WateringPeriodAtAggregateInput>;
   OR?: InputMaybe<Array<WateringPeriodAtAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -8991,6 +8494,8 @@ export type WateringPeriodAtAggregateInput = {
 
 export type WateringPeriodAtConnectFieldInput = {
   connect?: InputMaybe<GardenConnectInput>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<GardenConnectWhere>;
 };
 
@@ -9007,9 +8512,9 @@ export type WateringPeriodAtConnectionSort = {
 
 export type WateringPeriodAtConnectionWhere = {
   AND?: InputMaybe<Array<WateringPeriodAtConnectionWhere>>;
+  NOT?: InputMaybe<WateringPeriodAtConnectionWhere>;
   OR?: InputMaybe<Array<WateringPeriodAtConnectionWhere>>;
   node?: InputMaybe<GardenWhere>;
-  node_NOT?: InputMaybe<GardenWhere>;
 };
 
 export type WateringPeriodAtCreateFieldInput = {
@@ -9033,29 +8538,23 @@ export type WateringPeriodAtFieldInput = {
 
 export type WateringPeriodAtNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<WateringPeriodAtNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<WateringPeriodAtNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<WateringPeriodAtNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  gardenId_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type WateringPeriodAtRelationship = {
@@ -9167,6 +8666,7 @@ export type WateringPeriodWateringTaskWateringtasksNodeAggregateSelection = {
 
 export type WateringPeriodWateringtasksAggregateInput = {
   AND?: InputMaybe<Array<WateringPeriodWateringtasksAggregateInput>>;
+  NOT?: InputMaybe<WateringPeriodWateringtasksAggregateInput>;
   OR?: InputMaybe<Array<WateringPeriodWateringtasksAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -9178,6 +8678,8 @@ export type WateringPeriodWateringtasksAggregateInput = {
 
 export type WateringPeriodWateringtasksConnectFieldInput = {
   connect?: InputMaybe<Array<WateringTaskConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<WateringTaskConnectWhere>;
 };
 
@@ -9194,9 +8696,9 @@ export type WateringPeriodWateringtasksConnectionSort = {
 
 export type WateringPeriodWateringtasksConnectionWhere = {
   AND?: InputMaybe<Array<WateringPeriodWateringtasksConnectionWhere>>;
+  NOT?: InputMaybe<WateringPeriodWateringtasksConnectionWhere>;
   OR?: InputMaybe<Array<WateringPeriodWateringtasksConnectionWhere>>;
   node?: InputMaybe<WateringTaskWhere>;
-  node_NOT?: InputMaybe<WateringTaskWhere>;
 };
 
 export type WateringPeriodWateringtasksCreateFieldInput = {
@@ -9220,68 +8722,53 @@ export type WateringPeriodWateringtasksFieldInput = {
 
 export type WateringPeriodWateringtasksNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<WateringPeriodWateringtasksNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<WateringPeriodWateringtasksNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<WateringPeriodWateringtasksNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type WateringPeriodWateringtasksRelationship = {
@@ -9305,16 +8792,12 @@ export type WateringPeriodWateringtasksUpdateFieldInput = {
 
 export type WateringPeriodWhere = {
   AND?: InputMaybe<Array<WateringPeriodWhere>>;
+  NOT?: InputMaybe<WateringPeriodWhere>;
   OR?: InputMaybe<Array<WateringPeriodWhere>>;
   _id?: InputMaybe<Scalars['ID']>;
   _id_CONTAINS?: InputMaybe<Scalars['ID']>;
   _id_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   _id_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT?: InputMaybe<Scalars['ID']>;
-  _id_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  _id_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  _id_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   _id_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   at?: InputMaybe<GardenWhere>;
   atAggregate?: InputMaybe<WateringPeriodAtAggregateInput>;
@@ -9327,20 +8810,20 @@ export type WateringPeriodWhere = {
   from_IN?: InputMaybe<Array<Scalars['Date']>>;
   from_LT?: InputMaybe<Scalars['Date']>;
   from_LTE?: InputMaybe<Scalars['Date']>;
-  from_NOT?: InputMaybe<Scalars['Date']>;
-  from_NOT_IN?: InputMaybe<Array<Scalars['Date']>>;
   till?: InputMaybe<Scalars['Date']>;
   till_GT?: InputMaybe<Scalars['Date']>;
   till_GTE?: InputMaybe<Scalars['Date']>;
   till_IN?: InputMaybe<Array<Scalars['Date']>>;
   till_LT?: InputMaybe<Scalars['Date']>;
   till_LTE?: InputMaybe<Scalars['Date']>;
-  till_NOT?: InputMaybe<Scalars['Date']>;
-  till_NOT_IN?: InputMaybe<Array<Scalars['Date']>>;
   wateringtasksAggregate?: InputMaybe<WateringPeriodWateringtasksAggregateInput>;
+  /** Return WateringPeriods where all of the related WateringPeriodWateringtasksConnections match this filter */
   wateringtasksConnection_ALL?: InputMaybe<WateringPeriodWateringtasksConnectionWhere>;
+  /** Return WateringPeriods where none of the related WateringPeriodWateringtasksConnections match this filter */
   wateringtasksConnection_NONE?: InputMaybe<WateringPeriodWateringtasksConnectionWhere>;
+  /** Return WateringPeriods where one of the related WateringPeriodWateringtasksConnections match this filter */
   wateringtasksConnection_SINGLE?: InputMaybe<WateringPeriodWateringtasksConnectionWhere>;
+  /** Return WateringPeriods where some of the related WateringPeriodWateringtasksConnections match this filter */
   wateringtasksConnection_SOME?: InputMaybe<WateringPeriodWateringtasksConnectionWhere>;
   /** Return WateringPeriods where all of the related WateringTasks match this filter */
   wateringtasks_ALL?: InputMaybe<WateringTaskWhere>;
@@ -9558,6 +9041,7 @@ export type WateringTaskChangeRequestChangerequests_Requested_New_TaskNodeAggreg
 
 export type WateringTaskChangerequests_Requested_ForAggregateInput = {
   AND?: InputMaybe<Array<WateringTaskChangerequests_Requested_ForAggregateInput>>;
+  NOT?: InputMaybe<WateringTaskChangerequests_Requested_ForAggregateInput>;
   OR?: InputMaybe<Array<WateringTaskChangerequests_Requested_ForAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -9569,6 +9053,8 @@ export type WateringTaskChangerequests_Requested_ForAggregateInput = {
 
 export type WateringTaskChangerequests_Requested_ForConnectFieldInput = {
   connect?: InputMaybe<Array<ChangeRequestConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<ChangeRequestConnectWhere>;
 };
 
@@ -9585,9 +9071,9 @@ export type WateringTaskChangerequests_Requested_ForConnectionSort = {
 
 export type WateringTaskChangerequests_Requested_ForConnectionWhere = {
   AND?: InputMaybe<Array<WateringTaskChangerequests_Requested_ForConnectionWhere>>;
+  NOT?: InputMaybe<WateringTaskChangerequests_Requested_ForConnectionWhere>;
   OR?: InputMaybe<Array<WateringTaskChangerequests_Requested_ForConnectionWhere>>;
   node?: InputMaybe<ChangeRequestWhere>;
-  node_NOT?: InputMaybe<ChangeRequestWhere>;
 };
 
 export type WateringTaskChangerequests_Requested_ForCreateFieldInput = {
@@ -9611,68 +9097,53 @@ export type WateringTaskChangerequests_Requested_ForFieldInput = {
 
 export type WateringTaskChangerequests_Requested_ForNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<WateringTaskChangerequests_Requested_ForNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<WateringTaskChangerequests_Requested_ForNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<WateringTaskChangerequests_Requested_ForNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type WateringTaskChangerequests_Requested_ForRelationship = {
@@ -9696,6 +9167,7 @@ export type WateringTaskChangerequests_Requested_ForUpdateFieldInput = {
 
 export type WateringTaskChangerequests_Requested_New_TaskAggregateInput = {
   AND?: InputMaybe<Array<WateringTaskChangerequests_Requested_New_TaskAggregateInput>>;
+  NOT?: InputMaybe<WateringTaskChangerequests_Requested_New_TaskAggregateInput>;
   OR?: InputMaybe<Array<WateringTaskChangerequests_Requested_New_TaskAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -9707,6 +9179,8 @@ export type WateringTaskChangerequests_Requested_New_TaskAggregateInput = {
 
 export type WateringTaskChangerequests_Requested_New_TaskConnectFieldInput = {
   connect?: InputMaybe<Array<ChangeRequestConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<ChangeRequestConnectWhere>;
 };
 
@@ -9723,9 +9197,9 @@ export type WateringTaskChangerequests_Requested_New_TaskConnectionSort = {
 
 export type WateringTaskChangerequests_Requested_New_TaskConnectionWhere = {
   AND?: InputMaybe<Array<WateringTaskChangerequests_Requested_New_TaskConnectionWhere>>;
+  NOT?: InputMaybe<WateringTaskChangerequests_Requested_New_TaskConnectionWhere>;
   OR?: InputMaybe<Array<WateringTaskChangerequests_Requested_New_TaskConnectionWhere>>;
   node?: InputMaybe<ChangeRequestWhere>;
-  node_NOT?: InputMaybe<ChangeRequestWhere>;
 };
 
 export type WateringTaskChangerequests_Requested_New_TaskCreateFieldInput = {
@@ -9749,68 +9223,53 @@ export type WateringTaskChangerequests_Requested_New_TaskFieldInput = {
 
 export type WateringTaskChangerequests_Requested_New_TaskNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<WateringTaskChangerequests_Requested_New_TaskNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<WateringTaskChangerequests_Requested_New_TaskNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<WateringTaskChangerequests_Requested_New_TaskNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type WateringTaskChangerequests_Requested_New_TaskRelationship = {
@@ -9901,6 +9360,7 @@ export type WateringTaskLogEventLogevents_Refers_ToNodeAggregateSelection = {
 
 export type WateringTaskLogevents_Refers_ToAggregateInput = {
   AND?: InputMaybe<Array<WateringTaskLogevents_Refers_ToAggregateInput>>;
+  NOT?: InputMaybe<WateringTaskLogevents_Refers_ToAggregateInput>;
   OR?: InputMaybe<Array<WateringTaskLogevents_Refers_ToAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -9912,6 +9372,8 @@ export type WateringTaskLogevents_Refers_ToAggregateInput = {
 
 export type WateringTaskLogevents_Refers_ToConnectFieldInput = {
   connect?: InputMaybe<Array<LogEventConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<LogEventConnectWhere>;
 };
 
@@ -9928,9 +9390,9 @@ export type WateringTaskLogevents_Refers_ToConnectionSort = {
 
 export type WateringTaskLogevents_Refers_ToConnectionWhere = {
   AND?: InputMaybe<Array<WateringTaskLogevents_Refers_ToConnectionWhere>>;
+  NOT?: InputMaybe<WateringTaskLogevents_Refers_ToConnectionWhere>;
   OR?: InputMaybe<Array<WateringTaskLogevents_Refers_ToConnectionWhere>>;
   node?: InputMaybe<LogEventWhere>;
-  node_NOT?: InputMaybe<LogEventWhere>;
 };
 
 export type WateringTaskLogevents_Refers_ToCreateFieldInput = {
@@ -9954,88 +9416,68 @@ export type WateringTaskLogevents_Refers_ToFieldInput = {
 
 export type WateringTaskLogevents_Refers_ToNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<WateringTaskLogevents_Refers_ToNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<WateringTaskLogevents_Refers_ToNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<WateringTaskLogevents_Refers_ToNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  date_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  date_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  date_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  date_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  date_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  date_EQUAL?: InputMaybe<Scalars['String']>;
-  date_GT?: InputMaybe<Scalars['Int']>;
-  date_GTE?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  date_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  date_LT?: InputMaybe<Scalars['Int']>;
-  date_LTE?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  date_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  date_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  date_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  date_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  date_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  date_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  date_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  date_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  date_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  date_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  date_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  date_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type WateringTaskLogevents_Refers_ToRelationship = {
@@ -10130,6 +9572,7 @@ export type WateringTaskUserUsers_AvailableNodeAggregateSelection = {
 
 export type WateringTaskUsers_AssignedAggregateInput = {
   AND?: InputMaybe<Array<WateringTaskUsers_AssignedAggregateInput>>;
+  NOT?: InputMaybe<WateringTaskUsers_AssignedAggregateInput>;
   OR?: InputMaybe<Array<WateringTaskUsers_AssignedAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -10141,6 +9584,8 @@ export type WateringTaskUsers_AssignedAggregateInput = {
 
 export type WateringTaskUsers_AssignedConnectFieldInput = {
   connect?: InputMaybe<Array<UserConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<UserConnectWhere>;
 };
 
@@ -10157,9 +9602,9 @@ export type WateringTaskUsers_AssignedConnectionSort = {
 
 export type WateringTaskUsers_AssignedConnectionWhere = {
   AND?: InputMaybe<Array<WateringTaskUsers_AssignedConnectionWhere>>;
+  NOT?: InputMaybe<WateringTaskUsers_AssignedConnectionWhere>;
   OR?: InputMaybe<Array<WateringTaskUsers_AssignedConnectionWhere>>;
   node?: InputMaybe<UserWhere>;
-  node_NOT?: InputMaybe<UserWhere>;
 };
 
 export type WateringTaskUsers_AssignedCreateFieldInput = {
@@ -10183,88 +9628,68 @@ export type WateringTaskUsers_AssignedFieldInput = {
 
 export type WateringTaskUsers_AssignedNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<WateringTaskUsers_AssignedNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<WateringTaskUsers_AssignedNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<WateringTaskUsers_AssignedNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  id_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  id_EQUAL?: InputMaybe<Scalars['String']>;
-  id_GT?: InputMaybe<Scalars['Int']>;
-  id_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  id_LT?: InputMaybe<Scalars['Int']>;
-  id_LTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  id_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  id_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type WateringTaskUsers_AssignedRelationship = {
@@ -10288,6 +9713,7 @@ export type WateringTaskUsers_AssignedUpdateFieldInput = {
 
 export type WateringTaskUsers_AvailableAggregateInput = {
   AND?: InputMaybe<Array<WateringTaskUsers_AvailableAggregateInput>>;
+  NOT?: InputMaybe<WateringTaskUsers_AvailableAggregateInput>;
   OR?: InputMaybe<Array<WateringTaskUsers_AvailableAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -10299,6 +9725,8 @@ export type WateringTaskUsers_AvailableAggregateInput = {
 
 export type WateringTaskUsers_AvailableConnectFieldInput = {
   connect?: InputMaybe<Array<UserConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<UserConnectWhere>;
 };
 
@@ -10315,9 +9743,9 @@ export type WateringTaskUsers_AvailableConnectionSort = {
 
 export type WateringTaskUsers_AvailableConnectionWhere = {
   AND?: InputMaybe<Array<WateringTaskUsers_AvailableConnectionWhere>>;
+  NOT?: InputMaybe<WateringTaskUsers_AvailableConnectionWhere>;
   OR?: InputMaybe<Array<WateringTaskUsers_AvailableConnectionWhere>>;
   node?: InputMaybe<UserWhere>;
-  node_NOT?: InputMaybe<UserWhere>;
 };
 
 export type WateringTaskUsers_AvailableCreateFieldInput = {
@@ -10341,88 +9769,68 @@ export type WateringTaskUsers_AvailableFieldInput = {
 
 export type WateringTaskUsers_AvailableNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<WateringTaskUsers_AvailableNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<WateringTaskUsers_AvailableNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<WateringTaskUsers_AvailableNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
-  id_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  id_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  id_EQUAL?: InputMaybe<Scalars['String']>;
-  id_GT?: InputMaybe<Scalars['Int']>;
-  id_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  id_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  id_LT?: InputMaybe<Scalars['Int']>;
-  id_LTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  id_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  label_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  label_EQUAL?: InputMaybe<Scalars['String']>;
-  label_GT?: InputMaybe<Scalars['Int']>;
-  label_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  label_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  label_LT?: InputMaybe<Scalars['Int']>;
-  label_LTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  label_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  neo4jImportId_EQUAL?: InputMaybe<Scalars['String']>;
-  neo4jImportId_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_LTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  neo4jImportId_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_AVERAGE_EQUAL?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_GTE?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LT?: InputMaybe<Scalars['Float']>;
-  type_AVERAGE_LTE?: InputMaybe<Scalars['Float']>;
-  type_EQUAL?: InputMaybe<Scalars['String']>;
-  type_GT?: InputMaybe<Scalars['Int']>;
-  type_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LT?: InputMaybe<Scalars['Int']>;
-  type_LONGEST_LTE?: InputMaybe<Scalars['Int']>;
-  type_LT?: InputMaybe<Scalars['Int']>;
-  type_LTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_EQUAL?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_GTE?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LT?: InputMaybe<Scalars['Int']>;
-  type_SHORTEST_LTE?: InputMaybe<Scalars['Int']>;
+  id_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  id_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  id_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  id_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  label_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  label_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  label_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  neo4jImportId_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  neo4jImportId_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_AVERAGE_LENGTH_EQUAL?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_GTE?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LT?: InputMaybe<Scalars['Float']>;
+  type_AVERAGE_LENGTH_LTE?: InputMaybe<Scalars['Float']>;
+  type_LONGEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_LONGEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_EQUAL?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_GTE?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LT?: InputMaybe<Scalars['Int']>;
+  type_SHORTEST_LENGTH_LTE?: InputMaybe<Scalars['Int']>;
 };
 
 export type WateringTaskUsers_AvailableRelationship = {
@@ -10457,6 +9865,7 @@ export type WateringTaskWateringPeriodWateringperiodNodeAggregateSelection = {
 
 export type WateringTaskWateringperiodAggregateInput = {
   AND?: InputMaybe<Array<WateringTaskWateringperiodAggregateInput>>;
+  NOT?: InputMaybe<WateringTaskWateringperiodAggregateInput>;
   OR?: InputMaybe<Array<WateringTaskWateringperiodAggregateInput>>;
   count?: InputMaybe<Scalars['Int']>;
   count_GT?: InputMaybe<Scalars['Int']>;
@@ -10468,6 +9877,8 @@ export type WateringTaskWateringperiodAggregateInput = {
 
 export type WateringTaskWateringperiodConnectFieldInput = {
   connect?: InputMaybe<Array<WateringPeriodConnectInput>>;
+  /** Whether or not to overwrite any matching relationship with the new properties. Will default to `false` in 4.0.0. */
+  overwrite?: Scalars['Boolean'];
   where?: InputMaybe<WateringPeriodConnectWhere>;
 };
 
@@ -10484,9 +9895,9 @@ export type WateringTaskWateringperiodConnectionSort = {
 
 export type WateringTaskWateringperiodConnectionWhere = {
   AND?: InputMaybe<Array<WateringTaskWateringperiodConnectionWhere>>;
+  NOT?: InputMaybe<WateringTaskWateringperiodConnectionWhere>;
   OR?: InputMaybe<Array<WateringTaskWateringperiodConnectionWhere>>;
   node?: InputMaybe<WateringPeriodWhere>;
-  node_NOT?: InputMaybe<WateringPeriodWhere>;
 };
 
 export type WateringTaskWateringperiodCreateFieldInput = {
@@ -10510,8 +9921,8 @@ export type WateringTaskWateringperiodFieldInput = {
 
 export type WateringTaskWateringperiodNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<WateringTaskWateringperiodNodeAggregationWhereInput>>;
+  NOT?: InputMaybe<WateringTaskWateringperiodNodeAggregationWhereInput>;
   OR?: InputMaybe<Array<WateringTaskWateringperiodNodeAggregationWhereInput>>;
-  _id_EQUAL?: InputMaybe<Scalars['ID']>;
 };
 
 export type WateringTaskWateringperiodRelationship = {
@@ -10535,21 +9946,21 @@ export type WateringTaskWateringperiodUpdateFieldInput = {
 
 export type WateringTaskWhere = {
   AND?: InputMaybe<Array<WateringTaskWhere>>;
+  NOT?: InputMaybe<WateringTaskWhere>;
   OR?: InputMaybe<Array<WateringTaskWhere>>;
   _id?: InputMaybe<Scalars['ID']>;
   _id_CONTAINS?: InputMaybe<Scalars['ID']>;
   _id_ENDS_WITH?: InputMaybe<Scalars['ID']>;
   _id_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT?: InputMaybe<Scalars['ID']>;
-  _id_NOT_CONTAINS?: InputMaybe<Scalars['ID']>;
-  _id_NOT_ENDS_WITH?: InputMaybe<Scalars['ID']>;
-  _id_NOT_IN?: InputMaybe<Array<Scalars['ID']>>;
-  _id_NOT_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   _id_STARTS_WITH?: InputMaybe<Scalars['ID']>;
   changerequests_requested_forAggregate?: InputMaybe<WateringTaskChangerequests_Requested_ForAggregateInput>;
+  /** Return WateringTasks where all of the related WateringTaskChangerequests_requested_forConnections match this filter */
   changerequests_requested_forConnection_ALL?: InputMaybe<WateringTaskChangerequests_Requested_ForConnectionWhere>;
+  /** Return WateringTasks where none of the related WateringTaskChangerequests_requested_forConnections match this filter */
   changerequests_requested_forConnection_NONE?: InputMaybe<WateringTaskChangerequests_Requested_ForConnectionWhere>;
+  /** Return WateringTasks where one of the related WateringTaskChangerequests_requested_forConnections match this filter */
   changerequests_requested_forConnection_SINGLE?: InputMaybe<WateringTaskChangerequests_Requested_ForConnectionWhere>;
+  /** Return WateringTasks where some of the related WateringTaskChangerequests_requested_forConnections match this filter */
   changerequests_requested_forConnection_SOME?: InputMaybe<WateringTaskChangerequests_Requested_ForConnectionWhere>;
   /** Return WateringTasks where all of the related ChangeRequests match this filter */
   changerequests_requested_for_ALL?: InputMaybe<ChangeRequestWhere>;
@@ -10560,9 +9971,13 @@ export type WateringTaskWhere = {
   /** Return WateringTasks where some of the related ChangeRequests match this filter */
   changerequests_requested_for_SOME?: InputMaybe<ChangeRequestWhere>;
   changerequests_requested_new_taskAggregate?: InputMaybe<WateringTaskChangerequests_Requested_New_TaskAggregateInput>;
+  /** Return WateringTasks where all of the related WateringTaskChangerequests_requested_new_taskConnections match this filter */
   changerequests_requested_new_taskConnection_ALL?: InputMaybe<WateringTaskChangerequests_Requested_New_TaskConnectionWhere>;
+  /** Return WateringTasks where none of the related WateringTaskChangerequests_requested_new_taskConnections match this filter */
   changerequests_requested_new_taskConnection_NONE?: InputMaybe<WateringTaskChangerequests_Requested_New_TaskConnectionWhere>;
+  /** Return WateringTasks where one of the related WateringTaskChangerequests_requested_new_taskConnections match this filter */
   changerequests_requested_new_taskConnection_SINGLE?: InputMaybe<WateringTaskChangerequests_Requested_New_TaskConnectionWhere>;
+  /** Return WateringTasks where some of the related WateringTaskChangerequests_requested_new_taskConnections match this filter */
   changerequests_requested_new_taskConnection_SOME?: InputMaybe<WateringTaskChangerequests_Requested_New_TaskConnectionWhere>;
   /** Return WateringTasks where all of the related ChangeRequests match this filter */
   changerequests_requested_new_task_ALL?: InputMaybe<ChangeRequestWhere>;
@@ -10578,24 +9993,20 @@ export type WateringTaskWhere = {
   date_IN?: InputMaybe<Array<Scalars['Date']>>;
   date_LT?: InputMaybe<Scalars['Date']>;
   date_LTE?: InputMaybe<Scalars['Date']>;
-  date_NOT?: InputMaybe<Scalars['Date']>;
-  date_NOT_IN?: InputMaybe<Array<Scalars['Date']>>;
   done?: InputMaybe<Scalars['Boolean']>;
-  done_NOT?: InputMaybe<Scalars['Boolean']>;
   label?: InputMaybe<Scalars['String']>;
   label_CONTAINS?: InputMaybe<Scalars['String']>;
   label_ENDS_WITH?: InputMaybe<Scalars['String']>;
   label_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  label_NOT?: InputMaybe<Scalars['String']>;
-  label_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  label_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  label_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  label_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   label_STARTS_WITH?: InputMaybe<Scalars['String']>;
   logevents_refers_toAggregate?: InputMaybe<WateringTaskLogevents_Refers_ToAggregateInput>;
+  /** Return WateringTasks where all of the related WateringTaskLogevents_refers_toConnections match this filter */
   logevents_refers_toConnection_ALL?: InputMaybe<WateringTaskLogevents_Refers_ToConnectionWhere>;
+  /** Return WateringTasks where none of the related WateringTaskLogevents_refers_toConnections match this filter */
   logevents_refers_toConnection_NONE?: InputMaybe<WateringTaskLogevents_Refers_ToConnectionWhere>;
+  /** Return WateringTasks where one of the related WateringTaskLogevents_refers_toConnections match this filter */
   logevents_refers_toConnection_SINGLE?: InputMaybe<WateringTaskLogevents_Refers_ToConnectionWhere>;
+  /** Return WateringTasks where some of the related WateringTaskLogevents_refers_toConnections match this filter */
   logevents_refers_toConnection_SOME?: InputMaybe<WateringTaskLogevents_Refers_ToConnectionWhere>;
   /** Return WateringTasks where all of the related LogEvents match this filter */
   logevents_refers_to_ALL?: InputMaybe<LogEventWhere>;
@@ -10609,26 +10020,20 @@ export type WateringTaskWhere = {
   neo4jImportId_CONTAINS?: InputMaybe<Scalars['String']>;
   neo4jImportId_ENDS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId_IN?: InputMaybe<Array<Scalars['String']>>;
-  neo4jImportId_NOT?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  neo4jImportId_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  neo4jImportId_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   neo4jImportId_STARTS_WITH?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
   type_CONTAINS?: InputMaybe<Scalars['String']>;
   type_ENDS_WITH?: InputMaybe<Scalars['String']>;
   type_IN?: InputMaybe<Array<Scalars['String']>>;
-  type_NOT?: InputMaybe<Scalars['String']>;
-  type_NOT_CONTAINS?: InputMaybe<Scalars['String']>;
-  type_NOT_ENDS_WITH?: InputMaybe<Scalars['String']>;
-  type_NOT_IN?: InputMaybe<Array<Scalars['String']>>;
-  type_NOT_STARTS_WITH?: InputMaybe<Scalars['String']>;
   type_STARTS_WITH?: InputMaybe<Scalars['String']>;
   users_assignedAggregate?: InputMaybe<WateringTaskUsers_AssignedAggregateInput>;
+  /** Return WateringTasks where all of the related WateringTaskUsers_assignedConnections match this filter */
   users_assignedConnection_ALL?: InputMaybe<WateringTaskUsers_AssignedConnectionWhere>;
+  /** Return WateringTasks where none of the related WateringTaskUsers_assignedConnections match this filter */
   users_assignedConnection_NONE?: InputMaybe<WateringTaskUsers_AssignedConnectionWhere>;
+  /** Return WateringTasks where one of the related WateringTaskUsers_assignedConnections match this filter */
   users_assignedConnection_SINGLE?: InputMaybe<WateringTaskUsers_AssignedConnectionWhere>;
+  /** Return WateringTasks where some of the related WateringTaskUsers_assignedConnections match this filter */
   users_assignedConnection_SOME?: InputMaybe<WateringTaskUsers_AssignedConnectionWhere>;
   /** Return WateringTasks where all of the related Users match this filter */
   users_assigned_ALL?: InputMaybe<UserWhere>;
@@ -10639,9 +10044,13 @@ export type WateringTaskWhere = {
   /** Return WateringTasks where some of the related Users match this filter */
   users_assigned_SOME?: InputMaybe<UserWhere>;
   users_availableAggregate?: InputMaybe<WateringTaskUsers_AvailableAggregateInput>;
+  /** Return WateringTasks where all of the related WateringTaskUsers_availableConnections match this filter */
   users_availableConnection_ALL?: InputMaybe<WateringTaskUsers_AvailableConnectionWhere>;
+  /** Return WateringTasks where none of the related WateringTaskUsers_availableConnections match this filter */
   users_availableConnection_NONE?: InputMaybe<WateringTaskUsers_AvailableConnectionWhere>;
+  /** Return WateringTasks where one of the related WateringTaskUsers_availableConnections match this filter */
   users_availableConnection_SINGLE?: InputMaybe<WateringTaskUsers_AvailableConnectionWhere>;
+  /** Return WateringTasks where some of the related WateringTaskUsers_availableConnections match this filter */
   users_availableConnection_SOME?: InputMaybe<WateringTaskUsers_AvailableConnectionWhere>;
   /** Return WateringTasks where all of the related Users match this filter */
   users_available_ALL?: InputMaybe<UserWhere>;
@@ -10652,9 +10061,13 @@ export type WateringTaskWhere = {
   /** Return WateringTasks where some of the related Users match this filter */
   users_available_SOME?: InputMaybe<UserWhere>;
   wateringperiodAggregate?: InputMaybe<WateringTaskWateringperiodAggregateInput>;
+  /** Return WateringTasks where all of the related WateringTaskWateringperiodConnections match this filter */
   wateringperiodConnection_ALL?: InputMaybe<WateringTaskWateringperiodConnectionWhere>;
+  /** Return WateringTasks where none of the related WateringTaskWateringperiodConnections match this filter */
   wateringperiodConnection_NONE?: InputMaybe<WateringTaskWateringperiodConnectionWhere>;
+  /** Return WateringTasks where one of the related WateringTaskWateringperiodConnections match this filter */
   wateringperiodConnection_SINGLE?: InputMaybe<WateringTaskWateringperiodConnectionWhere>;
+  /** Return WateringTasks where some of the related WateringTaskWateringperiodConnections match this filter */
   wateringperiodConnection_SOME?: InputMaybe<WateringTaskWateringperiodConnectionWhere>;
   /** Return WateringTasks where all of the related WateringPeriods match this filter */
   wateringperiod_ALL?: InputMaybe<WateringPeriodWhere>;

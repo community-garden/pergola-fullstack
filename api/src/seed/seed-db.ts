@@ -22,7 +22,7 @@ const logger = pino( {
 
 dotenv.config()
 
-const uri = process.env.GRAPHQL_SERVER_URL || "http://localhost:4001/graphql"
+const uri = process.env.GRAPHQL_SERVER_URL || "http://0.0.0.0:4001/graphql"
 
 const runMutations = async () => {
   const token = await getToken()
@@ -59,6 +59,7 @@ const runMutations = async () => {
   )
 }
 
+logger.info( "Seeding database..." )
 runMutations()
   .then(() => {
     logger.info( "Database seeded!" )

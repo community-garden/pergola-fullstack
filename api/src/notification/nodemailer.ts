@@ -2,7 +2,7 @@ import Email from "email-templates"
 import { createTransport } from "nodemailer"
 import path from "path"
 
-const { SMTP_PASS, SMTP_USER, SMTP_HOST, SMTP_PORT } = process.env
+const { SMTP_INSECURE = undefined, SMTP_DEBUG = undefined,  SMTP_PASS = "test", SMTP_USER = "test", SMTP_HOST = "localhost", SMTP_PORT = "1025" } = process.env
 const smtp = {
     host: SMTP_HOST ,
     port: SMTP_PORT ,
@@ -12,7 +12,7 @@ const smtp = {
     },
     debug: true,
     pool: true,
-    tls: {
+    tls: SMTP_INSECURE ? undefined : {
       // do not fail on invalid certs
       rejectUnauthorized: false
     },

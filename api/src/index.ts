@@ -118,7 +118,7 @@ webPush.setVapidDetails(
         neo4jDatabase: process.env.NEO4J_DATABASE,
       }
     },
-    introspection: true
+    introspection: true,
   } )
 
   server.start().then( () => {

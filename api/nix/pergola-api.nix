@@ -1,5 +1,5 @@
 {pkgs ? import <nixpkgs> {},
- nodejs ? pkgs.nodejs-12_x,
+ nodejs ? pkgs.nodejs-18_x,
  stdenv ? pkgs.stdenv,
  lib ? pkgs.lib,
  ...}:

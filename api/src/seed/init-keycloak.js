@@ -54,7 +54,7 @@ const users = [
 ]
 
 async function initKeycloak() {
-  const kc = new KeycloakAdmin( {baseUrl: `${keycloakUrl}/auth`} )
+  const kc = new KeycloakAdmin( {baseUrl: `${keycloakUrl}`} )
 
   await kc.auth( {
     username: keycloakUser,

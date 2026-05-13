@@ -9,7 +9,7 @@ import tokenRequester from "keycloak-request-token"
 const username = process.argv[2]
 const password = process.argv[3]
 
-const baseUrl = process.env.KEYCLOAK_URL || "http://localhost:8080/auth"
+const baseUrl = process.env.KEYCLOAK_URL || "http://localhost:8080"
 const settings = {
   username: username || "developer",
   password: password || "developer",

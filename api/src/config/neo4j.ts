@@ -15,3 +15,5 @@ export const neo4jdriver = neo4j.driver(
     encrypted: process.env.NEO4J_ENCRYPTED ? "ENCRYPTION_ON" : "ENCRYPTION_OFF",
   }
 )
+
+neo4jdriver.getServerInfo().then(console.log)
