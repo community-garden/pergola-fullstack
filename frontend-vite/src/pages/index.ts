@@ -4,5 +4,6 @@ export { default as Watering } from './Watering';
 export { default as WateringWizard } from './WateringWizard';
 export { default as Notifications } from './Notifications';
 export { default as Settings } from './Settings';
-export { default as GardenSettings } from './GardenSettings';
 export { default as LandingPage } from './LandingPage';
+export { PlantManagement } from './PlantManagement';
+export { SeasonPlanner } from './SeasonPlanner';

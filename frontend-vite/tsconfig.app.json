@@ -25,7 +25,9 @@
       "@i18n/*": ["i18n/*"],
       "@assets/*": ["assets/*"],
       "@config/*": ["config/*"],
-      "@auth/*": ["auth/*"]
+      "@auth/*": ["auth/*"],
+      "@hooks/*": ["hooks/*"],
+      "@utils/*": ["utils/*"]
     },
 
     /* Linting */

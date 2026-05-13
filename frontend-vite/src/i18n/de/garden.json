@@ -1,0 +1,266 @@
+{
+  "features": {
+    "newFeatureQuestion": "Möchten Sie dieses Feature näher spezifizieren?",
+    "no": "Nein",
+    "yes": "Ja",
+    "selectType": "Feature-Typ auswählen",
+    "selectTypeDescription": "Wählen Sie einen Feature-Typ aus der Liste:",
+    "selected": "Ausgewählt",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "createNew": "Neu erstellen",
+    "fillDetails": "Füllen Sie die Details für Ihr neues Feature aus:",
+    "types": {
+      "Beet": "Beet",
+      "Gewächshaus": "Gewächshaus",
+      "Schuppen": "Schuppen",
+      "Bienenstand": "Bienenstand",
+      "Weg": "Weg",
+      "Sitzgelegenheit": "Sitzgelegenheit",
+      "Feuerstelle": "Feuerstelle"
+    }
+  },
+  "geoFeature": {
+    "title": "Geographisches Objekt",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geo": "Geometrie",
+    "creationTime": "Erstellt",
+    "modificationTime": "Zuletzt geändert"
+  },
+  "workshop": {
+    "title": "Gewächshaus/Werkstatt",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geoFeature": "Geographisches Objekt",
+    "workshopType": "Typ",
+    "area": "Fläche (m²)",
+    "hasHeating": "Hat Heizung",
+    "hasIrrigation": "Hat Bewässerung",
+    "types": {
+      "greenhouse": "Gewächshaus",
+      "polytunnel": "Folientunnel",
+      "cold_frame": "Frühbeet",
+      "other": "Sonstiges"
+    }
+  },
+  "shed": {
+    "title": "Schuppen",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geoFeature": "Geographisches Objekt",
+    "shedType": "Typ",
+    "area": "Fläche (m²)",
+    "hasElectricity": "Hat Strom",
+    "types": {
+      "tool_shed": "Geräteschuppen",
+      "storage": "Lager",
+      "potting_shed": "Umtopfschuppen",
+      "other": "Sonstiges"
+    }
+  },
+  "beeStand": {
+    "title": "Bienenstand",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geoFeature": "Geographisches Objekt",
+    "numberOfHives": "Anzahl Bienenstöcke",
+    "beeSpecies": "Bienenart"
+  },
+  "path": {
+    "title": "Weg",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geoFeature": "Geographisches Objekt",
+    "pathType": "Typ",
+    "width": "Breite (m)",
+    "types": {
+      "gravel": "Kies",
+      "paved": "Gepflastert",
+      "grass": "Rasen",
+      "woodchip": "Holzhackschnitzel",
+      "other": "Sonstiges"
+    }
+  },
+  "seating": {
+    "title": "Sitzgelegenheit",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geoFeature": "Geographisches Objekt",
+    "seatingType": "Typ",
+    "capacity": "Kapazität (Personen)",
+    "hasCover": "Hat Überdachung",
+    "types": {
+      "bench": "Bank",
+      "table": "Tisch",
+      "pergola": "Pergola",
+      "pavilion": "Pavillon",
+      "other": "Sonstiges"
+    }
+  },
+  "firePlace": {
+    "title": "Feuerstelle",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geoFeature": "Geographisches Objekt",
+    "firePlaceType": "Typ",
+    "hasCover": "Hat Überdachung",
+    "types": {
+      "fire_pit": "Feuerstelle",
+      "barbecue": "Grill",
+      "outdoor_oven": "Außenofen",
+      "other": "Sonstiges"
+    }
+  },
+  "patch": {
+    "title": "Beet",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geometry": "Geometrie",
+    "patchType": "Beet-Typ",
+    "area": "Fläche (m²)",
+    "plantingPlans": "Anbaupläne",
+    "types": {
+      "bed": "Beet",
+      "greenhouse": "Gewächshaus",
+      "container": "Container",
+      "field": "Feld",
+      "other": "Sonstiges"
+    }
+  },
+  "plantingPlan": {
+    "title": "Anbauplan",
+    "name": "Name",
+    "season": "Saison",
+    "description": "Beschreibung",
+    "items": "Pflanzungen",
+    "startDate": "Startdatum",
+    "endDate": "Enddatum"
+  },
+  "plantingPlanItem": {
+    "plantSpecies": "Pflanzenart",
+    "plantVariety": "Pflanzensorte",
+    "plannedQuantity": "Geplante Anzahl",
+    "notes": "Notizen",
+    "priority": "Priorität",
+    "priorities": {
+      "low": "Niedrig",
+      "medium": "Mittel",
+      "high": "Hoch"
+    }
+  },
+  "plantSpecies": {
+    "title": "Pflanzenart",
+    "name": "Name",
+    "scientificName": "Wissenschaftlicher Name",
+    "family": "Familie",
+    "description": "Beschreibung",
+    "growingSeason": "Anbausaison",
+    "requirements": "Anforderungen",
+    "physicalCharacteristics": "Physische Eigenschaften",
+    "timing": "Zeitplanung"
+  },
+  "requirements": {
+    "sun": "Sonnenbedarf",
+    "water": "Wasserbedarf",
+    "sunValues": {
+      "full_sun": "Volle Sonne",
+      "partial_shade": "Halbschatten",
+      "full_shade": "Vollschatten"
+    },
+    "waterValues": {
+      "low": "Niedrig",
+      "medium": "Mittel",
+      "high": "Hoch"
+    }
+  },
+  "physicalCharacteristics": {
+    "spacing": "Pflanzabstand (cm)",
+    "height": "Höhe (cm)"
+  },
+  "timing": {
+    "germinationDays": "Keimdauer (Tage)",
+    "daysToHarvest": "Tage von Aussaat bis Ernte"
+  },
+  "plantVariety": {
+    "title": "Pflanzensorte",
+    "name": "Sortenname",
+    "species": "Art",
+    "description": "Beschreibung",
+    "growingSeason": "Anbausaison",
+    "characteristics": "Eigenschaften",
+    "sourceInfo": "Herkunft",
+    "requirements": "Anforderungen",
+    "physicalCharacteristics": "Physische Eigenschaften",
+    "timing": "Zeitplanung"
+  },
+  "growingSeason": {
+    "title": "Anbausaison",
+    "sowingStart": "Aussaat Start (Monat)",
+    "sowingEnd": "Aussaat Ende (Monat)",
+    "prickingStart": "Pikieren Start (Monat)",
+    "prickingEnd": "Pikieren Ende (Monat)",
+    "plantingStart": "Auspflanzen Start (Monat)",
+    "plantingEnd": "Auspflanzen Ende (Monat)",
+    "harvestStart": "Ernte Start (Monat)",
+    "harvestEnd": "Ernte Ende (Monat)",
+    "sowingOutdoorsStart": "Aussaat im Freien Start (Tag)",
+    "sowingOutdoorsEnd": "Aussaat im Freien Ende (Tag)",
+    "sowingUnderGlassStart": "Aussaat unter Glas Start (Tag)",
+    "sowingUnderGlassEnd": "Aussaat unter Glas Ende (Tag)",
+    "harvestStartDay": "Ernte Start (Tag)",
+    "harvestEndDay": "Ernte Ende (Tag)",
+    "months": {
+      "1": "Januar",
+      "2": "Februar",
+      "3": "März",
+      "4": "April",
+      "5": "Mai",
+      "6": "Juni",
+      "7": "Juli",
+      "8": "August",
+      "9": "September",
+      "10": "Oktober",
+      "11": "November",
+      "12": "Dezember"
+    }
+  },
+  "seasonalCalendar": {
+    "title": "Aussaat- und Pflanzkalender",
+    "editMode": "Bearbeitungsmodus",
+    "sowingOutdoors": "Aussaat im Freien",
+    "sowingUnderGlass": "Aussaat unter Glas",
+    "harvest": "Ernte",
+    "germinationTemperature": "Keimtemperatur (°C)",
+    "legend": {
+      "title": "Legende",
+      "colors": "Farben der Zeiträume",
+      "abbreviations": "Abkürzungen"
+    },
+    "properties": {
+      "germinationDays": "Keimdauer (Tage)",
+      "daysToHarvest": "Tage bis Ernte",
+      "spacing": "Pflanzabstand (cm)",
+      "height": "Höhe (cm)",
+      "sun": "Sonne",
+      "water": "Wasser"
+    },
+    "abbreviations": {
+      "germinationDays": "Keim.",
+      "daysToHarvest": "Ernte",
+      "spacing": "Abst.",
+      "height": "Höhe",
+      "sun": "Sonne",
+      "water": "Wasser"
+    }
+  }
+}
+

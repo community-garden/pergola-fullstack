@@ -1,0 +1,205 @@
+# OpenFarm Plant Data - Recovered from Wayback Machine
+# Custom Ontology for Plant Specifications and Growing Information
+# PREFIX definition as requested
+
+PREFIX : <https://openfarm.cc/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ===== ONTOLOGY CLASS DEFINITIONS =====
+
+:Plant a rdf:Class ;
+  rdfs:label "Plant" ;
+  rdfs:comment "A cultivated plant with agricultural characteristics" .
+
+:GrowingConditions a rdf:Class ;
+  rdfs:label "Growing Conditions" ;
+  rdfs:comment "Environmental and cultivation requirements for a plant" .
+
+:PhysicalCharacteristics a rdf:Class ;
+  rdfs:label "Physical Characteristics" ;
+  rdfs:comment "Physical dimensions and structure of a plant" .
+
+# ===== ONTOLOGY PROPERTY DEFINITIONS =====
+
+:binomialName a rdf:Property ;
+  rdfs:label "Binomial Name" ;
+  rdfs:domain :Plant ;
+  rdfs:range rdfs:Literal ;
+  rdfs:comment "Scientific Latin binomial name of the plant" .
+
+:sunRequirement a rdf:Property ;
+  rdfs:label "Sun Requirement" ;
+  rdfs:domain :GrowingConditions ;
+  rdfs:range rdfs:Literal ;
+  rdfs:comment "Amount of sunlight needed (Full Sun, Partial Sun, etc.)" .
+
+:growingDegreeDays a rdf:Property ;
+  rdfs:label "Growing Degree Days" ;
+  rdfs:domain :GrowingConditions ;
+  rdfs:range xsd:integer ;
+  rdfs:comment "Number of days required to reach maturity" .
+
+:sowingMethod a rdf:Property ;
+  rdfs:label "Sowing Method" ;
+  rdfs:domain :GrowingConditions ;
+  rdfs:range rdfs:Literal ;
+  rdfs:comment "Method for sowing seeds or starting the plant" .
+
+:spreadDiameter a rdf:Property ;
+  rdfs:label "Spread (Diameter)" ;
+  rdfs:domain :PhysicalCharacteristics ;
+  rdfs:range xsd:integer ;
+  rdfs:comment "Maximum spread or diameter of mature plant in centimeters" .
+
+:rowSpacing a rdf:Property ;
+  rdfs:label "Row Spacing" ;
+  rdfs:domain :GrowingConditions ;
+  rdfs:range xsd:integer ;
+  rdfs:comment "Recommended spacing between plants in rows (centimeters)" .
+
+:height a rdf:Property ;
+  rdfs:label "Height" ;
+  rdfs:domain :PhysicalCharacteristics ;
+  rdfs:range xsd:integer ;
+  rdfs:comment "Maximum height of mature plant in centimeters" .
+
+:description a rdf:Property ;
+  rdfs:label "Description" ;
+  rdfs:domain :Plant ;
+  rdfs:range rdfs:Literal ;
+  rdfs:comment "Detailed description of the plant and its uses" .
+
+:hasGrowingConditions a rdf:Property ;
+  rdfs:label "Has Growing Conditions" ;
+  rdfs:domain :Plant ;
+  rdfs:range :GrowingConditions ;
+  rdfs:comment "Links a plant to its growing conditions" .
+
+:hasPhysicalCharacteristics a rdf:Property ;
+  rdfs:label "Has Physical Characteristics" ;
+  rdfs:domain :Plant ;
+  rdfs:range :PhysicalCharacteristics ;
+  rdfs:comment "Links a plant to its physical characteristics" .
+
+:companion a rdf:Property ;
+  rdfs:label "Companion Plant" ;
+  rdfs:domain :Plant ;
+  rdfs:range :Plant ;
+  rdfs:comment "Compatible companion plants for cooperative growth" .
+
+:tag a rdf:Property ;
+  rdfs:label "Tag" ;
+  rdfs:domain :Plant ;
+  rdfs:range rdfs:Literal ;
+  rdfs:comment "Classification tags for the plant" .
+
+# ===== PLANT INSTANCES =====
+
+# 1. TOMATO
+:tomato a :Plant ;
+  rdfs:label "Tomato" ;
+  :binomialName "Solanum lycopersicum" ;
+  :tag "fruit" ;
+  :description "The tomato is the fruit of the tomato plant, a member of the Nightshade family (Solanaceae). The fruit grows on a small compact bush." ;
+  :hasGrowingConditions :tomato_conditions ;
+  :hasPhysicalCharacteristics :tomato_chars .
+
+:tomato_conditions a :GrowingConditions ;
+  :sunRequirement "Full Sun" ;
+  :growingDegreeDays 60 ;
+  :sowingMethod "Direct seed indoors, transplant seedlings outside after hardening off" ;
+  :rowSpacing 45 .
+
+:tomato_chars a :PhysicalCharacteristics ;
+  :spreadDiameter 45 ;
+  :height 45 .
+
+# 2. PARSLEY
+:parsley a :Plant ;
+  rdfs:label "Parsley" ;
+  :binomialName "Petroselinum crispum" ;
+  :description "Parsley is a herb commonly used in cooking." ;
+  :hasGrowingConditions :parsley_conditions ;
+  :hasPhysicalCharacteristics :parsley_chars .
+
+:parsley_conditions a :GrowingConditions ;
+  :growingDegreeDays 70 ;
+  :sowingMethod "flat" ;
+  :rowSpacing 30 .
+
+:parsley_chars a :PhysicalCharacteristics ;
+  :spreadDiameter 10 ;
+  :height 30 .
+
+# 3. FENNEL
+:fennel a :Plant ;
+  rdfs:label "Fennel" ;
+  :binomialName "Foeniculum vulgare" ;
+  :description "Fennel is a flowering plant species with yellow flowers and feathery leaves. It is grown primarily for its bulbous white base and green leaf stalks, which have a mild, fresh licorice flavor. Its base and stalks are delicious roasted, grilled, or eaten fresh. Do not let fennel go to seed: it can become invasive." ;
+  :hasGrowingConditions :fennel_conditions ;
+  :hasPhysicalCharacteristics :fennel_chars .
+
+:fennel_conditions a :GrowingConditions ;
+  :sunRequirement "Full Sun" ;
+  :sowingMethod "Direct seed outdoors, or sow indoors and harden off before transplanting outside" ;
+  :rowSpacing 15 .
+
+:fennel_chars a :PhysicalCharacteristics ;
+  :spreadDiameter 60 ;
+  :height 60 .
+
+# 4. LETTUCE
+:lettuce a :Plant ;
+  rdfs:label "Lettuce" ;
+  :binomialName "Lactuca Sativa" ;
+  :description "Lettuce is a cool weather crop and high temperatures will impede germination and/or cause the plant to bolt (go to seed quickly). Some hybrid cultivars have been bred to be more heat-resistant." ;
+  :hasGrowingConditions :lettuce_conditions ;
+  :hasPhysicalCharacteristics :lettuce_chars ;
+  :companion :romanesco .
+
+:lettuce_conditions a :GrowingConditions ;
+  :sunRequirement "Partial Sun" ;
+  :sowingMethod "Direct seed outdoors, thin to 20cm when seedlings are 3cm tall" ;
+  :rowSpacing 40 .
+
+:lettuce_chars a :PhysicalCharacteristics ;
+  :spreadDiameter 15 ;
+  :height 20 .
+
+:romanesco a :Plant ;
+  rdfs:label "Romanesco" .
+
+# 5. CARROT
+:carrot a :Plant ;
+  rdfs:label "Carrot" ;
+  :binomialName "Daucus Carota" ;
+  :description "The carrot is a root vegetable. It is usually orange in color, but some cultivars are purple, black, red, white, and yellow. The most commonly eaten part of the plant is the taproot, but the greens are sometimes eaten as well. The leaves appear first, and the taproot grows more slowly beneath the soil. Fast-growing cultivars mature within three months of sowing the seed. Slower-maturing cultivars are harvested four months after sowing." ;
+  :hasGrowingConditions :carrot_conditions ;
+  :hasPhysicalCharacteristics :carrot_chars .
+
+:carrot_conditions a :GrowingConditions ;
+  :sunRequirement "Full Sun" ;
+  :sowingMethod "Direct Seed, thin to 3cm apart when seedlings are 8cm high" ;
+  :rowSpacing 5 .
+
+:carrot_chars a :PhysicalCharacteristics ;
+  :spreadDiameter 5 ;
+  :height 10 .
+
+# 6. BASIL
+:basil a :Plant ;
+  rdfs:label "Basil" ;
+  :binomialName "Ocimum basilicum" ;
+  :description "Basil is a aromatic herb commonly used in Mediterranean and Asian cuisines." ;
+  :hasGrowingConditions :basil_conditions ;
+  :hasPhysicalCharacteristics :basil_chars .
+
+:basil_conditions a :GrowingConditions ;
+  :sunRequirement "Full Sun" ;
+  :rowSpacing 45 .
+
+:basil_chars a :PhysicalCharacteristics ;
+  :spreadDiameter 45 ;
+  :height 60 .

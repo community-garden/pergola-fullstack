@@ -91,15 +91,6 @@ export const notificationUiSchema = (t: TFunction) => ({
     {
       type: 'Group',
       label: '',
-      options: {
-        showIfProperty: {
-          type: 'OR',
-          conditions: [
-            { scope: '#/properties/notificationMethods/properties/email', schema: { const: true } },
-            { scope: '#/properties/notificationMethods/properties/push', schema: { const: true } }
-          ]
-        }
-      },
       elements: [
         {
           type: 'HorizontalLayout',

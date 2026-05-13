@@ -1,0 +1,808 @@
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <https://schema.org/> .
+@prefix ww:     <https://wurzelwerk.garden/ontology#> .
+@prefix garden: <https://wurzelwerk.garden/2025/> .
+@prefix dbr:    <http://dbpedia.org/resource/> .
+@prefix time:   <http://www.w3.org/2006/time#> .
+
+# =============================================================================
+# Ontology definitions
+# =============================================================================
+
+ww:Garden          a rdfs:Class ;
+    rdfs:label      "Gemeinschaftsgarten"@de , "Community Garden"@en ;
+    rdfs:comment    "A community garden with multiple beds."@en .
+
+ww:Bed             a rdfs:Class ;
+    rdfs:label      "Beet"@de , "Garden Bed"@en ;
+    rdfs:comment    "A distinct planting bed within the garden."@en .
+
+ww:Planting        a rdfs:Class ;
+    rdfs:label      "Pflanzung"@de , "Planting"@en ;
+    rdfs:comment    "A specific crop planting within a bed for a season."@en .
+
+ww:Plant           a rdfs:Class ;
+    rdfs:label      "Pflanze"@de , "Plant"@en .
+
+ww:SowingMethod    a rdfs:Class ;
+    rdfs:label      "Aussaatmethode"@de , "Sowing Method"@en .
+
+ww:hasBed          a rdf:Property ;
+    rdfs:domain     ww:Garden ;
+    rdfs:range      ww:Bed .
+
+ww:hasPlanting     a rdf:Property ;
+    rdfs:domain     ww:Bed ;
+    rdfs:range      ww:Planting .
+
+ww:hasPlant        a rdf:Property ;
+    rdfs:domain     ww:Planting ;
+    rdfs:range      ww:Plant .
+
+ww:sowingMethod    a rdf:Property ;
+    rdfs:domain     ww:Planting ;
+    rdfs:range      ww:SowingMethod ;
+    rdfs:comment    "DS = Direktsaat (direct sowing), Pflanzung = transplanting."@en .
+
+ww:sowingDate      a rdf:Property ;
+    rdfs:domain     ww:Planting ;
+    rdfs:range      xsd:string ;
+    rdfs:comment    "When to sow or start the crop."@en .
+
+ww:plantingDate    a rdf:Property ;
+    rdfs:domain     ww:Planting ;
+    rdfs:range      xsd:string ;
+    rdfs:comment    "When to transplant seedlings into the bed."@en .
+
+ww:harvestStart    a rdf:Property ;
+    rdfs:domain     ww:Planting ;
+    rdfs:range      xsd:string ;
+    rdfs:comment    "Beginning of harvest window."@en .
+
+ww:harvestEnd      a rdf:Property ;
+    rdfs:domain     ww:Planting ;
+    rdfs:range      xsd:string ;
+    rdfs:comment    "End of harvest window."@en .
+
+ww:caretaker       a rdf:Property ;
+    rdfs:domain     ww:Bed ;
+    rdfs:range      xsd:string ;
+    rdfs:comment    "Nickname of person responsible for this bed."@en .
+
+ww:bedNickname     a rdf:Property ;
+    rdfs:domain     ww:Bed ;
+    rdfs:range      xsd:string ;
+    rdfs:comment    "Animal nickname for the bed."@en .
+
+ww:plantFamily     a rdf:Property ;
+    rdfs:domain     ww:Planting ;
+    rdfs:range      xsd:string ;
+    rdfs:comment    "Botanical family or combination note (Fam. Kombi)."@en .
+
+ww:note            a rdf:Property ;
+    rdfs:domain     rdfs:Resource ;
+    rdfs:range      xsd:string .
+
+# -- Sowing method instances ---------------------------------------------------
+
+ww:Direktsaat      a ww:SowingMethod ;
+    rdfs:label      "Direktsaat"@de , "Direct Sowing"@en ;
+    rdfs:comment    "Seeds are sown directly into the bed."@en .
+
+ww:Pflanzung       a ww:SowingMethod ;
+    rdfs:label      "Pflanzung"@de , "Transplanting"@en ;
+    rdfs:comment    "Seedlings are pre-grown and transplanted."@en .
+
+ww:Vorkultur       a ww:SowingMethod ;
+    rdfs:label      "Vorkultur"@de , "Pre-cultivation"@en ;
+    rdfs:comment    "Started indoors before transplanting."@en .
+
+# =============================================================================
+# The Garden
+# =============================================================================
+
+garden:Wurzelwerk   a ww:Garden ;
+    rdfs:label      "Wurzelwerk"@de ;
+    schema:name     "Wurzelwerk Gemeinschaftsgarten" ;
+    ww:note         "Beet- und Anbauplanung 2025"@de ;
+    ww:hasBed       garden:bed-tausendfuessler ,
+                    garden:bed-hummel ,
+                    garden:bed-igel ,
+                    garden:bed-schnecke ,
+                    garden:bed-kroete-frosch ,
+                    garden:bed-folientunnel ,
+                    garden:bed-dachsbeet ,
+                    garden:bed-bluehwiese ,
+                    garden:bed-salatbeet ,
+                    garden:bed-rucola-gemeinschaftsbeet ,
+                    garden:bed-regenwurm ,
+                    garden:bed-kompost ,
+                    garden:bed-kraeuterbeet ,
+                    garden:bed-giessland .
+
+# =============================================================================
+# Bed: Tausendfüßler (Millipede)
+# =============================================================================
+
+garden:bed-tausendfuessler  a ww:Bed ;
+    rdfs:label          "Tausendfüßler"@de ;
+    ww:bedNickname      "Tausendfüßler" ;
+    rdfs:comment        "Large bed in the upper-left area of the garden."@en ;
+    ww:hasPlanting      garden:planting-tausendfuessler-kartoffel ,
+                        garden:planting-tausendfuessler-knoblauch ,
+                        garden:planting-tausendfuessler-buschbohne ,
+                        garden:planting-tausendfuessler-palmkohl ,
+                        garden:planting-tausendfuessler-kuerbis ,
+                        garden:planting-tausendfuessler-radieschen ,
+                        garden:planting-tausendfuessler-ringelblume .
+
+garden:planting-tausendfuessler-kartoffel  a ww:Planting ;
+    ww:hasPlant         garden:plant-kartoffel ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:plantingDate     "Mitte März"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "Oktober"@de ;
+    ww:note             "Mehrere Sorten"@de .
+
+garden:planting-tausendfuessler-knoblauch  a ww:Planting ;
+    ww:hasPlant         garden:plant-knoblauch ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Oktober (Vorjahr)"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "Juli"@de .
+
+garden:planting-tausendfuessler-buschbohne  a ww:Planting ;
+    ww:hasPlant         garden:plant-buschbohne ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Mai"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "September"@de .
+
+garden:planting-tausendfuessler-palmkohl  a ww:Planting ;
+    ww:hasPlant         garden:plant-palmkohl ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mai"@de ;
+    ww:harvestStart     "Oktober"@de ;
+    ww:harvestEnd       "März (Folgejahr)"@de .
+
+garden:planting-tausendfuessler-kuerbis  a ww:Planting ;
+    ww:hasPlant         garden:plant-kuerbis ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mitte Mai"@de ;
+    ww:harvestStart     "August"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+garden:planting-tausendfuessler-radieschen  a ww:Planting ;
+    ww:hasPlant         garden:plant-radieschen ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "März"@de ;
+    ww:harvestStart     "April"@de ;
+    ww:harvestEnd       "Mai"@de .
+
+garden:planting-tausendfuessler-ringelblume  a ww:Planting ;
+    ww:hasPlant         garden:plant-ringelblume ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "April"@de ;
+    ww:note             "Begleitpflanze / Mischkultur"@de .
+
+# =============================================================================
+# Bed: Regenwurm (Earthworm) – upper middle area
+# =============================================================================
+
+garden:bed-regenwurm  a ww:Bed ;
+    rdfs:label          "Regenwurm"@de ;
+    ww:bedNickname      "Regenwurm" ;
+    ww:hasPlanting      garden:planting-regenwurm-mangold ,
+                        garden:planting-regenwurm-radieschen ,
+                        garden:planting-regenwurm-rucola .
+
+garden:planting-regenwurm-mangold  a ww:Planting ;
+    ww:hasPlant         garden:plant-mangold ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "April"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+garden:planting-regenwurm-radieschen  a ww:Planting ;
+    ww:hasPlant         garden:plant-radieschen ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "März"@de ;
+    ww:harvestStart     "April"@de ;
+    ww:harvestEnd       "Mai"@de .
+
+garden:planting-regenwurm-rucola  a ww:Planting ;
+    ww:hasPlant         garden:plant-rucola ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "April"@de ;
+    ww:harvestStart     "Mai"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+# =============================================================================
+# Bed: Igel (Hedgehog)
+# =============================================================================
+
+garden:bed-igel  a ww:Bed ;
+    rdfs:label          "Igel"@de ;
+    ww:bedNickname      "Igel" ;
+    rdfs:comment        "Middle area bed."@en ;
+    ww:hasPlanting      garden:planting-igel-bohnen ,
+                        garden:planting-igel-zucchini ,
+                        garden:planting-igel-mais ,
+                        garden:planting-igel-kuerbis .
+
+garden:planting-igel-bohnen  a ww:Planting ;
+    ww:hasPlant         garden:plant-bohnen ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Mitte Mai"@de ;
+    ww:plantFamily      "Fam. Kombi"@de ;
+    ww:harvestStart     "August"@de ;
+    ww:harvestEnd       "September"@de ;
+    ww:note             "Ernte: Sept/Oktober, Mischkultur"@de .
+
+garden:planting-igel-zucchini  a ww:Planting ;
+    ww:hasPlant         garden:plant-zucchini ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mitte Mai"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "September"@de .
+
+garden:planting-igel-mais  a ww:Planting ;
+    ww:hasPlant         garden:plant-mais ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mitte Mai"@de ;
+    ww:harvestStart     "August"@de ;
+    ww:harvestEnd       "September"@de ;
+    ww:note             "Ernte ab Aug, bis Sept"@de .
+
+garden:planting-igel-kuerbis  a ww:Planting ;
+    ww:hasPlant         garden:plant-kuerbis ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mitte Mai"@de ;
+    ww:harvestStart     "September"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+# =============================================================================
+# Bed: Schnecke (Snail)
+# =============================================================================
+
+garden:bed-schnecke  a ww:Bed ;
+    rdfs:label          "Schnecke"@de ;
+    ww:bedNickname      "Schnecke" ;
+    rdfs:comment        "Middle-right bed."@en ;
+    ww:hasPlanting      garden:planting-schnecke-hauptkultur ,
+                        garden:planting-schnecke-moehren ,
+                        garden:planting-schnecke-zwiebeln ,
+                        garden:planting-schnecke-topinambur .
+
+garden:planting-schnecke-hauptkultur  a ww:Planting ;
+    ww:hasPlant         garden:plant-hauptkultur ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "März"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:note             "Hauptkultur, Ernte ab Juni"@de .
+
+garden:planting-schnecke-moehren  a ww:Planting ;
+    ww:hasPlant         garden:plant-moehren ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Mitte März"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "Oktober"@de ;
+    ww:plantFamily      "Fam. Kombi"@de .
+
+garden:planting-schnecke-zwiebeln  a ww:Planting ;
+    ww:hasPlant         garden:plant-zwiebeln ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "März"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "August"@de .
+
+garden:planting-schnecke-topinambur  a ww:Planting ;
+    ww:hasPlant         garden:plant-topinambur ;
+    ww:note             "TPi, Mischkultur"@de ;
+    ww:harvestStart     "Oktober"@de ;
+    ww:harvestEnd       "März (Folgejahr)"@de .
+
+# =============================================================================
+# Bed: Hummel (Bumblebee)
+# =============================================================================
+
+garden:bed-hummel  a ww:Bed ;
+    rdfs:label          "Hummel"@de ;
+    ww:bedNickname      "Hummel" ;
+    rdfs:comment        "Left-side bed."@en ;
+    ww:hasPlanting      garden:planting-hummel-ackerbohne ,
+                        garden:planting-hummel-gruenkohl ,
+                        garden:planting-hummel-artischocke ,
+                        garden:planting-hummel-spitzkohl .
+
+garden:planting-hummel-ackerbohne  a ww:Planting ;
+    ww:hasPlant         garden:plant-ackerbohne ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Ende Februar"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "Juni"@de .
+
+garden:planting-hummel-gruenkohl  a ww:Planting ;
+    ww:hasPlant         garden:plant-gruenkohl ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Juni"@de ;
+    ww:harvestStart     "Oktober"@de ;
+    ww:harvestEnd       "Dezember"@de ;
+    ww:plantFamily      "Brassicaceae"@de .
+
+garden:planting-hummel-artischocke  a ww:Planting ;
+    ww:hasPlant         garden:plant-artischocke ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mitte März"@de ;
+    ww:harvestStart     "August"@de ;
+    ww:harvestEnd       "September"@de .
+
+garden:planting-hummel-spitzkohl  a ww:Planting ;
+    ww:hasPlant         garden:plant-spitzkohl ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "März"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "Juli"@de .
+
+# =============================================================================
+# Bed: Kröte/Frosch (Toad/Frog)
+# =============================================================================
+
+garden:bed-kroete-frosch  a ww:Bed ;
+    rdfs:label          "Kröte/Frosch"@de ;
+    ww:bedNickname      "Kröte/Frosch" ;
+    rdfs:comment        "Lower-middle bed."@en ;
+    ww:hasPlanting      garden:planting-kf-zucchini ,
+                        garden:planting-kf-rote-bete ,
+                        garden:planting-kf-feldsalat .
+
+garden:planting-kf-zucchini  a ww:Planting ;
+    ww:hasPlant         garden:plant-zucchini ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mai"@de ;
+    ww:plantFamily      "Fam. Kombi"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "September"@de .
+
+garden:planting-kf-rote-bete  a ww:Planting ;
+    ww:hasPlant         garden:plant-rote-bete ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "April"@de ;
+    ww:harvestStart     "August"@de ;
+    ww:harvestEnd       "Oktober"@de ;
+    ww:note             "Ragamo Sorte"@de .
+
+garden:planting-kf-feldsalat  a ww:Planting ;
+    ww:hasPlant         garden:plant-feldsalat ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "August"@de ;
+    ww:harvestStart     "Oktober"@de ;
+    ww:harvestEnd       "November"@de .
+
+# =============================================================================
+# Bed: Folientunnel (Polytunnel)
+# =============================================================================
+
+garden:bed-folientunnel  a ww:Bed ;
+    rdfs:label          "Folientunnel"@de ;
+    rdfs:comment        "Protected growing area / polytunnel at the bottom-left."@en ;
+    ww:hasPlanting      garden:planting-ft-aubergine ,
+                        garden:planting-ft-paprika ,
+                        garden:planting-ft-physalis ,
+                        garden:planting-ft-tomatillo ,
+                        garden:planting-ft-malabar-spinat ,
+                        garden:planting-ft-spinat ,
+                        garden:planting-ft-knollensellerie ,
+                        garden:planting-ft-tomate ,
+                        garden:planting-ft-gurke ,
+                        garden:planting-ft-basilikum .
+
+garden:planting-ft-aubergine  a ww:Planting ;
+    ww:hasPlant         garden:plant-aubergine ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mitte Mai"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+garden:planting-ft-paprika  a ww:Planting ;
+    ww:hasPlant         garden:plant-paprika ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mai"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+garden:planting-ft-physalis  a ww:Planting ;
+    ww:hasPlant         garden:plant-physalis ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mai"@de ;
+    ww:harvestStart     "August"@de ;
+    ww:harvestEnd       "November"@de .
+
+garden:planting-ft-tomatillo  a ww:Planting ;
+    ww:hasPlant         garden:plant-tomatillo ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mai"@de ;
+    ww:harvestStart     "August"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+garden:planting-ft-malabar-spinat  a ww:Planting ;
+    ww:hasPlant         garden:plant-malabar-spinat ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mai"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "September"@de .
+
+garden:planting-ft-spinat  a ww:Planting ;
+    ww:hasPlant         garden:plant-spinat ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Mitte März"@de ;
+    ww:harvestStart     "Ende April"@de ;
+    ww:harvestEnd       "Mai"@de .
+
+garden:planting-ft-knollensellerie  a ww:Planting ;
+    ww:hasPlant         garden:plant-knollensellerie ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "Juni"@de ;
+    ww:note             "Knollensellerie, Ernte Juni"@de .
+
+garden:planting-ft-tomate  a ww:Planting ;
+    ww:hasPlant         garden:plant-tomate ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mai"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "Oktober"@de ;
+    ww:note             "Diverse Tomaten, Mischkultur mit Basilikum"@de .
+
+garden:planting-ft-gurke  a ww:Planting ;
+    ww:hasPlant         garden:plant-gurke ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mitte Mai"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+garden:planting-ft-basilikum  a ww:Planting ;
+    ww:hasPlant         garden:plant-basilikum ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mai"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "September"@de ;
+    ww:note             "Begleitpflanze zu Tomaten"@de .
+
+# =============================================================================
+# Bed: Dachsbeet (Badger Bed)
+# =============================================================================
+
+garden:bed-dachsbeet  a ww:Bed ;
+    rdfs:label          "Dachsbeet"@de ;
+    ww:bedNickname      "Dachs" ;
+    rdfs:comment        "Right-side bed, multiple sub-sections."@en ;
+    ww:hasPlanting      garden:planting-dachs-kohlrabi ,
+                        garden:planting-dachs-mangold ,
+                        garden:planting-dachs-brokkoli ,
+                        garden:planting-dachs-petersilie ,
+                        garden:planting-dachs-sonnenblume ,
+                        garden:planting-dachs-lauch ,
+                        garden:planting-dachs-ruebstiel ,
+                        garden:planting-dachs-kamille ,
+                        garden:planting-dachs-koriander ,
+                        garden:planting-dachs-fenchel .
+
+garden:planting-dachs-kohlrabi  a ww:Planting ;
+    ww:hasPlant         garden:plant-kohlrabi ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "März"@de ;
+    ww:harvestStart     "Mai"@de ;
+    ww:harvestEnd       "Juni"@de ;
+    ww:note             "Kohlrabi, Ernte Mai/Juni"@de .
+
+garden:planting-dachs-mangold  a ww:Planting ;
+    ww:hasPlant         garden:plant-mangold ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "März"@de ;
+    ww:harvestStart     "Mai"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+garden:planting-dachs-brokkoli  a ww:Planting ;
+    ww:hasPlant         garden:plant-brokkoli ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "April"@de ;
+    ww:plantFamily      "Brassicaceae (Spät)"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "Juli"@de .
+
+garden:planting-dachs-petersilie  a ww:Planting ;
+    ww:hasPlant         garden:plant-petersilie ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Mitte März"@de ;
+    ww:harvestStart     "Mai"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+garden:planting-dachs-sonnenblume  a ww:Planting ;
+    ww:hasPlant         garden:plant-sonnenblume ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Mitte März"@de ;
+    ww:harvestStart     "August"@de ;
+    ww:harvestEnd       "September"@de .
+
+garden:planting-dachs-lauch  a ww:Planting ;
+    ww:hasPlant         garden:plant-lauch ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "April"@de ;
+    ww:harvestStart     "September"@de ;
+    ww:harvestEnd       "Dezember"@de .
+
+garden:planting-dachs-ruebstiel  a ww:Planting ;
+    ww:hasPlant         garden:plant-ruebstiel ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "Mitte Mai"@de ;
+    ww:harvestStart     "Juni"@de ;
+    ww:harvestEnd       "August"@de .
+
+garden:planting-dachs-kamille  a ww:Planting ;
+    ww:hasPlant         garden:plant-kamille ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Mitte März"@de ;
+    ww:harvestStart     "Mai"@de ;
+    ww:harvestEnd       "August"@de ;
+    ww:note             "Kamille auch bei Blühwiese"@de .
+
+garden:planting-dachs-fenchel  a ww:Planting ;
+    ww:hasPlant         garden:plant-fenchel ;
+    ww:sowingMethod     ww:Pflanzung ;
+    ww:plantingDate     "April"@de ;
+    ww:harvestStart     "Juli"@de ;
+    ww:harvestEnd       "September"@de .
+
+garden:planting-dachs-koriander  a ww:Planting ;
+    ww:hasPlant         garden:plant-koriander ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "Mitte März"@de ;
+    ww:harvestStart     "Mai"@de ;
+    ww:harvestEnd       "Juli"@de ;
+    ww:note             "Ernte bis Juli"@de .
+
+# =============================================================================
+# Bed: Blühwiese (Flower Meadow)
+# =============================================================================
+
+garden:bed-bluehwiese  a ww:Bed ;
+    rdfs:label          "Blühwiese"@de ;
+    rdfs:comment        "Flower meadow in the upper-right corner."@en ;
+    ww:hasPlanting      garden:planting-blueh-kamille ,
+                        garden:planting-blueh-mischung .
+
+garden:planting-blueh-kamille  a ww:Planting ;
+    ww:hasPlant         garden:plant-kamille ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "April"@de ;
+    ww:note             "DS ab April"@de .
+
+garden:planting-blueh-mischung  a ww:Planting ;
+    ww:hasPlant         garden:plant-wildblumen ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "April"@de ;
+    ww:note             "Blühwiese Mischung, Trockenmauer, Terrasse angrenzend"@de .
+
+# =============================================================================
+# Bed: Salatbeet (Salad Bed)
+# =============================================================================
+
+garden:bed-salatbeet  a ww:Bed ;
+    rdfs:label          "Salatbeet"@de ;
+    rdfs:comment        "Dedicated salad/lettuce bed, right side."@en ;
+    ww:hasPlanting      garden:planting-salat-diverse .
+
+garden:planting-salat-diverse  a ww:Planting ;
+    ww:hasPlant         garden:plant-salat ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "März"@de ;
+    ww:harvestStart     "Mai"@de ;
+    ww:harvestEnd       "Oktober"@de ;
+    ww:note             "Diverse Salate, Nachsaat alle 2-3 Wochen"@de .
+
+# =============================================================================
+# Bed: Rucola-/Gemeinschaftsbeet (Shared Arugula Bed)
+# =============================================================================
+
+garden:bed-rucola-gemeinschaftsbeet  a ww:Bed ;
+    rdfs:label          "Rucola-/Gemeinschaftsbeet"@de ;
+    rdfs:comment        "Shared community arugula bed."@en ;
+    ww:hasPlanting      garden:planting-rucola-gem .
+
+garden:planting-rucola-gem  a ww:Planting ;
+    ww:hasPlant         garden:plant-rucola ;
+    ww:sowingMethod     ww:Direktsaat ;
+    ww:sowingDate       "April"@de ;
+    ww:harvestStart     "Mai"@de ;
+    ww:harvestEnd       "Oktober"@de .
+
+# =============================================================================
+# Bed: Kräuterbeet (Herb Bed) – near Folientunnel
+# =============================================================================
+
+garden:bed-kraeuterbeet  a ww:Bed ;
+    rdfs:label          "Kräuterbeet"@de ;
+    ww:caretaker        "Toni"@de ;
+    rdfs:comment        "Herb bed, caretaker: Toni. 'Nie Spalter?'"@en ;
+    ww:hasPlanting      garden:planting-kraeuter-diverse .
+
+garden:planting-kraeuter-diverse  a ww:Planting ;
+    ww:hasPlant         garden:plant-kraeuter ;
+    ww:note             "Kräuter, Toni verantwortlich"@de .
+
+# =============================================================================
+# Bed: Gießland / Giessland (Irrigation area note)
+# =============================================================================
+
+garden:bed-giessland  a ww:Bed ;
+    rdfs:label          "Gießland"@de ;
+    rdfs:comment        "Noted as Giessland area near Kröte/Frosch."@en .
+
+# =============================================================================
+# Kompost (Compost)
+# =============================================================================
+
+garden:bed-kompost  a ww:Bed ;
+    rdfs:label          "Kompost"@de ;
+    rdfs:comment        "Compost area. 1 Kreis, nach Bedarf (as needed). Position: bottom-left corner."@en ;
+    ww:note             "1 Kreis, nach Bedarf, auch Kröbs"@de .
+
+# =============================================================================
+# Infrastructure / Features (non-bed elements on the plan)
+# =============================================================================
+
+garden:feature-trockenmauer  a schema:Place ;
+    rdfs:label          "Trockenmauer"@de ;
+    rdfs:comment        "Dry stone wall near the Blühwiese."@en .
+
+garden:feature-terrasse  a schema:Place ;
+    rdfs:label          "Terrasse"@de ;
+    rdfs:comment        "Terrace area at the top-right."@en .
+
+garden:feature-teich  a schema:Place ;
+    rdfs:label          "Teich / Tropfenbeet"@de ;
+    rdfs:comment        "Pond or drop-shaped bed near the center-top."@en .
+
+# =============================================================================
+# Plant definitions (reusable entities)
+# =============================================================================
+
+garden:plant-kartoffel      a ww:Plant ; rdfs:label "Kartoffel"@de , "Potato"@en ;
+    schema:sameAs   dbr:Potato .
+
+garden:plant-knoblauch      a ww:Plant ; rdfs:label "Knoblauch"@de , "Garlic"@en ;
+    schema:sameAs   dbr:Garlic .
+
+garden:plant-buschbohne     a ww:Plant ; rdfs:label "Buschbohne"@de , "Bush Bean"@en ;
+    schema:sameAs   dbr:Phaseolus_vulgaris .
+
+garden:plant-palmkohl       a ww:Plant ; rdfs:label "Palmkohl"@de , "Tuscan Kale"@en ;
+    schema:sameAs   dbr:Lacinato_kale .
+
+garden:plant-kuerbis        a ww:Plant ; rdfs:label "Kürbis"@de , "Squash"@en ;
+    schema:sameAs   dbr:Cucurbita .
+
+garden:plant-radieschen     a ww:Plant ; rdfs:label "Radieschen"@de , "Radish"@en ;
+    schema:sameAs   dbr:Radish .
+
+garden:plant-ringelblume    a ww:Plant ; rdfs:label "Ringelblume"@de , "Calendula"@en ;
+    schema:sameAs   dbr:Calendula_officinalis .
+
+garden:plant-mangold        a ww:Plant ; rdfs:label "Mangold"@de , "Chard"@en ;
+    schema:sameAs   dbr:Chard .
+
+garden:plant-rucola         a ww:Plant ; rdfs:label "Rucola"@de , "Arugula"@en ;
+    schema:sameAs   dbr:Eruca_vesicaria .
+
+garden:plant-bohnen         a ww:Plant ; rdfs:label "Bohnen"@de , "Beans"@en ;
+    schema:sameAs   dbr:Bean .
+
+garden:plant-zucchini       a ww:Plant ; rdfs:label "Zucchini"@de , "Zucchini"@en ;
+    schema:sameAs   dbr:Zucchini .
+
+garden:plant-mais           a ww:Plant ; rdfs:label "Mais"@de , "Corn"@en ;
+    schema:sameAs   dbr:Maize .
+
+garden:plant-hauptkultur    a ww:Plant ; rdfs:label "Hauptkultur"@de , "Main Crop"@en ;
+    rdfs:comment    "Unspecified main crop noted on plan."@en .
+
+garden:plant-moehren        a ww:Plant ; rdfs:label "Möhren"@de , "Carrots"@en ;
+    schema:sameAs   dbr:Carrot .
+
+garden:plant-zwiebeln       a ww:Plant ; rdfs:label "Zwiebeln"@de , "Onions"@en ;
+    schema:sameAs   dbr:Onion .
+
+garden:plant-topinambur     a ww:Plant ; rdfs:label "Topinambur"@de , "Jerusalem Artichoke"@en ;
+    schema:sameAs   dbr:Jerusalem_artichoke .
+
+garden:plant-ackerbohne     a ww:Plant ; rdfs:label "Ackerbohne"@de , "Broad Bean"@en ;
+    schema:sameAs   dbr:Vicia_faba .
+
+garden:plant-gruenkohl      a ww:Plant ; rdfs:label "Grünkohl"@de , "Kale"@en ;
+    schema:sameAs   dbr:Kale .
+
+garden:plant-artischocke    a ww:Plant ; rdfs:label "Artischocke"@de , "Artichoke"@en ;
+    schema:sameAs   dbr:Artichoke .
+
+garden:plant-spitzkohl      a ww:Plant ; rdfs:label "Spitzkohl"@de , "Pointed Cabbage"@en ;
+    schema:sameAs   dbr:Cabbage .
+
+garden:plant-rote-bete      a ww:Plant ; rdfs:label "Rote Bete"@de , "Beetroot"@en ;
+    schema:sameAs   dbr:Beetroot .
+
+garden:plant-feldsalat      a ww:Plant ; rdfs:label "Feldsalat"@de , "Lamb's Lettuce"@en ;
+    schema:sameAs   dbr:Valerianella_locusta .
+
+garden:plant-aubergine      a ww:Plant ; rdfs:label "Aubergine"@de , "Eggplant"@en ;
+    schema:sameAs   dbr:Eggplant .
+
+garden:plant-paprika        a ww:Plant ; rdfs:label "Paprika"@de , "Bell Pepper"@en ;
+    schema:sameAs   dbr:Bell_pepper .
+
+garden:plant-physalis       a ww:Plant ; rdfs:label "Physalis"@de , "Ground Cherry"@en ;
+    schema:sameAs   dbr:Physalis .
+
+garden:plant-tomatillo      a ww:Plant ; rdfs:label "Tomatillo"@de , "Tomatillo"@en ;
+    schema:sameAs   dbr:Tomatillo .
+
+garden:plant-malabar-spinat a ww:Plant ; rdfs:label "Malabar-Spinat"@de , "Malabar Spinach"@en ;
+    schema:sameAs   dbr:Basella_alba .
+
+garden:plant-spinat         a ww:Plant ; rdfs:label "Spinat"@de , "Spinach"@en ;
+    schema:sameAs   dbr:Spinach .
+
+garden:plant-knollensellerie a ww:Plant ; rdfs:label "Knollensellerie"@de , "Celeriac"@en ;
+    schema:sameAs   dbr:Celeriac .
+
+garden:plant-tomate         a ww:Plant ; rdfs:label "Tomate"@de , "Tomato"@en ;
+    schema:sameAs   dbr:Tomato .
+
+garden:plant-gurke          a ww:Plant ; rdfs:label "Gurke"@de , "Cucumber"@en ;
+    schema:sameAs   dbr:Cucumber .
+
+garden:plant-basilikum      a ww:Plant ; rdfs:label "Basilikum"@de , "Basil"@en ;
+    schema:sameAs   dbr:Basil .
+
+garden:plant-kohlrabi       a ww:Plant ; rdfs:label "Kohlrabi"@de , "Kohlrabi"@en ;
+    schema:sameAs   dbr:Kohlrabi .
+
+garden:plant-brokkoli       a ww:Plant ; rdfs:label "Brokkoli"@de , "Broccoli"@en ;
+    schema:sameAs   dbr:Broccoli .
+
+garden:plant-petersilie     a ww:Plant ; rdfs:label "Petersilie"@de , "Parsley"@en ;
+    schema:sameAs   dbr:Parsley .
+
+garden:plant-sonnenblume    a ww:Plant ; rdfs:label "Sonnenblume"@de , "Sunflower"@en ;
+    schema:sameAs   dbr:Sunflower .
+
+garden:plant-lauch          a ww:Plant ; rdfs:label "Lauch"@de , "Leek"@en ;
+    schema:sameAs   dbr:Leek .
+
+garden:plant-ruebstiel      a ww:Plant ; rdfs:label "Rübstiel"@de , "Turnip Greens"@en ;
+    schema:sameAs   dbr:Turnip .
+
+garden:plant-kamille        a ww:Plant ; rdfs:label "Kamille"@de , "Chamomile"@en ;
+    schema:sameAs   dbr:Matricaria_chamomilla .
+
+garden:plant-fenchel        a ww:Plant ; rdfs:label "Fenchel"@de , "Fennel"@en ;
+    schema:sameAs   dbr:Fennel .
+
+garden:plant-koriander      a ww:Plant ; rdfs:label "Koriander"@de , "Coriander"@en ;
+    schema:sameAs   dbr:Coriander .
+
+garden:plant-salat          a ww:Plant ; rdfs:label "Salat"@de , "Lettuce"@en ;
+    schema:sameAs   dbr:Lettuce .
+
+garden:plant-wildblumen     a ww:Plant ; rdfs:label "Wildblumen-Mischung"@de , "Wildflower Mix"@en .
+
+garden:plant-kraeuter       a ww:Plant ; rdfs:label "Kräuter (diverse)"@de , "Herbs (mixed)"@en .
+
+# =============================================================================
+# Caretaker notes (where readable on the plan)
+# =============================================================================
+# "Toni" is noted near the Kräuterbeet area.
+# Other caretaker names were not clearly legible on the plan.
+# The animal-named beds may correspond to working groups rather than individuals.

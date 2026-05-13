@@ -44,7 +44,9 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        // Default 2 MiB; main bundle and icofont SVG exceed it
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024
       },
       devOptions: {
         enabled: true
@@ -60,7 +62,31 @@ export default defineConfig({
       '@i18n': path.resolve(__dirname, './src/i18n'),
       '@assets': path.resolve(__dirname, './src/assets'),
       '@config': path.resolve(__dirname, './src/config'),
-      '@auth': path.resolve(__dirname, './src/auth')
+      '@auth': path.resolve(__dirname, './src/auth'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@utils': path.resolve(__dirname, './src/utils')
+    }
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext'
+    }
+  },
+  build: {
+    target: 'esnext',
+    commonjsOptions: {
+      transformMixedEsModules: true
+    }
+  },
+  esbuild: {
+    target: 'esnext'
+  },
+  server: {
+    allowedHosts: true,
+    hmr: {
+      protocol: 'wss',
+      host: process.env.VITE_HMR_HOST || 'localhost',
+      port: 443
     }
   }
 })

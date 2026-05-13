@@ -4,7 +4,9 @@ import {
   Map as MapIcon, 
   Opacity as WaterdropIcon, 
   EventNote as EventNoteIcon, 
-  Settings as SettingsIcon 
+  Settings as SettingsIcon,
+  LocalFlorist as PlantsIcon,
+  CalendarMonth as SeasonPlannerIcon,
 } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -69,19 +71,29 @@ const BottomNav = ({ gardenId }: BottomNavProps) => {
             {...a11yTabProps(1, 'map')}
           />
           <Tab
+            icon={<PlantsIcon />}
+            aria-label={t('plants')}
+            {...a11yTabProps(2, 'plants')}
+          />
+          <Tab
+            icon={<SeasonPlannerIcon />}
+            aria-label={t('seasonPlanner')}
+            {...a11yTabProps(3, 'season-planner')}
+          />
+          <Tab
             icon={<WaterdropIcon />}
             aria-label={t('watering')}
-            {...a11yTabProps(2, 'watering')}
+            {...a11yTabProps(4, 'watering')}
           />
           <Tab
             icon={<EventNoteIcon />}
             aria-label={t('notifications')}
-            {...a11yTabProps(3, 'notifications')}
+            {...a11yTabProps(5, 'notifications')}
           />
           <Tab
             icon={<SettingsIcon />}
             aria-label={t('settings')}
-            {...a11yTabProps(4, 'garden-settings')}
+            {...a11yTabProps(6, 'garden-settings')}
           />
         </StyledTabs>
       </BottomNavigationStyled>

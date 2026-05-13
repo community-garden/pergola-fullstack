@@ -17,7 +17,10 @@ const RootContainer = styled(Box)(() => ({
 }));
 
 const ContentContainer = styled(Box)({
-  flex: '1 0 auto',
+  flex: '1 1 0',
+  minHeight: 0,
+  display: 'flex',
+  flexDirection: 'column',
 });
 
 const Layout = () => {

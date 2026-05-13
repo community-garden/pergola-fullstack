@@ -15,10 +15,10 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    ns: ['common', 'navigation', 'letItRain'],
+    ns: ['common', 'navigation', 'letItRain', 'watering', 'garden'],
     defaultNS: 'common',
     resources,
-    fallbackLng: 'en',
+    fallbackLng: 'de',
     debug: process.env.NODE_ENV === 'development',
     returnObjects: true,
     interpolation: {

@@ -3,6 +3,7 @@ import navigation from './navigation.json';
 import letItRain from './letItRain.json';
 import notifications from './notifications.json';
 import watering from './watering.json';
+import garden from './garden.json';
 
 export default {
   common,
@@ -10,4 +11,5 @@ export default {
   letItRain,
   watering,
   notifications,
+  garden,
 };

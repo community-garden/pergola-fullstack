@@ -1,10 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from '@store/index';
 import { ThemeContextProvider } from '@theme/index';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { AuthProvider } from '@auth/index';
 import Layout from '@components/layout/Layout';
 import {
   Home,
@@ -12,28 +7,17 @@ import {
   Watering,
   Notifications,
   Settings,
-  GardenSettings,
   LandingPage,
-  WateringWizard
+  WateringWizard,
+  PlantManagement,
+  SeasonPlanner,
 } from './pages';
 import './i18n';
 
 // Create a client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes
-      retry: 1,
-    },
-  },
-});
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
           <ThemeContextProvider>
             <Router>
             <Routes>
@@ -44,17 +28,14 @@ const App = () => {
                 <Route path="watering" element={<Watering />} />
                 <Route path="watering/wizard" element={<WateringWizard />} />
                 <Route path="watering/wizard/:stepNumber" element={<WateringWizard />} />
+                <Route path="plants" element={<PlantManagement />} />
+                <Route path="season-planner" element={<SeasonPlanner />} />
                 <Route path="notifications" element={<Notifications />} />
-                <Route path="settings" element={<Settings />} />
-                <Route path="garden-settings" element={<GardenSettings />} />
+                <Route path="garden-settings" element={<Settings />} />
               </Route>
             </Routes>
             </Router>
           </ThemeContextProvider>
-        </AuthProvider>
-        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
-      </QueryClientProvider>
-    </Provider>
   );
 };
 

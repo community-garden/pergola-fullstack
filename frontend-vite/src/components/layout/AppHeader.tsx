@@ -44,6 +44,7 @@ const AppHeader = () => {
     const path = location.pathname;
     if (path.includes('/home')) return t('home');
     if (path.includes('/map')) return t('map');
+    if (path.includes('/season-planner')) return t('seasonPlanner');
     if (path.includes('/watering')) return t('watering');
     if (path.includes('/notifications')) return t('notifications');
     if (path.includes('/garden-settings')) return t('gardenSettings');

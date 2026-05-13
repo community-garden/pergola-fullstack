@@ -1,7 +1,8 @@
-import { Box, Typography, Paper, List, ListItem, ListItemText, Divider, FormControl, InputLabel, Select, MenuItem, styled } from '@mui/material';
+import { Box, Typography, Paper, List, ListItem, ListItemText, FormControl, InputLabel, Select, MenuItem, styled, Container } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { useAppDispatch } from '@store/index';
+import { GenericForm } from '@graviola/semantic-json-form';
+import { useCurrentGarden } from '@hooks/index';
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -13,7 +14,7 @@ const ContentPaper = styled(Paper)(({ theme }) => ({
 
 const Settings = () => {
   const { t, i18n } = useTranslation();
-  const dispatch = useAppDispatch();
+  const { gardenIRI } = useCurrentGarden();
   const [language, setLanguage] = useState(i18n.language);
 
   const handleLanguageChange = (event: any) => {
@@ -30,10 +31,28 @@ const Settings = () => {
       
       <ContentPaper>
         <Typography variant="h6" gutterBottom>
+          Garden Settings
+        </Typography>
+        {gardenIRI ? (
+          <Container>
+            <GenericForm
+              entityIRI={gardenIRI}
+              typeName="Garden"
+              wrapWithinCard={false}
+            />
+          </Container>
+        ) : (
+          <Typography variant="body2" color="textSecondary">
+            No garden ID found in the current route.
+          </Typography>
+        )}
+      </ContentPaper>
+      
+      <ContentPaper>
+        <Typography variant="h6" gutterBottom>
           Application Settings
         </Typography>
         <List>
-          
           <ListItem>
             <ListItemText 
               primary={t('common:settings.language')} 
@@ -56,18 +75,6 @@ const Settings = () => {
             </FormControl>
           </ListItem>
         </List>
-      </ContentPaper>
-      
-      <ContentPaper>
-        <Typography variant="h6" gutterBottom>
-          About
-        </Typography>
-        <Typography variant="body1" paragraph>
-          Pergola - Garden Management App
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          Version 1.0.0
-        </Typography>
       </ContentPaper>
     </Box>
   );

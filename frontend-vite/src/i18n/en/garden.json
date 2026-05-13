@@ -1,0 +1,267 @@
+{
+  
+  "features": {
+    "newFeatureQuestion": "Would you like to specify this feature in more detail?",
+    "no": "No",
+    "yes": "Yes",
+    "selectType": "Select Feature Type",
+    "selectTypeDescription": "Choose a feature type from the list:",
+    "selected": "Selected",
+    "cancel": "Cancel",
+    "save": "Save",
+    "createNew": "Create New",
+    "fillDetails": "Fill in the details for your new feature:",
+    "types": {
+      "Beet": "Garden Bed",
+      "Gewächshaus": "Greenhouse",
+      "Schuppen": "Shed",
+      "Bienenstand": "Bee Hive",
+      "Weg": "Path",
+      "Sitzgelegenheit": "Seating Area",
+      "Feuerstelle": "Fire Pit"
+    }
+  },
+  "geoFeature": {
+    "title": "Geographic Feature",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geo": "Geometry",
+    "creationTime": "Created",
+    "modificationTime": "Last Modified"
+  },
+  "workshop": {
+    "title": "Workshop/Greenhouse",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geoFeature": "Geographic Feature",
+    "workshopType": "Type",
+    "area": "Area (m²)",
+    "hasHeating": "Has Heating",
+    "hasIrrigation": "Has Irrigation",
+    "types": {
+      "greenhouse": "Greenhouse",
+      "polytunnel": "Polytunnel",
+      "cold_frame": "Cold Frame",
+      "other": "Other"
+    }
+  },
+  "shed": {
+    "title": "Shed",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geoFeature": "Geographic Feature",
+    "shedType": "Type",
+    "area": "Area (m²)",
+    "hasElectricity": "Has Electricity",
+    "types": {
+      "tool_shed": "Tool Shed",
+      "storage": "Storage",
+      "potting_shed": "Potting Shed",
+      "other": "Other"
+    }
+  },
+  "beeStand": {
+    "title": "Bee Stand",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geoFeature": "Geographic Feature",
+    "numberOfHives": "Number of Hives",
+    "beeSpecies": "Bee Species"
+  },
+  "path": {
+    "title": "Path",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geoFeature": "Geographic Feature",
+    "pathType": "Type",
+    "width": "Width (m)",
+    "types": {
+      "gravel": "Gravel",
+      "paved": "Paved",
+      "grass": "Grass",
+      "woodchip": "Woodchip",
+      "other": "Other"
+    }
+  },
+  "seating": {
+    "title": "Seating Area",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geoFeature": "Geographic Feature",
+    "seatingType": "Type",
+    "capacity": "Capacity (people)",
+    "hasCover": "Has Cover",
+    "types": {
+      "bench": "Bench",
+      "table": "Table",
+      "pergola": "Pergola",
+      "pavilion": "Pavilion",
+      "other": "Other"
+    }
+  },
+  "firePlace": {
+    "title": "Fire Place",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geoFeature": "Geographic Feature",
+    "firePlaceType": "Type",
+    "hasCover": "Has Cover",
+    "types": {
+      "fire_pit": "Fire Pit",
+      "barbecue": "Barbecue",
+      "outdoor_oven": "Outdoor Oven",
+      "other": "Other"
+    }
+  },
+  "patch": {
+    "title": "Patch",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geometry": "Geometry",
+    "patchType": "Patch Type",
+    "area": "Area (m²)",
+    "plantingPlans": "Planting Plans",
+    "types": {
+      "bed": "Bed",
+      "greenhouse": "Greenhouse",
+      "container": "Container",
+      "field": "Field",
+      "other": "Other"
+    }
+  },
+  "plantingPlan": {
+    "title": "Planting Plan",
+    "name": "Name",
+    "season": "Season",
+    "description": "Description",
+    "items": "Plantings",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+  },
+  "plantingPlanItem": {
+    "plantSpecies": "Plant Species",
+    "plantVariety": "Plant Variety",
+    "plannedQuantity": "Planned Quantity",
+    "notes": "Notes",
+    "priority": "Priority",
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    }
+  },
+  "plantSpecies": {
+    "title": "Plant Species",
+    "name": "Name",
+    "scientificName": "Scientific Name",
+    "family": "Family",
+    "description": "Description",
+    "growingSeason": "Growing Season",
+    "requirements": "Requirements",
+    "physicalCharacteristics": "Physical Characteristics",
+    "timing": "Timing"
+  },
+  "requirements": {
+    "sun": "Sun Requirement",
+    "water": "Water Requirement",
+    "sunValues": {
+      "full_sun": "Full Sun",
+      "partial_shade": "Partial Shade",
+      "full_shade": "Full Shade"
+    },
+    "waterValues": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    }
+  },
+  "physicalCharacteristics": {
+    "spacing": "Spacing (cm)",
+    "height": "Height (cm)"
+  },
+  "timing": {
+    "germinationDays": "Germination Time (days)",
+    "daysToHarvest": "Days from Sowing to Harvest"
+  },
+  "plantVariety": {
+    "title": "Plant Variety",
+    "name": "Variety Name",
+    "species": "Species",
+    "description": "Description",
+    "growingSeason": "Growing Season",
+    "characteristics": "Characteristics",
+    "sourceInfo": "Source Information",
+    "requirements": "Requirements",
+    "physicalCharacteristics": "Physical Characteristics",
+    "timing": "Timing"
+  },
+  "growingSeason": {
+    "title": "Growing Season",
+    "sowingStart": "Sowing Start (Month)",
+    "sowingEnd": "Sowing End (Month)",
+    "prickingStart": "Pricking Start (Month)",
+    "prickingEnd": "Pricking End (Month)",
+    "plantingStart": "Planting Start (Month)",
+    "plantingEnd": "Planting End (Month)",
+    "harvestStart": "Harvest Start (Month)",
+    "harvestEnd": "Harvest End (Month)",
+    "sowingOutdoorsStart": "Outdoor Sowing Start (Day)",
+    "sowingOutdoorsEnd": "Outdoor Sowing End (Day)",
+    "sowingUnderGlassStart": "Sowing Under Glass Start (Day)",
+    "sowingUnderGlassEnd": "Sowing Under Glass End (Day)",
+    "harvestStartDay": "Harvest Start (Day)",
+    "harvestEndDay": "Harvest End (Day)",
+    "months": {
+      "1": "January",
+      "2": "February",
+      "3": "March",
+      "4": "April",
+      "5": "May",
+      "6": "June",
+      "7": "July",
+      "8": "August",
+      "9": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December"
+    }
+  },
+  "seasonalCalendar": {
+    "title": "Seasonal Growing Calendar",
+    "editMode": "Edit Mode",
+    "sowingOutdoors": "Sowing Outdoors",
+    "sowingUnderGlass": "Sowing Under Glass",
+    "harvest": "Harvest",
+    "germinationTemperature": "Germination Temp. (°C)",
+    "legend": {
+      "title": "Legend",
+      "colors": "Period Colors",
+      "abbreviations": "Abbreviations"
+    },
+    "properties": {
+      "germinationDays": "Germination (days)",
+      "daysToHarvest": "Days to Harvest",
+      "spacing": "Spacing (cm)",
+      "height": "Height (cm)",
+      "sun": "Sun",
+      "water": "Water"
+    },
+    "abbreviations": {
+      "germinationDays": "Germ.",
+      "daysToHarvest": "Harvest",
+      "spacing": "Space",
+      "height": "Height",
+      "sun": "Sun",
+      "water": "Water"
+    }
+  }
+}
+

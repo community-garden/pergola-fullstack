@@ -14,7 +14,7 @@ export default {
     default: ['JavascriptLexer']
   },
   lineEnding: 'auto',
-  locales: ['en', 'de'],
+  locales: ['de', 'en'],
   namespaceSeparator: ':',
   output: 'src/i18n/$LOCALE/$NAMESPACE.json',
   pluralSeparator: '_',
