@@ -13,7 +13,7 @@ docker run --rm \
   -v "$REPO/e2e:/e2e" \
   -v "$RESULTS:/e2e/cypress/results" \
   -w /e2e \
-  cypress/included:13 \
+  cypress/included:latest \
   --browser chrome \
   --headless \
   --config baseUrl=https://dev01.pergola.kuenste.live
