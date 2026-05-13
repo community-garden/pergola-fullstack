@@ -1,8 +1,52 @@
-version: "3"
-
 services:
+
+  keycloak-postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_DB: keycloak
+    ports:
+      - "5433:5432"
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Keycloak Authentication Server
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.3
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_DB_SCHEMA: public
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: ${KEYCLOAK_PORT:-8080}
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY: edge
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "${KEYCLOAK_PORT:-8080}:8080"
+    volumes:
+      - ./keycloak-config:/opt/keycloak/data/import
+    depends_on:
+      keycloak-postgres:
+        condition: service_healthy
+    command: start-dev --import-realm
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   neo4j:
-    image: neo4j:4.2.1
+    image: neo4j:4.4-community
     ports:
       - "7474:7474"
       - "7687:7687"
@@ -20,59 +64,63 @@ services:
       - NEO4JLABS_PLUGINS=[\"apoc\"]
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - NEO4J_dbms_directories_import=/import
+      - NEO4J_dbms_allow__upgrade=true
       - NEO4J_AUTH=none
-  keycloak:
-    image: jboss/keycloak:11.0.1
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./frontend/keycloak/themes/pergola:/opt/jboss/keycloak/themes/pergola
-      - ./frontend/keycloak/themes/material:/opt/jboss/keycloak/themes/material
-    environment:
-      KEYCLOAK_FRONTEND_URL: http://localhost:8080/auth/
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_SCHEMA: public
-      DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-  postgres:
-    image: postgres:13
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
+
+    # Fake SMTP Server for testing mail functionality
   smtp_server:
-    image: reachfive/fake-smtp-server
+    image: mailhog/mailhog:latest
     ports:
-      - "1025:1025"
-      - "1080:1080"
-    command: node index.js -a test:test
-#  pergola-api:
-#    image: communitygarden/pergola-api:latest
-#    volumes:
-#      - ./api/config:/config
-#      - ./api/config/keycloak.docker.json:/keycloak.json
-##      - ./api/config/keycloak.live.json:/keycloak.json
-#      - ./api/src/scripts:/scripts
-#    environment:
-#      - PRIVATE_VAPID_KEY=gmpZChx8tfCFthx_Luzg0lWvwPitJomORVVa0ZhrY_I
-#      - PUBLIC_VAPID_KEY=BOdc3JEajKRqhb7-oNxhCELHnqfReH_A6iZA9T5hULc6L8vb4tAMyD28j2JG_mMQcwuKX-1jkp2xQ4u8Qgq0LCo
-#      - NEO4J_URI=bolt://neo4j:7687
-#      - NEO4J_USER=neo4j
-#      - NEO4J_PASSWORD=admin
-#    ports:
-#      - "4001:4001"
-#    command: bash -c 'sleep 30; pergola-api'  ## TODO allow reconnects to neo4j
+      - "${MAILHOG_SMTP_PORT:-1025}:1025" # SMTP server port
+      - "${MAILHOG_UI_PORT:-1080}:8025" # Web UI port
+    environment:
+      MH_STORAGE: memory
+      MH_HOSTNAME: localhost
+
+  #pergola-api:
+  #  build:
+  #    context: ./api
+  #    dockerfile: Dockerfile
+  #  volumes:
+  #    - ./api/config:/api/config
+  #    - ./api/config/keycloak.docker.json:/api/keycloak.json
+# #     - ./api/config/keycloak.live.json:/keycloak.json
+  #    - ./api/src/scripts:/api/scripts
+  #    - ./api/tsconfig.json:/api/tsconfig.json
+  #  environment:
+  #    - PRIVATE_VAPID_KEY=gmpZChx8tfCFthx_Luzg0lWvwPitJomORVVa0ZhrY_I
+  #    - PUBLIC_VAPID_KEY=BOdc3JEajKRqhb7-oNxhCELHnqfReH_A6iZA9T5hULc6L8vb4tAMyD28j2JG_mMQcwuKX-1jkp2xQ4u8Qgq0LCo
+  #    - NEO4J_URI=bolt://neo4j:7687
+  #    - NEO4J_USER=neo4j
+  #    - NEO4J_PASSWORD=admin
+  #    - KEYCLOAK_URL=http://keycloak:7080
+  #  ports:
+  #    - "4001:4001"
+  #  depends_on:
+  #    - neo4j
+  #    - keycloak
+    
+    
 
 networks:
   internal:
 
 volumes:
   neo4j_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data/neo4j/data
+      o: bind
   neo4j_logs:
-  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data/neo4j/logs
+      o: bind
+  keycloak_postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data/postgres
+      o: bind
