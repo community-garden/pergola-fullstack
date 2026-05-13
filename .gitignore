@@ -24,11 +24,22 @@ yarn-error.log*
 
 .idea
 .vscode
+.cursor
+
+# personal / non-code docs
+einladung_2026_uja.md
 
 api/dist
+frontend-vite/dist
+frontend-vite/dev-dist
 
 # JUnitXml
 test-results
 
 # nix
 result
+
+# Local dependency replacement backup
+replaced-versions.json
+data
+oxigraph-docker/data
