@@ -20,7 +20,7 @@ The video appears below as soon as the container exits — no page reload needed
 !!! info "Recorded with Cypress 13 + Chrome headless"
 
 <video controls width="100%" style="border-radius:8px; margin-top:1rem">
-  <source src="../assets/cypress/videos/landing.cy.ts.mp4" type="video/mp4">
+  <source src="/media/cypress/videos/landing.cy.ts.mp4" type="video/mp4">
   No video yet — run <code>./scripts/run-cypress.sh</code> to generate it.
 </video>
 

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-RESULTS="$REPO/docs/docs/assets/cypress"
+RESULTS="$REPO/docs/docs/media/cypress"
 
 mkdir -p "$RESULTS/videos" "$RESULTS/screenshots"
 
@@ -18,4 +18,4 @@ docker run --rm \
   --headless \
   --config baseUrl=https://dev01.pergola.kuenste.live
 
-echo "✓ Done — video at: docs/docs/assets/cypress/videos/landing.cy.ts.mp4"
+echo "✓ Done — video at: docs/docs/media/cypress/videos/landing.cy.ts.mp4"
