@@ -2,8 +2,9 @@ FROM oven/bun:1.3.10-alpine
 
 WORKDIR /app
 
-# Copy private registry config (.npmrc lives at project root)
-COPY .npmrc .
+# Put .npmrc in the home dir so the /app volume mount can't clobber it.
+# Bun (like npm) reads ~/.npmrc for registry config.
+COPY .npmrc /root/.npmrc
 
 # Store the materialized package.json outside /app so the volume mount can't clobber it.
 # workspace:*/catalog: refs are already resolved to concrete versions here.

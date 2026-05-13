@@ -1,0 +1,7 @@
+{
+  "name": "pergola-e2e",
+  "private": true,
+  "devDependencies": {
+    "cypress": "^13"
+  }
+}

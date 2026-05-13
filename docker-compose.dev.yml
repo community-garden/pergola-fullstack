@@ -52,6 +52,23 @@ services:
       - "traefik.http.services.dev01.loadbalancer.server.port=5173"
     restart: unless-stopped
 
+  docs:
+    image: squidfunk/mkdocs-material
+    command: serve --dev-addr 0.0.0.0:8000
+    volumes:
+      - ./docs:/docs
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.docs01.entrypoints=web-secure"
+      - "traefik.http.routers.docs01.rule=Host(`docs01.pergola.kuenste.live`)"
+      - "traefik.http.routers.docs01.tls=true"
+      - "traefik.http.routers.docs01.tls.certresolver=tlschallenge"
+      - "traefik.http.routers.docs01.middlewares=secHeaders@file"
+      - "traefik.http.services.docs01.loadbalancer.server.port=8000"
+    restart: unless-stopped
+
 networks:
   traefik:
     external: true
