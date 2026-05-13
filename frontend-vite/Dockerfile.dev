@@ -5,13 +5,15 @@ WORKDIR /app
 # Copy private registry config (.npmrc lives at project root)
 COPY .npmrc .
 
-# Use package_materialized.json: concrete versions instead of workspace:*/catalog: references
-COPY frontend-vite/package_materialized.json package.json
+# Store the materialized package.json outside /app so the volume mount can't clobber it.
+# workspace:*/catalog: refs are already resolved to concrete versions here.
+COPY frontend-vite/package_materialized.json /package_materialized.json
 
-RUN bun install
+RUN cp /package_materialized.json /app/package.json && bun install
 
 EXPOSE 5173
 
-# Run bun install on every startup so the named volume stays in sync after image rebuilds,
-# then clear stale vite dep-optimizer cache before starting the dev server.
-CMD ["sh", "-c", "bun install && rm -rf /app/node_modules/.vite && bun run dev -- --host 0.0.0.0"]
+# At startup: restore the materialized package.json (volume mount overwrites it with the
+# host's workspace-ref version), drop the host bun.lock (it has workspace refs too),
+# clear stale vite dep-optimizer cache, then start the dev server.
+CMD ["sh", "-c", "cp /package_materialized.json /app/package.json && rm -f /app/bun.lock && bun install && rm -rf /app/node_modules/.vite && bun run dev -- --host 0.0.0.0"]
