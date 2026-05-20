@@ -98,6 +98,44 @@ docker-compose -f docker-compose.dev.yml up -d frontend-dev
 - `Cypress.on('uncaught:exception', () => false)` in `support/e2e.ts` silences
   OIDC redirect noise from the app
 
+## Bun workspace monorepo
+
+The repo root is a **Bun workspace**. Workspace members are declared in the root
+`package.json`:
+
+```json
+"workspaces": ["frontend-vite", "packages/*"]
+```
+
+Shared packages live in `packages/`. Currently:
+
+| Package | Path | Purpose |
+|---|---|---|
+| `@pergola/letitrain` | `packages/letitrain/` | Watering-task assignment algorithm |
+
+To run unit tests for a package (requires Bun — use Docker on the host):
+
+```bash
+docker run --rm \
+  -v $(pwd):/workspace \
+  -w /workspace/packages/letitrain \
+  oven/bun:1.3.10-alpine \
+  bun test
+```
+
+To install workspace deps at the root (regenerates `bun.lock`):
+
+```bash
+docker run --rm \
+  -v $(pwd):/workspace \
+  -w /workspace \
+  oven/bun:1.3.10-alpine \
+  bun install
+```
+
+The `frontend-vite/` Docker build is unaffected — its `Dockerfile.dev` uses
+`package_materialized.json` and installs packages standalone inside the container.
+
 ## Key paths
 
 | Path | Purpose |
@@ -106,6 +144,7 @@ docker-compose -f docker-compose.dev.yml up -d frontend-dev
 | `frontend-vite/Dockerfile.dev` | Frontend container build |
 | `frontend-vite/package_materialized.json` | Resolved deps for Docker |
 | `frontend-vite/src/` | React application source |
+| `packages/letitrain/` | LetItRain watering assignment algorithm |
 | `docs/mkdocs.yml` | MkDocs configuration and nav |
 | `docs/docs/` | Documentation markdown content |
 | `docs/docs/media/cypress/` | Cypress video/screenshot outputs |
