@@ -10,6 +10,7 @@ import { plantSchema, plantConfiguration } from '../schema/plant-schema';
 import { bringDefinitionToTop } from '@graviola/json-schema-utils';
 import { customRenderers } from '../components/graviola/renderers';
 import { Box, Typography, Paper } from '@mui/material';
+import { withStoryProvider } from '../../.storybook/StoryProvider';
 
 const queryClient = new QueryClient();
 
@@ -153,6 +154,7 @@ const meta = {
   },
   tags: ['autodocs'],
   decorators: [
+    withStoryProvider(),
     (Story) => (
       <FormStoryWrapper>
         <Story />
