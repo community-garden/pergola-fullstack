@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { LetItRainWizard } from '../components/letItRain';
 import { WizardData } from '@components/letItRain/LetItRainWizard';
 import { useLocalUser } from '@hooks/useLocalUser';
+import { nextMonthYYYYMM } from '../hooks/useWateringPlan';
 
 const DATA_BASE = 'https://data.semantic-desk.top/garden/';
 
@@ -16,6 +17,7 @@ const WateringWizard = () => {
   const { t } = useTranslation('letItRain');
   const { personId } = useLocalUser();
   const [submitting, setSubmitting] = useState(false);
+  const targetMonth = nextMonthYYYYMM();
 
   const handleFinish = async ({ frequency, availableDates, nickname }: WizardData) => {
     if (!gardenId) return;
@@ -35,6 +37,7 @@ const WateringWizard = () => {
           nickname: nickname || personId.slice(0, 8),
           maximumTasksPerMonth,
           availableDates: availableDateStrings,
+          targetMonth,
         }),
       });
 
@@ -56,6 +59,7 @@ const WateringWizard = () => {
       onComplete={handleFinish}
       gardenId={gardenId}
       submitting={submitting}
+      targetMonth={targetMonth}
     />
   );
 };

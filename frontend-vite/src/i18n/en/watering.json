@@ -14,10 +14,20 @@
   "plan": {
     "detailButton": "View Plan",
     "detailTitle": "Watering Schedule",
-    "noAssignments": "No tasks scheduled for the last or current month.",
+    "noAssignments": "No tasks scheduled for this month.",
     "dateColumn": "Date",
     "gardenersColumn": "Assigned Gardeners",
     "closeButton": "Close"
+  },
+  "planManagement": {
+    "title": "Monthly Plan",
+    "calculateFor": "Calculate plan for {{month}}",
+    "recalculateFor": "Recalculate for {{month}}",
+    "noCurrentPlan": "No plan calculated yet for {{month}}",
+    "assignmentCount": "{{count}} assignments",
+    "calculatedAt": "Calculated {{date}}",
+    "calculated": "Plan calculated successfully.",
+    "calculateError": "Could not calculate the plan. Please try again."
   },
   "page": {
     "helpDialog": {

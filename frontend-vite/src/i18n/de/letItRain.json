@@ -34,6 +34,7 @@
     },
     "headlines": {
       "availability": "Verfügbarkeit angeben",
+      "availabilityForMonth": "Verfügbarkeit eintragen für {{month}}",
       "frequency": "Häufigkeit angeben",
       "profile": "Dein Profil"
     },

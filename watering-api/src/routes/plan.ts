@@ -10,23 +10,35 @@ interface Task<D> { date: D; target_count: number; available: Person[]; assigned
 
 const app = new Hono();
 
-function planIRI(gardenIri: string): string {
-  const gardenSlug = gardenIri.split("/").pop() ?? "unknown";
-  return `${DATA_BASE}WateringPlan/${gardenSlug}-current`;
+function currentMonthYYYYMM(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 }
 
-// GET /api/watering/plan?gardenIri=...
+function nextMonthYYYYMM(): string {
+  const d = new Date();
+  d.setMonth(d.getMonth() + 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function planIRI(gardenIri: string, targetMonth: string): string {
+  const gardenSlug = gardenIri.split("/").pop() ?? "unknown";
+  return `${DATA_BASE}WateringPlan/${gardenSlug}-${targetMonth}`;
+}
+
+// GET /api/watering/plan?gardenIri=...&month=YYYY-MM (month defaults to current month)
 app.get("/", async (c) => {
   const gardenIri = c.req.query("gardenIri");
   if (!gardenIri) {
     return c.json({ error: "gardenIri query param required" }, 400);
   }
 
-  const entityIRI = planIRI(gardenIri);
+  const month = c.req.query("month") ?? currentMonthYYYYMM();
+  const entityIRI = planIRI(gardenIri, month);
   const plan = await store.loadDocument("WateringPlan", entityIRI);
 
   if (!plan) {
-    return c.json({ error: "No plan found for this garden" }, 404);
+    return c.json({ error: "No plan found for this garden and month" }, 404);
   }
 
   return c.json(plan);
@@ -46,15 +58,17 @@ app.post("/calculate", async (c) => {
     return c.json({ error: parsed.error.flatten() }, 400);
   }
 
-  const { gardenIri, targetPersonsPerTask } = parsed.data;
+  const { gardenIri, targetPersonsPerTask, targetMonth: rawTargetMonth } = parsed.data;
+  const targetMonth = rawTargetMonth ?? nextMonthYYYYMM();
   const gardenSlug = gardenIri.split("/").pop() ?? "";
 
-  // Load all availability entries for this garden using the same IRI-pattern filter
+  // Load availability entries scoped to this garden AND target month
   const all = await store.listDocuments("WateringAvailability", 500);
   const slugPattern = `/${gardenSlug}-`;
+  const monthSuffix = `-${targetMonth}`;
   const matchingIRIs = (all as Array<{ "@id": string }>)
     .map((e) => e["@id"])
-    .filter((id) => id.includes(slugPattern));
+    .filter((id) => id.includes(slugPattern) && id.endsWith(monthSuffix));
 
   const rawEntries = await Promise.all(
     matchingIRIs.map((iri) => store.loadDocument("WateringAvailability", iri))
@@ -62,16 +76,22 @@ app.post("/calculate", async (c) => {
   const entries = rawEntries.filter(Boolean) as WateringAvailability[];
 
   if (entries.length === 0) {
-    return c.json({ error: "No availability entries found for this garden" }, 422);
+    return c.json({ error: "No availability entries found for this garden and month" }, 422);
   }
 
-  // Use person["@id"] as the stable person identifier for the algorithm
   const persons: Person[] = entries.map((e) => ({
     id: e.person["@id"],
     maximum_tasks: e.maximumTasksPerMonth,
   }));
 
-  const allDates = [...new Set(entries.flatMap((e) => e.availableDates))].sort();
+  // Only use dates that fall within the target month
+  const allDates = [...new Set(entries.flatMap((e) => e.availableDates))]
+    .filter((d) => d.startsWith(targetMonth))
+    .sort();
+
+  if (allDates.length === 0) {
+    return c.json({ error: "No available dates within the target month" }, 422);
+  }
 
   const tasks: Task<string>[] = allDates.map((date) => ({
     date,
@@ -84,26 +104,25 @@ app.post("/calculate", async (c) => {
 
   const assignedTasks = planAssignments(tasks);
 
-  // Store person IRIs in assignments — callers can resolve them to nicknames
   const assignments = assignedTasks.flatMap((t) =>
     t.assigned.map((p) => ({ date: t.date, personIri: p.id }))
   );
 
   const now = new Date().toISOString();
-  const validFrom = allDates[0] ?? now.slice(0, 10);
-  const validUntil = allDates[allDates.length - 1] ?? validFrom;
+  const validFrom = allDates[0];
+  const validUntil = allDates[allDates.length - 1];
 
   const plan: Omit<WateringPlan, "@id" | "@type"> = {
     gardenIri,
+    targetMonth,
     calculatedAt: now,
     validFrom,
     validUntil,
     assignments,
   };
 
-  const entityIRI = planIRI(gardenIri);
-  // Remove before upsert: Graviola appends array triples rather than replacing,
-  // so a stale plan would accumulate duplicate assignment entries.
+  const entityIRI = planIRI(gardenIri, targetMonth);
+  // Remove before upsert: Graviola appends array triples rather than replacing
   await store.removeDocument("WateringPlan", entityIRI);
   await store.upsertDocument("WateringPlan", entityIRI, plan);
 

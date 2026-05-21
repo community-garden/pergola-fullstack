@@ -20,6 +20,14 @@ function daysFromNow(n: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+function nextMonthYYYYMM(): string {
+  const d = new Date();
+  d.setMonth(d.getMonth() + 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+const TARGET_MONTH = nextMonthYYYYMM();
+
 // Dates shared between several users to ensure the algorithm can make assignments
 const sharedDates = [
   daysFromNow(8),
@@ -151,18 +159,21 @@ describe("LetItRain Watering Wizard", () => {
         nickname: "PetraGärtnerin",
         maximumTasksPerMonth: 6,
         availableDates: [daysFromNow(7), ...sharedDates, daysFromNow(24)],
+        targetMonth: TARGET_MONTH,
       },
       {
         personId: "cypress-api-04",
         nickname: "FranzKompost",
         maximumTasksPerMonth: 4,
         availableDates: [daysFromNow(10), ...sharedDates],
+        targetMonth: TARGET_MONTH,
       },
       {
         personId: "cypress-api-05",
         nickname: "AnnaBlume",
         maximumTasksPerMonth: 8,
         availableDates: [daysFromNow(5), daysFromNow(9), ...sharedDates, daysFromNow(23)],
+        targetMonth: TARGET_MONTH,
       },
     ];
 
@@ -205,7 +216,7 @@ describe("LetItRain Watering Wizard", () => {
     cy.request({
       method: "POST",
       url: `${API}/plan/calculate`,
-      body: { gardenIri: GARDEN_IRI, targetPersonsPerTask: 2 },
+      body: { gardenIri: GARDEN_IRI, targetPersonsPerTask: 2, targetMonth: TARGET_MONTH },
       headers: { "Content-Type": "application/json" },
     }).then((res) => {
       expect(res.status).to.eq(200);
@@ -226,10 +237,11 @@ describe("LetItRain Watering Wizard", () => {
     cy.request({
       method: "GET",
       url: `${API}/plan`,
-      qs: { gardenIri: GARDEN_IRI },
+      qs: { gardenIri: GARDEN_IRI, month: TARGET_MONTH },
     }).then((res) => {
       expect(res.status).to.eq(200);
       expect(res.body.gardenIri).to.eq(GARDEN_IRI);
+      expect(res.body.targetMonth).to.eq(TARGET_MONTH);
       expect(res.body.assignments).to.be.an("array").with.length.greaterThan(0);
     });
   });
@@ -246,10 +258,26 @@ describe("LetItRain Watering Wizard", () => {
     // The "View Plan" button must be visible
     cy.get("[data-cy=plan-detail-button]").should("be.visible");
 
-    // At least one non-grey badge should be present (assigned task cell)
-    // WateringCalendarTaskItem uses background-color that is not grey when inPlannedPeriod=true
     cy.get("[data-cy=plan-detail-button]").click();
     cy.get("[data-cy=plan-detail-modal]").should("be.visible");
+    cy.get("[data-cy=plan-detail-table]").within(() => {
+      cy.get("tbody tr").should("have.length.greaterThan", 0);
+    });
+  });
+
+  // ── Calculate plan button triggers recalculation ──────────────────────────
+
+  it("calculate-plan-button on watering page triggers recalculation", () => {
+    cy.visit(`/${GARDEN_ID}/watering`, {
+      onBeforeLoad: (win) => {
+        win.localStorage.setItem("pergola_person_id", "cypress-ui-01");
+      },
+    });
+
+    cy.get("[data-cy=calculate-plan-button]").should("be.visible").click();
+    cy.get("[data-cy=calculate-plan-button]", { timeout: 10000 }).should("not.be.disabled");
+
+    cy.get("[data-cy=plan-detail-button]").click();
     cy.get("[data-cy=plan-detail-table]").within(() => {
       cy.get("tbody tr").should("have.length.greaterThan", 0);
     });

@@ -15,6 +15,7 @@ export const WateringAvailabilityInputSchema = z.object({
   nickname: z.string().optional(),
   maximumTasksPerMonth: z.number().int().min(1).max(30),
   availableDates: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
+  targetMonth: z.string().regex(/^\d{4}-\d{2}$/),
 });
 
 export type WateringAvailabilityInput = z.infer<typeof WateringAvailabilityInputSchema>;
@@ -33,6 +34,7 @@ export interface WateringAvailability {
   maximumTasksPerMonth: number;
   availableDates: string[];
   submittedAt: string;
+  targetMonth: string;
 }
 
 // ── JSON Schema for Graviola store ────────────────────────────────────────────
@@ -74,8 +76,9 @@ export const WateringAvailabilityJsonSchema: JSONSchema7 = {
           items: { type: "string" },
         },
         submittedAt: { type: "string", title: "Submitted at" },
+        targetMonth: { type: "string", title: "Target month (YYYY-MM)" },
       },
-      required: ["@id", "@type", "name", "person", "garden", "maximumTasksPerMonth", "availableDates"],
+      required: ["@id", "@type", "name", "person", "garden", "maximumTasksPerMonth", "availableDates", "targetMonth"],
       additionalProperties: true,
     },
   },

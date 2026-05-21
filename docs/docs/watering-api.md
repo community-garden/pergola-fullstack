@@ -21,7 +21,7 @@ Users participate anonymously. The frontend generates a UUID per device (stored 
 
 ### `POST /api/watering/availability`
 
-Submit or update a user's watering availability.
+Submit or update a user's watering availability for a specific month.
 
 **Request body:**
 ```json
@@ -29,15 +29,18 @@ Submit or update a user's watering availability.
   "gardenIri": "https://data.semantic-desk.top/garden/Garden/Wurzelwerk",
   "personId": "550e8400-e29b-41d4-a716-446655440000",
   "maximumTasksPerMonth": 2,
-  "availableDates": ["2026-06-02", "2026-06-05", "2026-06-09"]
+  "availableDates": ["2026-06-02", "2026-06-05", "2026-06-09"],
+  "targetMonth": "2026-06"
 }
 ```
 
 **Response:** `201 Created` with the stored entity including its `@id`.
 
-### `GET /api/watering/availability?gardenIri=<IRI>`
+Re-submitting with the same `personId` + `gardenIri` + `targetMonth` replaces the previous entry.
 
-List all availability entries for a garden.
+### `GET /api/watering/availability?gardenIri=<IRI>[&month=YYYY-MM]`
+
+List availability entries for a garden. Pass `month` to filter to a specific month.
 
 ### `DELETE /api/watering/availability/:id`
 
@@ -45,27 +48,32 @@ Remove an entry (e.g. user withdraws).
 
 ### `POST /api/watering/plan/calculate`
 
-Run the LetItRain assignment algorithm and persist the result.
+Run the LetItRain assignment algorithm and persist the result for a calendar month.
 
 **Request body:**
 ```json
 {
   "gardenIri": "https://data.semantic-desk.top/garden/Garden/Wurzelwerk",
-  "targetPersonsPerTask": 2
+  "targetPersonsPerTask": 2,
+  "targetMonth": "2026-06"
 }
 ```
 
-**Response:** `200 OK` with the full `WateringPlan` including `assignments[]`.
+`targetMonth` defaults to next month when omitted.
 
-### `GET /api/watering/plan?gardenIri=<IRI>`
+**Response:** `200 OK` with the full `WateringPlan` including `assignments[]` and `targetMonth`.
 
-Retrieve the most recently calculated plan for a garden.
+### `GET /api/watering/plan?gardenIri=<IRI>[&month=YYYY-MM]`
+
+Retrieve the calculated plan for a garden. `month` defaults to the current calendar month.
 
 ## Data model
 
 ### WateringAvailability
 
-Stored at `https://data.semantic-desk.top/garden/WateringAvailability/{gardenSlug}-{personId}`.
+Stored at `https://data.semantic-desk.top/garden/WateringAvailability/{gardenSlug}-{personId}-{YYYY-MM}`.
+
+One document per person per garden per calendar month — re-submitting replaces it.
 
 | Field | Type | Description |
 |---|---|---|
@@ -73,19 +81,23 @@ Stored at `https://data.semantic-desk.top/garden/WateringAvailability/{gardenSlu
 | `personId` | string | Anonymous participant identifier |
 | `maximumTasksPerMonth` | integer | How many times per month the person is willing to water |
 | `availableDates` | string[] | ISO dates (`YYYY-MM-DD`) the person can water |
+| `targetMonth` | string | Calendar month (`YYYY-MM`) this entry covers |
 | `submittedAt` | ISO datetime | Server-assigned timestamp |
 
 ### WateringPlan
 
-Stored at `https://data.semantic-desk.top/garden/WateringPlan/{gardenSlug}-current`.
+Stored at `https://data.semantic-desk.top/garden/WateringPlan/{gardenSlug}-{YYYY-MM}`.
+
+One plan per garden per calendar month — recalculating replaces the stored plan.
 
 | Field | Type | Description |
 |---|---|---|
 | `gardenIri` | IRI string | Garden this plan covers |
+| `targetMonth` | string | Calendar month (`YYYY-MM`) this plan covers |
 | `calculatedAt` | ISO datetime | When the plan was generated |
 | `validFrom` | ISO date | First task date in the plan |
 | `validUntil` | ISO date | Last task date in the plan |
-| `assignments` | `{ date, personId }[]` | One entry per assigned watering shift |
+| `assignments` | `{ date, personIri }[]` | One entry per assigned watering shift |
 
 ## Running locally
 

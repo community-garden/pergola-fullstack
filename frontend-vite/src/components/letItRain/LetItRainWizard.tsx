@@ -13,7 +13,7 @@ import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addDays, subDays, endOfMonth, isAfter } from 'date-fns';
+import { addDays, endOfMonth, format } from 'date-fns';
 
 import { HorizontalStepper, Calendar } from '../ui';
 import { LetItRainFrequency } from './';
@@ -86,6 +86,7 @@ interface LetItRainWizardProps {
   onComplete?: (data: WizardData) => void;
   gardenId?: string;
   submitting?: boolean;
+  targetMonth: string;
 }
 
 // Interface for the wizard data
@@ -103,7 +104,7 @@ interface StepDesc {
   component: React.ReactNode;
 }
 
-export function LetItRainWizard({ onComplete, gardenId, submitting = false }: LetItRainWizardProps) {
+export function LetItRainWizard({ onComplete, gardenId, submitting = false, targetMonth }: LetItRainWizardProps) {
   const { t } = useTranslation('letItRain');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -123,28 +124,18 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false }: Le
     setNickname('');
   };
 
-  // Generate calendar dates (2 weeks starting from last Monday)
-  const generateCalendarDates = () => {
-    const today = new Date();
-    const dayOfWeek = today.getDay(); // 0 is Sunday, 1 is Monday, etc.
-    const daysToLastMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-
-    const lastMonday = subDays(today, daysToLastMonday);
-
-    // Generate 14 days starting from last Monday
+  const calendarDates = (() => {
+    const [year, month] = targetMonth.split('-').map(Number);
+    const start = new Date(year, month - 1, 1);
+    const end = endOfMonth(start);
     const dates: Date[] = [];
-    // Generate dates from lastMonday until the end of next month using date-fns
-    const endOfNextMonth = endOfMonth(addDays(lastMonday, 40)); // 40 days ahead is always in next month
-    let d = lastMonday;
-    while (!isAfter(d, endOfNextMonth)) {
-      dates.push(d);
+    let d = new Date(start);
+    while (d <= end) {
+      dates.push(new Date(d));
       d = addDays(d, 1);
     }
-
     return dates;
-  };
-
-  const calendarDates = generateCalendarDates();
+  })();
 
   // Define the steps
   const steps: StepDesc[] = [
@@ -162,7 +153,9 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false }: Le
     {
       key: 'availability',
       title: t('wizard.steps.availability'),
-      headline: t('wizard.headlines.availability'),
+      headline: t('wizard.headlines.availabilityForMonth', {
+        month: format(new Date(targetMonth + '-01'), 'MMMM yyyy'),
+      }),
       component: (
         <Calendar
           dates={calendarDates}

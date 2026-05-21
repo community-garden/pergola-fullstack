@@ -14,10 +14,20 @@
   "plan": {
     "detailButton": "Plan anzeigen",
     "detailTitle": "Gießplan",
-    "noAssignments": "Keine Aufgaben für den letzten oder aktuellen Monat geplant.",
+    "noAssignments": "Keine Aufgaben für diesen Monat geplant.",
     "dateColumn": "Datum",
     "gardenersColumn": "Zugewiesene Gärtner",
     "closeButton": "Schließen"
+  },
+  "planManagement": {
+    "title": "Monatsplan",
+    "calculateFor": "Plan berechnen für {{month}}",
+    "recalculateFor": "Neu berechnen für {{month}}",
+    "noCurrentPlan": "Noch kein Plan für {{month}} berechnet",
+    "assignmentCount": "{{count}} Zuweisungen",
+    "calculatedAt": "Berechnet am {{date}}",
+    "calculated": "Plan erfolgreich berechnet.",
+    "calculateError": "Plan konnte nicht berechnet werden. Bitte erneut versuchen."
   },
   "page": {
     "helpDialog": {

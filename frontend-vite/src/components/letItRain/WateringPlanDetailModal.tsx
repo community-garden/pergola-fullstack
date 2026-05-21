@@ -17,7 +17,7 @@ import {
   Paper,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { format, startOfMonth, subMonths, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import type { PlanAssignment } from '../../hooks/useWateringPlan';
 
@@ -32,15 +32,9 @@ function buildDateRows(
   assignments: PlanAssignment[],
   personNames: Record<string, string>
 ): Array<{ date: string; names: string[] }> {
-  const now = new Date();
-  const rangeStart = startOfMonth(subMonths(now, 1));
-  const rangeEnd = endOfMonth(now);
-
   const byDate = new Map<string, string[]>();
 
   for (const a of assignments) {
-    const d = parseISO(a.date);
-    if (!isWithinInterval(d, { start: rangeStart, end: rangeEnd })) continue;
     if (!byDate.has(a.date)) byDate.set(a.date, []);
     const name = personNames[a.personIri] ?? a.personIri.split('/').pop() ?? a.personIri;
     byDate.get(a.date)!.push(name);

@@ -34,6 +34,7 @@
     },
     "headlines": {
       "availability": "Specify availability",
+      "availabilityForMonth": "Register availability for {{month}}",
       "frequency": "Specify frequency",
       "profile": "Your profile"
     },

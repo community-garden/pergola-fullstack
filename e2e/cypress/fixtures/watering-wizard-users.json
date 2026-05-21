@@ -2,16 +2,19 @@
   {
     "personId": "cypress-api-03",
     "nickname": "PetraGärtnerin",
-    "maximumTasksPerMonth": 6
+    "maximumTasksPerMonth": 6,
+    "targetMonth": "2026-06"
   },
   {
     "personId": "cypress-api-04",
     "nickname": "FranzKompost",
-    "maximumTasksPerMonth": 4
+    "maximumTasksPerMonth": 4,
+    "targetMonth": "2026-06"
   },
   {
     "personId": "cypress-api-05",
     "nickname": "AnnaBlume",
-    "maximumTasksPerMonth": 8
+    "maximumTasksPerMonth": 8,
+    "targetMonth": "2026-06"
   }
 ]

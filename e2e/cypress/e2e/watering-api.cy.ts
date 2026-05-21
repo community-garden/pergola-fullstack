@@ -68,12 +68,13 @@ describe("Watering Availability API", () => {
     cy.request({
       method: "POST",
       url: `${API}/plan/calculate`,
-      body: { gardenIri: GARDEN_IRI, targetPersonsPerTask: 2 },
+      body: { gardenIri: GARDEN_IRI, targetPersonsPerTask: 2, targetMonth: "2026-06" },
       headers: { "Content-Type": "application/json" },
     }).then((res) => {
       expect(res.status).to.eq(200);
       expect(res.body).to.have.property("@id");
       expect(res.body.gardenIri).to.eq(GARDEN_IRI);
+      expect(res.body.targetMonth).to.eq("2026-06");
       expect(res.body.assignments).to.be.an("array").with.length.greaterThan(0);
     });
   });
@@ -82,10 +83,11 @@ describe("Watering Availability API", () => {
     cy.request({
       method: "GET",
       url: `${API}/plan`,
-      qs: { gardenIri: GARDEN_IRI },
+      qs: { gardenIri: GARDEN_IRI, month: "2026-06" },
     }).then((res) => {
       expect(res.status).to.eq(200);
       expect(res.body.gardenIri).to.eq(GARDEN_IRI);
+      expect(res.body.targetMonth).to.eq("2026-06");
       expect(res.body.assignments).to.be.an("array").with.length.greaterThan(0);
     });
   });

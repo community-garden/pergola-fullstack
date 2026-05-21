@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export interface PlanAssignment {
   date: string;
@@ -8,8 +8,11 @@ export interface PlanAssignment {
 export interface WateringPlanState {
   assignments: PlanAssignment[];
   personNames: Record<string, string>;
+  calculatedAt: string | null;
+  targetMonth: string | null;
   loading: boolean;
   error: string | null;
+  refetch: () => void;
 }
 
 const DATA_BASE = 'https://data.semantic-desk.top/garden/';
@@ -18,10 +21,29 @@ export function gardenIriFromId(gardenId: string): string {
   return `${DATA_BASE}Garden/${gardenId}`;
 }
 
-export function useWateringPlan(gardenId: string | undefined): WateringPlanState {
-  const [state, setState] = useState<WateringPlanState>({
+export function currentMonthYYYYMM(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+export function nextMonthYYYYMM(): string {
+  const d = new Date();
+  d.setMonth(d.getMonth() + 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+export function useWateringPlan(
+  gardenId: string | undefined,
+  month?: string
+): WateringPlanState {
+  const effectiveMonth = month ?? currentMonthYYYYMM();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const [state, setState] = useState<Omit<WateringPlanState, 'refetch'>>({
     assignments: [],
     personNames: {},
+    calculatedAt: null,
+    targetMonth: null,
     loading: false,
     error: null,
   });
@@ -33,18 +55,17 @@ export function useWateringPlan(gardenId: string | undefined): WateringPlanState
     setState((s) => ({ ...s, loading: true, error: null }));
 
     Promise.all([
-      fetch(`/api/watering/plan?gardenIri=${encodeURIComponent(gardenIri)}`).then((r) =>
-        r.ok ? r.json() : Promise.resolve({ assignments: [] })
-      ),
-      fetch(`/api/watering/availability?gardenIri=${encodeURIComponent(gardenIri)}`).then((r) =>
-        r.ok ? r.json() : Promise.resolve([])
-      ),
+      fetch(
+        `/api/watering/plan?gardenIri=${encodeURIComponent(gardenIri)}&month=${effectiveMonth}`
+      ).then((r) => (r.ok ? r.json() : Promise.resolve({ assignments: [] }))),
+      fetch(
+        `/api/watering/availability?gardenIri=${encodeURIComponent(gardenIri)}&month=${effectiveMonth}`
+      ).then((r) => (r.ok ? r.json() : Promise.resolve([]))),
     ])
       .then(([plan, availability]) => {
         const personNames: Record<string, string> = {};
         (availability as any[]).forEach((entry) => {
           const iri: string | undefined = entry.person?.['@id'];
-          // person.name is the nickname; fall back to the label's prefix before " @ "
           const name: string =
             entry.person?.name ?? entry.name?.split(' @ ')[0] ?? iri ?? '';
           if (iri) personNames[iri] = name;
@@ -53,6 +74,8 @@ export function useWateringPlan(gardenId: string | undefined): WateringPlanState
         setState({
           assignments: Array.isArray(plan.assignments) ? plan.assignments : [],
           personNames,
+          calculatedAt: plan.calculatedAt ?? null,
+          targetMonth: plan.targetMonth ?? null,
           loading: false,
           error: null,
         });
@@ -60,7 +83,9 @@ export function useWateringPlan(gardenId: string | undefined): WateringPlanState
       .catch((err: Error) => {
         setState((s) => ({ ...s, loading: false, error: err.message }));
       });
-  }, [gardenId]);
+  }, [gardenId, effectiveMonth, refreshKey]);
 
-  return state;
+  const refetch = useCallback(() => setRefreshKey((k) => k + 1), []);
+
+  return { ...state, refetch };
 }

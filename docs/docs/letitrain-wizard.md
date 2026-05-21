@@ -25,7 +25,11 @@ selected frequency increases — a small visual reward for high engagement.
 ### Step 2 — Availability
 
 The user selects individual dates using the calendar component.
-Dates span from the previous Monday through the end of next month.
+The calendar shows only next month's dates — availability is always registered
+for the upcoming calendar month.
+
+The step headline reads **"Register availability for [Month Year]"** so the user
+knows which month they are signing up for.
 
 Rows can be selected by calendar week; columns by day of the week.
 Individual cells carry a `data-testid="calendar-date-{YYYY-MM-DD}"` attribute
@@ -76,21 +80,29 @@ Content-Type: application/json
   "personId": "<uuid>",
   "nickname": "GärtnerMax",
   "maximumTasksPerMonth": 13,
-  "availableDates": ["2026-06-03", "2026-06-07", "2026-06-11"]
+  "availableDates": ["2026-06-03", "2026-06-07", "2026-06-11"],
+  "targetMonth": "2026-06"
 }
 ```
 
-The endpoint upserts the entry (same `personId` + `gardenIri` overwrites the previous
-availability), so re-running the wizard updates rather than duplicates the data.
+The endpoint upserts the entry (same `personId` + `gardenIri` + `targetMonth` overwrites the
+previous availability), so re-running the wizard updates rather than duplicates the data.
 
-Plan calculation is triggered separately (typically by a garden admin):
+Plan calculation can be triggered by **anyone** from the Watering page via the
+"Calculate plan for [month]" button, or directly:
 
 ```http
 POST /api/watering/plan/calculate
 Content-Type: application/json
 
-{ "gardenIri": "https://data.semantic-desk.top/garden/Garden/Wurzelwerk", "targetPersonsPerTask": 2 }
+{
+  "gardenIri": "https://data.semantic-desk.top/garden/Garden/Wurzelwerk",
+  "targetPersonsPerTask": 2,
+  "targetMonth": "2026-06"
+}
 ```
+
+Each recalculation replaces the stored plan for that month.
 
 See the [Watering API](watering-api.md) page for full endpoint documentation.
 
@@ -113,11 +125,13 @@ importable into any calendar app (Google Calendar, Apple Calendar, Thunderbird, 
 
 The spec `e2e/cypress/e2e/watering-wizard.cy.ts` covers the full end-to-end flow:
 
-1. **Before hook** — clears all existing `WateringAvailability` entries for the test garden via the REST API (GET all → DELETE each), ensuring the suite is re-runnable.
-2. **User 1 + 2** — walk through the full UI wizard (slider interaction, calendar date selection, nickname entry).
-3. **Users 3–5** — submitted directly via `cy.request()` for speed.
-4. **Plan calculation** — verifies the algorithm assigns tasks to at least 3 distinct people.
-5. **Plan retrieval** — verifies the stored plan is returned by GET.
+1. **Before hook** — clears all existing watering data via SPARQL DELETE, ensuring the suite is re-runnable.
+2. **User 1 + 2** — walk through the full UI wizard (slider, calendar, nickname); availability is stored for `nextMonthYYYYMM()`.
+3. **Users 3–5** — submitted directly via `cy.request()` for speed; `targetMonth` is included.
+4. **Plan calculation** — verifies the algorithm assigns tasks to at least 3 distinct people for the target month.
+5. **Plan retrieval** — verifies the stored plan is returned by GET with the correct `targetMonth`.
+6. **Watering page** — visits the page, opens the plan detail modal, verifies rows appear in the table.
+7. **Calculate button** — clicks the "Calculate plan" button on the watering page and confirms the plan detail table populates.
 
 Run the test suite and record a video:
 

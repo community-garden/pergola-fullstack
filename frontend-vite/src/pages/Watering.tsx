@@ -3,6 +3,7 @@ import {
   Typography,
   Paper,
   Button,
+  CircularProgress,
   styled,
   Dialog,
   DialogTitle,
@@ -15,9 +16,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { format } from 'date-fns';
+import { useSnackbar } from 'notistack';
 import { WateringCalendar, WateringPlanDetailModal } from '../components/letItRain';
 import { Link, useParams } from 'react-router-dom';
-import { useWateringPlan } from '../hooks/useWateringPlan';
+import { useWateringPlan, nextMonthYYYYMM } from '../hooks/useWateringPlan';
 import { useLocalUser } from '../hooks/useLocalUser';
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
@@ -39,19 +42,42 @@ const RegisterButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
+const DATA_BASE = 'https://data.semantic-desk.top/garden/';
+
 const Watering = () => {
   const { t } = useTranslation(['watering', 'common']);
   const { gardenId } = useParams<{ gardenId: string }>();
+  const { enqueueSnackbar } = useSnackbar();
   const [helpDialogOpen, setHelpDialogOpen] = useState<boolean>(false);
   const [detailOpen, setDetailOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [calculating, setCalculating] = useState(false);
 
+  const nextMonth = nextMonthYYYYMM();
   const { personId } = useLocalUser();
-  const { assignments, personNames } = useWateringPlan(gardenId);
+  const { assignments, personNames, calculatedAt, refetch } = useWateringPlan(gardenId, nextMonth);
 
-  // Build the full person IRI so we can highlight the current user's tasks
-  const DATA_BASE = 'https://data.semantic-desk.top/garden/';
   const myPersonIri = `${DATA_BASE}Person/${personId}`;
+
+  const handleCalculatePlan = async () => {
+    if (!gardenId) return;
+    const gardenIri = `${DATA_BASE}Garden/${gardenId}`;
+    setCalculating(true);
+    try {
+      const res = await fetch('/api/watering/plan/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gardenIri, targetMonth: nextMonth }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      enqueueSnackbar(t('watering:planManagement.calculated'), { variant: 'success' });
+      refetch();
+    } catch {
+      enqueueSnackbar(t('watering:planManagement.calculateError'), { variant: 'error' });
+    } finally {
+      setCalculating(false);
+    }
+  };
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
@@ -134,6 +160,35 @@ const Watering = () => {
       </ContentPaper>
       
       
+      {/* Plan Management */}
+      <ContentPaper>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+          <Typography variant="h6">{t('watering:planManagement.title')}</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={calculating}
+            startIcon={calculating ? <CircularProgress size={16} color="inherit" /> : undefined}
+            onClick={handleCalculatePlan}
+            data-cy="calculate-plan-button"
+          >
+            {calculatedAt
+              ? t('watering:planManagement.recalculateFor', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy') })
+              : t('watering:planManagement.calculateFor', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy') })}
+          </Button>
+        </Box>
+        <Typography variant="body2" color="text.secondary">
+          {calculatedAt
+            ? t('watering:planManagement.calculatedAt', { date: format(new Date(calculatedAt), 'd MMM yyyy, HH:mm') })
+            : t('watering:planManagement.noCurrentPlan', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy') })}
+        </Typography>
+        {calculatedAt && (
+          <Typography variant="body2" color="text.secondary">
+            {t('watering:planManagement.assignmentCount', { count: assignments.length })}
+          </Typography>
+        )}
+      </ContentPaper>
+
       {/* Plan Detail Modal */}
       <WateringPlanDetailModal
         open={detailOpen}
