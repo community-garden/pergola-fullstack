@@ -14,6 +14,18 @@
     "beforeEachWeek": "Before each week",
     "days": "Days"
   },
+  "profile": {
+    "nickname": "Your nickname",
+    "nicknamePlaceholder": "e.g. GärtnerMax",
+    "deviceId": "Device ID",
+    "forgetMe": "Forget me",
+    "forgetMeConfirm": "Your data has been cleared from this device.",
+    "comingSoon": "Coming soon",
+    "icsInfo": "Once watering tasks are published, you will be able to subscribe to your personal calendar using your nickname.",
+    "emailNotification": "Email reminder",
+    "pushNotification": "Push notification",
+    "deviceInfo": "Your identity is stored locally on this device only — no account required."
+  },
   "wizard": {
     "buttons": {
       "back": "Back",
@@ -23,12 +35,15 @@
     "headlines": {
       "availability": "Specify availability",
       "frequency": "Specify frequency",
-      "notification": "Specify reminder"
+      "profile": "Your profile"
     },
     "steps": {
       "availability": "Availability",
       "frequency": "Frequency",
-      "notification": "Reminder"
-    }
+      "profile": "Profile"
+    },
+    "submitting": "Saving...",
+    "success": "Your availability was saved!",
+    "error": "Could not save your availability. Please try again."
   }
 }

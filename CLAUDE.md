@@ -152,3 +152,44 @@ The `frontend-vite/` Docker build is unaffected — its `Dockerfile.dev` uses
 | `e2e/cypress.config.ts` | Cypress configuration |
 | `scripts/run-cypress.sh` | Run Cypress container + route outputs into docs |
 | `.npmrc` | Private registry for @graviola packages |
+| `watering-api/src/` | Hono.js REST API for watering availability + plan |
+
+## Loading test data into the SPARQL store
+
+When writing Cypress specs or seeding the dev database, prefer the **REST API approach**
+over raw SPARQL or Turtle imports:
+
+**Option A — REST API (recommended for tests)**
+
+Use `cy.request()` to POST to `/api/watering/availability`.
+The Hono route validates input via Zod before writing to SPARQL, so data integrity is
+guaranteed and tests reflect real user behaviour.
+
+```typescript
+cy.request({ method: 'POST', url: '/api/watering/availability',
+  body: { gardenIri, personId, maximumTasksPerMonth, availableDates },
+  headers: { 'Content-Type': 'application/json' } });
+```
+
+**Option B — Graviola store upsert (for backend scripts)**
+
+Use `store.upsert(typeName, iri, doc)` from `watering-api/src/store.ts`.
+This writes JSON-LD through the Graviola library, which enforces the registered schema.
+
+**Option C — Turtle file (last resort)**
+
+POST a `.ttl` file directly to `https://sparql01.pergola.kuenste.live/store`.
+Fast but bypasses all validation — shapes are not checked.
+Only use for bulk imports where the schema has already been verified.
+
+**Clearing the test database**
+
+Watering data (availability + plan) can be cleared without touching garden/plant data
+by reading all entries via GET and deleting them individually, or by sending a SPARQL
+UPDATE DELETE query to the `/update` endpoint:
+
+```sparql
+PREFIX garden: <https://ontology.semantic-desk.top/garden#>
+DELETE { ?s ?p ?o }
+WHERE { ?s a garden:WateringAvailability . ?s ?p ?o . }
+```

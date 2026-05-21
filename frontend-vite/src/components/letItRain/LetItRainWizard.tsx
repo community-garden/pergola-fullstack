@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Paper,
   Typography,
   IconButton,
@@ -9,13 +10,14 @@ import {
   useTheme
 } from '@mui/material';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { format, addDays, subDays, endOfMonth, isAfter } from 'date-fns';
+import { useNavigate, useParams } from 'react-router-dom';
+import { addDays, subDays, endOfMonth, isAfter } from 'date-fns';
 
 import { HorizontalStepper, Calendar } from '../ui';
-import { LetItRainFrequency, NotificationSettings } from './';
+import { LetItRainFrequency } from './';
+import { WizardProfile } from './WizardProfile';
 import { CarrotBedComponent } from './CarrotBedComponent';
 
 // Styled components
@@ -83,13 +85,14 @@ const WizardActions = styled(Box)(({ theme }) => ({
 interface LetItRainWizardProps {
   onComplete?: (data: WizardData) => void;
   gardenId?: string;
+  submitting?: boolean;
 }
 
 // Interface for the wizard data
 export interface WizardData {
   frequency: number;
   availableDates: Date[];
-  notificationSettings: any;
+  nickname: string;
 }
 
 // Step definition interface
@@ -100,7 +103,7 @@ interface StepDesc {
   component: React.ReactNode;
 }
 
-export function LetItRainWizard({ onComplete, gardenId }: LetItRainWizardProps) {
+export function LetItRainWizard({ onComplete, gardenId, submitting = false }: LetItRainWizardProps) {
   const { t } = useTranslation('letItRain');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -110,10 +113,14 @@ export function LetItRainWizard({ onComplete, gardenId }: LetItRainWizardProps) 
   // State for wizard data
   const [frequency, setFrequency] = useState<number>(1);
   const [availableDates, setAvailableDates] = useState<Date[]>([]);
-  const [notificationSettings, setNotificationSettings] = useState<any>({});
+  const [nickname, setNickname] = useState<string>('');
 
   const handleFrequencyChange = (value: number) => {
     setFrequency(value);
+  };
+
+  const handleForget = () => {
+    setNickname('');
   };
 
   // Generate calendar dates (2 weeks starting from last Monday)
@@ -165,12 +172,13 @@ export function LetItRainWizard({ onComplete, gardenId }: LetItRainWizardProps) 
       )
     },
     {
-      key: 'notification',
-      title: t('wizard.steps.notification'),
-      headline: t('wizard.headlines.notification'),
+      key: 'profile',
+      title: t('wizard.steps.profile'),
+      headline: t('wizard.headlines.profile'),
       component: (
-        <NotificationSettings
-          onChange={(data) => setNotificationSettings(data)}
+        <WizardProfile
+          onChange={(name) => setNickname(name)}
+          onForget={handleForget}
         />
       )
     }
@@ -205,7 +213,7 @@ export function LetItRainWizard({ onComplete, gardenId }: LetItRainWizardProps) 
     const wizardData: WizardData = {
       frequency,
       availableDates,
-      notificationSettings
+      nickname
     };
 
     if (onComplete) {
@@ -261,9 +269,12 @@ export function LetItRainWizard({ onComplete, gardenId }: LetItRainWizardProps) 
                 variant="contained"
                 color="primary"
                 onClick={handleFinish}
+                disabled={submitting}
                 sx={{ flex: currentStepIndex > 0 ? 2 : 1 }}
+                data-cy="wizard-finish"
+                startIcon={submitting ? <CircularProgress size={16} color="inherit" /> : undefined}
               >
-                {t('wizard.buttons.finish')}
+                {submitting ? t('wizard.submitting') : t('wizard.buttons.finish')}
               </Button>
             ) : (
               <Button
@@ -271,6 +282,7 @@ export function LetItRainWizard({ onComplete, gardenId }: LetItRainWizardProps) 
                 color="primary"
                 onClick={handleNext}
                 sx={{ flex: currentStepIndex > 0 ? 2 : 1 }}
+                data-cy="wizard-next"
               >
                 {t('wizard.buttons.next')}
               </Button>

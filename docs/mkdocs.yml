@@ -19,6 +19,8 @@ nav:
   - Environments: environments.md
   - Development:
     - Setup: development/setup.md
+  - Features:
+    - LetItRain Wizard: letitrain-wizard.md
   - API:
     - Watering API: watering-api.md
   - Testing:

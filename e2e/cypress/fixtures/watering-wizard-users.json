@@ -1,0 +1,17 @@
+[
+  {
+    "personId": "cypress-api-03",
+    "nickname": "PetraGärtnerin",
+    "maximumTasksPerMonth": 6
+  },
+  {
+    "personId": "cypress-api-04",
+    "nickname": "FranzKompost",
+    "maximumTasksPerMonth": 4
+  },
+  {
+    "personId": "cypress-api-05",
+    "nickname": "AnnaBlume",
+    "maximumTasksPerMonth": 8
+  }
+]

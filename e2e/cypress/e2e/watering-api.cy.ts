@@ -1,11 +1,22 @@
 const GARDEN_IRI = "https://data.semantic-desk.top/garden/Garden/Wurzelwerk";
 const API = "/api/watering";
+const SPARQL_UPDATE = "https://sparql01.pergola.kuenste.live/update";
 
 describe("Watering Availability API", () => {
   let submittedIds: string[] = [];
 
   before(() => {
     submittedIds = [];
+    // Clear all watering data before running so specs are always isolated
+    ["WateringAvailability", "WateringPlan", "AnonymousPerson"].forEach((type) => {
+      cy.request({
+        method: "POST",
+        url: SPARQL_UPDATE,
+        body: `PREFIX garden: <https://ontology.semantic-desk.top/garden#> DELETE { ?s ?p ?o } WHERE { ?s a garden:${type} . ?s ?p ?o . }`,
+        headers: { "Content-Type": "application/sparql-update" },
+        failOnStatusCode: false,
+      });
+    });
   });
 
   after(() => {
@@ -26,7 +37,8 @@ describe("Watering Availability API", () => {
         }).then((res) => {
           expect(res.status).to.eq(201);
           expect(res.body).to.have.property("@id");
-          expect(res.body.personId).to.eq(entry.personId);
+          // person is now a JSON-LD reference; its @id IRI contains the personId
+          expect(res.body.person?.["@id"]).to.include(entry.personId);
           expect(res.body.maximumTasksPerMonth).to.eq(entry.maximumTasksPerMonth);
 
           // Extract id segment for cleanup
@@ -45,10 +57,10 @@ describe("Watering Availability API", () => {
     }).then((res) => {
       expect(res.status).to.eq(200);
       expect(res.body).to.be.an("array");
-      const personIds = res.body.map((e: any) => e.personId);
-      expect(personIds).to.include("test-person-a");
-      expect(personIds).to.include("test-person-b");
-      expect(personIds).to.include("test-person-c");
+      const personIris: string[] = res.body.map((e: any) => e.person?.["@id"] ?? "");
+      expect(personIris.some((iri) => iri.includes("test-person-a"))).to.be.true;
+      expect(personIris.some((iri) => iri.includes("test-person-b"))).to.be.true;
+      expect(personIris.some((iri) => iri.includes("test-person-c"))).to.be.true;
     });
   });
 

@@ -13,7 +13,8 @@ export type CalculatePlanInput = z.infer<typeof CalculatePlanInputSchema>;
 
 export interface WateringAssignment {
   date: string;
-  personId: string;
+  /** Full IRI of the AnonymousPerson entity */
+  personIri: string;
 }
 
 export interface WateringPlan {
@@ -44,9 +45,9 @@ export const WateringPlanJsonSchema: JSONSchema7 = {
             type: "object",
             properties: {
               date: { type: "string" },
-              personId: { type: "string" },
+              personIri: { type: "string" },
             },
-            required: ["date", "personId"],
+            required: ["date", "personIri"],
           },
         },
       },

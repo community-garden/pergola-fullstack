@@ -23,7 +23,7 @@ app.get("/", async (c) => {
   }
 
   const entityIRI = planIRI(gardenIri);
-  const plan = await store.loadOne("WateringPlan", entityIRI);
+  const plan = await store.loadDocument("WateringPlan", entityIRI);
 
   if (!plan) {
     return c.json({ error: "No plan found for this garden" }, 404);
@@ -47,42 +47,46 @@ app.post("/calculate", async (c) => {
   }
 
   const { gardenIri, targetPersonsPerTask } = parsed.data;
+  const gardenSlug = gardenIri.split("/").pop() ?? "";
 
-  // Load all availability entries for this garden
-  const all = await store.list("WateringAvailability");
-  const entries = (all as WateringAvailability[]).filter(
-    (doc) => doc.gardenIri === gardenIri
+  // Load all availability entries for this garden using the same IRI-pattern filter
+  const all = await store.listDocuments("WateringAvailability", 500);
+  const slugPattern = `/${gardenSlug}-`;
+  const matchingIRIs = (all as Array<{ "@id": string }>)
+    .map((e) => e["@id"])
+    .filter((id) => id.includes(slugPattern));
+
+  const rawEntries = await Promise.all(
+    matchingIRIs.map((iri) => store.loadDocument("WateringAvailability", iri))
   );
+  const entries = rawEntries.filter(Boolean) as WateringAvailability[];
 
   if (entries.length === 0) {
     return c.json({ error: "No availability entries found for this garden" }, 422);
   }
 
-  // Build Person[] for LetItRain
+  // Use person["@id"] as the stable person identifier for the algorithm
   const persons: Person[] = entries.map((e) => ({
-    id: e.personId,
+    id: e.person["@id"],
     maximum_tasks: e.maximumTasksPerMonth,
   }));
 
-  // Collect all unique dates
   const allDates = [...new Set(entries.flatMap((e) => e.availableDates))].sort();
 
-  // Build Task[] — one task per unique date
   const tasks: Task<string>[] = allDates.map((date) => ({
     date,
     target_count: targetPersonsPerTask,
     available: entries
       .filter((e) => e.availableDates.includes(date))
-      .map((e) => ({ id: e.personId, maximum_tasks: e.maximumTasksPerMonth })),
+      .map((e) => ({ id: e.person["@id"], maximum_tasks: e.maximumTasksPerMonth })),
     assigned: [],
   }));
 
-  // Run LetItRain
   const assignedTasks = planAssignments(tasks);
 
-  // Flatten to assignment list
+  // Store person IRIs in assignments — callers can resolve them to nicknames
   const assignments = assignedTasks.flatMap((t) =>
-    t.assigned.map((p) => ({ date: t.date, personId: p.id }))
+    t.assigned.map((p) => ({ date: t.date, personIri: p.id }))
   );
 
   const now = new Date().toISOString();
@@ -98,7 +102,10 @@ app.post("/calculate", async (c) => {
   };
 
   const entityIRI = planIRI(gardenIri);
-  await store.upsert("WateringPlan", entityIRI, plan);
+  // Remove before upsert: Graviola appends array triples rather than replacing,
+  // so a stale plan would accumulate duplicate assignment entries.
+  await store.removeDocument("WateringPlan", entityIRI);
+  await store.upsertDocument("WateringPlan", entityIRI, plan);
 
   return c.json({ "@id": entityIRI, ...plan });
 });

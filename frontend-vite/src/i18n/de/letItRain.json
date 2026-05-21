@@ -14,6 +14,18 @@
     "beforeEachWeek": "Vor jeder Woche",
     "days": "Tage"
   },
+  "profile": {
+    "nickname": "Dein Spitzname",
+    "nicknamePlaceholder": "z. B. GärtnerMax",
+    "deviceId": "Geräte-ID",
+    "forgetMe": "Vergiss mich",
+    "forgetMeConfirm": "Deine Daten wurden von diesem Gerät gelöscht.",
+    "comingSoon": "Demnächst verfügbar",
+    "icsInfo": "Sobald Gießaufgaben veröffentlicht sind, kannst du deinen persönlichen Kalender anhand deines Spitznamens abonnieren.",
+    "emailNotification": "E-Mail-Erinnerung",
+    "pushNotification": "Push-Benachrichtigung",
+    "deviceInfo": "Deine Identität wird nur lokal auf diesem Gerät gespeichert — kein Konto erforderlich."
+  },
   "wizard": {
     "buttons": {
       "back": "Zurück",
@@ -23,12 +35,15 @@
     "headlines": {
       "availability": "Verfügbarkeit angeben",
       "frequency": "Häufigkeit angeben",
-      "notification": "Erinnerung angeben"
+      "profile": "Dein Profil"
     },
     "steps": {
       "availability": "Verfügbarkeit",
       "frequency": "Häufigkeit",
-      "notification": "Erinnerung"
-    }
+      "profile": "Profil"
+    },
+    "submitting": "Speichern...",
+    "success": "Deine Verfügbarkeit wurde gespeichert!",
+    "error": "Deine Verfügbarkeit konnte nicht gespeichert werden. Bitte versuche es erneut."
   }
 }

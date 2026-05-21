@@ -138,7 +138,7 @@ function DateCheckbox({
       onChange={(e) => onChange(e, date)}
       checked={checked}
       disabled={disabled}
-      inputProps={{ 'data-testid': `calendar-date-${format(date, 'yyyy-MM-dd')}` } as any}
+      data-testid={`calendar-date-${format(date, 'yyyy-MM-dd')}`}
     />
   );
 }

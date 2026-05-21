@@ -8,12 +8,17 @@ import {
   DATA_BASE,
 } from "../schema/watering-availability";
 import { WateringPlanJsonSchema, WateringPlanTypeIRI } from "../schema/watering-plan";
+import {
+  AnonymousPersonJsonSchema,
+  AnonymousPersonTypeIRI,
+} from "../schema/anonymous-person";
 
 const SPARQL_ENDPOINT = process.env.SPARQL_ENDPOINT_URL ?? "http://localhost:7878/query";
 
 const mergedSchema: JSONSchema7 = {
   type: "object",
   definitions: {
+    ...AnonymousPersonJsonSchema.definitions,
     ...WateringAvailabilityJsonSchema.definitions,
     ...WateringPlanJsonSchema.definitions,
   },
@@ -22,6 +27,7 @@ const mergedSchema: JSONSchema7 = {
 const typeNameToTypeIRI = (typeName: string): string => {
   if (typeName === "WateringAvailability") return WateringAvailabilityTypeIRI;
   if (typeName === "WateringPlan") return WateringPlanTypeIRI;
+  if (typeName === "AnonymousPerson") return AnonymousPersonTypeIRI;
   return `${ONTOLOGY}${typeName}`;
 };
 
