@@ -113,6 +113,24 @@ services:
       - "traefik.http.services.docs01.loadbalancer.server.port=8000"
     restart: unless-stopped
 
+  docs-claude-internals:
+    image: squidfunk/mkdocs-material
+    command: serve --dev-addr 0.0.0.0:8000 -f /docs-claude-internals/mkdocs.yml
+    volumes:
+      - ../claude-dashboard/docs-claude-internals:/docs-claude-internals
+    working_dir: /docs-claude-internals
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.claude-internal-doc.entrypoints=web-secure"
+      - "traefik.http.routers.claude-internal-doc.rule=Host(`claude-internal-doc.pergola.kuenste.live`)"
+      - "traefik.http.routers.claude-internal-doc.tls=true"
+      - "traefik.http.routers.claude-internal-doc.tls.certresolver=tlschallenge"
+      - "traefik.http.routers.claude-internal-doc.middlewares=secHeaders@file"
+      - "traefik.http.services.claude-internal-doc.loadbalancer.server.port=8000"
+    restart: unless-stopped
+
 networks:
   traefik:
     external: true
