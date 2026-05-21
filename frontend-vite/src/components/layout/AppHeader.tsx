@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Box, Skeleton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import AvatarMenu from '@components/ui/AvatarMenu';
 import { useCurrentGardenInfo } from '@hooks/index';
 
@@ -32,6 +32,7 @@ const ToolbarStyled = styled(Toolbar)({
 const AppHeader = () => {
   const { t } = useTranslation('navigation');
   const location = useLocation();
+  const { gardenId } = useParams<{ gardenId: string }>();
   const { garden, isLoading } = useCurrentGardenInfo();
 
   const getPageTitle = () => {
@@ -69,11 +70,11 @@ const AppHeader = () => {
         <Box display="flex" alignItems="center" gap={1}>
           {isLoading ? (
             <Skeleton width={80} sx={{ bgcolor: 'rgba(255,255,255,0.3)' }} />
-          ) : garden?.name ? (
+          ) : (
             <Typography variant="body1" color="inherit" noWrap>
-              {garden.name}
+              {garden?.name ?? gardenId}
             </Typography>
-          ) : null}
+          )}
           <AvatarMenu />
         </Box>
       </ToolbarStyled>
