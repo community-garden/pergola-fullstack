@@ -14,6 +14,7 @@ interface WateringCalendarHorizontalProps {
   onDateChange?: (date: Date) => void;
   assignments?: PlanAssignment[];
   personIri?: string;
+  availableDates?: string[];
 }
 
 const ScrollContainer = styled('div')({
@@ -48,6 +49,7 @@ export const WateringCalendarHorizontal = ({
   onDateChange,
   assignments = [],
   personIri,
+  availableDates = [],
 }: WateringCalendarHorizontalProps) => {
   const { t } = useTranslation('watering');
   const locale = useDateFnsLocale();
@@ -123,6 +125,7 @@ export const WateringCalendarHorizontal = ({
           const cornerActive = personIri
             ? dayAssignments.some((a) => a.personIri === personIri)
             : false;
+          const isUserAvailable = availableDates.includes(dateStr);
 
           return (
             <WateringCalendarTaskItem
@@ -133,6 +136,7 @@ export const WateringCalendarHorizontal = ({
               onSelect={() => handleDateSelect(date)}
               active={isSameDay(selectedDate, date)}
               inPlannedPeriod={inPlannedPeriod}
+              isUserAvailable={isUserAvailable}
               cornerActive={cornerActive}
               onActivate={() => setScrollBehavior('smooth')}
               scrollBehavior={scrollBehavior}

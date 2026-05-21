@@ -8,6 +8,7 @@ export interface PlanAssignment {
 export interface WateringPlanState {
   assignments: PlanAssignment[];
   personNames: Record<string, string>;
+  myAvailableDates: string[];
   calculatedAt: string | null;
   targetMonth: string | null;
   loading: boolean;
@@ -34,7 +35,8 @@ export function nextMonthYYYYMM(): string {
 
 export function useWateringPlan(
   gardenId: string | undefined,
-  month?: string
+  month?: string,
+  personIri?: string
 ): WateringPlanState {
   const effectiveMonth = month ?? currentMonthYYYYMM();
   const [refreshKey, setRefreshKey] = useState(0);
@@ -42,6 +44,7 @@ export function useWateringPlan(
   const [state, setState] = useState<Omit<WateringPlanState, 'refetch'>>({
     assignments: [],
     personNames: {},
+    myAvailableDates: [],
     calculatedAt: null,
     targetMonth: null,
     loading: false,
@@ -64,16 +67,21 @@ export function useWateringPlan(
     ])
       .then(([plan, availability]) => {
         const personNames: Record<string, string> = {};
+        let myAvailableDates: string[] = [];
         (availability as any[]).forEach((entry) => {
           const iri: string | undefined = entry.person?.['@id'];
           const name: string =
             entry.person?.name ?? entry.name?.split(' @ ')[0] ?? iri ?? '';
           if (iri) personNames[iri] = name;
+          if (personIri && iri === personIri && Array.isArray(entry.availableDates)) {
+            myAvailableDates = entry.availableDates;
+          }
         });
 
         setState({
           assignments: Array.isArray(plan.assignments) ? plan.assignments : [],
           personNames,
+          myAvailableDates,
           calculatedAt: plan.calculatedAt ?? null,
           targetMonth: plan.targetMonth ?? null,
           loading: false,
@@ -83,7 +91,7 @@ export function useWateringPlan(
       .catch((err: Error) => {
         setState((s) => ({ ...s, loading: false, error: err.message }));
       });
-  }, [gardenId, effectiveMonth, refreshKey]);
+  }, [gardenId, effectiveMonth, personIri, refreshKey]);
 
   const refetch = useCallback(() => setRefreshKey((k) => k + 1), []);
 

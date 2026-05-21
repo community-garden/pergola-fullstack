@@ -25,6 +25,7 @@ interface WateringCalendarTableProps {
   onDateChange?: (date: Date) => void;
   assignments?: PlanAssignment[];
   personIri?: string;
+  availableDates?: string[];
 }
 
 const CalendarContainer = styled(Box)(({ theme }) => ({
@@ -72,6 +73,7 @@ export const WateringCalendarTable = ({
   onDateChange,
   assignments = [],
   personIri,
+  availableDates = [],
 }: WateringCalendarTableProps) => {
   const { t } = useTranslation('watering');
   const [selectedDate, setSelectedDate] = useState<Date>(preselectedDate);
@@ -186,7 +188,8 @@ export const WateringCalendarTable = ({
               const cornerActive = personIri
                 ? dayAssignments.some((a) => a.personIri === personIri)
                 : false;
-              
+              const isUserAvailable = availableDates.includes(dateStr);
+
               return (
                 <DayCell key={`${date.toISOString()}-${index}`}>
                   {isCurrentMonth && (
@@ -197,6 +200,7 @@ export const WateringCalendarTable = ({
                       onSelect={() => handleDateSelect(date)}
                       active={isSameDay(selectedDate, date)}
                       inPlannedPeriod={inPlannedPeriod}
+                      isUserAvailable={isUserAvailable}
                       cornerActive={cornerActive}
                       size={60} // Increased size for better visibility
                     />

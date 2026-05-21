@@ -27,7 +27,15 @@
     "assignmentCount": "{{count}} assignments",
     "calculatedAt": "Calculated {{date}}",
     "calculated": "Plan calculated successfully.",
-    "calculateError": "Could not calculate the plan. Please try again."
+    "calculateError": "Could not calculate the plan. Please try again.",
+    "menuItem": "Calculate plan for {{month}}",
+    "menuItemRecalculate": "Recalculate plan for {{month}}",
+    "recalculateConfirm": {
+      "title": "Recalculate plan?",
+      "message": "A plan for {{month}} was already calculated on {{date}}. Recalculating will overwrite the existing assignments. Are you sure?",
+      "confirmButton": "Recalculate",
+      "cancelButton": "Cancel"
+    }
   },
   "page": {
     "helpDialog": {
@@ -51,6 +59,7 @@
     "infoArea": {
       "description": "Join the community watering schedule to help maintain the garden. Select your availability and preferences to get started.",
       "registerButton": "Register for Watering Schedule",
+      "setAvailabilities": "Set my availabilities",
       "title": "Watering Schedule Participation"
     },
     "title": "Watering Schedule"

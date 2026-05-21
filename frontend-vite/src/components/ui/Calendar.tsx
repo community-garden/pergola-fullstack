@@ -14,8 +14,7 @@ import {
   getMonth,
   getISOWeek,
   addDays,
-  addMonths,
-  } from 'date-fns';
+} from 'date-fns';
 import React, { useState } from 'react';
 import { differenceInDays } from 'date-fns';
 import { useDateFnsLocale } from '../../hooks';
@@ -212,16 +211,13 @@ export function Calendar({
   const cwDatesChecked = (cw: number): boolean =>
     !dates.some((date) => getISOWeek(date) === cw && !dateIncluded(selectedDates, date));
 
-  // First of the current month as a proper Date (not a timestamp number).
-  const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-  const dayOfFirst = firstOfMonth.getDay(); // 0=Sun … 6=Sat
-  // Step back to the locale's week-start day that contains the 1st.
+  // Grid bounds derived from the dates prop so we only show the relevant period.
+  const dayOfFirst = firstDate ? firstDate.getDay() : new Date().getDay();
   const daysFromWeekStart = (dayOfFirst - weekStartsOn + 7) % 7;
-  const gridStart = addDays(firstOfMonth, -daysFromWeekStart);
+  const gridStart = addDays(firstDate ?? new Date(), -daysFromWeekStart);
   // Column order: 7 consecutive getDay values starting from weekStartsOn.
   const weekColumns = Array.from({ length: 7 }, (_, k) => (weekStartsOn + k) % 7);
-  // Show through the last day of the month two months out, then round up to full weeks.
-  const gridEnd = addDays(addMonths(firstOfMonth, 2), -1);
+  const gridEnd = lastDate ?? new Date();
   const weeks = Math.ceil((differenceInDays(gridEnd, gridStart) + 1) / 7);
 
   return (

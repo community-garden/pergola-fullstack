@@ -12,6 +12,7 @@ interface WateringCalendarTaskItemProps {
   onSelect?: () => void;
   active?: boolean;
   inPlannedPeriod?: boolean;
+  isUserAvailable?: boolean;
   cornerActive?: boolean;
   optimalRecruiterCount?: number;
   size?: number;
@@ -61,6 +62,7 @@ export const WateringCalendarTaskItem = ({
   onActivate,
   active = false,
   inPlannedPeriod,
+  isUserAvailable,
   cornerActive,
   scrollBehavior,
 }: WateringCalendarTaskItemProps) => {
@@ -82,7 +84,7 @@ export const WateringCalendarTaskItem = ({
   // Calculate badge color based on recruiter count and planned period
   const getBadgeColor = () => {
     if (!inPlannedPeriod) {
-      return '#bdbdbd'; // grey[400]
+      return isUserAvailable ? '#BBDEFB' : '#bdbdbd'; // pale blue when user has marked this date; grey otherwise
     }
     
     const recruiterMissingCount = optimalRecruiterCount - recruiterCount;

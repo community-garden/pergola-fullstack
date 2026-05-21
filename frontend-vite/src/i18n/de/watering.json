@@ -27,7 +27,15 @@
     "assignmentCount": "{{count}} Zuweisungen",
     "calculatedAt": "Berechnet am {{date}}",
     "calculated": "Plan erfolgreich berechnet.",
-    "calculateError": "Plan konnte nicht berechnet werden. Bitte erneut versuchen."
+    "calculateError": "Plan konnte nicht berechnet werden. Bitte erneut versuchen.",
+    "menuItem": "Plan berechnen für {{month}}",
+    "menuItemRecalculate": "Plan neu berechnen für {{month}}",
+    "recalculateConfirm": {
+      "title": "Plan neu berechnen?",
+      "message": "Für {{month}} wurde bereits am {{date}} ein Plan berechnet. Die Neuberechnung überschreibt die bestehenden Zuweisungen. Bist du sicher?",
+      "confirmButton": "Neu berechnen",
+      "cancelButton": "Abbrechen"
+    }
   },
   "page": {
     "helpDialog": {
@@ -51,6 +59,7 @@
     "infoArea": {
       "description": "Beteilige dich am gemeinschaftlichen Gießplan, für eine gute Ernte. Wähle deine Verfügbarkeit und Präferenzen, um zu beginnen.",
       "registerButton": "In den Gießplan eintragen",
+      "setAvailabilities": "Meine Verfügbarkeit eintragen",
       "title": "Teilnahme am Gießplan"
     },
     "title": "Gießplan"

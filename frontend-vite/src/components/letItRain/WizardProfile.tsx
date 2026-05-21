@@ -2,9 +2,9 @@ import {
   Alert,
   Box,
   Button,
-  Chip,
   FormControlLabel,
   FormGroup,
+  IconButton,
   Switch,
   TextField,
   Tooltip,
@@ -13,9 +13,11 @@ import {
 } from '@mui/material';
 import {
   CalendarMonth as CalendarIcon,
+  Edit as EditIcon,
   Email as EmailIcon,
   Notifications as PushIcon,
 } from '@mui/icons-material';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalUser } from '@hooks/useLocalUser';
 
@@ -42,49 +44,68 @@ interface WizardProfileProps {
 
 export function WizardProfile({ onChange, onForget }: WizardProfileProps) {
   const { t } = useTranslation('letItRain');
-  const { personId, nickname, setNickname, forgetMe } = useLocalUser();
+  const { nickname, setNickname, forgetMe } = useLocalUser();
+  const [isEditing, setIsEditing] = useState(!nickname);
 
   const handleNicknameChange = (value: string) => {
     setNickname(value);
     onChange(value);
   };
 
-  const handleForgetMe = () => {
+  const handleNotMe = () => {
     forgetMe();
     onChange('');
     onForget();
+    setIsEditing(true);
+  };
+
+  const handleEditDone = () => {
+    setIsEditing(false);
   };
 
   return (
     <Root>
-      <TextField
-        label={t('profile.nickname')}
-        placeholder={t('profile.nicknamePlaceholder')}
-        value={nickname}
-        onChange={(e) => handleNicknameChange(e.target.value)}
-        required
-        fullWidth
-        inputProps={{ 'data-cy': 'nickname-input' }}
-        helperText={t('profile.deviceInfo')}
-      />
+      {nickname && !isEditing ? (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography variant="h6" sx={{ flex: 1 }}>
+            {t('profile.welcomeBack', { nickname })}
+          </Typography>
+          <IconButton size="small" onClick={() => setIsEditing(true)} aria-label={t('profile.changeNickname')}>
+            <EditIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      ) : (
+        <Box>
+          <TextField
+            label={t('profile.nickname')}
+            placeholder={t('profile.nicknamePlaceholder')}
+            value={nickname}
+            onChange={(e) => handleNicknameChange(e.target.value)}
+            required
+            fullWidth
+            inputProps={{ 'data-cy': 'nickname-input' }}
+            helperText={t('profile.deviceInfo')}
+          />
+          {nickname && (
+            <Button size="small" onClick={handleEditDone} sx={{ mt: 0.5 }}>
+              {t('profile.cancelChange')}
+            </Button>
+          )}
+        </Box>
+      )}
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-        <Chip
-          size="small"
-          label={`${t('profile.deviceId')}: ${personId.slice(0, 8)}…`}
-          variant="outlined"
-          color="default"
-        />
+      {nickname && (
         <Button
           size="small"
-          color="error"
+          color="warning"
           variant="outlined"
-          onClick={handleForgetMe}
-          data-cy="forget-me-button"
+          onClick={handleNotMe}
+          data-cy="not-me-button"
+          sx={{ alignSelf: 'flex-start' }}
         >
-          {t('profile.forgetMe')}
+          {t('profile.notMe')}
         </Button>
-      </Box>
+      )}
 
       <DisabledSection>
         <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5 }}>

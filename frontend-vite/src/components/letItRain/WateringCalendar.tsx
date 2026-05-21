@@ -18,6 +18,7 @@ interface WateringCalendarProps {
   allowVariantToggle?: boolean;
   assignments?: PlanAssignment[];
   personIri?: string;
+  availableDates?: string[];
 }
 
 export const WateringCalendar = ({
@@ -29,6 +30,7 @@ export const WateringCalendar = ({
   allowVariantToggle = true,
   assignments = [],
   personIri,
+  availableDates = [],
 }: WateringCalendarProps) => {
   const { t } = useTranslation('watering');
   const [variant, setVariant] = useState<WateringCalendarVariant>(initialVariant);
@@ -84,6 +86,7 @@ export const WateringCalendar = ({
           onDateChange={handleDateChange}
           assignments={assignments}
           personIri={personIri}
+          availableDates={availableDates}
         />
       ) : (
         <WateringCalendarTable
@@ -92,6 +95,7 @@ export const WateringCalendar = ({
           onDateChange={handleDateChange}
           assignments={assignments}
           personIri={personIri}
+          availableDates={availableDates}
         />
       )}
     </Box>
