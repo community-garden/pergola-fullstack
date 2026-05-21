@@ -1,6 +1,8 @@
 {
   "appName": "Pergola",
   "common": {
+    "anonymous": "Anonym",
+    "forgetMe": "Vergiss mich",
     "gardenSettings": "Garten Einstellungen",
     "language": "Sprache",
     "login": "Login",

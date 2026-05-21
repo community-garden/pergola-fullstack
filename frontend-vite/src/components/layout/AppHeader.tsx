@@ -1,10 +1,11 @@
-import { AppBar, Toolbar, Typography, useMediaQuery, useTheme, Box, Grid } from '@mui/material';
+import { useEffect } from 'react';
+import { AppBar, Toolbar, Typography, Box, Skeleton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import AvatarMenu from '@components/ui/AvatarMenu';
+import { useCurrentGardenInfo } from '@hooks/index';
 
-// Import logo
 import logoSvg from '@assets/logo-pergola-title.svg';
 
 const LogoSvg = styled('svg')(({ theme }) => ({
@@ -23,23 +24,16 @@ const ToolbarStyled = styled(Toolbar)({
   padding: 0,
   minHeight: 0,
   width: '100%',
-});
-
-const LogoContainer = styled(Box)(() => ({
   display: 'flex',
+  justifyContent: 'space-between',
   alignItems: 'center',
-  position: 'relative',
-  top: '.25rem',
-}));
+});
 
 const AppHeader = () => {
   const { t } = useTranslation('navigation');
-  const theme = useTheme();
-  const { gardenId } = useParams<{ gardenId: string }>();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const location = useLocation();
+  const { garden, isLoading } = useCurrentGardenInfo();
 
-  // Get the current page title based on the route
   const getPageTitle = () => {
     const path = location.pathname;
     if (path.includes('/home')) return t('home');
@@ -52,35 +46,36 @@ const AppHeader = () => {
     return '';
   };
 
+  const pageTitle = getPageTitle();
+
+  useEffect(() => {
+    const parts = ['Pergola'];
+    if (garden?.name) parts.push(garden.name);
+    if (pageTitle) parts.push(pageTitle);
+    document.title = parts.join(' - ');
+  }, [garden?.name, pageTitle]);
+
   return (
     <AppBarStyled position="sticky">
       <ToolbarStyled>
-        <Grid container alignItems="center">
-          <Grid item xs={4}>
-            <LogoContainer>
-              <LogoSvg role="img">
-                <title>{t('common:appName')}</title>
-                <use
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                  xlinkHref={`${logoSvg}#logo`}
-                />
-              </LogoSvg>
-              <Typography variant="h4" color="inherit" noWrap={isMobile} sx={{ fontSize: '0.5rem' }}>
-                {gardenId}
-              </Typography>
-            </LogoContainer>
-          </Grid>
-          
-          <Grid item xs={4} sx={{ textAlign: 'center' }} >
-            <Typography variant="h4" color="inherit">
-              {getPageTitle()}
+        <LogoSvg role="img">
+          <title>{t('common:appName')}</title>
+          <use
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            xlinkHref={`${logoSvg}#logo`}
+          />
+        </LogoSvg>
+
+        <Box display="flex" alignItems="center" gap={1}>
+          {isLoading ? (
+            <Skeleton width={80} sx={{ bgcolor: 'rgba(255,255,255,0.3)' }} />
+          ) : garden?.name ? (
+            <Typography variant="body1" color="inherit" noWrap>
+              {garden.name}
             </Typography>
-          </Grid>
-          
-          <Grid item xs={4} sx={{ textAlign: 'right', paddingRight: 2, display: 'flex', justifyContent: 'flex-end' }}>
-            <AvatarMenu />
-          </Grid>
-        </Grid>
+          ) : null}
+          <AvatarMenu />
+        </Box>
       </ToolbarStyled>
     </AppBarStyled>
   );
