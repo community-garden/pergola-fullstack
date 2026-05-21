@@ -56,7 +56,11 @@ export const store = initSPARQLStore({
     prefixes: { garden: ONTOLOGY, data: DATA_BASE },
     propertyToIRI,
     typeIRItoTypeName,
-    primaryFields: {},
+    primaryFields: {
+      AnonymousPerson: { label: "name" },
+      WateringAvailability: { label: "name", description: "submittedAt" },
+      WateringPlan: { label: "gardenIri", description: "calculatedAt" },
+    },
     primaryFieldExtracts: {},
     sparqlFlavour: "oxigraph",
   },
