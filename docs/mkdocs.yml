@@ -16,8 +16,11 @@ docs_dir: docs
 
 nav:
   - Home: index.md
+  - Environments: environments.md
   - Development:
     - Setup: development/setup.md
+  - API:
+    - Watering API: watering-api.md
   - Testing:
     - E2E Tests: testing/e2e.md
 

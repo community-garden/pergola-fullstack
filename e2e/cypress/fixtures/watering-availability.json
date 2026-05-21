@@ -1,0 +1,17 @@
+[
+  {
+    "personId": "test-person-a",
+    "maximumTasksPerMonth": 2,
+    "availableDates": ["2026-06-02", "2026-06-05", "2026-06-09", "2026-06-12"]
+  },
+  {
+    "personId": "test-person-b",
+    "maximumTasksPerMonth": 3,
+    "availableDates": ["2026-06-02", "2026-06-06", "2026-06-09", "2026-06-13"]
+  },
+  {
+    "personId": "test-person-c",
+    "maximumTasksPerMonth": 1,
+    "availableDates": ["2026-06-05", "2026-06-09"]
+  }
+]

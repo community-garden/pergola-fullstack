@@ -1,0 +1,81 @@
+services:
+
+  oxigraph:
+    image: ghcr.io/oxigraph/oxigraph:latest
+    platform: linux/amd64
+    command: serve --location /data --bind 0.0.0.0:7878
+    volumes:
+      - oxigraph_prod_data:/data
+    networks:
+      - internal-prod
+    restart: unless-stopped
+
+  oxigraph-cors:
+    image: nginx:alpine
+    volumes:
+      - ./oxigraph-docker/nginx.config:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - oxigraph
+    networks:
+      - traefik
+      - internal-prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.sparql01-prod.entrypoints=web-secure"
+      - "traefik.http.routers.sparql01-prod.rule=Host(`sparql01.pergola.kuenste.live`)"
+      - "traefik.http.routers.sparql01-prod.tls=true"
+      - "traefik.http.routers.sparql01-prod.tls.certresolver=tlschallenge"
+      - "traefik.http.routers.sparql01-prod.middlewares=secHeaders@file"
+      - "traefik.http.services.sparql01-prod.loadbalancer.server.port=80"
+    restart: unless-stopped
+
+  watering-api:
+    build:
+      context: .
+      dockerfile: ./watering-api/Dockerfile
+    environment:
+      - SPARQL_ENDPOINT_URL=http://oxigraph:7878/query
+    depends_on:
+      - oxigraph
+    networks:
+      - traefik
+      - internal-prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.watering-api-prod.entrypoints=web-secure"
+      - "traefik.http.routers.watering-api-prod.rule=Host(`pergola.kuenste.live`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.watering-api-prod.tls=true"
+      - "traefik.http.routers.watering-api-prod.tls.certresolver=tlschallenge"
+      - "traefik.http.routers.watering-api-prod.middlewares=secHeaders@file"
+      - "traefik.http.services.watering-api-prod.loadbalancer.server.port=3000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend-vite/Dockerfile
+      args:
+        VITE_SPARQL_API_URL: https://sparql01.pergola.kuenste.live/query
+        VITE_API_URL: https://pergola.kuenste.live/api
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.pergola-prod.entrypoints=web-secure"
+      - "traefik.http.routers.pergola-prod.rule=Host(`pergola.kuenste.live`)"
+      - "traefik.http.routers.pergola-prod.tls=true"
+      - "traefik.http.routers.pergola-prod.tls.certresolver=tlschallenge"
+      - "traefik.http.routers.pergola-prod.middlewares=secHeaders@file"
+      - "traefik.http.services.pergola-prod.loadbalancer.server.port=80"
+    restart: unless-stopped
+
+networks:
+  traefik:
+    external: true
+  internal-prod:
+
+volumes:
+  oxigraph_prod_data:

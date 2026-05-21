@@ -1,0 +1,9 @@
+node_modules
+**/node_modules
+frontend-vite/node_modules
+api/node_modules
+.git
+*.log
+data
+frontend
+neo4j

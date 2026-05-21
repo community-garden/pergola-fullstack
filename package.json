@@ -2,7 +2,8 @@
   "license": "GPLv3",
   "workspaces": [
     "frontend-vite",
-    "packages/*"
+    "packages/*",
+    "watering-api"
   ],
   "devDependencies": {
     "concurrently": "^9.1.2",
