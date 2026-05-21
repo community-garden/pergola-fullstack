@@ -8,27 +8,142 @@ import {
   TableHead,
   TableRow
 } from '@mui/material';
-import { 
-  format, 
-  getDate, 
-  getMonth, 
-  getWeek, 
-  setWeek, 
-  setDay,
+import {
+  format,
+  getDate,
+  getMonth,
+  getISOWeek,
   addDays,
-  startOfYear,
   addMonths,
-  getYear,
   } from 'date-fns';
+import { de, enUS } from 'date-fns/locale';
 import React, { useState } from 'react';
 import { differenceInDays } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   dates: Date[];
   onChange?: (dates: Date[]) => void;
   selectedDates?: Date[];
-  badges?: Record<string, number>; // Map of date strings to badge values (e.g., vote counts)
+  badges?: Record<string, number>;
 }
+
+// ── Presentational icon ───────────────────────────────────────────────────────
+
+function CheckBoxIcon(props: {
+  checked?: boolean;
+  label?: string;
+  isHeadCheckbox?: boolean;
+  badgeValue?: number;
+}) {
+  return (
+    <CheckBoxIconStyled
+      className={`${props.checked ? 'checked' : ''} ${props.isHeadCheckbox ? 'head-checkbox' : ''}`}
+      $isHeadCheckbox={props.isHeadCheckbox || false}
+      aria-hidden="true"
+    >
+      {props.label && <LabelText>{props.label}</LabelText>}
+      {props.badgeValue !== undefined && <Badge>{props.badgeValue}</Badge>}
+    </CheckBoxIconStyled>
+  );
+}
+
+// ── Checkbox sub-components (defined outside Calendar for stable React identity)
+
+function AllCheckbox({
+  checked,
+  onChange,
+}: {
+  checked: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  return (
+    <Checkbox
+      sx={checkBoxStyles}
+      checkedIcon={<CheckBoxIcon checked label="✓" isHeadCheckbox />}
+      icon={<CheckBoxIcon label="✓" isHeadCheckbox />}
+      color="primary"
+      onChange={onChange}
+      checked={checked}
+      inputProps={{ 'data-testid': 'calendar-select-all' } as any}
+    />
+  );
+}
+
+function DayCheckbox({
+  colGetDay,
+  label,
+  checked,
+  onChange,
+}: {
+  colGetDay: number;
+  label: string;
+  checked: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>, colGetDay: number) => void;
+}) {
+  return (
+    <Checkbox
+      sx={checkBoxStyles}
+      checkedIcon={<CheckBoxIcon checked label={label} isHeadCheckbox />}
+      icon={<CheckBoxIcon label={label} isHeadCheckbox />}
+      color="primary"
+      onChange={(e) => onChange(e, colGetDay)}
+      checked={checked}
+      inputProps={{ 'data-testid': `calendar-day-${colGetDay}` } as any}
+    />
+  );
+}
+
+function CwCheckbox({
+  cw,
+  checked,
+  onChange,
+}: {
+  cw: number;
+  checked: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>, cw: number) => void;
+}) {
+  return (
+    <Checkbox
+      sx={checkBoxStyles}
+      checkedIcon={<CheckBoxIcon checked label={`W${cw}`} isHeadCheckbox />}
+      icon={<CheckBoxIcon label={`W${cw}`} isHeadCheckbox />}
+      color="primary"
+      onChange={(e) => onChange(e, cw)}
+      checked={checked}
+      inputProps={{ 'data-testid': `calendar-cw-${cw}` } as any}
+    />
+  );
+}
+
+function DateCheckbox({
+  date,
+  disabled,
+  checked,
+  badgeValue,
+  onChange,
+}: {
+  date: Date;
+  disabled?: boolean;
+  checked: boolean;
+  badgeValue?: number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>, date: Date) => void;
+}) {
+  return (
+    <Checkbox
+      sx={checkBoxStyles}
+      checkedIcon={<CheckBoxIcon checked label={getDate(date).toString()} badgeValue={badgeValue} />}
+      icon={<CheckBoxIcon label={getDate(date).toString()} badgeValue={badgeValue} />}
+      color="primary"
+      onChange={(e) => onChange(e, date)}
+      checked={checked}
+      disabled={disabled}
+      inputProps={{ 'data-testid': `calendar-date-${format(date, 'yyyy-MM-dd')}` } as any}
+    />
+  );
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
 
 export function Calendar({
   dates = [],
@@ -36,26 +151,27 @@ export function Calendar({
   selectedDates: externalSelectedDates,
   badges = {}
 }: Props) {
+  const { i18n } = useTranslation();
+  const dateFnsLocale = i18n.language.startsWith('de') ? de : enUS;
+  const weekStartsOn = (dateFnsLocale.options?.weekStartsOn ?? 1) as 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
   const [selectedDatesIntern, setSelectedDates] = useState<Date[]>([]);
   const selectedDates = externalSelectedDates || selectedDatesIntern;
 
   const toggleDates = (dates: Date[], selected: boolean) => {
-    // remove or add given dates from selected dates
     const newSelectedDates = selected
       ? [
           ...selectedDates,
           ...dates.filter((date) => !dateIncluded(selectedDates, date)),
         ]
       : selectedDates.filter((date) => !dateIncluded(dates, date));
-    
+
     !externalSelectedDates && setSelectedDates(newSelectedDates);
     onChange?.(newSelectedDates);
   };
 
   const dateIncluded = (dates: Date[], date: Date): boolean => {
     try {
-      console.log('date', date)
-
       const dateStr = format(date, 'yyyy-MM-dd');
       return dates.map((d) => format(d, 'yyyy-MM-dd')).includes(dateStr);
     } catch (error) {
@@ -63,39 +179,25 @@ export function Calendar({
       return false;
     }
   };
-  
-  const getDateKey = (date: Date): string => {
-    return format(date, 'yyyy-MM-dd');
-  };
-  
-  const getBadgeValue = (date: Date): number | undefined => {
-    const dateKey = getDateKey(date);
-    return badges[dateKey];
-  };
+
+  const getDateKey = (date: Date): string => format(date, 'yyyy-MM-dd');
+
+  const getBadgeValue = (date: Date): number | undefined => badges[getDateKey(date)];
 
   const [firstDate] = dates;
   const lastDate = dates[dates.length - 1];
 
   const handleAllChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // (un)check all dates
     toggleDates(dates, event.target.checked);
   };
 
-  const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>, dayOfWeek: number) => {
-    // (un)check each date with same day
-    const relatedDates: Date[] = dates.filter(date => {
-      const day = new Date(date).getDay();
-      // Convert Sunday (0) to 6 to match the expected format where Monday is 0
-      const adjustedDay = day === 0 ? 6 : day - 1;
-      return adjustedDay === dayOfWeek;
-    });
-    
+  const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>, colGetDay: number) => {
+    const relatedDates: Date[] = dates.filter(date => new Date(date).getDay() === colGetDay);
     toggleDates(relatedDates, event.target.checked);
   };
 
   const handleCwChange = (event: React.ChangeEvent<HTMLInputElement>, cw: number) => {
-    // (un)check date of this calendar week
-    const relatedDates: Date[] = dates.filter(date => getWeek(date) === cw);
+    const relatedDates: Date[] = dates.filter(date => getISOWeek(date) === cw);
     toggleDates(relatedDates, event.target.checked);
   };
 
@@ -103,110 +205,27 @@ export function Calendar({
     toggleDates([date], event.target.checked);
   };
 
-  const allDatesChecked = (): boolean => {
-    return !dates.some((date) => !dateIncluded(selectedDates, date));
-  };
+  const allDatesChecked = (): boolean =>
+    !dates.some((date) => !dateIncluded(selectedDates, date));
 
-  const dayDatesChecked = (dayOfWeek: number): boolean => {
-    return !dates.some((date) => {
-      const day = new Date(date).getDay();
-      // Convert Sunday (0) to 6 to match the expected format where Monday is 0
-      const adjustedDay = day === 0 ? 6 : day - 1;
-      return adjustedDay === dayOfWeek && !dateIncluded(selectedDates, date);
-    });
-  };
+  const dayDatesChecked = (colGetDay: number): boolean =>
+    !dates.some((date) => new Date(date).getDay() === colGetDay && !dateIncluded(selectedDates, date));
 
-  const cwDatesChecked = (cw: number): boolean => {
-    return !dates.some((date) => {
-      const weekNum = getWeek(date);
-      return weekNum === cw && !dateIncluded(selectedDates, date);
-    });
-  };
+  const cwDatesChecked = (cw: number): boolean =>
+    !dates.some((date) => getISOWeek(date) === cw && !dateIncluded(selectedDates, date));
 
-  function AllCheckBox(): React.ReactElement {
-    const checked = allDatesChecked();
-    return (
-      <Checkbox
-        sx={checkBoxStyles}
-        checkedIcon={<CheckBoxIcon checked label="✓" isHeadCheckbox={true} />}
-        icon={<CheckBoxIcon label="✓" isHeadCheckbox={true} />}
-        color="primary"
-        onChange={handleAllChange}
-        checked={checked}
-      />
-    );
-  }
+  // First of the current month as a proper Date (not a timestamp number).
+  const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  const dayOfFirst = firstOfMonth.getDay(); // 0=Sun … 6=Sat
+  // Step back to the locale's week-start day that contains the 1st.
+  const daysFromWeekStart = (dayOfFirst - weekStartsOn + 7) % 7;
+  const gridStart = addDays(firstOfMonth, -daysFromWeekStart);
+  // Column order: 7 consecutive getDay values starting from weekStartsOn.
+  const weekColumns = Array.from({ length: 7 }, (_, k) => (weekStartsOn + k) % 7);
+  // Show through the last day of the month two months out, then round up to full weeks.
+  const gridEnd = addDays(addMonths(firstOfMonth, 2), -1);
+  const weeks = Math.ceil((differenceInDays(gridEnd, gridStart) + 1) / 7);
 
-  function DayCheckBox(props: { dayOfWeek: number, label: string }): React.ReactElement {
-    const checked = dayDatesChecked(props.dayOfWeek);
-    return (
-      <Checkbox
-        sx={checkBoxStyles}
-        checkedIcon={<CheckBoxIcon checked label={props.label} isHeadCheckbox={true} />}
-        icon={<CheckBoxIcon label={props.label} isHeadCheckbox={true} />}
-        color="primary"
-        onChange={(e) => handleDayChange(e, props.dayOfWeek)}
-        checked={checked}
-      />
-    );
-  }
-
-  function CwCheckBox(props: { cw: number }): React.ReactElement {
-    const checked = cwDatesChecked(props.cw);
-    return (
-      <Checkbox
-        sx={checkBoxStyles}
-        checkedIcon={<CheckBoxIcon checked label={`W${props.cw}`} isHeadCheckbox={true} />}
-        icon={<CheckBoxIcon label={`W${props.cw}`} isHeadCheckbox={true} />}
-        color="primary"
-        onChange={(e) => handleCwChange(e, props.cw)}
-        checked={checked}
-      />
-    );
-  }
-
-  function DateCheckBox({ date, disabled }: { date: Date, disabled?: boolean }): React.ReactElement {
-    const checked = dateIncluded(selectedDates, date) && !disabled;
-    const badgeValue = getBadgeValue(date);
-    
-    return (
-      <Checkbox
-        sx={checkBoxStyles}
-        checkedIcon={<CheckBoxIcon checked label={getDate(date).toString()} badgeValue={badgeValue} />}
-        icon={<CheckBoxIcon label={getDate(date).toString()} badgeValue={badgeValue} />}
-        color="primary"
-        onChange={(e) => handleDateChange(e, date)}
-        checked={checked}
-        disabled={disabled}
-      />
-    );
-  }
-
-  function CheckBoxIcon(props: {
-    checked?: boolean,
-    label?: string,
-    isHeadCheckbox?: boolean,
-    badgeValue?: number
-  }) {
-    return (
-      <CheckBoxIconStyled
-        className={`${props.checked ? 'checked' : ''} ${props.isHeadCheckbox ? 'head-checkbox' : ''}`}
-        $isHeadCheckbox={props.isHeadCheckbox || false}
-        aria-hidden="true"
-      >
-        {props.label && <LabelText>{props.label}</LabelText>}
-        {props.badgeValue !== undefined && (
-          <Badge>{props.badgeValue}</Badge>
-        )}
-      </CheckBoxIconStyled>
-    );
-  }
-
-  const startOfMonth = new Date().setDate(1);
-  const nextNextMonth = addMonths(startOfMonth, 2);
-  const lastDateOfMonth = new Date(nextNextMonth).setDate(0);
-  const dayDifference = differenceInDays(lastDateOfMonth, startOfMonth);
-  const weeks = Math.ceil(dayDifference / 7);
   return (
     <>
       <Typography variant="h3" sx={questionStyles}>
@@ -222,41 +241,55 @@ export function Calendar({
           &nbsp;–&nbsp;
           {format(lastDate, 'd. MMMM')}
         </Typography>
-        
+
         <Table size="small" sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow>
               <TableCell align="center" sx={{ padding: '4px', width: '40px' }}>
-                <AllCheckBox />
+                <AllCheckbox checked={allDatesChecked()} onChange={handleAllChange} />
               </TableCell>
-              {[1, 2, 3, 4, 5, 6, 7].map((dayOfWeek) => (
-                <TableCell key={dayOfWeek} align="center" sx={{ padding: '4px', width: '40px' }}>
-                  <DayCheckBox
-                    dayOfWeek={dayOfWeek}
-                    label={format(setDay(new Date(), dayOfWeek), 'EEEE').substring(0, 2)}
+              {weekColumns.map((colGetDay, colIndex) => (
+                <TableCell key={colGetDay} align="center" sx={{ padding: '4px', width: '40px' }}>
+                  <DayCheckbox
+                    colGetDay={colGetDay}
+                    label={format(addDays(gridStart, colIndex), 'EEEE', { locale: dateFnsLocale }).substring(0, 2)}
+                    checked={dayDatesChecked(colGetDay)}
+                    onChange={handleDayChange}
                   />
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {Array.from(new Array(weeks))
-              .map((_, weekIndex) => (
-                <TableRow key={weekIndex}>
-                  <TableCell align="center" sx={{ padding: '4px' }}>
-                    <CwCheckBox cw={weekIndex + 1} />
-                  </TableCell>
-                  {[...new Array(7)].map((_, dayOfWeek) => {
-                    const date = addDays(startOfMonth, weekIndex * 7 + dayOfWeek);
-                    const dateAvailable = dateIncluded(dates, date);
-                    return (
-                      <TableCell key={format(date, 'dd-MM-yyyy')} align="center" sx={{ padding: '4px' }}>
-                        <DateCheckBox date={date} disabled={!dateAvailable} />
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
+            {Array.from(new Array(weeks)).map((_, weekIndex) => {
+              const cw = getISOWeek(addDays(gridStart, weekIndex * 7));
+              return (
+              <TableRow key={weekIndex}>
+                <TableCell align="center" sx={{ padding: '4px' }}>
+                  <CwCheckbox
+                    cw={cw}
+                    checked={cwDatesChecked(cw)}
+                    onChange={handleCwChange}
+                  />
+                </TableCell>
+                {[...new Array(7)].map((_, dayOfWeek) => {
+                  const date = addDays(gridStart, weekIndex * 7 + dayOfWeek);
+                  const dateAvailable = dateIncluded(dates, date);
+                  return (
+                    <TableCell key={format(date, 'dd-MM-yyyy')} align="center" sx={{ padding: '4px' }}>
+                      <DateCheckbox
+                        date={date}
+                        disabled={!dateAvailable}
+                        checked={dateIncluded(selectedDates, date) && dateAvailable}
+                        badgeValue={getBadgeValue(date)}
+                        onChange={handleDateChange}
+                      />
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </CalendarWrapper>
@@ -264,7 +297,8 @@ export function Calendar({
   );
 }
 
-// Styled components
+// ── Styled components ─────────────────────────────────────────────────────────
+
 const CalendarWrapper = styled('div')(({ theme }) => ({
   padding: '6px 2px 2px',
   background: '#f7f7f7',
@@ -340,7 +374,6 @@ const Badge = styled('span')(({ theme }) => ({
   zIndex: 1
 }));
 
-// Styles
 const questionStyles = {
   textAlign: 'center',
   width: '80%',
