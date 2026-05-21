@@ -10,7 +10,7 @@ import {
 } from "@jsonforms/core";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { JsonFormsTheme, useDebouncedChange, useFocus, useInputComponent, useInputVariant } from "@jsonforms/material-renderers";
-import { useSimilarityFinderState, useAdbContext, useGlobalSearch, useKeyEventForSimilarityFinder, useRightDrawerState } from "@graviola/edb-state-hooks";
+import { useAdbContext, useGlobalSearch, useKeyEventForSimilarityFinder, useSimilarityFinderModal } from "@graviola/edb-state-hooks";
 import { Close } from "@mui/icons-material";
 import { InputProps, InputBaseComponentProps, InputAdornment, IconButton, FormControl, InputLabel, FormHelperText } from "@mui/material";
 import { useTheme } from "@mui/system";
@@ -73,21 +73,21 @@ export const PrimaryFieldText = (
     borderRadius: "50%",
   };
 
-  const { setOpen: setRightDrawerOpen } = useRightDrawerState();
+  const { showFinder } = useSimilarityFinderModal();
 
   const { setPath, setTypeName } = useGlobalSearch();
   const handleFocus = useCallback(() => {
     if (!config?.typeIRI || !config.formsPath) return;
     setPath(config.formsPath);
     setTypeName(typeIRIToTypeName(config.typeIRI as string));
-    setRightDrawerOpen(true);
+    showFinder({});
   }, [
     config?.typeIRI,
     config?.formsPath,
     typeIRIToTypeName,
     setPath,
     setTypeName,
-    setRightDrawerOpen,
+    showFinder,
   ]);
 
   const handleKeyUp = useKeyEventForSimilarityFinder();
