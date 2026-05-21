@@ -6,7 +6,7 @@ RESULTS="$REPO/docs/docs/media/cypress"
 
 mkdir -p "$RESULTS/videos" "$RESULTS/screenshots"
 
-echo "Running Cypress against https://dev01.pergola.kuenste.live ..."
+echo "Running Cypress against https://prod01.pergola.kuenste.live ..."
 
 docker run --rm \
   --ipc=host \
@@ -16,6 +16,6 @@ docker run --rm \
   cypress/included:latest \
   --browser chrome \
   --headless \
-  --config baseUrl=https://dev01.pergola.kuenste.live
+  --config baseUrl=https://prod01.pergola.kuenste.live
 
 echo "✓ Done — video at: docs/docs/media/cypress/videos/landing.cy.ts.mp4"

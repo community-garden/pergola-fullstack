@@ -1,0 +1,24 @@
+# Production build for the dev stack — skips tsc so pre-existing story type
+# errors don't block iteration. The real production Dockerfile runs tsc -b.
+
+# ── Stage 1: build ────────────────────────────────────────────────────────────
+FROM oven/bun:1.3.10-alpine AS builder
+WORKDIR /app
+
+COPY .npmrc /root/.npmrc
+COPY frontend-vite/package_materialized.json ./package.json
+
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install
+
+COPY frontend-vite/ ./
+
+ARG VITE_SPARQL_API_URL=https://sparql01.pergola.kuenste.live/query
+ENV VITE_SPARQL_API_URL=$VITE_SPARQL_API_URL
+
+RUN bunx vite build
+
+# ── Stage 2: serve ────────────────────────────────────────────────────────────
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80

@@ -211,9 +211,10 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false, targ
 
     if (onComplete) {
       onComplete(wizardData);
+      // onComplete handles navigation (async) — don't navigate here
+      return;
     }
 
-    // Navigate to thank you page or back to watering
     navigate(`/${gardenId}/watering`);
   };
 
