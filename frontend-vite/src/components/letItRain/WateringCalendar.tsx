@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import WateringCalendarHorizontal from './WateringCalendarHorizontal';
 import WateringCalendarTable from './WateringCalendarTable';
+import type { PlanAssignment } from '../../hooks/useWateringPlan';
 
 export type WateringCalendarVariant = 'horizontal' | 'table';
 
@@ -15,6 +16,8 @@ interface WateringCalendarProps {
   monthCount?: number;
   onDateChange?: (date: Date) => void;
   allowVariantToggle?: boolean;
+  assignments?: PlanAssignment[];
+  personIri?: string;
 }
 
 export const WateringCalendar = ({
@@ -24,6 +27,8 @@ export const WateringCalendar = ({
   monthCount = 3,
   onDateChange,
   allowVariantToggle = true,
+  assignments = [],
+  personIri,
 }: WateringCalendarProps) => {
   const { t } = useTranslation('watering');
   const [variant, setVariant] = useState<WateringCalendarVariant>(initialVariant);
@@ -77,12 +82,16 @@ export const WateringCalendar = ({
           preselectedDate={selectedDate}
           dayCount={dayCount}
           onDateChange={handleDateChange}
+          assignments={assignments}
+          personIri={personIri}
         />
       ) : (
         <WateringCalendarTable
           preselectedDate={selectedDate}
           monthCount={monthCount}
           onDateChange={handleDateChange}
+          assignments={assignments}
+          personIri={personIri}
         />
       )}
     </Box>

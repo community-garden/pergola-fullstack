@@ -12,10 +12,13 @@ import {
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
+import TableRowsIcon from '@mui/icons-material/TableRows';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { WateringCalendar } from '../components/letItRain';
+import { WateringCalendar, WateringPlanDetailModal } from '../components/letItRain';
 import { Link, useParams } from 'react-router-dom';
+import { useWateringPlan } from '../hooks/useWateringPlan';
+import { useLocalUser } from '../hooks/useLocalUser';
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -40,8 +43,15 @@ const Watering = () => {
   const { t } = useTranslation(['watering', 'common']);
   const { gardenId } = useParams<{ gardenId: string }>();
   const [helpDialogOpen, setHelpDialogOpen] = useState<boolean>(false);
+  const [detailOpen, setDetailOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
+  const { personId } = useLocalUser();
+  const { assignments, personNames } = useWateringPlan(gardenId);
+
+  // Build the full person IRI so we can highlight the current user's tasks
+  const DATA_BASE = 'https://data.semantic-desk.top/garden/';
+  const myPersonIri = `${DATA_BASE}Person/${personId}`;
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
@@ -124,18 +134,37 @@ const Watering = () => {
       </ContentPaper>
       
       
+      {/* Plan Detail Modal */}
+      <WateringPlanDetailModal
+        open={detailOpen}
+        onClose={() => setDetailOpen(false)}
+        assignments={assignments}
+        personNames={personNames}
+      />
+
       {/* Watering Calendar */}
       <ContentPaper sx={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-        <Box sx={{ mb: 2 }}>
-          <WateringCalendar
-            variant="horizontal"
-            preselectedDate={selectedDate}
-            onDateChange={handleDateChange}
-            allowVariantToggle={false}
-          />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<TableRowsIcon />}
+            onClick={() => setDetailOpen(true)}
+            data-cy="plan-detail-button"
+          >
+            {t('watering:plan.detailButton')}
+          </Button>
         </Box>
+        <WateringCalendar
+          variant="horizontal"
+          preselectedDate={selectedDate}
+          onDateChange={handleDateChange}
+          allowVariantToggle={false}
+          assignments={assignments}
+          personIri={myPersonIri}
+        />
       </ContentPaper>
-      
+
     </Box>
   );
 };

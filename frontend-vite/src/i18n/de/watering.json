@@ -11,6 +11,14 @@
       "wednesday": "Mi"
     }
   },
+  "plan": {
+    "detailButton": "Plan anzeigen",
+    "detailTitle": "Gießplan",
+    "noAssignments": "Keine Aufgaben für den letzten oder aktuellen Monat geplant.",
+    "dateColumn": "Datum",
+    "gardenersColumn": "Zugewiesene Gärtner",
+    "closeButton": "Schließen"
+  },
   "page": {
     "helpDialog": {
       "closeButton": "Schließen",

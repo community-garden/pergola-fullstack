@@ -233,4 +233,25 @@ describe("LetItRain Watering Wizard", () => {
       expect(res.body.assignments).to.be.an("array").with.length.greaterThan(0);
     });
   });
+
+  // ── Watering page UI shows the plan ──────────────────────────────────────
+
+  it("watering page shows the plan — calendar has assigned task cells", () => {
+    cy.visit(`/${GARDEN_ID}/watering`, {
+      onBeforeLoad: (win) => {
+        win.localStorage.setItem("pergola_person_id", "cypress-ui-01");
+      },
+    });
+
+    // The "View Plan" button must be visible
+    cy.get("[data-cy=plan-detail-button]").should("be.visible");
+
+    // At least one non-grey badge should be present (assigned task cell)
+    // WateringCalendarTaskItem uses background-color that is not grey when inPlannedPeriod=true
+    cy.get("[data-cy=plan-detail-button]").click();
+    cy.get("[data-cy=plan-detail-modal]").should("be.visible");
+    cy.get("[data-cy=plan-detail-table]").within(() => {
+      cy.get("tbody tr").should("have.length.greaterThan", 0);
+    });
+  });
 });

@@ -11,6 +11,14 @@
       "wednesday": "Wed"
     }
   },
+  "plan": {
+    "detailButton": "View Plan",
+    "detailTitle": "Watering Schedule",
+    "noAssignments": "No tasks scheduled for the last or current month.",
+    "dateColumn": "Date",
+    "gardenersColumn": "Assigned Gardeners",
+    "closeButton": "Close"
+  },
   "page": {
     "helpDialog": {
       "closeButton": "Close",

@@ -17,11 +17,14 @@ import {
 } from 'date-fns';
 import React, { useState, useEffect } from 'react';
 import WateringCalendarTaskItem from './WateringCalendarTaskItem';
+import type { PlanAssignment } from '../../hooks/useWateringPlan';
 
 interface WateringCalendarTableProps {
   preselectedDate?: Date;
   monthCount?: number;
   onDateChange?: (date: Date) => void;
+  assignments?: PlanAssignment[];
+  personIri?: string;
 }
 
 const CalendarContainer = styled(Box)(({ theme }) => ({
@@ -67,6 +70,8 @@ export const WateringCalendarTable = ({
   preselectedDate = new Date(),
   monthCount = 3,
   onDateChange,
+  assignments = [],
+  personIri,
 }: WateringCalendarTableProps) => {
   const { t } = useTranslation('watering');
   const [selectedDate, setSelectedDate] = useState<Date>(preselectedDate);
@@ -174,10 +179,13 @@ export const WateringCalendarTable = ({
               const isCurrentMonth = isSameMonth(date, month);
               const isDisabled = isBefore(date, startOfDay(new Date())) || !isCurrentMonth;
               
-              // Mock data - in a real implementation, this would come from props or context
-              const inPlannedPeriod = !isDisabled && isCurrentMonth;
-              const recruiterCount = Math.floor(Math.random() * 4); // Random number 0-3 for demo
-              const cornerActive = Math.random() > 0.7; // Random for demo
+              const dateStr = format(date, 'yyyy-MM-dd');
+              const dayAssignments = assignments.filter((a) => a.date === dateStr);
+              const recruiterCount = dayAssignments.length;
+              const inPlannedPeriod = recruiterCount > 0;
+              const cornerActive = personIri
+                ? dayAssignments.some((a) => a.personIri === personIri)
+                : false;
               
               return (
                 <DayCell key={`${date.toISOString()}-${index}`}>

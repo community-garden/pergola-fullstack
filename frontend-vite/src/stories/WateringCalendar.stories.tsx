@@ -1,7 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { WateringCalendar } from '../components/letItRain';
 import { ThemeContextProvider } from '../theme/index';
-import { addDays, subDays } from 'date-fns';
+import { addDays, subDays, format } from 'date-fns';
+import type { PlanAssignment } from '../hooks/useWateringPlan';
+
+const BASE = 'https://data.semantic-desk.top/garden/Person/';
+
+function mockAssignments(anchorDate: Date = new Date()): PlanAssignment[] {
+  const persons = [`${BASE}p1`, `${BASE}p2`, `${BASE}p3`];
+  const entries: PlanAssignment[] = [];
+  for (let i = 2; i <= 30; i += 3) {
+    const date = format(addDays(anchorDate, i), 'yyyy-MM-dd');
+    persons.slice(0, (i % 3) + 1).forEach((personIri) => entries.push({ date, personIri }));
+  }
+  return entries;
+}
 
 // Meta information for the component
 const meta = {
@@ -57,6 +70,7 @@ export const HorizontalView: Story = {
     dayCount: 45,
     monthCount: 3,
     allowVariantToggle: true,
+    assignments: mockAssignments(),
     onDateChange: (date) => console.log('Date selected:', date),
   },
 };
