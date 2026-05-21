@@ -22,6 +22,7 @@ import { WateringCalendar, WateringPlanDetailModal } from '../components/letItRa
 import { Link, useParams } from 'react-router-dom';
 import { useWateringPlan, nextMonthYYYYMM } from '../hooks/useWateringPlan';
 import { useLocalUser } from '../hooks/useLocalUser';
+import { useDateFnsLocale } from '../hooks';
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -46,6 +47,7 @@ const DATA_BASE = 'https://data.semantic-desk.top/garden/';
 
 const Watering = () => {
   const { t } = useTranslation(['watering', 'common']);
+  const locale = useDateFnsLocale();
   const { gardenId } = useParams<{ gardenId: string }>();
   const { enqueueSnackbar } = useSnackbar();
   const [helpDialogOpen, setHelpDialogOpen] = useState<boolean>(false);
@@ -173,14 +175,14 @@ const Watering = () => {
             data-cy="calculate-plan-button"
           >
             {calculatedAt
-              ? t('watering:planManagement.recalculateFor', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy') })
-              : t('watering:planManagement.calculateFor', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy') })}
+              ? t('watering:planManagement.recalculateFor', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy', { locale }) })
+              : t('watering:planManagement.calculateFor', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy', { locale }) })}
           </Button>
         </Box>
         <Typography variant="body2" color="text.secondary">
           {calculatedAt
-            ? t('watering:planManagement.calculatedAt', { date: format(new Date(calculatedAt), 'd MMM yyyy, HH:mm') })
-            : t('watering:planManagement.noCurrentPlan', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy') })}
+            ? t('watering:planManagement.calculatedAt', { date: format(new Date(calculatedAt), 'd MMM yyyy, HH:mm', { locale }) })
+            : t('watering:planManagement.noCurrentPlan', { month: format(new Date(nextMonth + '-01'), 'MMMM yyyy', { locale }) })}
         </Typography>
         {calculatedAt && (
           <Typography variant="body2" color="text.secondary">

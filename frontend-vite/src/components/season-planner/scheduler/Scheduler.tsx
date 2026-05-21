@@ -6,6 +6,7 @@ import { SchedulerGrid } from './grid/SchedulerGrid';
 import { assignAllLanes, buildResourceLaneCount, flattenResources } from './scheduleUtils';
 import { createDateConfig, ONE_DAY_MS } from './timeline/defaultTimelineConfigs';
 import { useScrollSync } from './hooks/useScrollSync';
+import { useDateFnsLocale } from '../../../hooks';
 import type { SchedulerProps } from './SchedulerTypes';
 
 // Default units-per-cell: 1 day in ms (used for date-based timelines)
@@ -78,11 +79,12 @@ export function Scheduler<TItem = unknown, TResource = unknown>(
   }, [resourcesProp]);
 
   const { items, resources, zoom, scrollX, setScrollX, expandedResourceIds } = state;
+  const locale = useDateFnsLocale();
 
   // ── Timeline config ───────────────────────────────────────────────────────
   const headerConfigs = useMemo(
-    () => timelineHeaderRows ?? createDateConfig('day'),
-    [timelineHeaderRows],
+    () => timelineHeaderRows ?? createDateConfig('day', locale),
+    [timelineHeaderRows, locale],
   );
 
   // Determine the number of logical units per rendered cell.

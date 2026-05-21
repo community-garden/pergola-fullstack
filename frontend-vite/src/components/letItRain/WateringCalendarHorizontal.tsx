@@ -6,6 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import WateringCalendarTaskItem from './WateringCalendarTaskItem';
 import type { PlanAssignment } from '../../hooks/useWateringPlan';
+import { useDateFnsLocale } from '../../hooks';
 
 interface WateringCalendarHorizontalProps {
   preselectedDate?: Date;
@@ -49,6 +50,7 @@ export const WateringCalendarHorizontal = ({
   personIri,
 }: WateringCalendarHorizontalProps) => {
   const { t } = useTranslation('watering');
+  const locale = useDateFnsLocale();
   const [selectedDate, setSelectedDate] = useState<Date>(preselectedDate);
   const [scrollBehavior, setScrollBehavior] = useState<'auto' | 'smooth'>('auto');
   const [calendarDates, setCalendarDates] = useState<Date[]>([]);
@@ -104,7 +106,7 @@ export const WateringCalendarHorizontal = ({
           variant="body1"
           sx={{ width: '100%', textAlign: 'center' }}
         >
-          {format(selectedDate, 'EEEE, dd MMMM')}
+          {format(selectedDate, 'EEEE, dd MMMM', { locale })}
           {isSameDay(selectedDate, new Date()) ? ` (${t('calendar.today')})` : ''}
         </Typography>
         <IconButton onClick={selectNextDay}>

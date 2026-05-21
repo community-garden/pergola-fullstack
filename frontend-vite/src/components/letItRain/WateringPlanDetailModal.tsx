@@ -20,6 +20,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import type { PlanAssignment } from '../../hooks/useWateringPlan';
+import { useDateFnsLocale } from '../../hooks';
 
 interface WateringPlanDetailModalProps {
   open: boolean;
@@ -52,6 +53,7 @@ export function WateringPlanDetailModal({
   personNames,
 }: WateringPlanDetailModalProps) {
   const { t } = useTranslation('watering');
+  const locale = useDateFnsLocale();
   const rows = buildDateRows(assignments, personNames);
 
   return (
@@ -94,7 +96,7 @@ export function WateringPlanDetailModal({
                   <TableRow key={date} hover>
                     <TableCell>
                       <Typography variant="body2" fontWeight="medium">
-                        {format(parseISO(date), 'EEE, d MMM')}
+                        {format(parseISO(date), 'EEE, d MMM', { locale })}
                       </Typography>
                     </TableCell>
                     <TableCell>

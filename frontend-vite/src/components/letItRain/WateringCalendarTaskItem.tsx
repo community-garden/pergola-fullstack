@@ -2,6 +2,7 @@ import { Box, Link, Typography, styled } from '@mui/material';
 import { format } from 'date-fns';
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDateFnsLocale } from '../../hooks';
 import { CornerBadge } from '../ui';
 
 interface WateringCalendarTaskItemProps {
@@ -64,6 +65,7 @@ export const WateringCalendarTaskItem = ({
   scrollBehavior,
 }: WateringCalendarTaskItemProps) => {
   const { t } = useTranslation('watering');
+  const locale = useDateFnsLocale();
   const ref = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -123,7 +125,7 @@ export const WateringCalendarTaskItem = ({
             className="badgeContent"
           >
             <DayTitle active={active}>
-              {format(date, 'EE')}
+              {format(date, 'EE', { locale })}
             </DayTitle>
             <DaySubTitle active={active}>
               {format(date, 'dd.MM.')}

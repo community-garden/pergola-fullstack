@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import { useWeatherData, formatTemperature } from './helper';
+import { useDateFnsLocale } from '../../hooks';
 import WeatherIcon from './WeatherIcon';
 import { AnimatedClouds } from './AnimatedClouds';
 
@@ -27,6 +28,7 @@ interface WeatherViewProps {
 
 export const WeatherView = ({ latitude, longitude, locationName }: WeatherViewProps) => {
   const theme = useTheme();
+  const locale = useDateFnsLocale();
   const [animate, setAnimate] = useState(false);
   const { data, isLoading, isError, error } = useWeatherData(latitude, longitude);
   
@@ -86,7 +88,7 @@ export const WeatherView = ({ latitude, longitude, locationName }: WeatherViewPr
               {locationName || data?.name || 'Current Location'}
             </Typography>
             <Typography variant="body1" color="white" sx={{ opacity: 0.9 }}>
-              {format(new Date(), 'EEEE, MMMM d, yyyy')}
+              {format(new Date(), 'EEEE, MMMM d, yyyy', { locale })}
             </Typography>
           </Box>
           

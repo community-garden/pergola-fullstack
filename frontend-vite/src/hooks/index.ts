@@ -1,3 +1,4 @@
+export { useDateFnsLocale } from './useDateFnsLocale';
 export { useCurrentGarden } from './useCurrentGarden';
 export { useCurrentGardenInfo } from './useCurrentGardenInfo';
 export { useCreateEntity } from './useCreateEntity';

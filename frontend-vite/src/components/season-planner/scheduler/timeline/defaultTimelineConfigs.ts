@@ -14,6 +14,7 @@ import {
   getMonth,
   getYear,
 } from 'date-fns';
+import type { Locale } from 'date-fns';
 import type { TimelineHeaderConfig, TimelineUnit } from '../SchedulerTypes';
 
 // ---------------------------------------------------------------------------
@@ -58,7 +59,7 @@ export function createYearHeaderConfig(): TimelineHeaderConfig {
 // A month is ~30.44 days, so a month cell ≈ effectiveCellWidth * 30.44 px.
 // ---------------------------------------------------------------------------
 
-export function createMonthHeaderConfig(): TimelineHeaderConfig {
+export function createMonthHeaderConfig(locale?: Locale): TimelineHeaderConfig {
   return {
     key: 'month',
     height: 28,
@@ -105,7 +106,7 @@ export function createMonthHeaderConfig(): TimelineHeaderConfig {
         return `Q${q}`;
       }
       // Individual month — use short name when narrow, full when wide
-      return format(startDate, 'MMM');
+      return format(startDate, 'MMM', { locale });
     },
   };
 }
@@ -189,11 +190,12 @@ export function createDayHeaderConfig(): TimelineHeaderConfig {
  */
 export function createDateConfig(
   granularity: 'day' | 'week' | 'month' = 'day',
+  locale?: Locale,
 ): TimelineHeaderConfig[] {
   if (granularity === 'month') {
-    return [createYearHeaderConfig(), createMonthHeaderConfig()];
+    return [createYearHeaderConfig(), createMonthHeaderConfig(locale)];
   }
-  return [createYearHeaderConfig(), createMonthHeaderConfig(), createDayHeaderConfig()];
+  return [createYearHeaderConfig(), createMonthHeaderConfig(locale), createDayHeaderConfig()];
 }
 
 // ---------------------------------------------------------------------------

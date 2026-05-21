@@ -18,6 +18,7 @@ import { addDays, endOfMonth, format } from 'date-fns';
 import { HorizontalStepper, Calendar } from '../ui';
 import { LetItRainFrequency } from './';
 import { WizardProfile } from './WizardProfile';
+import { useDateFnsLocale } from '../../hooks';
 import { CarrotBedComponent } from './CarrotBedComponent';
 
 // Styled components
@@ -106,6 +107,7 @@ interface StepDesc {
 
 export function LetItRainWizard({ onComplete, gardenId, submitting = false, targetMonth }: LetItRainWizardProps) {
   const { t } = useTranslation('letItRain');
+  const locale = useDateFnsLocale();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
@@ -154,7 +156,7 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false, targ
       key: 'availability',
       title: t('wizard.steps.availability'),
       headline: t('wizard.headlines.availabilityForMonth', {
-        month: format(new Date(targetMonth + '-01'), 'MMMM yyyy'),
+        month: format(new Date(targetMonth + '-01'), 'MMMM yyyy', { locale }),
       }),
       component: (
         <Calendar

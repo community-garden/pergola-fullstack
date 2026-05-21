@@ -16,10 +16,9 @@ import {
   addDays,
   addMonths,
   } from 'date-fns';
-import { de, enUS } from 'date-fns/locale';
 import React, { useState } from 'react';
 import { differenceInDays } from 'date-fns';
-import { useTranslation } from 'react-i18next';
+import { useDateFnsLocale } from '../../hooks';
 
 interface Props {
   dates: Date[];
@@ -151,8 +150,7 @@ export function Calendar({
   selectedDates: externalSelectedDates,
   badges = {}
 }: Props) {
-  const { i18n } = useTranslation();
-  const dateFnsLocale = i18n.language.startsWith('de') ? de : enUS;
+  const dateFnsLocale = useDateFnsLocale();
   const weekStartsOn = (dateFnsLocale.options?.weekStartsOn ?? 1) as 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
   const [selectedDatesIntern, setSelectedDates] = useState<Date[]>([]);
@@ -236,10 +234,11 @@ export function Calendar({
           Zeitraum:&nbsp;
           {format(
             firstDate,
-            getMonth(firstDate) === getMonth(lastDate) ? 'd.' : 'd. MMMM'
+            getMonth(firstDate) === getMonth(lastDate) ? 'd.' : 'd. MMMM',
+            { locale: dateFnsLocale }
           )}
           &nbsp;–&nbsp;
-          {format(lastDate, 'd. MMMM')}
+          {format(lastDate, 'd. MMMM', { locale: dateFnsLocale })}
         </Typography>
 
         <Table size="small" sx={{ tableLayout: 'fixed' }}>
