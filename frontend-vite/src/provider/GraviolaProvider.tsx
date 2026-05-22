@@ -46,6 +46,7 @@ import { JSONSchema7 } from "json-schema";
 import { allRenderers } from "./config";
 import { usePlantKnowledgeBases } from "../knowledge-bases";
 import { plantMappings } from "../mappings";
+import { MediaConfigProvider } from "../components/graviola/renderers/image-upload/MediaConfigContext";
 
 type GraviolaProviderProps = {
   apiBaseUrl: string;
@@ -176,6 +177,7 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
   );
 
   return (
+    <MediaConfigProvider>
     <AdbProvider
       {...config}
       env={{
@@ -208,6 +210,7 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
         </FinderSlotProvider>
       </SemanticFormSlotProvider>
     </AdbProvider>
+    </MediaConfigProvider>
   );
 };
 

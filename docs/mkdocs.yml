@@ -24,6 +24,7 @@ nav:
     - JsonForms i18n: features/jsonforms-i18n.md
   - API:
     - Watering API: watering-api.md
+    - Media Upload: media-upload.md
   - Testing:
     - E2E Tests: testing/e2e.md
 

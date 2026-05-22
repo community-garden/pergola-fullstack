@@ -2,6 +2,7 @@ import React from "react";
 import type { Decorator } from "@storybook/react";
 import NiceModal from "@ebay/nice-modal-react";
 import { AdbProvider } from "@graviola/edb-state-hooks";
+import { MediaConfigProvider } from "../src/components/graviola/renderers/image-upload/MediaConfigContext";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import {
   createSemanticConfig,
@@ -34,25 +35,31 @@ const makeStubSchema = (schema: any) =>
  * component that calls useAdbContext(). Pass a Turtle string to pre-load an
  * in-memory RDF store once @graviola/indexeddb-store-provider is published.
  */
+// In Storybook, relative /api/media would resolve to the storybook host.
+// Point to the real dev API instead; UISchema options.apiBase overrides per-field.
+const STORYBOOK_MEDIA_API_BASE = "https://dev01.pergola.kuenste.live/api/media";
+
 export const withStoryProvider = (_turtleData?: string): Decorator =>
   (Story) => (
-    <AdbProvider
-      {...semanticConfig}
-      env={{ publicBasePath: "", baseIRI: BASE_IRI }}
-      components={{
-        EditEntityModal: () => null,
-        EntityDetailModal: () => null,
-        SemanticJsonForm: SemanticJsonFormNoOps,
-        SimilarityFinder: () => null,
-      }}
-      useRouterHook={useRouterMock}
-      schema={plantSchema as any}
-      makeStubSchema={makeStubSchema}
-    >
-      <NiceModal.Provider>
-        <Story />
-      </NiceModal.Provider>
-    </AdbProvider>
+    <MediaConfigProvider mediaApiBase={STORYBOOK_MEDIA_API_BASE}>
+      <AdbProvider
+        {...semanticConfig}
+        env={{ publicBasePath: "", baseIRI: BASE_IRI }}
+        components={{
+          EditEntityModal: () => null,
+          EntityDetailModal: () => null,
+          SemanticJsonForm: SemanticJsonFormNoOps,
+          SimilarityFinder: () => null,
+        }}
+        useRouterHook={useRouterMock}
+        schema={plantSchema as any}
+        makeStubSchema={makeStubSchema}
+      >
+        <NiceModal.Provider>
+          <Story />
+        </NiceModal.Provider>
+      </AdbProvider>
+    </MediaConfigProvider>
   );
 
 // ── Router decorator ──────────────────────────────────────────────────────────

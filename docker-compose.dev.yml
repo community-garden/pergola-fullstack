@@ -52,16 +52,37 @@ services:
       - "traefik.http.services.dev01.loadbalancer.server.port=5173"
     restart: unless-stopped
 
+  picturium:
+    image: lamka02sk/picturium:latest
+    volumes:
+      - pergola_media:/app
+    environment:
+      - HOST=0.0.0.0
+      - PORT=20045
+      - KEY=${PICTURIUM_KEY:-dev-secret}
+      - LOG=info
+      - CORS=
+      - CACHE_ENABLE=true
+    networks:
+      - internal-dev
+    restart: unless-stopped
+
   watering-api:
     build:
       context: .
       dockerfile: ./watering-api/Dockerfile.dev
     volumes:
       - ./watering-api/src:/app/watering-api/src
+      - pergola_media:/media
     environment:
       - SPARQL_ENDPOINT_URL=http://oxigraph:7878/query
+      - PICTURIUM_URL=http://picturium:20045
+      - PICTURIUM_KEY=${PICTURIUM_KEY:-dev-secret}
+      - MEDIA_STORAGE_PATH=/media
+      - MEDIA_MAX_BYTES=10485760
     depends_on:
       - oxigraph
+      - picturium
     networks:
       - traefik
       - internal-dev
@@ -162,3 +183,4 @@ volumes:
   oxigraph_dev_data:
   frontend_node_modules:
   storybook_node_modules:
+  pergola_media:

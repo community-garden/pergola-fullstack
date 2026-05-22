@@ -11,6 +11,17 @@ const config: StorybookConfig = {
   "framework": {
     "name": "@storybook/react-vite",
     "options": {}
-  }
+  },
+  viteFinal: (config) => ({
+    ...config,
+    optimizeDeps: {
+      ...config.optimizeDeps,
+      include: [
+        ...(config.optimizeDeps?.include ?? []),
+        "@mui/icons-material/UploadFile",
+        "@mui/icons-material/DeleteOutline",
+      ],
+    },
+  }),
 };
 export default config;

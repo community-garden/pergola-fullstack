@@ -12,6 +12,10 @@ import {
   AnonymousPersonJsonSchema,
   AnonymousPersonTypeIRI,
 } from "../schema/anonymous-person";
+import {
+  MediaAttachmentJsonSchema,
+  MediaAttachmentTypeIRI,
+} from "../schema/media-attachment";
 
 const SPARQL_ENDPOINT = process.env.SPARQL_ENDPOINT_URL ?? "http://localhost:7878/query";
 
@@ -21,6 +25,7 @@ const mergedSchema: JSONSchema7 = {
     ...AnonymousPersonJsonSchema.definitions,
     ...WateringAvailabilityJsonSchema.definitions,
     ...WateringPlanJsonSchema.definitions,
+    ...MediaAttachmentJsonSchema.definitions,
   },
 };
 
@@ -28,6 +33,7 @@ const typeNameToTypeIRI = (typeName: string): string => {
   if (typeName === "WateringAvailability") return WateringAvailabilityTypeIRI;
   if (typeName === "WateringPlan") return WateringPlanTypeIRI;
   if (typeName === "AnonymousPerson") return AnonymousPersonTypeIRI;
+  if (typeName === "MediaAttachment") return MediaAttachmentTypeIRI;
   return `${ONTOLOGY}${typeName}`;
 };
 
@@ -60,6 +66,7 @@ export const store = initSPARQLStore({
       AnonymousPerson: { label: "name" },
       WateringAvailability: { label: "name", description: "submittedAt" },
       WateringPlan: { label: "gardenIri", description: "calculatedAt" },
+      MediaAttachment: { label: "name", description: "uploadedAt" },
     },
     primaryFieldExtracts: {},
     sparqlFlavour: "oxigraph",
