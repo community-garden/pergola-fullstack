@@ -155,8 +155,15 @@ const GardenMap = () => {
 
 
 
+  // Fly to the garden's actual location once it loads (map may have started at default center)
   useEffect(() => {
-    if (!mapContainer.current || mapRef.current || isLoading) return;
+    if (!mapRef.current || !mapLoaded || !garden?.location) return;
+    mapRef.current.flyTo({ center: mapCenter, zoom: 17, duration: 1000 });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [garden?.location, mapLoaded]);
+
+  useEffect(() => {
+    if (!mapContainer.current || mapRef.current) return;
 
     // Create map with satellite as default
     const map = new maplibregl.Map({
@@ -514,7 +521,7 @@ const GardenMap = () => {
         setMapLoaded(false);
       }
     };
-  }, [mapCenter, isLoading]);
+  }, []);
 
   return (
     <Box
