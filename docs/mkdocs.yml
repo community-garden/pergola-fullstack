@@ -21,6 +21,7 @@ nav:
     - Setup: development/setup.md
   - Features:
     - LetItRain Wizard: letitrain-wizard.md
+    - JsonForms i18n: features/jsonforms-i18n.md
   - API:
     - Watering API: watering-api.md
   - Testing:

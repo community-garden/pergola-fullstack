@@ -15,7 +15,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    ns: ['common', 'navigation', 'letItRain', 'watering', 'garden'],
+    ns: ['common', 'navigation', 'letItRain', 'watering', 'garden', 'jsonforms'],
     defaultNS: 'common',
     resources,
     fallbackLng: 'de',

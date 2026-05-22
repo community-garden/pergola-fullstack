@@ -1,4 +1,5 @@
 export { useDateFnsLocale } from './useDateFnsLocale';
+export { useJsonFormsTranslator } from './useJsonFormsTranslator';
 export { useCurrentGarden } from './useCurrentGarden';
 export { useCurrentGardenInfo } from './useCurrentGardenInfo';
 export { useCreateEntity } from './useCreateEntity';

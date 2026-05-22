@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { isEqual } from 'lodash-es';
 import { SemanticJsonForm } from '@graviola/semantic-json-form';
 import { useAdbContext, useExtendedSchema, useFormDataStore } from '@graviola/edb-state-hooks';
+import { useJsonFormsTranslator } from '../../hooks';
 import { featureTypeMapping, GardenFeatureType } from './feature-type-mapping';
 
 export interface NewFeatureFormProps {
@@ -20,6 +21,7 @@ export const NewFeatureForm: React.FC<NewFeatureFormProps> = ({
   onSave,
 }) => {
   const { t } = useTranslation('garden');
+  const { locale, translate } = useJsonFormsTranslator();
   const {
     typeNameToTypeIRI,
     createEntityIRI,
@@ -101,6 +103,7 @@ export const NewFeatureForm: React.FC<NewFeatureFormProps> = ({
           wrapWithinCard={false}
           shouldLoadInitially={false}
           forceEditMode={true}
+          jsonFormsProps={{ i18n: { locale, translate } }}
         />
       </Box>
       
