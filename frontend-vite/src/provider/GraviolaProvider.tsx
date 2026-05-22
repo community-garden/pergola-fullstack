@@ -5,6 +5,12 @@ import {
   AdbProvider,
   useAdbContext,
   useDataStore,
+  SemanticFormSlotProvider,
+  FinderSlotProvider,
+  ModalRegistryProvider,
+  MODAL_EDIT_ENTITY,
+  MODAL_ENTITY_DETAIL,
+  MODAL_SIMILARITY_FINDER,
 } from "@graviola/edb-state-hooks";
 import {
   PrimaryFieldDeclaration,
@@ -16,6 +22,7 @@ import {
   EditEntityModal,
   EntityDetailModal,
   KBMainDatabase,
+  SimilarityFinderDrawer,
 } from "@graviola/edb-advanced-components";
 import { EntityFinder } from "@graviola/entity-finder";
 import {
@@ -159,7 +166,15 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
     [renderers],
   );
 
-  // @ts-ignore
+  const modals = useMemo(
+    () => ({
+      [MODAL_EDIT_ENTITY]: EditEntityModal,
+      [MODAL_ENTITY_DETAIL]: EntityDetailModal,
+      [MODAL_SIMILARITY_FINDER]: SimilarityFinderDrawer,
+    }),
+    [],
+  );
+
   return (
     <AdbProvider
       {...config}
@@ -167,13 +182,6 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
         publicBasePath: "",
         baseIRI,
       }}
-      components={{
-        EditEntityModal: EditEntityModal,
-        EntityDetailModal: EntityDetailModal,
-        SemanticJsonForm: SemanticJsonFormNoOps,
-        SimilarityFinder: SimilarityFinder,
-      }}
-      useRouterHook={useRouterMock}
       schema={schema}
       makeStubSchema={makeStubSchema}
       uiSchemaDefaultRegistry={registry}
@@ -182,17 +190,23 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
       uischemata={uischemata}
       normDataMapping={plantMappings}
     >
-      <SparqlStoreProvider
-        endpoint={endpoint}
-        defaultLimit={20}
-        walkerOptions={{
-          maxRecursion: 2,
-          maxRecursionEachRef: 2,
-        }}
-        enableInversePropertiesFeature={true}
-      >
-        <NiceModal.Provider>{children}</NiceModal.Provider>
-      </SparqlStoreProvider>
+      <SemanticFormSlotProvider Component={SemanticJsonFormNoOps}>
+        <FinderSlotProvider Component={SimilarityFinder}>
+          <ModalRegistryProvider modals={modals}>
+            <SparqlStoreProvider
+              endpoint={endpoint}
+              defaultLimit={20}
+              walkerOptions={{
+                maxRecursion: 2,
+                maxRecursionEachRef: 2,
+              }}
+              enableInversePropertiesFeature={true}
+            >
+              <NiceModal.Provider>{children}</NiceModal.Provider>
+            </SparqlStoreProvider>
+          </ModalRegistryProvider>
+        </FinderSlotProvider>
+      </SemanticFormSlotProvider>
     </AdbProvider>
   );
 };

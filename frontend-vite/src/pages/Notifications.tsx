@@ -12,7 +12,6 @@ import {
 const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   margin: theme.spacing(2),
-  backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
 }));

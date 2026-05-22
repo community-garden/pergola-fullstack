@@ -7,7 +7,6 @@ const HomeBox = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   margin: theme.spacing(2),
   textAlign: 'center',
-  backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
 }));

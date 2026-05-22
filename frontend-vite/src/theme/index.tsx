@@ -111,6 +111,16 @@ const customTheme = createTheme({
     },
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(255, 255, 255, 0.35)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255, 255, 255, 0.35)',
+        },
+      },
+    },
     MuiDialogContent: {
       styleOverrides: {
         root: {
