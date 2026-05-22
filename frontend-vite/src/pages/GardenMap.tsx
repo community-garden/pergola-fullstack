@@ -38,6 +38,10 @@ const GardenMap = () => {
   
   // Map TerraDraw feature IDs to GeoFeature IRIs
   const featureIdToIRIMapRef = useRef<Record<string | number, string>>({});
+  // Keep a ref to the latest garden so event handlers inside the map useEffect
+  // (which has [] deps) always read current data rather than the stale closure value.
+  const gardenRef = useRef(garden);
+  useEffect(() => { gardenRef.current = garden; }, [garden]);
 
   // Use our clean CRUD hooks
   const { mutateAsync: createGeoFeature } = useCreateEntity({ typeIRI: geoFeatureTypeIRI });
@@ -386,19 +390,21 @@ const GardenMap = () => {
             });
             
             // Add GeoFeature to the garden's geoFeatures array
-            if (gardenIRI && garden) {
-              const existingGeoFeatures = garden.geoFeatures || [];
+            const currentGarden = gardenRef.current;
+            const currentGardenIRI = currentGarden?.['@id'];
+            if (currentGardenIRI && currentGarden) {
+              const existingGeoFeatures = currentGarden.geoFeatures || [];
               const updatedGarden = {
-                ...garden,
+                ...currentGarden,
                 geoFeatures: [
                   ...existingGeoFeatures,
                   { '@id': geoFeatureIRI }
                 ],
               };
-              
+
               // Update garden using our clean hook
               await updateGarden({
-                entityIRI: gardenIRI,
+                entityIRI: currentGardenIRI,
                 data: updatedGarden,
               });
               await refetchGarden();
@@ -437,19 +443,21 @@ const GardenMap = () => {
               if (geoFeatureIRI) {
                 try {
                   // Remove from garden's geoFeatures array first
-                  if (gardenIRI && garden) {
-                    const existingGeoFeatures = garden.geoFeatures || [];
+                  const currentGarden = gardenRef.current;
+                  const currentGardenIRI = currentGarden?.['@id'];
+                  if (currentGardenIRI && currentGarden) {
+                    const existingGeoFeatures = currentGarden.geoFeatures || [];
                     const updatedGeoFeatures = existingGeoFeatures.filter(
                       (gf: any) => gf['@id'] !== geoFeatureIRI
                     );
                     const updatedGarden = {
-                      ...garden,
+                      ...currentGarden,
                       geoFeatures: updatedGeoFeatures,
                     };
-                    
+
                     // Update garden using our clean hook
                     await updateGarden({
-                      entityIRI: gardenIRI,
+                      entityIRI: currentGardenIRI,
                       data: updatedGarden,
                     });
                     await refetchGarden();

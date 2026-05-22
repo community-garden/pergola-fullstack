@@ -29,7 +29,7 @@ export const useCreateEntity = ({ typeIRI }: CreateEntityOptions) => {
       console.log('dataWithType', dataWithType);
       console.log('typeName', typeName);
       
-      return await dataStore.upsertDocument(typeName, entityIRI, dataWithType);
+      return await dataStore.upsert(typeName, entityIRI, dataWithType);
     },
     onSuccess: (result, variables) => {
       // Invalidate relevant queries

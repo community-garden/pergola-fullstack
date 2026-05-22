@@ -27,7 +27,7 @@ export const useUpdateEntity = ({ typeIRI }: UpdateEntityOptions) => {
         '@type': typeIRI,
       };
       
-      return await dataStore.upsertDocument(typeName, entityIRI, dataWithType);
+      return await dataStore.upsert(typeName, entityIRI, dataWithType);
     },
     onSuccess: (result, variables) => {
       // Invalidate relevant queries
