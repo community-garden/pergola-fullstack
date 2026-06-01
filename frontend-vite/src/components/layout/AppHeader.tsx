@@ -47,6 +47,7 @@ const AppHeader = () => {
     if (path.includes('/notifications')) return t('notifications');
     if (path.includes('/garden-settings')) return t('gardenSettings');
     if (path.includes('/settings')) return t('settings');
+    if (path.includes('/plants')) return t('plants');
     return '';
   };
 

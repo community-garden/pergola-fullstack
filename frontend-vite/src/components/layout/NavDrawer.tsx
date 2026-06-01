@@ -6,6 +6,7 @@ import {
   ListItemIcon,
   ListItemText,
   Box,
+  Chip,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -19,6 +20,7 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { styled } from '@mui/material/styles';
+import { isFeatureEnabled } from '@config/featureFlags';
 
 import logoSvg from '@assets/logo-pergola-title.svg';
 
@@ -41,15 +43,22 @@ interface NavDrawerProps {
   gardenId: string;
 }
 
-const navItems = [
-  { icon: <HomeIcon />, labelKey: 'home', route: 'home' },
-  { icon: <MapIcon />, labelKey: 'map', route: 'map' },
-  { icon: <PlantsIcon />, labelKey: 'plants', route: 'plants' },
-  { icon: <SeasonPlannerIcon />, labelKey: 'seasonPlanner', route: 'season-planner' },
-  { icon: <WaterdropIcon />, labelKey: 'watering', route: 'watering' },
-  { icon: <EventNoteIcon />, labelKey: 'notifications', route: 'notifications' },
-  { icon: <SettingsIcon />, labelKey: 'gardenSettings', route: 'garden-settings' },
-] as const;
+interface NavItem {
+  icon: React.ReactNode;
+  labelKey: string;
+  route: string;
+  featureFlag: string;
+}
+
+const navItems: NavItem[] = [
+  { icon: <HomeIcon />, labelKey: 'home', route: 'home', featureFlag: 'home' },
+  { icon: <MapIcon />, labelKey: 'map', route: 'map', featureFlag: 'map' },
+  { icon: <PlantsIcon />, labelKey: 'plants', route: 'plants', featureFlag: 'plants' },
+  { icon: <SeasonPlannerIcon />, labelKey: 'seasonPlanner', route: 'season-planner', featureFlag: 'seasonPlanner' },
+  { icon: <WaterdropIcon />, labelKey: 'watering', route: 'watering', featureFlag: 'watering' },
+  { icon: <EventNoteIcon />, labelKey: 'notifications', route: 'notifications', featureFlag: 'notifications' },
+  { icon: <SettingsIcon />, labelKey: 'gardenSettings', route: 'garden-settings', featureFlag: 'settings' },
+];
 
 const NavDrawer = ({ open, onClose, gardenId }: NavDrawerProps) => {
   const { t } = useTranslation('navigation');
@@ -67,18 +76,30 @@ const NavDrawer = ({ open, onClose, gardenId }: NavDrawerProps) => {
       </LogoBox>
       <Divider />
       <List sx={{ width: 240, pt: 1 }} onClick={onClose}>
-        {navItems.map(({ icon, labelKey, route }) => {
+        {navItems.map(({ icon, labelKey, route, featureFlag }) => {
+          const enabled = isFeatureEnabled(featureFlag);
           const to = `/${gardenId}/${route}`;
           const selected = pathname.startsWith(to);
+          
           return (
             <ListItemButton
               key={route}
               component={Link}
               to={to}
               selected={selected}
+              disabled={!enabled}
             >
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={t(labelKey)} />
+              {!enabled && (
+                <Chip 
+                  label="July 2026" 
+                  size="small" 
+                  color="primary"
+                  variant="outlined"
+                  sx={{ ml: 1 }}
+                />
+              )}
             </ListItemButton>
           );
         })}

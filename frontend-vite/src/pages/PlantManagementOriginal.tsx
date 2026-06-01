@@ -1,6 +1,5 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { SemanticTable, TableConfigRegistry } from "@graviola/edb-table-components";
-import { useCallback } from "react";
 import { useCreateOrEditModal } from "@hooks/useCreateOrEditModal";
 
 

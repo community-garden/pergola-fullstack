@@ -7,6 +7,9 @@
 
 import { AppConfig, ApiConfig, AuthConfig } from './types';
 
+// Export feature flags
+export * from './featureFlags';
+
 /**
  * Creates the API configuration
  * @returns API configuration object
