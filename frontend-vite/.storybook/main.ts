@@ -20,6 +20,8 @@ const config: StorybookConfig = {
         ...(config.optimizeDeps?.include ?? []),
         "@mui/icons-material/UploadFile",
         "@mui/icons-material/DeleteOutline",
+        "@mui/icons-material/CheckCircle",
+        "@mui/icons-material/RadioButtonUnchecked",
       ],
     },
   }),
