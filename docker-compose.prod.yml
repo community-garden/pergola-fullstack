@@ -58,7 +58,7 @@ services:
       dockerfile: ./frontend-vite/Dockerfile.prod-dev
       args:
         VITE_SPARQL_API_URL: https://sparql01.pergola.kuenste.live/query
-        VITE_API_URL: https://pergola.kuenste.live/api
+        VITE_API_URL: https://pergola.kuenste.live/api/watering
     networks:
       - traefik
     labels:
