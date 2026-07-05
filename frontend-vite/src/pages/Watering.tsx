@@ -18,14 +18,22 @@ import CloseIcon from '@mui/icons-material/Close';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TableRowsIcon from '@mui/icons-material/TableRows';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { useSnackbar } from 'notistack';
-import { WateringCalendar, WateringPlanDetailModal } from '../components/letItRain';
+import { WateringCalendar, WateringPlanDetailModal, WateringPersonChip } from '../components/letItRain';
 import { Link, useParams } from 'react-router-dom';
-import { useWateringPlan, nextMonthYYYYMM } from '../hooks/useWateringPlan';
+import {
+  useWateringPlan,
+  useAvailabilityCount,
+  usePlanTargetMonth,
+  gardenIriFromId,
+  planIdFromGardenAndMonth,
+  currentMonthYYYYMM,
+} from '../hooks/useWateringPlan';
 import { useLocalUser } from '../hooks/useLocalUser';
-import { useDateFnsLocale } from '../hooks';
+import { useDateFnsLocale, useCurrentGardenInfo } from '../hooks';
+import { removeAvailabilityDate, removePlanAssignment } from '../api/watering';
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -47,17 +55,87 @@ const Watering = () => {
   const [calculating, setCalculating] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [showAvailability, setShowAvailability] = useState(false);
 
-  const nextMonth = nextMonthYYYYMM();
   const { personId } = useLocalUser();
   const myPersonIri = `${DATA_BASE}Person/${personId}`;
-  const { assignments, personNames, myAvailableDates, calculatedAt, refetch } = useWateringPlan(
-    gardenId,
-    nextMonth,
-    myPersonIri
+
+  // displayMonth: always the current calendar month — shows the active plan
+  const displayMonth = currentMonthYYYYMM();
+
+  const {
+    planTargetMonth,
+    calculatedAt: planTargetCalculatedAt,
+    refetch: refetchPlanTarget,
+  } = usePlanTargetMonth(gardenId);
+
+  const {
+    assignments,
+    personNames,
+    availabilityByDate,
+    myAvailableDates,
+    calculatedAt: displayPlanCalculatedAt,
+    refetch: refetchCurrentPlan,
+  } = useWateringPlan(gardenId, displayMonth, myPersonIri);
+
+  // Count submissions for the NEXT target month (not the displayed month)
+  const availabilityCount = useAvailabilityCount(gardenId, planTargetMonth);
+
+  const { garden } = useCurrentGardenInfo();
+  const gardenName = garden?.name ?? (gardenId ? gardenId[0].toUpperCase() + gardenId.slice(1) : 'Garden');
+  const gardenLocation = garden?.location;
+
+  const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
+  const assignmentsOnSelectedDate = assignments.filter((a) => a.date === selectedDateStr);
+  const assignedPersonIris = useMemo(
+    () => new Set(assignmentsOnSelectedDate.map((a) => a.personIri)),
+    [assignmentsOnSelectedDate]
+  );
+  const fallbackOnSelectedDate = (availabilityByDate[selectedDateStr] ?? []).filter(
+    (p) => !assignedPersonIris.has(p.personIri)
   );
 
-  const nextMonthLabel = format(new Date(nextMonth + '-01'), 'MMMM yyyy', { locale });
+  const planTargetMonthLabel = format(new Date(planTargetMonth + '-01'), 'MMMM yyyy', { locale });
+  // planId targets the displayed month (the plan we can remove assignments from)
+  const planId = gardenId ? planIdFromGardenAndMonth(gardenId, displayMonth) : '';
+
+  const refetch = useCallback(() => {
+    refetchCurrentPlan();
+    refetchPlanTarget();
+  }, [refetchCurrentPlan, refetchPlanTarget]);
+
+  const handleDateChange = useCallback((date: Date) => {
+    setSelectedDate(date);
+    setShowAvailability(false);
+  }, []);
+
+  const handleRemoveAssignment = useCallback(
+    async (date: string, personIri: string) => {
+      if (!gardenId || !planId) return;
+      try {
+        await removePlanAssignment(planId, date, personIri);
+        enqueueSnackbar(t('watering:chip.removeAssignmentSuccess'), { variant: 'success' });
+        refetch();
+      } catch {
+        enqueueSnackbar(t('watering:chip.removeAssignmentError'), { variant: 'error' });
+      }
+    },
+    [gardenId, planId, enqueueSnackbar, t, refetch]
+  );
+
+  const handleRemoveAvailability = useCallback(
+    async (date: string, personIri: string) => {
+      if (!gardenId) return;
+      try {
+        await removeAvailabilityDate(gardenIriFromId(gardenId), personIri, displayMonth, date);
+        enqueueSnackbar(t('watering:chip.removeAvailabilitySuccess'), { variant: 'success' });
+        refetch();
+      } catch {
+        enqueueSnackbar(t('watering:chip.removeAvailabilityError'), { variant: 'error' });
+      }
+    },
+    [gardenId, displayMonth, enqueueSnackbar, t, refetch]
+  );
 
   const handleCalculatePlan = async () => {
     if (!gardenId) return;
@@ -67,7 +145,7 @@ const Watering = () => {
       const res = await fetch('/api/watering/plan/calculate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gardenIri, targetMonth: nextMonth }),
+        body: JSON.stringify({ gardenIri, targetMonth: planTargetMonth }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       enqueueSnackbar(t('watering:planManagement.calculated'), { variant: 'success' });
@@ -89,7 +167,7 @@ const Watering = () => {
 
   const handleMenuCalculate = () => {
     handleMenuClose();
-    if (calculatedAt) {
+    if (planTargetCalculatedAt) {
       setConfirmOpen(true);
     } else {
       handleCalculatePlan();
@@ -154,9 +232,9 @@ const Watering = () => {
         <DialogContent>
           <Typography variant="body1">
             {t('watering:planManagement.recalculateConfirm.message', {
-              month: nextMonthLabel,
-              date: calculatedAt
-                ? format(new Date(calculatedAt), 'd MMM yyyy, HH:mm', { locale })
+              month: planTargetMonthLabel,
+              date: planTargetCalculatedAt
+                ? format(new Date(planTargetCalculatedAt), 'd MMM yyyy, HH:mm', { locale })
                 : '',
             })}
           </Typography>
@@ -198,18 +276,37 @@ const Watering = () => {
           </IconButton>
         </Box>
 
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: calculatedAt ? 2 : 0 }}>
+        {/* Set availabilities + View plan — side by side, wrap on narrow */}
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center', mb: 1 }}>
           <Link to={`/${gardenId || ''}/watering/wizard`} style={{ textDecoration: 'none' }}>
             <Button variant="contained" color="primary" size="large" sx={{ fontWeight: 'bold', px: 4 }}>
               {t('watering:page.infoArea.setAvailabilities')}
             </Button>
           </Link>
+          <Button
+            variant="outlined"
+            size="large"
+            startIcon={<TableRowsIcon />}
+            onClick={() => setDetailOpen(true)}
+            data-cy="plan-detail-button"
+          >
+            {t('watering:plan.detailButton')}
+          </Button>
         </Box>
 
-        {calculatedAt && (
+        {availabilityCount !== null && (
+          <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 1 }}>
+            {t('watering:page.infoArea.availabilityCount', {
+              count: availabilityCount,
+              month: planTargetMonthLabel,
+            })}
+          </Typography>
+        )}
+
+        {displayPlanCalculatedAt && (
           <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
             {t('watering:planManagement.calculatedAt', {
-              date: format(new Date(calculatedAt), 'd MMM yyyy, HH:mm', { locale }),
+              date: format(new Date(displayPlanCalculatedAt), 'd MMM yyyy, HH:mm', { locale }),
             })}
             {' · '}
             {t('watering:planManagement.assignmentCount', { count: assignments.length })}
@@ -219,11 +316,11 @@ const Watering = () => {
 
       {/* Secondary menu */}
       <Menu anchorEl={menuAnchorEl} open={Boolean(menuAnchorEl)} onClose={handleMenuClose}>
-        <MenuItem onClick={handleMenuCalculate} disabled={calculating}>
+        <MenuItem onClick={handleMenuCalculate} disabled={calculating} data-cy="calculate-plan-button">
           {calculating && <CircularProgress size={14} sx={{ mr: 1 }} />}
-          {calculatedAt
-            ? t('watering:planManagement.menuItemRecalculate', { month: nextMonthLabel })
-            : t('watering:planManagement.menuItem', { month: nextMonthLabel })}
+          {planTargetCalculatedAt
+            ? t('watering:planManagement.menuItemRecalculate', { month: planTargetMonthLabel })
+            : t('watering:planManagement.menuItem', { month: planTargetMonthLabel })}
         </MenuItem>
       </Menu>
 
@@ -233,30 +330,89 @@ const Watering = () => {
         onClose={() => setDetailOpen(false)}
         assignments={assignments}
         personNames={personNames}
+        gardenName={gardenName}
+        gardenId={gardenId}
+        gardenLocation={gardenLocation}
       />
 
       {/* Watering Calendar */}
       <ContentPaper>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<TableRowsIcon />}
-            onClick={() => setDetailOpen(true)}
-            data-cy="plan-detail-button"
-          >
-            {t('watering:plan.detailButton')}
-          </Button>
-        </Box>
         <WateringCalendar
           variant="horizontal"
           preselectedDate={selectedDate}
-          onDateChange={setSelectedDate}
+          onDateChange={handleDateChange}
           allowVariantToggle={false}
           assignments={assignments}
           personIri={myPersonIri}
           availableDates={myAvailableDates}
+          availabilityByDate={availabilityByDate}
         />
+
+        {/* Selected-date chips — below the calendar */}
+        <Box sx={{ mt: 1 }} data-cy="selected-date-chips">
+          {/* Assigned gardeners — always shown */}
+          {assignmentsOnSelectedDate.length > 0 && (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {assignmentsOnSelectedDate.map((a) => (
+                <WateringPersonChip
+                  key={a.personIri}
+                  name={personNames[a.personIri] ?? a.personIri.split('/').pop() ?? a.personIri}
+                  personIri={a.personIri}
+                  assignments={assignments}
+                  gardenName={gardenName}
+                  gardenId={gardenId ?? 'garden'}
+                  gardenLocation={gardenLocation}
+                  variant="assigned"
+                  removable
+                  onRemove={() => handleRemoveAssignment(selectedDateStr, a.personIri)}
+                />
+              ))}
+            </Box>
+          )}
+
+          {/* Available-but-not-assigned — shown only when no assignments, or when expanded */}
+          {fallbackOnSelectedDate.length > 0 && (
+            <>
+              {(assignmentsOnSelectedDate.length === 0 || showAvailability) ? (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: assignmentsOnSelectedDate.length > 0 ? 0.5 : 0 }}>
+                  {fallbackOnSelectedDate.map(({ personIri, name }) => (
+                    <WateringPersonChip
+                      key={personIri}
+                      name={name}
+                      personIri={personIri}
+                      assignments={assignments}
+                      gardenName={gardenName}
+                      gardenId={gardenId ?? 'garden'}
+                      gardenLocation={gardenLocation}
+                      variant="available"
+                      removable
+                      onRemove={() => handleRemoveAvailability(selectedDateStr, personIri)}
+                    />
+                  ))}
+                  {assignmentsOnSelectedDate.length > 0 && (
+                    <Button
+                      size="small"
+                      sx={{ fontSize: '0.7rem', py: 0, minHeight: 0, color: 'text.secondary' }}
+                      onClick={() => setShowAvailability(false)}
+                    >
+                      {t('watering:calendar.hideAvailable')}
+                    </Button>
+                  )}
+                </Box>
+              ) : (
+                <Box sx={{ mt: 0.5 }}>
+                  <Button
+                    size="small"
+                    sx={{ fontSize: '0.75rem', py: 0.25, color: 'text.secondary' }}
+                    onClick={() => setShowAvailability(true)}
+                  >
+                    {t('watering:calendar.showAvailable', { count: fallbackOnSelectedDate.length })}
+                  </Button>
+                </Box>
+              )}
+            </>
+          )}
+        </Box>
       </ContentPaper>
     </Box>
   );

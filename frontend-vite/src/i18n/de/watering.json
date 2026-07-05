@@ -1,6 +1,8 @@
 {
   "calendar": {
     "today": "heute",
+    "showAvailable": "+{{count}} verfügbar",
+    "hideAvailable": "ausblenden",
     "weekdays": {
       "friday": "Fr",
       "monday": "Mo",
@@ -10,6 +12,17 @@
       "tuesday": "Di",
       "wednesday": "Mi"
     }
+  },
+  "chip": {
+    "downloadCalendar": "Kalendertermine herunterladen",
+    "icsEventSummary": "Gießen im {{gardenName}}",
+    "fallbackAvailable": "{{name}} — als Reserve verfügbar",
+    "removeAssignment": "{{name}} aus Zuweisung entfernen",
+    "removeAvailability": "{{name}} für dieses Datum aus Verfügbarkeit entfernen",
+    "removeAssignmentSuccess": "Zuweisung entfernt.",
+    "removeAssignmentError": "Zuweisung konnte nicht entfernt werden.",
+    "removeAvailabilitySuccess": "Verfügbarkeit für dieses Datum entfernt.",
+    "removeAvailabilityError": "Verfügbarkeit konnte nicht entfernt werden."
   },
   "plan": {
     "detailButton": "Plan anzeigen",
@@ -60,6 +73,7 @@
       "description": "Beteilige dich am gemeinschaftlichen Gießplan, für eine gute Ernte. Wähle deine Verfügbarkeit und Präferenzen, um zu beginnen.",
       "registerButton": "In den Gießplan eintragen",
       "setAvailabilities": "Meine Verfügbarkeit eintragen",
+      "availabilityCount": "{{count}} Person(en) haben sich für {{month}} eingetragen",
       "title": "Teilnahme am Gießplan"
     },
     "title": "Gießplan"

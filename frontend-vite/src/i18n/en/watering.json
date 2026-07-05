@@ -1,6 +1,8 @@
 {
   "calendar": {
     "today": "today",
+    "showAvailable": "+{{count}} available",
+    "hideAvailable": "hide",
     "weekdays": {
       "friday": "Fri",
       "monday": "Mon",
@@ -10,6 +12,17 @@
       "tuesday": "Tue",
       "wednesday": "Wed"
     }
+  },
+  "chip": {
+    "downloadCalendar": "Download calendar appointments",
+    "icsEventSummary": "Watering at {{gardenName}}",
+    "fallbackAvailable": "{{name}} — available as fallback",
+    "removeAssignment": "Remove {{name}} from assignment",
+    "removeAvailability": "Remove {{name}} from availability on this date",
+    "removeAssignmentSuccess": "Assignment removed.",
+    "removeAssignmentError": "Could not remove assignment.",
+    "removeAvailabilitySuccess": "Availability removed for this date.",
+    "removeAvailabilityError": "Could not remove availability."
   },
   "plan": {
     "detailButton": "View Plan",
@@ -60,6 +73,7 @@
       "description": "Join the community watering schedule to help maintain the garden. Select your availability and preferences to get started.",
       "registerButton": "Register for Watering Schedule",
       "setAvailabilities": "Set my availabilities",
+      "availabilityCount": "{{count}} person(s) registered for {{month}}",
       "title": "Watering Schedule Participation"
     },
     "title": "Watering Schedule"
