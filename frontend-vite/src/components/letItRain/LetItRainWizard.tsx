@@ -57,7 +57,6 @@ const WizardContent = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'space-between',
-  minHeight: '450px',
   maxHeight: '600px',
   overflow: 'auto',
   padding: theme.spacing(2, 0),
@@ -68,7 +67,6 @@ const WizardInnerContainer = styled(Box)(() => ({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'space-between',
-  minHeight: '450px',
 }));
 
 const WizardActions = styled(Box)(({ theme }) => ({
@@ -210,6 +208,10 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false, targ
     }
   };
 
+  const handleStepClick = (index: number) => {
+    navigate(`/${gardenId}/watering/wizard/${index}`);
+  };
+
   const handleFinish = () => {
     if (!nickname.trim()) {
       setFinishAttempted(true);
@@ -253,6 +255,7 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false, targ
           <HorizontalStepper
             steps={steps.map(step => step.title)}
             activeStep={currentStepIndex}
+            onStepClick={handleStepClick}
           />
 
           {currentStep.component}

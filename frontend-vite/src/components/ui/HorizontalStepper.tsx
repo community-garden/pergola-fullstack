@@ -1,9 +1,10 @@
-import { Stepper, Step, StepLabel, styled } from '@mui/material';
+import { Stepper, Step, StepLabel, StepButton, styled } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface HorizontalStepperProps {
   steps: string[];
   activeStep: number;
+  onStepClick?: (index: number) => void;
 }
 
 const StyledStepper = styled(Stepper)(({ theme }) => ({
@@ -30,14 +31,20 @@ const StyledStepLabel = styled(StepLabel)(({ theme }) => ({
   }
 }));
 
-export function HorizontalStepper({ steps, activeStep }: HorizontalStepperProps) {
+export function HorizontalStepper({ steps, activeStep, onStepClick }: HorizontalStepperProps) {
   const { t } = useTranslation();
 
   return (
-    <StyledStepper activeStep={activeStep} alternativeLabel>
-      {steps.map((label) => (
-        <Step key={label}>
-          <StyledStepLabel>{t(label)}</StyledStepLabel>
+    <StyledStepper activeStep={activeStep} alternativeLabel nonLinear={!!onStepClick}>
+      {steps.map((label, index) => (
+        <Step key={label} completed={index < activeStep}>
+          {onStepClick ? (
+            <StepButton onClick={() => onStepClick(index)}>
+              <StyledStepLabel>{t(label)}</StyledStepLabel>
+            </StepButton>
+          ) : (
+            <StyledStepLabel>{t(label)}</StyledStepLabel>
+          )}
         </Step>
       ))}
     </StyledStepper>
