@@ -36,7 +36,7 @@ const sharedDates = [
   daysFromNow(20),
 ];
 
-const SPARQL_UPDATE = "https://sparql01.pergola.kuenste.live/update";
+const SPARQL_UPDATE = "https://sparql-dev01.pergola.kuenste.live/update";
 const SPARQL_DELETE_WATERING = `
 PREFIX garden: <https://ontology.semantic-desk.top/garden#>
 DELETE { ?s ?p ?o } WHERE { ?s a garden:WateringAvailability . ?s ?p ?o . }

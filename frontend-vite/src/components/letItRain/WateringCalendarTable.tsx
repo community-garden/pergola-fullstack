@@ -17,7 +17,7 @@ import {
 } from 'date-fns';
 import React, { useState, useEffect } from 'react';
 import WateringCalendarTaskItem from './WateringCalendarTaskItem';
-import type { PlanAssignment } from '../../hooks/useWateringPlan';
+import type { PlanAssignment, AvailabilityByDate } from '../../hooks/useWateringPlan';
 
 interface WateringCalendarTableProps {
   preselectedDate?: Date;
@@ -26,6 +26,7 @@ interface WateringCalendarTableProps {
   assignments?: PlanAssignment[];
   personIri?: string;
   availableDates?: string[];
+  availabilityByDate?: AvailabilityByDate;
 }
 
 const CalendarContainer = styled(Box)(({ theme }) => ({
@@ -74,6 +75,7 @@ export const WateringCalendarTable = ({
   assignments = [],
   personIri,
   availableDates = [],
+  availabilityByDate = {},
 }: WateringCalendarTableProps) => {
   const { t } = useTranslation('watering');
   const [selectedDate, setSelectedDate] = useState<Date>(preselectedDate);
@@ -189,6 +191,7 @@ export const WateringCalendarTable = ({
                 ? dayAssignments.some((a) => a.personIri === personIri)
                 : false;
               const isUserAvailable = availableDates.includes(dateStr);
+              const availabilityCount = availabilityByDate[dateStr]?.length ?? 0;
 
               return (
                 <DayCell key={`${date.toISOString()}-${index}`}>
@@ -197,6 +200,7 @@ export const WateringCalendarTable = ({
                       disabled={isDisabled}
                       date={date}
                       recruiterCount={recruiterCount}
+                      availabilityCount={availabilityCount}
                       onSelect={() => handleDateSelect(date)}
                       active={isSameDay(selectedDate, date)}
                       inPlannedPeriod={inPlannedPeriod}

@@ -5,7 +5,7 @@ import { format, addDays, subDays, isSameDay, isBefore, startOfDay } from 'date-
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import WateringCalendarTaskItem from './WateringCalendarTaskItem';
-import type { PlanAssignment } from '../../hooks/useWateringPlan';
+import type { PlanAssignment, AvailabilityByDate } from '../../hooks/useWateringPlan';
 import { useDateFnsLocale } from '../../hooks';
 
 interface WateringCalendarHorizontalProps {
@@ -15,6 +15,7 @@ interface WateringCalendarHorizontalProps {
   assignments?: PlanAssignment[];
   personIri?: string;
   availableDates?: string[];
+  availabilityByDate?: AvailabilityByDate;
 }
 
 const ScrollContainer = styled('div')({
@@ -50,6 +51,7 @@ export const WateringCalendarHorizontal = ({
   assignments = [],
   personIri,
   availableDates = [],
+  availabilityByDate = {},
 }: WateringCalendarHorizontalProps) => {
   const { t } = useTranslation('watering');
   const locale = useDateFnsLocale();
@@ -126,6 +128,7 @@ export const WateringCalendarHorizontal = ({
             ? dayAssignments.some((a) => a.personIri === personIri)
             : false;
           const isUserAvailable = availableDates.includes(dateStr);
+          const availabilityCount = availabilityByDate[dateStr]?.length ?? 0;
 
           return (
             <WateringCalendarTaskItem
@@ -133,6 +136,7 @@ export const WateringCalendarHorizontal = ({
               disabled={isDisabled}
               date={date}
               recruiterCount={recruiterCount}
+              availabilityCount={availabilityCount}
               onSelect={() => handleDateSelect(date)}
               active={isSameDay(selectedDate, date)}
               inPlannedPeriod={inPlannedPeriod}

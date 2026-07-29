@@ -63,7 +63,7 @@ const WizardContent = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2, 0),
 }));
 
-const WizardInnerContainer = styled(Box)(({ }) => ({
+const WizardInnerContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -88,6 +88,8 @@ interface LetItRainWizardProps {
   gardenId?: string;
   submitting?: boolean;
   targetMonth: string;
+  initialDates?: Date[];
+  initialFrequency?: number;
 }
 
 // Interface for the wizard data
@@ -105,7 +107,7 @@ interface StepDesc {
   component: React.ReactNode;
 }
 
-export function LetItRainWizard({ onComplete, gardenId, submitting = false, targetMonth }: LetItRainWizardProps) {
+export function LetItRainWizard({ onComplete, gardenId, submitting = false, targetMonth, initialDates, initialFrequency }: LetItRainWizardProps) {
   const { t } = useTranslation('letItRain');
   const locale = useDateFnsLocale();
   const theme = useTheme();
@@ -114,9 +116,10 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false, targ
   const { stepNumber } = useParams<{ stepNumber: string }>();
 
   // State for wizard data
-  const [frequency, setFrequency] = useState<number>(1);
-  const [availableDates, setAvailableDates] = useState<Date[]>([]);
+  const [frequency, setFrequency] = useState<number>(initialFrequency ?? 1);
+  const [availableDates, setAvailableDates] = useState<Date[]>(initialDates ?? []);
   const [nickname, setNickname] = useState<string>('');
+  const [finishAttempted, setFinishAttempted] = useState(false);
 
   const handleFrequencyChange = (value: number) => {
     setFrequency(value);
@@ -124,6 +127,8 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false, targ
 
   const handleForget = () => {
     setNickname('');
+    setAvailableDates([]);
+    setFrequency(1);
   };
 
   const calendarDates = (() => {
@@ -172,8 +177,9 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false, targ
       headline: t('wizard.headlines.profile'),
       component: (
         <WizardProfile
-          onChange={(name) => setNickname(name)}
+          onChange={(name) => { setNickname(name); setFinishAttempted(false); }}
           onForget={handleForget}
+          showError={finishAttempted}
         />
       )
     }
@@ -205,6 +211,11 @@ export function LetItRainWizard({ onComplete, gardenId, submitting = false, targ
   };
 
   const handleFinish = () => {
+    if (!nickname.trim()) {
+      setFinishAttempted(true);
+      return;
+    }
+
     const wizardData: WizardData = {
       frequency,
       availableDates,

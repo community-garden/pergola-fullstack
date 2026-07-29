@@ -11,6 +11,10 @@ COPY frontend-vite/package_materialized.json ./package.json
 RUN --mount=type=cache,target=/root/.bun/install/cache \
     bun install
 
+COPY packages/ /packages/
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    cd /packages/letitrain && bun install
+
 COPY frontend-vite/ ./
 
 ARG VITE_SPARQL_API_URL=https://sparql01.pergola.kuenste.live/query

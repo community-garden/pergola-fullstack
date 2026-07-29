@@ -1,3 +1,6 @@
+export { generateWateringICS } from "./ics.js"
+export type { WateringIcsOptions } from "./ics.js"
+
 import { assignStrategyStrategic } from "./strategies/strategic.js"
 import {
   AssignmentStats,

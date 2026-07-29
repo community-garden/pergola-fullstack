@@ -17,7 +17,7 @@ import {
   Email as EmailIcon,
   Notifications as PushIcon,
 } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocalUser } from '@hooks/useLocalUser';
 
@@ -40,12 +40,19 @@ const DisabledSection = styled(FormGroup)(({ theme }) => ({
 interface WizardProfileProps {
   onChange: (nickname: string) => void;
   onForget: () => void;
+  showError?: boolean;
 }
 
-export function WizardProfile({ onChange, onForget }: WizardProfileProps) {
+export function WizardProfile({ onChange, onForget, showError = false }: WizardProfileProps) {
   const { t } = useTranslation('letItRain');
   const { nickname, setNickname, forgetMe } = useLocalUser();
   const [isEditing, setIsEditing] = useState(!nickname);
+
+  // Propagate stored nickname to parent on mount so returning users don't submit with empty string
+  useEffect(() => {
+    if (nickname) onChange(nickname);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleNicknameChange = (value: string) => {
     setNickname(value);
@@ -84,7 +91,10 @@ export function WizardProfile({ onChange, onForget }: WizardProfileProps) {
             required
             fullWidth
             inputProps={{ 'data-cy': 'nickname-input' }}
-            helperText={t('profile.deviceInfo')}
+            error={showError && !nickname.trim()}
+            helperText={showError && !nickname.trim()
+              ? t('profile.nicknameRequired')
+              : t('profile.deviceInfo')}
           />
           {nickname && (
             <Button size="small" onClick={handleEditDone} sx={{ mt: 0.5 }}>

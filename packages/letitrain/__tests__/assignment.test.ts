@@ -92,6 +92,40 @@ describe("strategy comparison on simple dataset", () => {
   }
 })
 
+describe("strategic strategy fairness", () => {
+  it("does not concentrate assignments on the high-capacity person", () => {
+    // One person with max=20, five others with max=3-5, all available on overlapping days
+    const highCap = { id: "high", maximum_tasks: 20 }
+    const others = [
+      { id: "a", maximum_tasks: 4 },
+      { id: "b", maximum_tasks: 4 },
+      { id: "c", maximum_tasks: 3 },
+      { id: "d", maximum_tasks: 4 },
+      { id: "e", maximum_tasks: 3 },
+    ]
+    const everyone = [highCap, ...others]
+    const tasks = Array.from({ length: 20 }, (_, i) => ({
+      date: `2026-08-${String(i + 1).padStart(2, "0")}`,
+      target_count: 1,
+      assigned: [],
+      available: everyone,
+    }))
+
+    const planned = planAssignments(tasks, assignStrategyStrategic)
+    const assignmentCounts: Record<string, number> = {}
+    for (const task of planned) {
+      for (const p of task.assigned) {
+        assignmentCounts[p.id] = (assignmentCounts[p.id] ?? 0) + 1
+      }
+    }
+
+    // High-capacity person must not dominate — capped at 5 when 5 others can share equally
+    expect(assignmentCounts["high"] ?? 0).toBeLessThanOrEqual(5)
+    // All six people should receive at least one assignment
+    expect(Object.keys(assignmentCounts).length).toBeGreaterThanOrEqual(6)
+  })
+})
+
 describe("strategic strategy determinism", () => {
   it("produces the same result on repeated runs", () => {
     const result1 = planAssignments(freshSimple(), assignStrategyStrategic)

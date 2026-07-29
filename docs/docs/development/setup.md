@@ -14,8 +14,8 @@ docker-compose -f docker-compose.dev.yml up -d
 
 This starts:
 
-- **oxigraph** — RDF triplestore on the internal network
-- **oxigraph-cors** — NGINX CORS proxy → `sparql01.pergola.kuenste.live`
+- **oxigraph-dev** — RDF triplestore (dev data volume)
+- **oxigraph-cors-dev** — NGINX CORS proxy → `sparql-dev01.pergola.kuenste.live`
 - **frontend-dev** — Bun/Vite dev server → `dev01.pergola.kuenste.live`
 - **docs** — MkDocs Material (this site) → `docs01.pergola.kuenste.live`
 

@@ -17,4 +17,4 @@ EXPOSE 5173
 # At startup: restore the materialized package.json (volume mount overwrites it with the
 # host's workspace-ref version), drop the host bun.lock (it has workspace refs too),
 # clear stale vite dep-optimizer cache, then start the dev server.
-CMD ["sh", "-c", "cp /package_materialized.json /app/package.json && rm -f /app/bun.lock && bun install && rm -rf /app/node_modules/.vite && bun run dev -- --host 0.0.0.0"]
+CMD ["sh", "-c", "cd /packages/letitrain && bun install && cd /app && cp /package_materialized.json /app/package.json && rm -f /app/bun.lock && bun install && rm -rf /app/node_modules/.vite && bun run dev -- --host 0.0.0.0"]

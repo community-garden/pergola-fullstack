@@ -60,6 +60,7 @@ const CarrotBed = styled('div')(() => ({
   overflow: 'hidden',
   marginTop: 'auto',
   minHeight: '120px',
+  pointerEvents: 'none',
   '&::after': {
     content: '""',
     position: 'absolute',

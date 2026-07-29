@@ -7,6 +7,9 @@ interface CornerBadgeProps {
   children?: React.ReactNode;
   cornerActive?: boolean;
   cornerColor?: string;
+  badgeContent?: string | number;
+  badgeColor?: string;
+  'data-cy'?: string;
   sx?: SxProps<Theme>;
 }
 
@@ -22,19 +25,25 @@ const Root = styled('span', {
   alignItems: 'center'
 }));
 
-const Badge = styled('span')(({ theme }) => ({
+const CountBadge = styled('span')(({ theme }) => ({
   top: '0',
   right: '0',
-  transform: 'scale(1) translate(50%, -50%) rotateZ(45deg)',
-  transformOrigin: '50% 50%',
-  backgroundColor: 'black',
+  transform: 'translate(35%, -35%)',
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
   height: '20px',
-  padding: '0 6px',
-  zIndex: 1,
-  position: 'absolute',
-  fontSize: '0.75rem',
   minWidth: '20px',
-  boxSizing: 'border-box'
+  padding: '0 4px',
+  zIndex: 2,
+  position: 'absolute',
+  fontSize: '0.7rem',
+  fontWeight: 700,
+  borderRadius: '10px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxSizing: 'border-box',
+  lineHeight: 1,
 }));
 
 export const CornerBadge = ({
@@ -42,12 +51,35 @@ export const CornerBadge = ({
   className,
   cornerActive,
   cornerColor,
+  badgeContent,
+  badgeColor,
+  'data-cy': dataCy,
   sx
 }: CornerBadgeProps) => {
+  const showCountBadge = badgeContent !== undefined && badgeContent !== '' && Number(badgeContent) > 0;
+
   return (
-    <Root className={className} cornerActive={cornerActive} sx={sx}>
+    <Root className={className} cornerActive={cornerActive} sx={sx} data-cy={dataCy}>
       {children}
-      {cornerActive && <Badge sx={{ backgroundColor: cornerColor || 'black' }} />}
+      {cornerActive && (
+        <CountBadge
+          sx={{
+            transform: 'scale(1) translate(50%, -50%) rotateZ(45deg)',
+            transformOrigin: '50% 50%',
+            borderRadius: 0,
+            backgroundColor: cornerColor || 'black',
+            color: 'white',
+            minWidth: '20px',
+            height: '20px',
+            padding: '0 6px',
+          }}
+        />
+      )}
+      {showCountBadge && (
+        <CountBadge sx={{ backgroundColor: badgeColor }} aria-label={String(badgeContent)}>
+          {badgeContent}
+        </CountBadge>
+      )}
     </Root>
   );
 };

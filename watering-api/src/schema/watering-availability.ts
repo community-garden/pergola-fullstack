@@ -20,6 +20,15 @@ export const WateringAvailabilityInputSchema = z.object({
 
 export type WateringAvailabilityInput = z.infer<typeof WateringAvailabilityInputSchema>;
 
+export const RemoveAvailabilityDateSchema = z.object({
+  gardenIri: z.string().url(),
+  personIri: z.string().url(),
+  targetMonth: z.string().regex(/^\d{4}-\d{2}$/),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
+export type RemoveAvailabilityDateInput = z.infer<typeof RemoveAvailabilityDateSchema>;
+
 // ── TypeScript shape of a stored WateringAvailability document ────────────────
 // Uses proper JSON-LD: person and garden are @id references, not plain strings.
 export interface WateringAvailability {

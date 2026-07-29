@@ -1,6 +1,6 @@
 services:
 
-  oxigraph:
+  oxigraph-dev:
     image: ghcr.io/oxigraph/oxigraph:latest
     platform: linux/amd64
     command: serve --location /data --bind 0.0.0.0:7878
@@ -10,24 +10,24 @@ services:
       - internal-dev
     restart: unless-stopped
 
-  oxigraph-cors:
+  oxigraph-cors-dev:
     image: nginx:alpine
     volumes:
-      - ./oxigraph-docker/nginx.config:/etc/nginx/conf.d/default.conf:ro
+      - ./oxigraph-docker/nginx.dev.config:/etc/nginx/conf.d/default.conf:ro
     depends_on:
-      - oxigraph
+      - oxigraph-dev
     networks:
       - traefik
       - internal-dev
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
-      - "traefik.http.routers.sparql01.entrypoints=web-secure"
-      - "traefik.http.routers.sparql01.rule=Host(`sparql01.pergola.kuenste.live`)"
-      - "traefik.http.routers.sparql01.tls=true"
-      - "traefik.http.routers.sparql01.tls.certresolver=tlschallenge"
-      - "traefik.http.routers.sparql01.middlewares=secHeaders@file"
-      - "traefik.http.services.sparql01.loadbalancer.server.port=80"
+      - "traefik.http.routers.sparql-dev01.entrypoints=web-secure"
+      - "traefik.http.routers.sparql-dev01.rule=Host(`sparql-dev01.pergola.kuenste.live`)"
+      - "traefik.http.routers.sparql-dev01.tls=true"
+      - "traefik.http.routers.sparql-dev01.tls.certresolver=tlschallenge"
+      - "traefik.http.routers.sparql-dev01.middlewares=secHeaders@file"
+      - "traefik.http.services.sparql-dev01.loadbalancer.server.port=80"
     restart: unless-stopped
 
   frontend-dev:
@@ -36,16 +36,23 @@ services:
       dockerfile: ./frontend-vite/Dockerfile.dev
     volumes:
       - ./frontend-vite:/app
+      - ./packages:/packages
       - frontend_node_modules:/app/node_modules
     environment:
-      - VITE_SPARQL_API_URL=https://sparql01.pergola.kuenste.live/query
+      - VITE_SPARQL_API_URL=https://sparql-dev01.pergola.kuenste.live/query
       - VITE_HMR_HOST=dev01.pergola.kuenste.live
+      - VITE_API_PROXY_TARGET=http://watering-api-dev:3000
+    depends_on:
+      - watering-api-dev
     networks:
       - traefik
+      - internal-dev
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
       - "traefik.http.routers.dev01.entrypoints=web-secure"
-      - "traefik.http.routers.dev01.rule=Host(`dev01.pergola.kuenste.live`)"
+      - "traefik.http.routers.dev01.rule=Host(`dev01.pergola.kuenste.live`) && !PathPrefix(`/api`)"
+      - "traefik.http.routers.dev01.priority=1"
       - "traefik.http.routers.dev01.tls=true"
       - "traefik.http.routers.dev01.tls.certresolver=tlschallenge"
       - "traefik.http.routers.dev01.middlewares=secHeaders@file"
@@ -67,7 +74,7 @@ services:
       - internal-dev
     restart: unless-stopped
 
-  watering-api:
+  watering-api-dev:
     build:
       context: .
       dockerfile: ./watering-api/Dockerfile.dev
@@ -75,13 +82,13 @@ services:
       - ./watering-api/src:/app/watering-api/src
       - pergola_media:/media
     environment:
-      - SPARQL_ENDPOINT_URL=http://oxigraph:7878/query
+      - SPARQL_ENDPOINT_URL=http://oxigraph-dev:7878/query
       - PICTURIUM_URL=http://picturium:20045
       - PICTURIUM_KEY=${PICTURIUM_KEY:-dev-secret}
       - MEDIA_STORAGE_PATH=/media
       - MEDIA_MAX_BYTES=10485760
     depends_on:
-      - oxigraph
+      - oxigraph-dev
       - picturium
     networks:
       - traefik
@@ -89,12 +96,13 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
-      - "traefik.http.routers.watering-api.entrypoints=web-secure"
-      - "traefik.http.routers.watering-api.rule=Host(`dev01.pergola.kuenste.live`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.watering-api.tls=true"
-      - "traefik.http.routers.watering-api.tls.certresolver=tlschallenge"
-      - "traefik.http.routers.watering-api.middlewares=secHeaders@file"
-      - "traefik.http.services.watering-api.loadbalancer.server.port=3000"
+      - "traefik.http.routers.watering-api-dev.entrypoints=web-secure"
+      - "traefik.http.routers.watering-api-dev.rule=Host(`dev01.pergola.kuenste.live`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.watering-api-dev.priority=100"
+      - "traefik.http.routers.watering-api-dev.tls=true"
+      - "traefik.http.routers.watering-api-dev.tls.certresolver=tlschallenge"
+      - "traefik.http.routers.watering-api-dev.middlewares=secHeaders@file"
+      - "traefik.http.services.watering-api-dev.loadbalancer.server.port=3000"
     restart: unless-stopped
 
   storybook:
@@ -122,7 +130,7 @@ services:
       context: .
       dockerfile: ./frontend-vite/Dockerfile.prod-dev
       args:
-        VITE_SPARQL_API_URL: https://sparql01.pergola.kuenste.live/query
+        VITE_SPARQL_API_URL: https://sparql-dev01.pergola.kuenste.live/query
     volumes:
       - ./frontend-vite/nginx-prod-dev.conf:/etc/nginx/conf.d/default.conf:ro
     networks:

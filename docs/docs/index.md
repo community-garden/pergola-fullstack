@@ -9,7 +9,8 @@ This site runs in watch mode and updates instantly as files change.
 | Service | URL | Description |
 |---|---|---|
 | Frontend (dev) | [dev01.pergola.kuenste.live](https://dev01.pergola.kuenste.live) | Vite dev server with HMR |
-| SPARQL Endpoint | [sparql01.pergola.kuenste.live](https://sparql01.pergola.kuenste.live) | Oxigraph RDF store |
+| SPARQL (dev) | [sparql-dev01.pergola.kuenste.live](https://sparql-dev01.pergola.kuenste.live) | Oxigraph dev store |
+| SPARQL (prod) | [sparql01.pergola.kuenste.live](https://sparql01.pergola.kuenste.live) | Oxigraph production store |
 | Documentation | [docs01.pergola.kuenste.live](https://docs01.pergola.kuenste.live) | This site |
 
 ## Stack

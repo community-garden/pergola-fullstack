@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import WateringCalendarHorizontal from './WateringCalendarHorizontal';
 import WateringCalendarTable from './WateringCalendarTable';
-import type { PlanAssignment } from '../../hooks/useWateringPlan';
+import type { PlanAssignment, AvailabilityByDate } from '../../hooks/useWateringPlan';
 
 export type WateringCalendarVariant = 'horizontal' | 'table';
 
@@ -19,6 +19,7 @@ interface WateringCalendarProps {
   assignments?: PlanAssignment[];
   personIri?: string;
   availableDates?: string[];
+  availabilityByDate?: AvailabilityByDate;
 }
 
 export const WateringCalendar = ({
@@ -31,6 +32,7 @@ export const WateringCalendar = ({
   assignments = [],
   personIri,
   availableDates = [],
+  availabilityByDate = {},
 }: WateringCalendarProps) => {
   const { t } = useTranslation('watering');
   const [variant, setVariant] = useState<WateringCalendarVariant>(initialVariant);
@@ -87,6 +89,7 @@ export const WateringCalendar = ({
           assignments={assignments}
           personIri={personIri}
           availableDates={availableDates}
+          availabilityByDate={availabilityByDate}
         />
       ) : (
         <WateringCalendarTable
@@ -96,6 +99,7 @@ export const WateringCalendar = ({
           assignments={assignments}
           personIri={personIri}
           availableDates={availableDates}
+          availabilityByDate={availabilityByDate}
         />
       )}
     </Box>

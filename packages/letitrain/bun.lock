@@ -1,0 +1,17 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "@pergola/letitrain",
+      "dependencies": {
+        "ts-ics": "^2.4.4",
+      },
+    },
+  },
+  "packages": {
+    "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
+
+    "ts-ics": ["ts-ics@2.4.4", "", { "dependencies": { "@standard-schema/spec": "^1.0.0" } }, "sha512-gNTmBKRNEHmEWoNMjnB/XcoS0EFKC7x/VG369re+JyiZyibvNxIDz65C7IFB+yoVZsDnzT4pru9EewK/0XDqEQ=="],
+  }
+}

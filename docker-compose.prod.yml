@@ -46,6 +46,7 @@ services:
       - "traefik.docker.network=traefik"
       - "traefik.http.routers.watering-api-prod.entrypoints=web-secure"
       - "traefik.http.routers.watering-api-prod.rule=Host(`pergola.kuenste.live`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.watering-api-prod.priority=100"
       - "traefik.http.routers.watering-api-prod.tls=true"
       - "traefik.http.routers.watering-api-prod.tls.certresolver=tlschallenge"
       - "traefik.http.routers.watering-api-prod.middlewares=secHeaders@file"
@@ -59,13 +60,17 @@ services:
       args:
         VITE_SPARQL_API_URL: https://sparql01.pergola.kuenste.live/query
         VITE_API_URL: https://pergola.kuenste.live/api/watering
+    depends_on:
+      - watering-api
     networks:
       - traefik
+      - internal-prod
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
       - "traefik.http.routers.pergola-prod.entrypoints=web-secure"
-      - "traefik.http.routers.pergola-prod.rule=Host(`pergola.kuenste.live`)"
+      - "traefik.http.routers.pergola-prod.rule=Host(`pergola.kuenste.live`) && !PathPrefix(`/api`)"
+      - "traefik.http.routers.pergola-prod.priority=1"
       - "traefik.http.routers.pergola-prod.tls=true"
       - "traefik.http.routers.pergola-prod.tls.certresolver=tlschallenge"
       - "traefik.http.routers.pergola-prod.middlewares=secHeaders@file"

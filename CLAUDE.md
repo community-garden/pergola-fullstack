@@ -10,7 +10,7 @@ Oxigraph RDF/SPARQL backend, served via Docker Compose + Traefik with TLS.
 | Service | URL |
 |---|---|
 | Frontend (Vite HMR) | https://dev01.pergola.kuenste.live |
-| SPARQL endpoint | https://sparql01.pergola.kuenste.live |
+| SPARQL endpoint | https://sparql-dev01.pergola.kuenste.live |
 | Documentation (MkDocs) | https://docs01.pergola.kuenste.live |
 
 ## Starting the stack
@@ -178,7 +178,8 @@ This writes JSON-LD through the Graviola library, which enforces the registered 
 
 **Option C — Turtle file (last resort)**
 
-POST a `.ttl` file directly to `https://sparql01.pergola.kuenste.live/store`.
+POST a `.ttl` file directly to `https://sparql-dev01.pergola.kuenste.live/store` (dev)
+or `https://sparql01.pergola.kuenste.live/store` (production).
 Fast but bypasses all validation — shapes are not checked.
 Only use for bulk imports where the schema has already been verified.
 

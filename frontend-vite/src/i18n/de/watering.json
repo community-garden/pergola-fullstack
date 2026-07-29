@@ -30,7 +30,9 @@
     "noAssignments": "Keine Aufgaben für diesen Monat geplant.",
     "dateColumn": "Datum",
     "gardenersColumn": "Zugewiesene Gärtner",
-    "closeButton": "Schließen"
+    "closeButton": "Schließen",
+    "copyButton": "Kopieren",
+    "copiedButton": "Kopiert!"
   },
   "planManagement": {
     "title": "Monatsplan",
@@ -43,6 +45,22 @@
     "calculateError": "Plan konnte nicht berechnet werden. Bitte erneut versuchen.",
     "menuItem": "Plan berechnen für {{month}}",
     "menuItemRecalculate": "Plan neu berechnen für {{month}}",
+    "modal": {
+      "title": "Gießplan berechnen",
+      "monthLabel": "Monat",
+      "personsPerDayLabel": "Gärtner pro Tag",
+      "personsPerDayHelper": "Wie viele Gärtner werden pro Gießtag eingeteilt",
+      "planExistsWarning": "Für {{month}} wurde am {{date}} ein Plan berechnet. Die Neuberechnung überschreibt die {{count}} bestehenden Zuweisungen.",
+      "notEnoughAvailability": "Mindestens 2 Personen müssen ihre Verfügbarkeit eingetragen haben.",
+      "availabilityCount": "eingetragen",
+      "availabilityCountFull": "{{count}} Personen für {{month}} eingetragen",
+      "planCalculated": "Plan berechnet am {{date}} · {{count}} Zuweisungen",
+      "removeButton": "Plan entfernen",
+      "calculateButton": "Berechnen",
+      "recalculateButton": "Neu berechnen",
+      "removeSuccess": "Plan entfernt.",
+      "removeError": "Plan konnte nicht entfernt werden."
+    },
     "recalculateConfirm": {
       "title": "Plan neu berechnen?",
       "message": "Für {{month}} wurde bereits am {{date}} ein Plan berechnet. Die Neuberechnung überschreibt die bestehenden Zuweisungen. Bist du sicher?",

@@ -28,7 +28,8 @@
     "icsInfo": "Once watering tasks are published, you will be able to subscribe to your personal calendar using your nickname.",
     "emailNotification": "Email reminder",
     "pushNotification": "Push notification",
-    "deviceInfo": "Your identity is stored locally on this device only — no account required."
+    "deviceInfo": "Your identity is stored locally on this device only — no account required.",
+    "nicknameRequired": "Please enter a nickname so others can recognise you in the schedule."
   },
   "wizard": {
     "buttons": {

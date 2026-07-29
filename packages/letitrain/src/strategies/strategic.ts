@@ -12,8 +12,12 @@ export const assignStrategyStrategic: AssignStrategyFn<any> = function (
   const task = tasks_sorted[0]
 
   const persons_sorted = task.available.sort(
-    (p1: PersonState, p2: PersonState) =>
-      p2.remaining_allowed_tasks - p1.remaining_allowed_tasks
+    (p1: PersonState, p2: PersonState) => {
+      const assigned1 = p1.maximum_tasks - p1.remaining_allowed_tasks
+      const assigned2 = p2.maximum_tasks - p2.remaining_allowed_tasks
+      if (assigned1 !== assigned2) return assigned1 - assigned2
+      return p1.remaining_possible_tasks - p2.remaining_possible_tasks
+    }
   )
   const person = persons_sorted[0]
 

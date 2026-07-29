@@ -14,6 +14,7 @@ interface WateringCalendarTaskItemProps {
   inPlannedPeriod?: boolean;
   isUserAvailable?: boolean;
   cornerActive?: boolean;
+  availabilityCount?: number;
   optimalRecruiterCount?: number;
   size?: number;
   onActivate?: (active: boolean, ref: HTMLElement | null) => void;
@@ -64,6 +65,7 @@ export const WateringCalendarTaskItem = ({
   inPlannedPeriod,
   isUserAvailable,
   cornerActive,
+  availabilityCount = 0,
   scrollBehavior,
 }: WateringCalendarTaskItemProps) => {
   const { t } = useTranslation('watering');
@@ -110,6 +112,7 @@ export const WateringCalendarTaskItem = ({
         border: 'none',
         padding: 0
       }}
+      data-cy={`watering-calendar-day-${format(date, 'yyyy-MM-dd')}`}
     >
       <DayContainer 
         disabled={disabled} 
@@ -118,7 +121,9 @@ export const WateringCalendarTaskItem = ({
       >
         <CornerBadge 
           cornerActive={cornerActive}
+          badgeContent={availabilityCount > 0 ? availabilityCount : undefined}
           sx={{ backgroundColor: getBadgeColor() }}
+          data-cy={availabilityCount > 0 ? `availability-badge-${availabilityCount}` : undefined}
         >
           <Box
             display="flex"

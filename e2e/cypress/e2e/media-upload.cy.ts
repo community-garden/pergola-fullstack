@@ -1,5 +1,5 @@
 const MEDIA_API = "/api/media";
-const SPARQL_UPDATE = "https://sparql01.pergola.kuenste.live/update";
+const SPARQL_UPDATE = "https://sparql-dev01.pergola.kuenste.live/update";
 
 function clearMediaData() {
   cy.request({

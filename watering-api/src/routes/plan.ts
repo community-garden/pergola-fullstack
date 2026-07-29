@@ -1,6 +1,7 @@
 import { Hono } from "hono";
+import { z } from "zod";
 import { store } from "../store";
-import { CalculatePlanInputSchema, type WateringPlan } from "../schema/watering-plan";
+import { CalculatePlanInputSchema, RemovePlanAssignmentSchema, type WateringPlan } from "../schema/watering-plan";
 import { type WateringAvailability, DATA_BASE } from "../schema/watering-availability";
 import { planAssignments } from "@pergola/letitrain";
 
@@ -22,7 +23,7 @@ function nextMonthYYYYMM(): string {
 }
 
 function planIRI(gardenIri: string, targetMonth: string): string {
-  const gardenSlug = gardenIri.split("/").pop() ?? "unknown";
+  const gardenSlug = (gardenIri.split("/").pop() ?? "unknown").toLowerCase();
   return `${DATA_BASE}WateringPlan/${gardenSlug}-${targetMonth}`;
 }
 
@@ -41,7 +42,122 @@ app.get("/", async (c) => {
     return c.json({ error: "No plan found for this garden and month" }, 404);
   }
 
-  return c.json(plan);
+  // Resolve person names for all assigned persons
+  const assignments = (plan as WateringPlan).assignments ?? [];
+  const uniqueIris = [...new Set(assignments.map((a) => a.personIri))];
+  const personNames: Record<string, string> = {};
+  await Promise.all(
+    uniqueIris.map(async (iri) => {
+      const person = await store.loadDocument("AnonymousPerson", iri) as { name?: string } | null;
+      if (person?.name) personNames[iri] = person.name;
+    })
+  );
+
+  if (!isPlanCalculated(plan as WateringPlan)) {
+    return c.json({ error: "No plan found for this garden and month" }, 404);
+  }
+
+  return c.json({ ...plan, personNames });
+});
+
+function isPlanCalculated(plan: WateringPlan | null | undefined): boolean {
+  return !!plan?.calculatedAt;
+}
+
+// DELETE /api/watering/plan/:id/assignments
+// Body: { date: "YYYY-MM-DD", personIri: string }
+app.delete("/:id/assignments", async (c) => {
+  const id = c.req.param("id");
+  const entityIRI = `${DATA_BASE}WateringPlan/${id}`;
+
+  let body: unknown;
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ error: "Invalid JSON" }, 400);
+  }
+
+  const parsed = RemovePlanAssignmentSchema.safeParse(body);
+  if (!parsed.success) {
+    return c.json({ error: parsed.error.flatten() }, 400);
+  }
+
+  const plan = await store.loadDocument("WateringPlan", entityIRI) as WateringPlan | null;
+  if (!plan) {
+    return c.json({ error: "Plan not found" }, 404);
+  }
+
+  const { date, personIri } = parsed.data;
+  const assignments = (plan.assignments ?? []).filter(
+    (a) => !(a.date === date && a.personIri === personIri)
+  );
+
+  if (assignments.length === (plan.assignments ?? []).length) {
+    return c.json({ error: "Assignment not found" }, 404);
+  }
+
+  const updated: Omit<WateringPlan, "@id" | "@type"> = {
+    gardenIri: plan.gardenIri,
+    targetMonth: plan.targetMonth,
+    calculatedAt: plan.calculatedAt,
+    validFrom: plan.validFrom,
+    validUntil: plan.validUntil,
+    assignments,
+  };
+
+  await store.removeDocument("WateringPlan", entityIRI);
+  await store.upsertDocument("WateringPlan", entityIRI, updated);
+
+  return c.json({ "@id": entityIRI, ...updated });
+});
+
+// POST /api/watering/plan/restore
+// Writes an explicit assignment list without recalculating. Use to restore or manually adjust a plan.
+const RestorePlanSchema = z.object({
+  gardenIri: z.string().url(),
+  targetMonth: z.string().regex(/^\d{4}-\d{2}$/),
+  assignments: z.array(z.object({
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    personIri: z.string().url(),
+  })),
+  calculatedAt: z.string().optional(),
+});
+
+app.post("/restore", async (c) => {
+  let body: unknown;
+  try { body = await c.req.json(); } catch { return c.json({ error: "Invalid JSON" }, 400); }
+
+  const parsed = RestorePlanSchema.safeParse(body);
+  if (!parsed.success) return c.json({ error: parsed.error.flatten() }, 400);
+
+  const { gardenIri, targetMonth, assignments, calculatedAt } = parsed.data;
+  const dates = assignments.map((a) => a.date).sort();
+
+  const plan: Omit<WateringPlan, "@id" | "@type"> = {
+    gardenIri,
+    targetMonth,
+    calculatedAt: calculatedAt ?? new Date().toISOString(),
+    validFrom: dates[0] ?? `${targetMonth}-01`,
+    validUntil: dates[dates.length - 1] ?? `${targetMonth}-31`,
+    assignments,
+  };
+
+  const entityIRI = planIRI(gardenIri, targetMonth);
+  await store.removeDocument("WateringPlan", entityIRI);
+  await store.upsertDocument("WateringPlan", entityIRI, plan);
+
+  return c.json({ "@id": entityIRI, ...plan });
+});
+
+// DELETE /api/watering/plan/:id
+// :id is the slug portion of the IRI, e.g. "wurzelwerk-2026-07"
+app.delete("/:id", async (c) => {
+  const id = c.req.param("id");
+  const entityIRI = `${DATA_BASE}WateringPlan/${id}`;
+
+  await store.removeDocument("WateringPlan", entityIRI);
+
+  return c.json({ deleted: entityIRI });
 });
 
 // POST /api/watering/plan/calculate
@@ -60,7 +176,7 @@ app.post("/calculate", async (c) => {
 
   const { gardenIri, targetPersonsPerTask, targetMonth: rawTargetMonth } = parsed.data;
   const targetMonth = rawTargetMonth ?? nextMonthYYYYMM();
-  const gardenSlug = gardenIri.split("/").pop() ?? "";
+  const gardenSlug = (gardenIri.split("/").pop() ?? "").toLowerCase();
 
   // Load availability entries scoped to this garden AND target month
   const all = await store.listDocuments("WateringAvailability", 500);

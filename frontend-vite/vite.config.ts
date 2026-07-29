@@ -54,6 +54,10 @@ export default defineConfig({
     })
   ],
   resolve: {
+    modules: [
+      path.resolve(__dirname, 'node_modules'),
+      'node_modules',
+    ],
     alias: {
       '@components': path.resolve(__dirname, './src/components'),
       '@pages': path.resolve(__dirname, './src/pages'),
@@ -64,7 +68,8 @@ export default defineConfig({
       '@config': path.resolve(__dirname, './src/config'),
       '@auth': path.resolve(__dirname, './src/auth'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
-      '@utils': path.resolve(__dirname, './src/utils')
+      '@utils': path.resolve(__dirname, './src/utils'),
+      '@pergola/letitrain': path.resolve(__dirname, '../packages/letitrain/src'),
     }
   },
   optimizeDeps: {
@@ -83,10 +88,21 @@ export default defineConfig({
   },
   server: {
     allowedHosts: true,
+    fs: {
+      allow: ['..'],
+    },
     hmr: {
       protocol: 'wss',
       host: process.env.VITE_HMR_HOST || 'localhost',
       port: 443
-    }
+    },
+    proxy: process.env.VITE_API_PROXY_TARGET
+      ? {
+          '/api': {
+            target: process.env.VITE_API_PROXY_TARGET,
+            changeOrigin: true,
+          },
+        }
+      : undefined,
   }
 })

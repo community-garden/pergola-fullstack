@@ -30,7 +30,9 @@
     "noAssignments": "No tasks scheduled for this month.",
     "dateColumn": "Date",
     "gardenersColumn": "Assigned Gardeners",
-    "closeButton": "Close"
+    "closeButton": "Close",
+    "copyButton": "Copy",
+    "copiedButton": "Copied!"
   },
   "planManagement": {
     "title": "Monthly Plan",
@@ -43,6 +45,22 @@
     "calculateError": "Could not calculate the plan. Please try again.",
     "menuItem": "Calculate plan for {{month}}",
     "menuItemRecalculate": "Recalculate plan for {{month}}",
+    "modal": {
+      "title": "Calculate Watering Plan",
+      "monthLabel": "Month",
+      "personsPerDayLabel": "Gardeners per day",
+      "personsPerDayHelper": "How many gardeners are assigned per watering day",
+      "planExistsWarning": "A plan for {{month}} was calculated on {{date}}. Recalculating will overwrite the {{count}} existing assignments.",
+      "notEnoughAvailability": "At least 2 people must have registered availability to calculate a plan.",
+      "availabilityCount": "registered",
+      "availabilityCountFull": "{{count}} people registered for {{month}}",
+      "planCalculated": "Plan calculated on {{date}} · {{count}} assignments",
+      "removeButton": "Remove plan",
+      "calculateButton": "Calculate",
+      "recalculateButton": "Recalculate",
+      "removeSuccess": "Plan removed.",
+      "removeError": "Could not remove the plan."
+    },
     "recalculateConfirm": {
       "title": "Recalculate plan?",
       "message": "A plan for {{month}} was already calculated on {{date}}. Recalculating will overwrite the existing assignments. Are you sure?",

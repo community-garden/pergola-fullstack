@@ -46,6 +46,22 @@ List availability entries for a garden. Pass `month` to filter to a specific mon
 
 Remove an entry (e.g. user withdraws).
 
+### `DELETE /api/watering/availability/date`
+
+Remove a single date from a person's availability without deleting their whole entry.
+
+**Request body:**
+```json
+{
+  "gardenIri": "https://data.semantic-desk.top/garden/Garden/Wurzelwerk",
+  "personIri": "https://data.semantic-desk.top/garden/Person/550e8400-e29b-41d4-a716-446655440000",
+  "targetMonth": "2026-06",
+  "date": "2026-06-05"
+}
+```
+
+If no dates remain after removal, the entire availability document is deleted.
+
 ### `POST /api/watering/plan/calculate`
 
 Run the LetItRain assignment algorithm and persist the result for a calendar month.
@@ -66,6 +82,24 @@ Run the LetItRain assignment algorithm and persist the result for a calendar mon
 ### `GET /api/watering/plan?gardenIri=<IRI>[&month=YYYY-MM]`
 
 Retrieve the calculated plan for a garden. `month` defaults to the current calendar month.
+
+### `DELETE /api/watering/plan/:id/assignments`
+
+Remove a single assignment from a calculated plan (manual correction).
+
+**Request body:**
+```json
+{
+  "date": "2026-06-05",
+  "personIri": "https://data.semantic-desk.top/garden/Person/550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+Returns the updated plan document.
+
+### `DELETE /api/watering/plan/:id`
+
+Remove an entire plan document.
 
 ## Data model
 

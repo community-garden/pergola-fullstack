@@ -7,3 +7,6 @@ export { default as WateringCalendarHorizontal } from './WateringCalendarHorizon
 export { default as WateringCalendarTable } from './WateringCalendarTable';
 export { default as WateringCalendarTaskItem } from './WateringCalendarTaskItem';
 export { WateringPlanDetailModal } from './WateringPlanDetailModal';
+export { CalculatePlanModal } from './CalculatePlanModal';
+export { WateringPersonChip } from './WateringPersonChip';
+export type { WateringPersonChipProps } from './WateringPersonChip';

@@ -28,7 +28,8 @@
     "icsInfo": "Sobald Gießaufgaben veröffentlicht sind, kannst du deinen persönlichen Kalender anhand deines Spitznamens abonnieren.",
     "emailNotification": "E-Mail-Erinnerung",
     "pushNotification": "Push-Benachrichtigung",
-    "deviceInfo": "Deine Identität wird nur lokal auf diesem Gerät gespeichert — kein Konto erforderlich."
+    "deviceInfo": "Deine Identität wird nur lokal auf diesem Gerät gespeichert — kein Konto erforderlich.",
+    "nicknameRequired": "Bitte gib einen Spitznamen ein, damit andere dich im Gießplan erkennen können."
   },
   "wizard": {
     "buttons": {

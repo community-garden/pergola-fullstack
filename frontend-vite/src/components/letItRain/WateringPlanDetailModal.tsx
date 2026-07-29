@@ -13,37 +13,47 @@ import {
   TableRow,
   Typography,
   Box,
-  Chip,
   Paper,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { format, parseISO } from 'date-fns';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PlanAssignment } from '../../hooks/useWateringPlan';
 import { useDateFnsLocale } from '../../hooks';
+import { WateringPersonChip } from './WateringPersonChip';
+
+interface DateRowPerson {
+  personIri: string;
+  name: string;
+}
 
 interface WateringPlanDetailModalProps {
   open: boolean;
   onClose: () => void;
   assignments: PlanAssignment[];
   personNames: Record<string, string>;
+  gardenName?: string;
+  gardenId?: string;
+  gardenLocation?: string;
 }
 
 function buildDateRows(
   assignments: PlanAssignment[],
   personNames: Record<string, string>
-): Array<{ date: string; names: string[] }> {
-  const byDate = new Map<string, string[]>();
+): Array<{ date: string; persons: DateRowPerson[] }> {
+  const byDate = new Map<string, DateRowPerson[]>();
 
   for (const a of assignments) {
     if (!byDate.has(a.date)) byDate.set(a.date, []);
     const name = personNames[a.personIri] ?? a.personIri.split('/').pop() ?? a.personIri;
-    byDate.get(a.date)!.push(name);
+    byDate.get(a.date)!.push({ personIri: a.personIri, name });
   }
 
   return Array.from(byDate.entries())
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([date, names]) => ({ date, names }));
+    .map(([date, persons]) => ({ date, persons }));
 }
 
 export function WateringPlanDetailModal({
@@ -51,10 +61,27 @@ export function WateringPlanDetailModal({
   onClose,
   assignments,
   personNames,
+  gardenName,
+  gardenId,
+  gardenLocation,
 }: WateringPlanDetailModalProps) {
   const { t } = useTranslation('watering');
   const locale = useDateFnsLocale();
   const rows = buildDateRows(assignments, personNames);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    const text = rows
+      .map(({ date, persons }) => {
+        const dateStr = format(parseISO(date), 'EEE d MMM yyyy', { locale });
+        const names = persons.map((p) => p.name).join(', ');
+        return `${dateStr} → ${names}`;
+      })
+      .join('\n');
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <Dialog
@@ -92,7 +119,7 @@ export function WateringPlanDetailModal({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map(({ date, names }) => (
+                {rows.map(({ date, persons }) => (
                   <TableRow key={date} hover>
                     <TableCell>
                       <Typography variant="body2" fontWeight="medium">
@@ -101,13 +128,15 @@ export function WateringPlanDetailModal({
                     </TableCell>
                     <TableCell>
                       <Box display="flex" flexWrap="wrap" gap={0.5}>
-                        {names.map((name) => (
-                          <Chip
-                            key={name}
-                            label={name}
-                            size="small"
-                            color="primary"
-                            variant="outlined"
+                        {persons.map(({ personIri, name }) => (
+                          <WateringPersonChip
+                            key={personIri}
+                            name={name}
+                            personIri={personIri}
+                            assignments={assignments}
+                            gardenName={gardenName ?? gardenId ?? 'Garden'}
+                            gardenId={gardenId ?? 'garden'}
+                            gardenLocation={gardenLocation}
                           />
                         ))}
                       </Box>
@@ -121,6 +150,15 @@ export function WateringPlanDetailModal({
       </DialogContent>
 
       <DialogActions>
+        <Button
+          onClick={handleCopy}
+          startIcon={<ContentCopyIcon fontSize="small" />}
+          disabled={rows.length === 0}
+          color={copied ? 'success' : 'inherit'}
+        >
+          {copied ? t('plan.copiedButton') : t('plan.copyButton')}
+        </Button>
+        <Box sx={{ flex: 1 }} />
         <Button onClick={onClose} color="primary">
           {t('plan.closeButton')}
         </Button>

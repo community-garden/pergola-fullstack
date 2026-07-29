@@ -3,7 +3,6 @@ import {
   Typography,
   Paper,
   Button,
-  CircularProgress,
   styled,
   Dialog,
   DialogTitle,
@@ -21,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { useSnackbar } from 'notistack';
-import { WateringCalendar, WateringPlanDetailModal, WateringPersonChip } from '../components/letItRain';
+import { WateringCalendar, WateringPlanDetailModal, WateringPersonChip, CalculatePlanModal } from '../components/letItRain';
 import { Link, useParams } from 'react-router-dom';
 import {
   useWateringPlan,
@@ -30,6 +29,7 @@ import {
   gardenIriFromId,
   planIdFromGardenAndMonth,
   currentMonthYYYYMM,
+  addMonthsYYYYMM,
 } from '../hooks/useWateringPlan';
 import { useLocalUser } from '../hooks/useLocalUser';
 import { useDateFnsLocale, useCurrentGardenInfo } from '../hooks';
@@ -52,31 +52,57 @@ const Watering = () => {
   const [helpDialogOpen, setHelpDialogOpen] = useState<boolean>(false);
   const [detailOpen, setDetailOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [calculating, setCalculating] = useState(false);
+  const [calculateModalOpen, setCalculateModalOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
-  const [confirmOpen, setConfirmOpen] = useState(false);
   const [showAvailability, setShowAvailability] = useState(false);
 
   const { personId } = useLocalUser();
   const myPersonIri = `${DATA_BASE}Person/${personId}`;
 
-  // displayMonth: always the current calendar month — shows the active plan
-  const displayMonth = currentMonthYYYYMM();
-
   const {
     planTargetMonth,
-    calculatedAt: planTargetCalculatedAt,
     refetch: refetchPlanTarget,
   } = usePlanTargetMonth(gardenId);
+
+  // displayMonth: the most recently calculated plan month.
+  // Normally equals currentMonthYYYYMM(), but advances to planTargetMonth-1 when a future
+  // month's plan has already been calculated (e.g. late-July with August pre-calculated).
+  const prevOfTarget = addMonthsYYYYMM(planTargetMonth, -1);
+  const displayMonth = prevOfTarget > currentMonthYYYYMM() ? prevOfTarget : currentMonthYYYYMM();
 
   const {
     assignments,
     personNames,
-    availabilityByDate,
-    myAvailableDates,
+    availabilityByDate: displayAvailabilityByDate,
+    myAvailableDates: displayMyAvailableDates,
     calculatedAt: displayPlanCalculatedAt,
     refetch: refetchCurrentPlan,
   } = useWateringPlan(gardenId, displayMonth, myPersonIri);
+
+  // Load next-month availability so the user can see their upcoming entries in the calendar.
+  // Skip when planTargetMonth equals displayMonth (no plan yet, same data) to avoid duplicate calls.
+  const {
+    availabilityByDate: nextAvailabilityByDate,
+    myAvailableDates: nextMyAvailableDates,
+  } = useWateringPlan(
+    planTargetMonth !== displayMonth ? gardenId : undefined,
+    planTargetMonth,
+    myPersonIri
+  );
+
+  const availabilityByDate = useMemo(
+    () => planTargetMonth !== displayMonth
+      ? { ...displayAvailabilityByDate, ...nextAvailabilityByDate }
+      : displayAvailabilityByDate,
+    [displayMonth, planTargetMonth, displayAvailabilityByDate, nextAvailabilityByDate]
+  );
+
+  const myAvailableDates = useMemo(
+    () => planTargetMonth !== displayMonth
+      ? [...new Set([...displayMyAvailableDates, ...nextMyAvailableDates])]
+      : displayMyAvailableDates,
+    [displayMonth, planTargetMonth, displayMyAvailableDates, nextMyAvailableDates]
+  );
 
   // Count submissions for the NEXT target month (not the displayed month)
   const availabilityCount = useAvailabilityCount(gardenId, planTargetMonth);
@@ -127,35 +153,15 @@ const Watering = () => {
     async (date: string, personIri: string) => {
       if (!gardenId) return;
       try {
-        await removeAvailabilityDate(gardenIriFromId(gardenId), personIri, displayMonth, date);
+        await removeAvailabilityDate(gardenIriFromId(gardenId), personIri, date.substring(0, 7), date);
         enqueueSnackbar(t('watering:chip.removeAvailabilitySuccess'), { variant: 'success' });
         refetch();
       } catch {
         enqueueSnackbar(t('watering:chip.removeAvailabilityError'), { variant: 'error' });
       }
     },
-    [gardenId, displayMonth, enqueueSnackbar, t, refetch]
+    [gardenId, enqueueSnackbar, t, refetch]
   );
-
-  const handleCalculatePlan = async () => {
-    if (!gardenId) return;
-    const gardenIri = `${DATA_BASE}Garden/${gardenId}`;
-    setCalculating(true);
-    try {
-      const res = await fetch('/api/watering/plan/calculate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gardenIri, targetMonth: planTargetMonth }),
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      enqueueSnackbar(t('watering:planManagement.calculated'), { variant: 'success' });
-      refetch();
-    } catch {
-      enqueueSnackbar(t('watering:planManagement.calculateError'), { variant: 'error' });
-    } finally {
-      setCalculating(false);
-    }
-  };
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchorEl(event.currentTarget);
@@ -167,16 +173,7 @@ const Watering = () => {
 
   const handleMenuCalculate = () => {
     handleMenuClose();
-    if (planTargetCalculatedAt) {
-      setConfirmOpen(true);
-    } else {
-      handleCalculatePlan();
-    }
-  };
-
-  const handleConfirmRecalculate = () => {
-    setConfirmOpen(false);
-    handleCalculatePlan();
+    setCalculateModalOpen(true);
   };
 
   return (
@@ -226,34 +223,16 @@ const Watering = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Recalculate Confirmation Dialog */}
-      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)} maxWidth="xs" fullWidth>
-        <DialogTitle>{t('watering:planManagement.recalculateConfirm.title')}</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">
-            {t('watering:planManagement.recalculateConfirm.message', {
-              month: planTargetMonthLabel,
-              date: planTargetCalculatedAt
-                ? format(new Date(planTargetCalculatedAt), 'd MMM yyyy, HH:mm', { locale })
-                : '',
-            })}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setConfirmOpen(false)}>
-            {t('watering:planManagement.recalculateConfirm.cancelButton')}
-          </Button>
-          <Button
-            onClick={handleConfirmRecalculate}
-            variant="contained"
-            color="primary"
-            disabled={calculating}
-            startIcon={calculating ? <CircularProgress size={16} color="inherit" /> : undefined}
-          >
-            {t('watering:planManagement.recalculateConfirm.confirmButton')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* Calculate Plan Modal */}
+      {gardenId && (
+        <CalculatePlanModal
+          open={calculateModalOpen}
+          onClose={() => setCalculateModalOpen(false)}
+          gardenId={gardenId}
+          defaultMonth={planTargetMonth}
+          onSuccess={refetch}
+        />
+      )}
 
       {/* Action Card */}
       <ContentPaper>
@@ -316,11 +295,8 @@ const Watering = () => {
 
       {/* Secondary menu */}
       <Menu anchorEl={menuAnchorEl} open={Boolean(menuAnchorEl)} onClose={handleMenuClose}>
-        <MenuItem onClick={handleMenuCalculate} disabled={calculating} data-cy="calculate-plan-button">
-          {calculating && <CircularProgress size={14} sx={{ mr: 1 }} />}
-          {planTargetCalculatedAt
-            ? t('watering:planManagement.menuItemRecalculate', { month: planTargetMonthLabel })
-            : t('watering:planManagement.menuItem', { month: planTargetMonthLabel })}
+        <MenuItem onClick={handleMenuCalculate} data-cy="calculate-plan-button">
+          {t('watering:planManagement.modal.title')}
         </MenuItem>
       </Menu>
 

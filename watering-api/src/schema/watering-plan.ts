@@ -12,6 +12,13 @@ export const CalculatePlanInputSchema = z.object({
 
 export type CalculatePlanInput = z.infer<typeof CalculatePlanInputSchema>;
 
+export const RemovePlanAssignmentSchema = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  personIri: z.string().url(),
+});
+
+export type RemovePlanAssignmentInput = z.infer<typeof RemovePlanAssignmentSchema>;
+
 export interface WateringAssignment {
   date: string;
   /** Full IRI of the AnonymousPerson entity */

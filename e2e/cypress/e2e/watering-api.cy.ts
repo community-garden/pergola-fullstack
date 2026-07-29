@@ -1,6 +1,6 @@
 const GARDEN_IRI = "https://data.semantic-desk.top/garden/Garden/Wurzelwerk";
 const API = "/api/watering";
-const SPARQL_UPDATE = "https://sparql01.pergola.kuenste.live/update";
+const SPARQL_UPDATE = "https://sparql-dev01.pergola.kuenste.live/update";
 
 describe("Watering Availability API", () => {
   let submittedIds: string[] = [];
@@ -89,6 +89,67 @@ describe("Watering Availability API", () => {
       expect(res.body.gardenIri).to.eq(GARDEN_IRI);
       expect(res.body.targetMonth).to.eq("2026-06");
       expect(res.body.assignments).to.be.an("array").with.length.greaterThan(0);
+    });
+  });
+
+  it("removes a single assignment from a plan", () => {
+    cy.request({
+      method: "GET",
+      url: `${API}/plan`,
+      qs: { gardenIri: GARDEN_IRI, month: "2026-06" },
+    }).then((getRes) => {
+      const assignment = getRes.body.assignments[0];
+      const beforeCount = getRes.body.assignments.length;
+
+      cy.request({
+        method: "DELETE",
+        url: `${API}/plan/Wurzelwerk-2026-06/assignments`,
+        body: {
+          date: assignment.date,
+          personIri: assignment.personIri,
+        },
+        headers: { "Content-Type": "application/json" },
+      }).then((deleteRes) => {
+        expect(deleteRes.status).to.eq(200);
+        expect(deleteRes.body.assignments).to.have.length(beforeCount - 1);
+        expect(
+          deleteRes.body.assignments.some(
+            (a: { date: string; personIri: string }) =>
+              a.date === assignment.date && a.personIri === assignment.personIri
+          )
+        ).to.be.false;
+      });
+    });
+  });
+
+  it("removes a single date from availability", () => {
+    cy.request({
+      method: "GET",
+      url: `${API}/availability`,
+      qs: { gardenIri: GARDEN_IRI, month: "2026-06" },
+    }).then((getRes) => {
+      const entry = getRes.body[0];
+      const personIri = entry.person["@id"];
+      const dateToRemove = entry.availableDates[0];
+
+      cy.request({
+        method: "DELETE",
+        url: `${API}/availability/date`,
+        body: {
+          gardenIri: GARDEN_IRI,
+          personIri,
+          targetMonth: "2026-06",
+          date: dateToRemove,
+        },
+        headers: { "Content-Type": "application/json" },
+      }).then((deleteRes) => {
+        expect(deleteRes.status).to.eq(200);
+        if (deleteRes.body.availableDates) {
+          expect(deleteRes.body.availableDates).to.not.include(dateToRemove);
+        } else {
+          expect(deleteRes.body).to.have.property("deleted");
+        }
+      });
     });
   });
 });
