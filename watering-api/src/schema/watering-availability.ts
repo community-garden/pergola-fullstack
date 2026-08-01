@@ -14,7 +14,7 @@ export const WateringAvailabilityInputSchema = z.object({
   personId: z.string().min(1),
   nickname: z.string().optional(),
   maximumTasksPerMonth: z.number().int().min(1).max(30),
-  availableDates: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
+  availableDates: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)).min(1),
   targetMonth: z.string().regex(/^\d{4}-\d{2}$/),
 });
 

@@ -14,6 +14,15 @@ export async function removePlanAssignment(
   return res.json();
 }
 
+export async function addPlanAssignment(planId: string, date: string, personIri: string): Promise<void> {
+  const res = await fetch(`/api/watering/plan/${encodeURIComponent(planId)}/assignments`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date, personIri }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+}
+
 export async function deletePlan(planId: string): Promise<{ deleted: string }> {
   const res = await fetch(`/api/watering/plan/${encodeURIComponent(planId)}`, {
     method: 'DELETE',

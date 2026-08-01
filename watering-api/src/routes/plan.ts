@@ -64,6 +64,42 @@ function isPlanCalculated(plan: WateringPlan | null | undefined): boolean {
   return !!plan?.calculatedAt;
 }
 
+// POST /api/watering/plan/:id/assignments
+// Body: { date: "YYYY-MM-DD", personIri: string }
+app.post("/:id/assignments", async (c) => {
+  const id = c.req.param("id");
+  const entityIRI = `${DATA_BASE}WateringPlan/${id}`;
+
+  let body: unknown;
+  try { body = await c.req.json(); } catch { return c.json({ error: "Invalid JSON" }, 400); }
+
+  const parsed = RemovePlanAssignmentSchema.safeParse(body);
+  if (!parsed.success) return c.json({ error: parsed.error.flatten() }, 400);
+
+  const plan = await store.loadDocument("WateringPlan", entityIRI) as WateringPlan | null;
+  if (!plan || !plan.calculatedAt) return c.json({ error: "Plan not found" }, 404);
+
+  const { date, personIri } = parsed.data;
+  const existing = plan.assignments ?? [];
+  if (existing.some((a) => a.date === date && a.personIri === personIri)) {
+    return c.json({ error: "Already assigned" }, 409);
+  }
+
+  const updated: Omit<WateringPlan, "@id" | "@type"> = {
+    gardenIri: plan.gardenIri,
+    targetMonth: plan.targetMonth,
+    calculatedAt: plan.calculatedAt,
+    validFrom: plan.validFrom,
+    validUntil: plan.validUntil,
+    assignments: [...existing, { date, personIri }],
+  };
+
+  await store.removeDocument("WateringPlan", entityIRI);
+  await store.upsertDocument("WateringPlan", entityIRI, updated);
+
+  return c.json({ "@id": entityIRI, ...updated }, 201);
+});
+
 // DELETE /api/watering/plan/:id/assignments
 // Body: { date: "YYYY-MM-DD", personIri: string }
 app.delete("/:id/assignments", async (c) => {

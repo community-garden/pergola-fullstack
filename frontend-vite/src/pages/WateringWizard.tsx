@@ -49,7 +49,12 @@ const WateringWizard = () => {
   }, [gardenId, targetMonth, monthLoading]);
 
   const handleFinish = async ({ frequency, availableDates, nickname }: WizardData) => {
-    if (!gardenId || monthLoading) return;
+    if (!gardenId || monthLoading || availableDates.length === 0) return;
+
+    // Read personId fresh from localStorage: forgetMe() in WizardProfile generates a new
+    // UUID in its own useLocalUser instance (separate React state), so the personId prop
+    // here may be stale. localStorage is always up to date immediately after forgetMe().
+    const freshPersonId = localStorage.getItem('pergola_person_id') ?? personId;
 
     const gardenIri = `${DATA_BASE}Garden/${gardenId}`;
     const maximumTasksPerMonth = Math.max(1, Math.round(frequency * 4.33));
@@ -62,7 +67,7 @@ const WateringWizard = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           gardenIri,
-          personId,
+          personId: freshPersonId,
           nickname: nickname || personId.slice(0, 8),
           maximumTasksPerMonth,
           availableDates: availableDateStrings,

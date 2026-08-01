@@ -22,7 +22,10 @@
     "removeAssignmentSuccess": "Assignment removed.",
     "removeAssignmentError": "Could not remove assignment.",
     "removeAvailabilitySuccess": "Availability removed for this date.",
-    "removeAvailabilityError": "Could not remove availability."
+    "removeAvailabilityError": "Could not remove availability.",
+    "assignToDate": "Assign to this date",
+    "assignSuccess": "Assignment added.",
+    "assignError": "Could not add assignment."
   },
   "plan": {
     "detailButton": "View Plan",
@@ -32,7 +35,9 @@
     "gardenersColumn": "Assigned Gardeners",
     "closeButton": "Close",
     "copyButton": "Copy",
-    "copiedButton": "Copied!"
+    "copiedButton": "Copied!",
+    "showAvailabilities": "Show availabilities",
+    "availableColumn": "Available"
   },
   "planManagement": {
     "title": "Monthly Plan",

@@ -33,7 +33,7 @@ import {
 } from '../hooks/useWateringPlan';
 import { useLocalUser } from '../hooks/useLocalUser';
 import { useDateFnsLocale, useCurrentGardenInfo } from '../hooks';
-import { removeAvailabilityDate, removePlanAssignment } from '../api/watering';
+import { removeAvailabilityDate, removePlanAssignment, addPlanAssignment } from '../api/watering';
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -144,6 +144,20 @@ const Watering = () => {
         refetch();
       } catch {
         enqueueSnackbar(t('watering:chip.removeAssignmentError'), { variant: 'error' });
+      }
+    },
+    [gardenId, planId, enqueueSnackbar, t, refetch]
+  );
+
+  const handleAddAssignment = useCallback(
+    async (date: string, personIri: string) => {
+      if (!gardenId || !planId) return;
+      try {
+        await addPlanAssignment(planId, date, personIri);
+        enqueueSnackbar(t('watering:chip.assignSuccess'), { variant: 'success' });
+        refetch();
+      } catch {
+        enqueueSnackbar(t('watering:chip.assignError'), { variant: 'error' });
       }
     },
     [gardenId, planId, enqueueSnackbar, t, refetch]
@@ -309,6 +323,9 @@ const Watering = () => {
         gardenName={gardenName}
         gardenId={gardenId}
         gardenLocation={gardenLocation}
+        availabilityByDate={displayAvailabilityByDate}
+        targetMonth={displayMonth}
+        onRefetch={refetchCurrentPlan}
       />
 
       {/* Watering Calendar */}
@@ -363,6 +380,7 @@ const Watering = () => {
                       variant="available"
                       removable
                       onRemove={() => handleRemoveAvailability(selectedDateStr, personIri)}
+                      onAssign={displayPlanCalculatedAt ? () => handleAddAssignment(selectedDateStr, personIri) : undefined}
                     />
                   ))}
                   {assignmentsOnSelectedDate.length > 0 && (

@@ -22,7 +22,10 @@
     "removeAssignmentSuccess": "Zuweisung entfernt.",
     "removeAssignmentError": "Zuweisung konnte nicht entfernt werden.",
     "removeAvailabilitySuccess": "Verfügbarkeit für dieses Datum entfernt.",
-    "removeAvailabilityError": "Verfügbarkeit konnte nicht entfernt werden."
+    "removeAvailabilityError": "Verfügbarkeit konnte nicht entfernt werden.",
+    "assignToDate": "Diese Person dem Tag zuweisen",
+    "assignSuccess": "Zuweisung hinzugefügt.",
+    "assignError": "Zuweisung konnte nicht hinzugefügt werden."
   },
   "plan": {
     "detailButton": "Plan anzeigen",
@@ -32,7 +35,9 @@
     "gardenersColumn": "Zugewiesene Gärtner",
     "closeButton": "Schließen",
     "copyButton": "Kopieren",
-    "copiedButton": "Kopiert!"
+    "copiedButton": "Kopiert!",
+    "showAvailabilities": "Verfügbarkeiten anzeigen",
+    "availableColumn": "Verfügbar"
   },
   "planManagement": {
     "title": "Monatsplan",

@@ -15,6 +15,7 @@ export interface WateringPersonChipProps {
   variant?: 'assigned' | 'available';
   removable?: boolean;
   onRemove?: () => void;
+  onAssign?: () => void;
 }
 
 export function WateringPersonChip({
@@ -28,6 +29,7 @@ export function WateringPersonChip({
   variant = 'assigned',
   removable = false,
   onRemove,
+  onAssign,
 }: WateringPersonChipProps) {
   const { t } = useTranslation('watering');
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -97,6 +99,11 @@ export function WateringPersonChip({
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
+        {onAssign && (
+          <MenuItem onClick={() => { setAnchorEl(null); onAssign(); }}>
+            {t('chip.assignToDate')}
+          </MenuItem>
+        )}
         <MenuItem onClick={handleDownload}>
           {t('chip.downloadCalendar')}
         </MenuItem>
