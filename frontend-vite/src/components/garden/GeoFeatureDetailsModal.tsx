@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { useAnyOfFilterStore } from '@graviola/edb-state-hooks';
 import type { Patch } from '../../schema/patch-schema';
-import type { Workshop, Shed, BeeStand, Path, Seating, FirePlace } from '../../schema/feature-types-schema';
+import type { Workshop, Shed, BeeStand, Path, Seating, FirePlace, WaterBody } from '../../schema/feature-types-schema';
 import { GeoFeatureInfo } from './GeoFeatureInfo';
 import { FeatureTypeSelector } from './FeatureTypeSelector';
 import { PatchFeatureCard } from './feature/PatchFeatureCard';
@@ -27,6 +27,7 @@ import { BeeStandFeatureCard } from './feature/BeeStandFeatureCard';
 import { PathFeatureCard } from './feature/PathFeatureCard';
 import { SeatingFeatureCard } from './feature/SeatingFeatureCard';
 import { FirePlaceFeatureCard } from './feature/FirePlaceFeatureCard';
+import { WaterBodyFeatureCard } from './feature/WaterBodyFeatureCard';
 import { NewFeatureWizardNiceModal } from './NewFeatureWizardNiceModal';
 import { GardenFeatureType } from './feature-type-mapping';
 
@@ -58,6 +59,7 @@ export const GeoFeatureDetailsModal = NiceModal.create<GeoFeatureDetailsModalPro
     paths: Path[];
     seating: Seating[];
     firePlaces: FirePlace[];
+    waterBodies: WaterBody[];
   }>(
     {
       patches: "Patch",
@@ -67,6 +69,7 @@ export const GeoFeatureDetailsModal = NiceModal.create<GeoFeatureDetailsModalPro
       paths: "Path",
       seating: "Seating",
       firePlaces: "FirePlace",
+      waterBodies: "WaterBody",
     },
     {
       where: {
@@ -88,7 +91,8 @@ export const GeoFeatureDetailsModal = NiceModal.create<GeoFeatureDetailsModalPro
       relatedFeatures.beeStands.length +
       relatedFeatures.paths.length +
       relatedFeatures.seating.length +
-      relatedFeatures.firePlaces.length;
+      relatedFeatures.firePlaces.length +
+      relatedFeatures.waterBodies.length;
 
     // Determine first feature type (in order of priority)
     let first = null;
@@ -99,6 +103,7 @@ export const GeoFeatureDetailsModal = NiceModal.create<GeoFeatureDetailsModalPro
     else if (relatedFeatures.paths.length > 0) first = 'paths';
     else if (relatedFeatures.seating.length > 0) first = 'seating';
     else if (relatedFeatures.firePlaces.length > 0) first = 'firePlaces';
+    else if (relatedFeatures.waterBodies.length > 0) first = 'waterBodies';
 
     return { totalFeatures: total, firstFeatureType: first };
   }, [relatedFeatures]);
@@ -287,6 +292,24 @@ export const GeoFeatureDetailsModal = NiceModal.create<GeoFeatureDetailsModalPro
                 </AccordionSummary>
                 <AccordionDetails>
                   <FirePlaceFeatureCard firePlace={firePlace} />
+                </AccordionDetails>
+              </Accordion>
+            ))}
+
+            {/* WaterBody Accordions */}
+            {relatedFeatures.waterBodies.map((waterBody, index) => (
+              <Accordion
+                key={waterBody['@id']}
+                defaultExpanded={firstFeatureType === 'waterBodies' && index === 0}
+                sx={{ mb: 1 }}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>
+                    💧 {waterBody.name || t('features.types.Gewässer')}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <WaterBodyFeatureCard waterBody={waterBody} />
                 </AccordionDetails>
               </Accordion>
             ))}

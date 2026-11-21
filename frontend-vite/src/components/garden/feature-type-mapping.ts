@@ -8,6 +8,7 @@ export const GARDEN_FEATURES = [
   'Weg',
   'Sitzgelegenheit',
   'Feuerstelle',
+  'Gewässer',
 ] as const;
 
 export type GardenFeatureType = typeof GARDEN_FEATURES[number];
@@ -53,6 +54,11 @@ export const featureTypeMapping: Record<GardenFeatureType, FeatureTypeInfo> = {
     typeName: 'FirePlace',
     typeIRI: 'https://ontology.semantic-desk.top/garden#FirePlace',
     icon: '🔥',
+  },
+  'Gewässer': {
+    typeName: 'WaterBody',
+    typeIRI: 'https://ontology.semantic-desk.top/garden#WaterBody',
+    icon: '💧',
   },
 };
 

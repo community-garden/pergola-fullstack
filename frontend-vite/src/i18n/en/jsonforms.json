@@ -130,11 +130,20 @@
   },
   "taxonomy": { "label": "Taxonomy" },
   "timing": { "label": "Timing" },
+  "usableForIrrigation": { "label": "Usable for irrigation" },
   "water": {
     "label": "Water requirements",
     "low": "Low",
     "medium": "Medium",
     "high": "High"
+  },
+  "waterBodyType": {
+    "label": "Water body type",
+    "pond": "Pond",
+    "rain_barrel": "Rain barrel",
+    "cistern": "Cistern",
+    "water_tap": "Water tap",
+    "other": "Other"
   },
   "width": { "label": "Width (m)" },
   "workshopType": {

@@ -20,7 +20,7 @@ import { patchSchema } from "../frontend-vite/src/schema/patch-schema";
 import { geoFeatureSchema } from "../frontend-vite/src/schema/geo-feature-schema";
 
 // Entity types per combined schema
-const FEATURE_TYPES = ["Workshop", "Shed", "BeeStand", "Path", "Seating", "FirePlace"] as const;
+const FEATURE_TYPES = ["Workshop", "Shed", "BeeStand", "Path", "Seating", "FirePlace", "WaterBody"] as const;
 const PATCH_TYPES = [
   "Patch",
   "PlantingPlan",

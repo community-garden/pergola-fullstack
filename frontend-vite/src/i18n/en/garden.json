@@ -18,7 +18,8 @@
       "Bienenstand": "Bee Hive",
       "Weg": "Path",
       "Sitzgelegenheit": "Seating Area",
-      "Feuerstelle": "Fire Pit"
+      "Feuerstelle": "Fire Pit",
+      "Gewässer": "Water Body"
     }
   },
   "geoFeature": {
@@ -117,6 +118,23 @@
       "fire_pit": "Fire Pit",
       "barbecue": "Barbecue",
       "outdoor_oven": "Outdoor Oven",
+      "other": "Other"
+    }
+  },
+  "waterBody": {
+    "title": "Water Body",
+    "name": "Name",
+    "description": "Description",
+    "icon": "Icon",
+    "geoFeature": "Geographic Feature",
+    "waterBodyType": "Type",
+    "area": "Area (m²)",
+    "usableForIrrigation": "Usable for irrigation",
+    "types": {
+      "pond": "Pond",
+      "rain_barrel": "Rain Barrel",
+      "cistern": "Cistern",
+      "water_tap": "Water Tap",
       "other": "Other"
     }
   },

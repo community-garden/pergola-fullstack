@@ -17,7 +17,8 @@
       "Bienenstand": "Bienenstand",
       "Weg": "Weg",
       "Sitzgelegenheit": "Sitzgelegenheit",
-      "Feuerstelle": "Feuerstelle"
+      "Feuerstelle": "Feuerstelle",
+      "Gewässer": "Gewässer"
     }
   },
   "geoFeature": {
@@ -116,6 +117,23 @@
       "fire_pit": "Feuerstelle",
       "barbecue": "Grill",
       "outdoor_oven": "Außenofen",
+      "other": "Sonstiges"
+    }
+  },
+  "waterBody": {
+    "title": "Gewässer",
+    "name": "Name",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "geoFeature": "Geographisches Objekt",
+    "waterBodyType": "Typ",
+    "area": "Fläche (m²)",
+    "usableForIrrigation": "Zum Gießen nutzbar",
+    "types": {
+      "pond": "Teich",
+      "rain_barrel": "Regentonne",
+      "cistern": "Zisterne",
+      "water_tap": "Wasseranschluss",
       "other": "Sonstiges"
     }
   },

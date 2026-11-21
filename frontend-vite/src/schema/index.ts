@@ -1,5 +1,5 @@
 import { Path } from 'react-router-dom';
-import { Workshop, Shed, BeeStand, Seating, FirePlace } from './feature-types-schema';
+import { Workshop, Shed, BeeStand, Seating, FirePlace, WaterBody } from './feature-types-schema';
 import { Garden } from './garden-schema';
 import { GeoFeature } from './geo-feature-schema';
 import { GrowingSeason, Patch, PhysicalCharacteristics, PlantingPlan, PlantingPlanItem, PlantSpecies, PlantVariety, Requirements, Timing } from './patch-schema';
@@ -51,5 +51,6 @@ export type GardenDefinitions = {
   Path: Path,
   Seating: Seating,
   FirePlace: FirePlace,
+  WaterBody: WaterBody,
   Garden: Garden,
 }

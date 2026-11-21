@@ -130,11 +130,20 @@
   },
   "taxonomy": { "label": "Taxonomie" },
   "timing": { "label": "Zeitplanung" },
+  "usableForIrrigation": { "label": "Zum Gießen nutzbar" },
   "water": {
     "label": "Wasserbedarf",
     "low": "Niedrig",
     "medium": "Mittel",
     "high": "Hoch"
+  },
+  "waterBodyType": {
+    "label": "Gewässer-Typ",
+    "pond": "Teich",
+    "rain_barrel": "Regentonne",
+    "cistern": "Zisterne",
+    "water_tap": "Wasseranschluss",
+    "other": "Sonstiges"
   },
   "width": { "label": "Breite (m)" },
   "workshopType": {

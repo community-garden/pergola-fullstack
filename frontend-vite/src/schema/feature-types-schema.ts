@@ -118,6 +118,27 @@ const FirePlaceSchema = z
     description: "A fire pit, barbecue, or outdoor cooking area",
   });
 
+const WATER_BODY_TYPES = ["pond", "rain_barrel", "cistern", "water_tap", "other"] as const;
+
+const WaterBodySchema = z
+  .object({
+    "@id": z.string().optional(),
+    "@type": z.literal(`${GARDEN_IRI}WaterBody`),
+    name: z.string().min(1).describe("Name of the water body"),
+    description: z.string().optional().describe("Description"),
+    icon: z.string().optional().describe("Icon identifier"),
+    geoFeature: GeoFeatureSchema.optional().describe("Reference to geographic feature"),
+    waterBodyType: z.enum(WATER_BODY_TYPES).optional(),
+    area: z.number().positive().optional().describe("Area in square meters"),
+    usableForIrrigation: z.boolean().optional().describe("Water can be used for watering"),
+  })
+  .loose()
+  .meta({
+    id: "WaterBody",
+    title: "Water Body",
+    description: "A pond, rain barrel, cistern or water tap",
+  });
+
 // const workshopJsonSchema = z.toJSONSchema(WorkshopSchema, {
 //   target: "draft-7",
 //   reused: "ref",
@@ -254,6 +275,32 @@ const featureTypesDefinitions: NonNullable<JsonSchema["definitions"]> = {
     },
     additionalProperties: true,
   },
+  WaterBody: {
+    type: "object",
+    title: "Water Body",
+    description: "A pond, rain barrel, cistern or water tap",
+    properties: {
+      "@id": { type: "string", title: "ID" },
+      "@type": { type: "string", const: `${GARDEN_IRI}WaterBody`, title: "Type" },
+      name: { type: "string", minLength: 1, title: "Name", description: "Name of the water body" },
+      description: { type: "string", title: "Description" },
+      icon: { type: "string", title: "Icon", description: "Icon identifier" },
+      geoFeature: geoFeatureRef,
+      waterBodyType: {
+        type: "string",
+        enum: [...WATER_BODY_TYPES],
+        title: "Water body type",
+      },
+      area: { type: "number", exclusiveMinimum: 0, title: "Area (m²)", description: "Area in square meters" },
+      usableForIrrigation: {
+        type: "boolean",
+        title: "Usable for irrigation",
+        description: "Water can be used for watering",
+      },
+    },
+    required: ["name"],
+    additionalProperties: true,
+  },
 };
 
 export const featureTypesSchema: JsonSchema = mergeSchemaDefinitions([
@@ -288,6 +335,10 @@ export const featureTypesConfiguration = {
       label: "name",
       description: "description",
     },
+    WaterBody: {
+      label: "name",
+      description: "description",
+    },
   },
   typeNameLabelMap: {
     Workshop: "Workshop/Greenhouse",
@@ -296,6 +347,7 @@ export const featureTypesConfiguration = {
     Path: "Path",
     Seating: "Seating Area",
     FirePlace: "Fire Place",
+    WaterBody: "Water Body",
   },
   typeNameUiSchemaOptionsMap: {
     Workshop: {
@@ -314,6 +366,9 @@ export const featureTypesConfiguration = {
       dropdown: true,
     },
     FirePlace: {
+      dropdown: true,
+    },
+    WaterBody: {
       dropdown: true,
     },
     GeoFeature: {
@@ -345,6 +400,10 @@ export const featureTypesConfiguration = {
       bringDefinitionToTop(featureTypesSchema as any, "FirePlace") as any,
       {}
     ),
+    WaterBody: generateDefaultUISchema(
+      bringDefinitionToTop(featureTypesSchema as any, "WaterBody") as any,
+      {}
+    ),
   },
 };
 
@@ -355,6 +414,7 @@ export {
   PathSchema,
   SeatingSchema,
   FirePlaceSchema,
+  WaterBodySchema,
 };
 
 export type Workshop = z.infer<typeof WorkshopSchema>;
@@ -363,3 +423,4 @@ export type BeeStand = z.infer<typeof BeeStandSchema>;
 export type Path = z.infer<typeof PathSchema>;
 export type Seating = z.infer<typeof SeatingSchema>;
 export type FirePlace = z.infer<typeof FirePlaceSchema>;
+export type WaterBody = z.infer<typeof WaterBodySchema>;
