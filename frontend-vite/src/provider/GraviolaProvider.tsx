@@ -47,6 +47,8 @@ import { usePlantKnowledgeBases } from "../knowledge-bases";
 import { plantMappings } from "../mappings";
 import { MediaConfigProvider } from "../components/graviola/renderers/image-upload/MediaConfigContext";
 import { useJsonFormsTranslator } from "../hooks/useJsonFormsTranslator";
+import { PergolaIntentBus } from "./PergolaIntentBus";
+import { useDetailViewConfig } from "./useDetailViewConfig";
 import type { SemanticJsonFormNoOpsProps } from "@graviola/semantic-jsonform-types";
 
 /**
@@ -160,6 +162,8 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
     [entityBaseIRI, definitionToTypeIRI],
   );
 
+  const viewConfig = useDetailViewConfig();
+
   const rendererRegistry = useMemo(
     () => [...allRenderers, ...(renderers || [])],
     [renderers],
@@ -189,6 +193,7 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
       cellRendererRegistry={cellRendererRegistry}
       uischemata={uischemata}
       normDataMapping={plantMappings}
+      viewConfig={viewConfig}
     >
       <SemanticFormSlotProvider Component={TranslatedSemanticJsonForm}>
         <FinderSlotProvider Component={SimilarityFinder}>
@@ -202,7 +207,9 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
               }}
               enableInversePropertiesFeature={true}
             >
-              <NiceModal.Provider>{children}</NiceModal.Provider>
+              <PergolaIntentBus>
+                <NiceModal.Provider>{children}</NiceModal.Provider>
+              </PergolaIntentBus>
             </SparqlStoreProvider>
           </ModalRegistryProvider>
         </FinderSlotProvider>

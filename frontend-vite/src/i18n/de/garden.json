@@ -367,5 +367,12 @@
   "tableActions": {
     "show": "Anzeigen",
     "edit": "Bearbeiten"
+  },
+  "intents": {
+    "created": "Angelegt",
+    "saved": "Gespeichert",
+    "saveFailed": "Speichern fehlgeschlagen: {{message}}",
+    "removed": "Gelöscht",
+    "removeFailed": "Löschen fehlgeschlagen: {{message}}"
   }
 }

@@ -1,5 +1,4 @@
 {
-  
   "features": {
     "newFeatureQuestion": "Would you like to specify this feature in more detail?",
     "no": "No",
@@ -368,5 +367,12 @@
   "tableActions": {
     "show": "Show",
     "edit": "Edit"
+  },
+  "intents": {
+    "created": "Created",
+    "saved": "Saved",
+    "saveFailed": "Saving failed: {{message}}",
+    "removed": "Removed",
+    "removeFailed": "Removing failed: {{message}}"
   }
 }

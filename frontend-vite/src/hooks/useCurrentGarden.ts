@@ -10,7 +10,8 @@ export interface UseCurrentGardenResult {
 
 export const useCurrentGarden = (): UseCurrentGardenResult => {
   const { gardenId: routeGardenId } = useParams<{ gardenId: string }>();
-  // Modals (NiceModal) render outside the router — fall back to the URL path.
+  // Modals (NiceModal) render inside the router but outside the /:gardenId
+  // route, so useParams has no gardenId there — fall back to the URL path.
   const gardenId =
     routeGardenId ??
     (typeof window !== 'undefined'

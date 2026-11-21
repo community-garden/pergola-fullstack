@@ -16,6 +16,7 @@ import { NewFeatureToast } from './components/garden/NewFeatureToast';
 import './index.css';
 import '@icon/icofont/icofont.css';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 
 const SPARQL_API_URL = import.meta.env.VITE_SPARQL_API_URL || "http://localhost:7878/query";
 
@@ -58,6 +59,8 @@ createRoot(document.getElementById('root')!).render(
                 newFeature: NewFeatureToast,
               }}
             >
+              {/* The router wraps Graviola so its intent bus (and modals) can navigate. */}
+              <BrowserRouter>
               <GraviolaProvider
                 apiBaseUrl={SPARQL_API_URL}
                 schema={config.schema as any}
@@ -72,6 +75,7 @@ createRoot(document.getElementById('root')!).render(
               >
                 <App />
               </GraviolaProvider>
+              </BrowserRouter>
             </SnackbarProvider>
           </ThemeProvider>
           <ReactQueryDevtools initialIsOpen={false} />

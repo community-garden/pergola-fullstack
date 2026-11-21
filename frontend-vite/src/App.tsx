@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ThemeContextProvider } from '@theme/index';
 import Layout from '@components/layout/Layout';
 import {
@@ -19,7 +19,6 @@ import './i18n';
 const App = () => {
   return (
           <ThemeContextProvider>
-            <Router>
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/:gardenId/*" element={<Layout />}>
@@ -34,7 +33,6 @@ const App = () => {
                 <Route path="garden-settings" element={<Settings />} />
               </Route>
             </Routes>
-            </Router>
           </ThemeContextProvider>
   );
 };
