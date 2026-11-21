@@ -18,6 +18,7 @@ import {
 import { featureTypesSchema } from "../frontend-vite/src/schema/feature-types-schema";
 import { patchSchema } from "../frontend-vite/src/schema/patch-schema";
 import { geoFeatureSchema } from "../frontend-vite/src/schema/geo-feature-schema";
+import { schema as gardenSchema } from "../frontend-vite/src/schema/garden-schema";
 
 // Entity types per combined schema
 const FEATURE_TYPES = ["Workshop", "Shed", "BeeStand", "Path", "Seating", "FirePlace", "WaterBody"] as const;
@@ -33,6 +34,8 @@ const PATCH_TYPES = [
   "Timing",
 ] as const;
 const GEO_TYPES = ["GeoFeature"] as const;
+// Season planning types (resolved against the merged garden schema — they reference plants, beds and persons)
+const SEASON_TYPES = ["Person", "Planting", "SeedStock"] as const;
 
 function deepMerge(target: Record<string, any>, source: Record<string, any>): Record<string, any> {
   const result = { ...target };
@@ -73,6 +76,17 @@ for (const typeName of PATCH_TYPES) {
 for (const typeName of GEO_TYPES) {
   try {
     const top = bringDefinitionToTop(geoFeatureSchema as any, typeName);
+    const keys = extractTranslationKeysFromSchema(top as any);
+    merged = deepMerge(merged, keys);
+    console.log(`✓ ${typeName}: ${Object.keys(keys).length} top-level keys`);
+  } catch (e) {
+    console.error(`✗ ${typeName}:`, e);
+  }
+}
+
+for (const typeName of SEASON_TYPES) {
+  try {
+    const top = bringDefinitionToTop(gardenSchema as any, typeName);
     const keys = extractTranslationKeysFromSchema(top as any);
     merged = deepMerge(merged, keys);
     console.log(`✓ ${typeName}: ${Object.keys(keys).length} top-level keys`);

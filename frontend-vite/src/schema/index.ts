@@ -2,6 +2,8 @@ import { Path } from 'react-router-dom';
 import { Workshop, Shed, BeeStand, Seating, FirePlace, WaterBody } from './feature-types-schema';
 import { Garden } from './garden-schema';
 import { GeoFeature } from './geo-feature-schema';
+import { Person } from './person-schema';
+import { Planting, SeedStock } from './planting-schema';
 import { GrowingSeason, Patch, PhysicalCharacteristics, PlantingPlan, PlantingPlanItem, PlantSpecies, PlantVariety, Requirements, Timing } from './patch-schema';
 
 // JSON Schema exports
@@ -20,7 +22,21 @@ export {
   TimingSchema,
 } from './patch-schema';
 
+export { PersonSchema, personSchema } from './person-schema';
+export {
+  PlantingSchema,
+  SeedStockSchema,
+  plantingSchema,
+  PLANTING_ROLES,
+  PLANTING_STATUSES,
+  PLANTING_QUANTITY_UNITS,
+  SEED_UNITS,
+} from './planting-schema';
+export { NUTRIENT_DEMANDS } from './plant-schema';
+
 // Type exports
+export type { Person } from './person-schema';
+export type { Planting, SeedStock } from './planting-schema';
 export type { Garden } from './garden-schema';
 export type {
   Patch,
@@ -52,5 +68,8 @@ export type GardenDefinitions = {
   Seating: Seating,
   FirePlace: FirePlace,
   WaterBody: WaterBody,
+  Person: Person,
+  Planting: Planting,
+  SeedStock: SeedStock,
   Garden: Garden,
 }

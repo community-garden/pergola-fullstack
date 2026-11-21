@@ -7,3 +7,5 @@ api/node_modules
 data
 frontend
 neo4j
+# Static media is mounted into nginx at runtime, not baked into the image
+frontend-vite/public/media

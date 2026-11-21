@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { generateDefaultUISchema } from "@graviola/edb-ui-utils";
-import { bringDefinitionToTop, JsonSchema } from "@graviola/json-schema-utils";
+import { JsonSchema } from "@graviola/json-schema-utils";
 import { mergeSchemaDefinitions } from "./utils/mergeSchemaDefinitions";
 
 const GARDEN_IRI = "https://ontology.semantic-desk.top/garden#";
@@ -9,6 +8,8 @@ const MonthSchema = z.number().int().min(1).max(12);
 
 export const GrowingSeasonSchema = z
   .object({
+    preCultivationStart: MonthSchema.optional().describe("Start month for pre-cultivation / pre-sprouting indoors (1-12)"),
+    preCultivationEnd: MonthSchema.optional().describe("End month for pre-cultivation / pre-sprouting indoors (1-12)"),
     sowingStart: MonthSchema.optional().describe("Start month for sowing (1-12)"),
     sowingEnd: MonthSchema.optional().describe("End month for sowing (1-12)"),
     prickingStart: MonthSchema.optional().describe("Start month for pricking out (1-12)"),
@@ -40,6 +41,7 @@ export const RequirementsSchema = z.object({
 
 export const PhysicalCharacteristicsSchema = z.object({
   spacing: z.number().positive().optional().describe("Recommended spacing in cm"),
+  rowSpacing: z.number().positive().optional().describe("Recommended spacing between rows in cm"),
   height: z.number().positive().optional().describe("Typical height in cm"),
   spread: z.number().positive().optional().describe("Typical spread in cm"),
 }).optional();
@@ -89,6 +91,24 @@ const AuthorityLinkSchema = z.object({
   authorityLabel: z.string().optional().describe("Label from authority"),
 }).loose();
 
+/**
+ * Gardener-oriented facts — what is printed on a seed packet or on our
+ * plant cards (Saisonplanung/pflanzen/*.json). Short free texts on purpose.
+ */
+export const NUTRIENT_DEMANDS = ["heavy", "medium", "light"] as const;
+
+const GardenerFactsShape = {
+  nutrientDemand: z.enum(NUTRIENT_DEMANDS).optional().describe("Heavy, medium or light feeder"),
+  perennial: z.boolean().optional().describe("Perennial / stays in the bed for several seasons"),
+  sowingInfo: z.string().optional().describe("Sowing: when, how deep, germination temperature, direct or pre-cultivation"),
+  plantingInfo: z.string().optional().describe("Planting out: when and how"),
+  spacingInfo: z.string().optional().describe("Spacing in the row and between rows"),
+  siteInfo: z.string().optional().describe("Site: sun, soil"),
+  careInfo: z.string().optional().describe("Care: staking, pinching out, watering"),
+  harvestInfo: z.string().optional().describe("Harvest: when and how"),
+  hint: z.string().optional().describe("Most important hint, e.g. crop rotation"),
+};
+
 export const PlantSpeciesSchema = z
   .object({
     "@id": z.string().optional(),
@@ -101,6 +121,7 @@ export const PlantSpeciesSchema = z
     icon: z.string().optional().describe("Icon/emoji for display"),
     imageUrl: z.string().optional().describe("Primary image URL"),
     images: z.array(z.string()).optional().describe("Additional image URLs"),
+    ...GardenerFactsShape,
     growingSeason: GrowingSeasonSchema.optional(),
     requirements: RequirementsSchema,
     physicalCharacteristics: PhysicalCharacteristicsSchema,
@@ -163,12 +184,31 @@ const monthProp = {
   maximum: 12,
 };
 
+const gardenerFactsProperties = {
+  nutrientDemand: {
+    type: "string" as const,
+    enum: [...NUTRIENT_DEMANDS],
+    title: "Nutrient demand",
+    description: "Heavy, medium or light feeder",
+  },
+  perennial: { type: "boolean" as const, title: "Perennial", description: "Perennial / stays in the bed for several seasons" },
+  sowingInfo: { type: "string" as const, title: "Sowing", description: "Sowing: when, how deep, germination temperature, direct or pre-cultivation" },
+  plantingInfo: { type: "string" as const, title: "Planting out", description: "Planting out: when and how" },
+  spacingInfo: { type: "string" as const, title: "Spacing", description: "Spacing in the row and between rows" },
+  siteInfo: { type: "string" as const, title: "Site", description: "Site: sun, soil" },
+  careInfo: { type: "string" as const, title: "Care", description: "Care: staking, pinching out, watering" },
+  harvestInfo: { type: "string" as const, title: "Harvest", description: "Harvest: when and how" },
+  hint: { type: "string" as const, title: "Hint", description: "Most important hint, e.g. crop rotation" },
+};
+
 const plantDefinitions: NonNullable<JsonSchema["definitions"]> = {
     GrowingSeason: {
       type: "object",
       title: "Growing Season",
       description: "Year-independent growing season information",
       properties: {
+        preCultivationStart: { ...monthProp, title: "Pre-cultivation start (month)", description: "Start month for pre-cultivation / pre-sprouting indoors (1-12)" },
+        preCultivationEnd: { ...monthProp, title: "Pre-cultivation end (month)", description: "End month for pre-cultivation / pre-sprouting indoors (1-12)" },
         sowingStart: { ...monthProp, title: "Sowing start (month)", description: "Start month for sowing (1-12)" },
         sowingEnd: { ...monthProp, title: "Sowing end (month)", description: "End month for sowing (1-12)" },
         prickingStart: { ...monthProp, title: "Pricking start (month)", description: "Start month for pricking out (1-12)" },
@@ -202,6 +242,7 @@ const plantDefinitions: NonNullable<JsonSchema["definitions"]> = {
       title: "Physical characteristics",
       properties: {
         spacing: { type: "number", exclusiveMinimum: 0, title: "Spacing (cm)", description: "Recommended spacing in cm" },
+        rowSpacing: { type: "number", exclusiveMinimum: 0, title: "Row spacing (cm)", description: "Recommended spacing between rows in cm" },
         height: { type: "number", exclusiveMinimum: 0, title: "Height (cm)", description: "Typical height in cm" },
         spread: { type: "number", exclusiveMinimum: 0, title: "Spread (cm)", description: "Typical spread in cm" },
       },
@@ -292,6 +333,7 @@ const plantDefinitions: NonNullable<JsonSchema["definitions"]> = {
         icon: { type: "string", title: "Icon", description: "Icon/emoji for display" },
         imageUrl: { type: "string", title: "Image URL", description: "Primary image URL" },
         images: { type: "array", items: { type: "string" }, title: "Images", description: "Additional image URLs" },
+        ...gardenerFactsProperties,
         growingSeason: { $ref: "#/definitions/GrowingSeason", title: "Growing season" },
         requirements: { $ref: "#/definitions/Requirements", title: "Requirements" },
         physicalCharacteristics: { $ref: "#/definitions/PhysicalCharacteristics", title: "Physical characteristics" },
@@ -349,6 +391,97 @@ export const plantSchema: JsonSchema = mergeSchemaDefinitions([
   { definitions: plantDefinitions },
 ]);
 
+// ---------------------------------------------------------------------------
+// Gardener-oriented UI schemata.
+// The schema keeps the botanical fields (taxonomy, climate data, authority
+// links …) because the GBIF/POWO/OpenFarm mappings write into them, but the
+// forms only show what a gardener needs. Nested controls carry an explicit
+// `i18n` key so the flat keys in i18n/<lang>/jsonforms.json apply.
+// ---------------------------------------------------------------------------
+
+const ctl = (scope: string, extra: Record<string, unknown> = {}) => ({
+  type: "Control",
+  scope: `#/properties/${scope}`,
+  i18n: scope,
+  ...extra,
+});
+const row = (...elements: unknown[]) => ({ type: "HorizontalLayout", elements });
+const group = (i18n: string, label: string, elements: unknown[]) => ({
+  type: "Group",
+  label,
+  i18n,
+  elements,
+});
+
+const growingSeasonDetail = {
+  type: "VerticalLayout",
+  elements: [
+    row(ctl("preCultivationStart"), ctl("preCultivationEnd")),
+    row(ctl("sowingStart"), ctl("sowingEnd")),
+    row(ctl("plantingStart"), ctl("plantingEnd")),
+    row(ctl("harvestStart"), ctl("harvestEnd")),
+  ],
+};
+
+const multi = { options: { multi: true } };
+/** main image (URL with preview) — shown instead of the icon where there is room */
+const mainImage = ctl("imageUrl", { options: { customRenderer: "ImageUrlRenderer" } });
+
+const plantSpeciesUISchema = {
+  type: "VerticalLayout",
+  elements: [
+    row(ctl("name"), ctl("icon")),
+    mainImage,
+    row(ctl("scientificName"), ctl("family")),
+    row(ctl("nutrientDemand"), ctl("perennial")),
+    ctl("description", multi),
+    group("seedPacket", "Seed packet facts", [
+      ctl("sowingInfo"),
+      ctl("plantingInfo"),
+      ctl("spacingInfo"),
+      ctl("siteInfo"),
+      ctl("careInfo"),
+      ctl("harvestInfo"),
+      ctl("hint"),
+    ]),
+    ctl("growingSeason", { options: { detail: growingSeasonDetail } }),
+    ctl("physicalCharacteristics", {
+      options: {
+        detail: { type: "VerticalLayout", elements: [row(ctl("spacing"), ctl("rowSpacing"), ctl("height"))] },
+      },
+    }),
+    ctl("timing", {
+      options: {
+        detail: { type: "VerticalLayout", elements: [row(ctl("germinationDays"), ctl("daysToHarvest"))] },
+      },
+    }),
+    ctl("requirements", {
+      options: {
+        detail: { type: "VerticalLayout", elements: [row(ctl("sun"), ctl("water"))] },
+      },
+    }),
+    ctl("gardeningInfo", {
+      options: {
+        detail: { type: "VerticalLayout", elements: [ctl("companions"), ctl("antagonists")] },
+      },
+    }),
+    ctl("images"),
+  ],
+};
+
+const plantVarietyUISchema = {
+  type: "VerticalLayout",
+  elements: [
+    row(ctl("name"), ctl("icon")),
+    mainImage,
+    ctl("species"),
+    ctl("characteristics"),
+    ctl("sourceInfo"),
+    ctl("description", multi),
+    ctl("growingSeason", { options: { detail: growingSeasonDetail } }),
+  ],
+};
+
 export const plantConfiguration = {
   schema: plantSchema,
   primaryFields: {
@@ -376,41 +509,8 @@ export const plantConfiguration = {
     },
   },
   uischemata: {
-    PlantSpecies: generateDefaultUISchema(
-      bringDefinitionToTop(plantSchema as any, "PlantSpecies") as any,
-      {
-        scopeOverride: {
-          "#/properties/name": {
-            type: "Control",
-            scope: "#/properties/name",
-            options: {
-              customRenderer: "PrimaryFieldRenderer",
-            },
-          },
-          "#/properties/canGrowFromSeed": {
-            type: "Control",
-            scope: "#/properties/canGrowFromSeed",
-            options: {
-              readonly: true,
-            },
-          },
-        },
-      }
-    ),
-    PlantVariety: generateDefaultUISchema(
-      bringDefinitionToTop(plantSchema as any, "PlantVariety") as any,
-      {
-        scopeOverride: {
-          "#/properties/name": {
-            type: "Control",
-            scope: "#/properties/name",
-            options: {
-              customRenderer: "PrimaryFieldRenderer",
-            },
-          },
-        },
-      }
-    ),
+    PlantSpecies: plantSpeciesUISchema,
+    PlantVariety: plantVarietyUISchema,
   },
 };
 

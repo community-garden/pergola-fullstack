@@ -42,7 +42,7 @@ export const extractPlantData = (plant: PlantSpecies | PlantVariety): PlantData 
     '@id': plant['@id'],
     '@type': plant['@type'],
     name: plant.name,
-    icon: isVariety && 'species' in plant ? plant.species?.icon : undefined,
+    icon: (isVariety && 'species' in plant ? plant.species?.icon : undefined) ?? plant.icon,
     scientificName: isVariety && 'species' in plant ? plant.species?.scientificName : 'scientificName' in plant ? plant.scientificName : undefined,
     family: isVariety && 'species' in plant ? plant.species?.family : 'family' in plant ? plant.family : undefined,
     description: plant.description,
@@ -91,7 +91,39 @@ export const MONTH_BOUNDARIES = [
 /**
  * Period types for growing calendar
  */
-export type PeriodType = 'sowingOutdoors' | 'sowingUnderGlass' | 'harvest';
+export type PeriodType =
+  | 'sowingOutdoors'
+  | 'sowingUnderGlass'
+  | 'harvest'
+  // month-based periods (as on seed packets / our plant cards)
+  | 'preCultivation'
+  | 'sowing'
+  | 'planting';
+
+/** All period types in display order. */
+export const PERIOD_TYPES: PeriodType[] = [
+  'preCultivation',
+  'sowingUnderGlass',
+  'sowing',
+  'sowingOutdoors',
+  'planting',
+  'harvest',
+];
+
+/** Converts an inclusive month range (1-12) to a day-of-year range. */
+export const monthRangeToDays = (startMonth: number, endMonth: number): { start: number; end: number } => ({
+  start: MONTH_BOUNDARIES[startMonth - 1].start,
+  end: MONTH_BOUNDARIES[endMonth - 1].end,
+});
+
+/** Converts a day of year to its month (1-12). */
+export const dayToMonth = (day: number): number => {
+  const found = MONTH_BOUNDARIES.find((m) => day >= m.start && day <= m.end);
+  return (found?.month ?? (day < 0 ? 0 : 11)) + 1;
+};
+
+const isMonth = (value: unknown): value is number =>
+  typeof value === 'number' && value >= 1 && value <= 12;
 
 export type Period = {
   type: PeriodType;
@@ -134,7 +166,22 @@ export const extractPeriods = (plantData: PlantData): Period[] => {
       end: gs.harvestEndDay,
     });
   }
-  
+
+  // Month-based periods
+  const monthPeriods: [PeriodType, unknown, unknown][] = [
+    ['preCultivation', gs.preCultivationStart, gs.preCultivationEnd],
+    ['sowing', gs.sowingStart, gs.sowingEnd],
+    ['planting', gs.plantingStart, gs.plantingEnd],
+  ];
+  if (isNil(gs.harvestStartDay) || isNil(gs.harvestEndDay)) {
+    monthPeriods.push(['harvest', gs.harvestStart, gs.harvestEnd]);
+  }
+  monthPeriods.forEach(([type, startMonth, endMonth]) => {
+    if (isMonth(startMonth) && isMonth(endMonth)) {
+      periods.push({ type, ...monthRangeToDays(startMonth, endMonth) });
+    }
+  });
+
   return periods;
 };
 

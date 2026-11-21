@@ -47,6 +47,23 @@ import { allRenderers } from "./config";
 import { usePlantKnowledgeBases } from "../knowledge-bases";
 import { plantMappings } from "../mappings";
 import { MediaConfigProvider } from "../components/graviola/renderers/image-upload/MediaConfigContext";
+import { useJsonFormsTranslator } from "../hooks/useJsonFormsTranslator";
+import type { SemanticJsonFormNoOpsProps } from "@graviola/semantic-jsonform-types";
+
+/**
+ * Form slot used by every Graviola form (edit modal, inline forms, …).
+ * Injects the i18next-backed JSON Forms translator so labels and enum
+ * options come from i18n/<lang>/jsonforms.json.
+ */
+const TranslatedSemanticJsonForm = (props: SemanticJsonFormNoOpsProps) => {
+  const { locale, translate } = useJsonFormsTranslator();
+  const jsonFormsProps = useMemo(
+    () =>
+      ({ ...props.jsonFormsProps, i18n: { locale, translate } }) as SemanticJsonFormNoOpsProps["jsonFormsProps"],
+    [props.jsonFormsProps, locale, translate],
+  );
+  return <SemanticJsonFormNoOps {...props} jsonFormsProps={jsonFormsProps} />;
+};
 
 type GraviolaProviderProps = {
   apiBaseUrl: string;
@@ -192,7 +209,7 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
       uischemata={uischemata}
       normDataMapping={plantMappings}
     >
-      <SemanticFormSlotProvider Component={SemanticJsonFormNoOps}>
+      <SemanticFormSlotProvider Component={TranslatedSemanticJsonForm}>
         <FinderSlotProvider Component={SimilarityFinder}>
           <ModalRegistryProvider modals={modals}>
             <SparqlStoreProvider

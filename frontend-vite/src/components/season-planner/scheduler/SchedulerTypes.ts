@@ -17,12 +17,28 @@ export interface SchedulerItem<TData = unknown> {
   end: number;
   label?: string;
   color?: string;
+  /** 'outlined' renders a pale, dashed bar (e.g. tentative / not yet confirmed items) */
+  variant?: 'solid' | 'outlined';
+  /** Native tooltip shown on hover */
+  tooltip?: string;
+  /**
+   * Optional sub-ranges drawn as a thin strip at the bottom of the bar
+   * (e.g. phases). Ranges are in timeline units and clipped to the item.
+   */
+  segments?: SchedulerItemSegment[];
   /** Arbitrary application data — carried through all callbacks unchanged */
   data?: TData;
   /** Per-item override; falls back to SchedulerProps.canMoveItems */
   canMove?: boolean;
   /** Per-item override; falls back to SchedulerProps.canResizeItems */
   canResize?: boolean;
+}
+
+export interface SchedulerItemSegment {
+  start: number;
+  end: number;
+  color: string;
+  label?: string;
 }
 
 export interface SchedulerResource<TData = unknown> {

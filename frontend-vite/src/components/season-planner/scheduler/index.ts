@@ -7,6 +7,7 @@ export { useOptimisticMutation } from './hooks/useOptimisticMutation';
 export type {
   SchedulerProps,
   SchedulerItem,
+  SchedulerItemSegment,
   SchedulerResource,
   TimelineHeaderConfig,
   TimelineUnit,

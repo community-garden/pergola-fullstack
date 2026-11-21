@@ -60,6 +60,9 @@ services:
       args:
         VITE_SPARQL_API_URL: https://sparql01.pergola.kuenste.live/query
         VITE_API_URL: https://pergola.kuenste.live/api/watering
+    volumes:
+      # static media (plant images …), not versioned — rsync it into this folder
+      - ./frontend-vite/public/media:/usr/share/nginx/html/media:ro
     depends_on:
       - watering-api
     networks:

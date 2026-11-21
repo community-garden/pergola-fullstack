@@ -45,6 +45,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        // static media (plant images …) is data, served from a volume — never precache it
+        globIgnores: ['**/media/**'],
         // Default 2 MiB; main bundle and icofont SVG exceed it
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024
       },

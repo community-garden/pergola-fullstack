@@ -29,7 +29,8 @@
     "icon": "Icon",
     "geo": "Geometry",
     "creationTime": "Created",
-    "modificationTime": "Last Modified"
+    "modificationTime": "Last Modified",
+    "details": "Geometry & details"
   },
   "workshop": {
     "title": "Workshop/Greenhouse",
@@ -153,7 +154,8 @@
       "container": "Container",
       "field": "Field",
       "other": "Other"
-    }
+    },
+    "edit": "Edit bed"
   },
   "plantingPlan": {
     "title": "Planting Plan",
@@ -279,7 +281,88 @@
       "height": "Height",
       "sun": "Sun",
       "water": "Water"
+    },
+    "preCultivation": "Pre-cultivation",
+    "sowing": "Sowing",
+    "planting": "Planting out"
+  },
+  "plantManagement": {
+    "title": "Plants & seeds",
+    "tabs": {
+      "species": "Species",
+      "varieties": "Varieties",
+      "seeds": "Seed stock",
+      "plantings": "Plantings",
+      "calendar": "Calendar"
+    }
+  },
+  "person": {
+    "title": "Gardeners",
+    "description": "Who gardens with us? Persons can be responsible for beds and can wish for plantings."
+  },
+  "planting": {
+    "title": "Planting",
+    "add": "Add planting",
+    "none": "No plantings in this season",
+    "responsible": "Responsible",
+    "plantingsInSeason": "Plantings {{year}}",
+    "roles": {
+      "main": "Main crop",
+      "pre_crop": "Pre-crop",
+      "catch_crop": "Catch crop",
+      "post_crop": "Succession crop",
+      "green_manure": "Green manure",
+      "perennial": "Perennial crop"
+    },
+    "statuses": {
+      "wish": "Wish",
+      "planned": "Planned",
+      "sown": "Sown",
+      "planted": "Planted",
+      "harvested": "Harvested",
+      "cancelled": "Cancelled"
+    },
+    "units": {
+      "plants": "plants",
+      "rows": "rows",
+      "m2": "m²",
+      "pieces": "pcs",
+      "grams": "g"
+    }
+  },
+  "seasonPlanner": {
+    "title": "Season planning",
+    "season": "Season",
+    "wishlist": "Wish list",
+    "wishlistDescription": "no bed yet",
+    "beds": "Beds",
+    "newPlanting": "Planting",
+    "hint": "Click an empty spot: new planting · drag a bar: move · drag its edges: change duration · click a bar: edit",
+    "phases": {
+      "preCultivation": "Pre-cultivation",
+      "sowing": "Sowing",
+      "planting": "Planting out",
+      "harvest": "Harvest"
+    },
+    "saveError": "Saving failed – change reverted",
+    "noPatches": "No beds yet. Draw beds on the garden map.",
+    "loadError": "Could not load data",
+    "filterPerson": "Person",
+    "allPersons": "All"
+  },
+  "mapLabels": {
+    "title": "Labels",
+    "button": "Choose labels",
+    "off": "No labels",
+    "names": "Bed names",
+    "seasonHeader": "Plantings of the season",
+    "season": "Season {{year}}",
+    "zoomHint": "Zoom in to see labels",
+    "more": "+{{count}} more",
+    "iconsHeader": "Plant symbols",
+    "icons": {
+      "images": "Images",
+      "emoji": "Emoji"
     }
   }
 }
-

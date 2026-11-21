@@ -28,7 +28,8 @@
     "icon": "Symbol",
     "geo": "Geometrie",
     "creationTime": "Erstellt",
-    "modificationTime": "Zuletzt geändert"
+    "modificationTime": "Zuletzt geändert",
+    "details": "Geometrie & Details"
   },
   "workshop": {
     "title": "Gewächshaus/Werkstatt",
@@ -152,7 +153,8 @@
       "container": "Container",
       "field": "Feld",
       "other": "Sonstiges"
-    }
+    },
+    "edit": "Beet bearbeiten"
   },
   "plantingPlan": {
     "title": "Anbauplan",
@@ -278,7 +280,88 @@
       "height": "Höhe",
       "sun": "Sonne",
       "water": "Wasser"
+    },
+    "preCultivation": "Vorkultur / Vorkeimen",
+    "sowing": "Aussaat",
+    "planting": "Pflanzen"
+  },
+  "plantManagement": {
+    "title": "Pflanzen & Saatgut",
+    "tabs": {
+      "species": "Arten",
+      "varieties": "Sorten",
+      "seeds": "Saatgut",
+      "plantings": "Pflanzungen",
+      "calendar": "Kalender"
+    }
+  },
+  "person": {
+    "title": "Gärtner:innen",
+    "description": "Wer gärtnert mit? Personen können Beeten als Verantwortliche zugeordnet werden und Pflanzungen wünschen."
+  },
+  "planting": {
+    "title": "Pflanzung",
+    "add": "Pflanzung hinzufügen",
+    "none": "Keine Pflanzungen in dieser Saison",
+    "responsible": "Verantwortlich",
+    "plantingsInSeason": "Pflanzungen {{year}}",
+    "roles": {
+      "main": "Hauptkultur",
+      "pre_crop": "Vorkultur",
+      "catch_crop": "Zwischenkultur",
+      "post_crop": "Nachkultur",
+      "green_manure": "Gründüngung",
+      "perennial": "Dauerkultur"
+    },
+    "statuses": {
+      "wish": "Wunsch",
+      "planned": "Geplant",
+      "sown": "Gesät",
+      "planted": "Gepflanzt",
+      "harvested": "Abgeerntet",
+      "cancelled": "Verworfen"
+    },
+    "units": {
+      "plants": "Pfl.",
+      "rows": "Reihen",
+      "m2": "m²",
+      "pieces": "Stk.",
+      "grams": "g"
+    }
+  },
+  "seasonPlanner": {
+    "title": "Saisonplanung",
+    "season": "Saison",
+    "wishlist": "Wunschliste",
+    "wishlistDescription": "noch ohne Beet",
+    "beds": "Beete",
+    "newPlanting": "Pflanzung",
+    "hint": "Klick auf eine freie Stelle: neue Pflanzung · Balken ziehen: verschieben · Ränder ziehen: Dauer ändern · Klick auf Balken: bearbeiten",
+    "phases": {
+      "preCultivation": "Vorkultur",
+      "sowing": "Aussaat",
+      "planting": "Pflanzen",
+      "harvest": "Ernte"
+    },
+    "saveError": "Speichern fehlgeschlagen – Änderung zurückgenommen",
+    "noPatches": "Noch keine Beete. Lege auf dem Gartenplan Beete an.",
+    "loadError": "Daten konnten nicht geladen werden",
+    "filterPerson": "Person",
+    "allPersons": "Alle"
+  },
+  "mapLabels": {
+    "title": "Beschriftung",
+    "button": "Beschriftung wählen",
+    "off": "Keine Beschriftung",
+    "names": "Beetnamen",
+    "seasonHeader": "Pflanzungen der Saison",
+    "season": "Saison {{year}}",
+    "zoomHint": "Zum Beschriften näher heranzoomen",
+    "more": "+{{count}} weitere",
+    "iconsHeader": "Pflanzensymbole",
+    "icons": {
+      "images": "Bilder",
+      "emoji": "Emojis"
     }
   }
 }
-

@@ -3,6 +3,7 @@ import { generateDefaultUISchema } from "@graviola/edb-ui-utils";
 import { bringDefinitionToTop, JsonSchema } from "@graviola/json-schema-utils";
 import { GeoFeatureSchema, geoFeatureSchema } from "./geo-feature-schema";
 import { plantSchema, PlantSpeciesSchema, PlantVarietySchema } from "./plant-schema";
+import { personSchema, PersonSchema } from "./person-schema";
 import { mergeSchemaDefinitions } from "./utils/mergeSchemaDefinitions";
 
 const GARDEN_IRI = "https://ontology.semantic-desk.top/garden#";
@@ -51,6 +52,7 @@ const PatchSchema = z
     patchType: z.enum(["bed", "greenhouse", "container", "field", "other"]).optional(),
     plantingPlans: z.array(PlantingPlanSchema).optional().describe("References to associated planting plans"),
     area: z.number().positive().optional().describe("Area in square meters"),
+    responsiblePersons: z.array(PersonSchema).optional().describe("Who takes care of this bed"),
   })
   .loose()
   .meta({
@@ -149,6 +151,12 @@ const patchOnlyDefinitions: NonNullable<JsonSchema["definitions"]> = {
         title: "Area (m²)",
         description: "Area in square meters",
       },
+      responsiblePersons: {
+        type: "array",
+        title: "Responsible persons",
+        description: "Who takes care of this bed",
+        items: { $ref: "#/definitions/Person" },
+      },
     },
     required: ["name"],
     additionalProperties: true,
@@ -159,6 +167,7 @@ export const patchSchema: JsonSchema = mergeSchemaDefinitions([
   { definitions: patchOnlyDefinitions },
   plantSchema,
   geoFeatureSchema,
+  personSchema,
 ]);
 
 export const patchConfiguration = {
@@ -189,7 +198,16 @@ export const patchConfiguration = {
     Patch: generateDefaultUISchema(
       bringDefinitionToTop(patchSchema as any, "Patch") as any,
       {
-        scopeOverride: {},
+        // Planting plans are superseded by first-class Planting entities.
+        skipScope: ["#/properties/plantingPlans"],
+        scopeOverride: {
+          // one-to-many as dropdown, never the entity finder
+          "#/properties/responsiblePersons": {
+            type: "Control",
+            scope: "#/properties/responsiblePersons",
+            options: { dropdown: true },
+          },
+        },
       }
     ),
     PlantingPlan: generateDefaultUISchema(

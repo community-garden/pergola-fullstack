@@ -71,6 +71,8 @@ export function SchedulerItemComponent<TItem = unknown, TResource = unknown>({
 
   // Refs to know when we're in the middle of a gesture (don't sync from props)
   const isResizingRef = useRef(false);
+  // Set by drag / resize gestures so the trailing click does not count as a click
+  const didDragRef = useRef(false);
   const isAnimatingRef = useRef(false);
 
   // Base values captured at gesture start (so updates don't affect in-flight math)
@@ -106,6 +108,7 @@ export function SchedulerItemComponent<TItem = unknown, TResource = unknown>({
   );
 
   const handleDragStart = useCallback(() => {
+    didDragRef.current = true;
     setIsDragging(true);
     baseLeftRef.current = posX.get();
     baseWidthRef.current = visualWidth.get();
@@ -152,6 +155,7 @@ export function SchedulerItemComponent<TItem = unknown, TResource = unknown>({
   const handleResizeUpdate = useCallback(
     (side: 'left' | 'right', deltaPx: number) => {
       isResizingRef.current = true;
+      didDragRef.current = true;
       if (side === 'left') {
         const clampedDelta = Math.min(deltaPx, baseWidthRef.current - minWidth);
         posX.set(baseLeftRef.current + clampedDelta);
@@ -211,7 +215,6 @@ export function SchedulerItemComponent<TItem = unknown, TResource = unknown>({
   );
 
   // ── Click (only when not dragged) ─────────────────────────────────────────
-  const didDragRef = useRef(false);
   const handleClickCapture = useCallback(
     (e: React.MouseEvent) => {
       if (didDragRef.current) { e.stopPropagation(); didDragRef.current = false; return; }
@@ -225,6 +228,7 @@ export function SchedulerItemComponent<TItem = unknown, TResource = unknown>({
       <motion.div
         key={item.id}
         data-scheduler-item
+        title={item.tooltip}
         initial={{ opacity: 0, scaleY: 0.8 }}
         animate={{ opacity: 1, scaleY: 1 }}
         exit={{ opacity: 0, scaleY: 0.8 }}

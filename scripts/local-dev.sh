@@ -3,6 +3,13 @@
 #   scripts/local-dev.sh up     start Oxigraph (localhost:7880) and load the seed if the DB is empty
 #   scripts/local-dev.sh reset  wipe the DB volume, start fresh and load the seed
 #   scripts/local-dev.sh down   stop Oxigraph (keeps data)
+#   scripts/local-dev.sh seed-season [year]
+#                               (re)import plants, varieties, persons and wishes from
+#                               Saisonplanung/pflanzen/*.json (default season 2027)
+#   scripts/local-dev.sh plant-images
+#                               derive the web images (frontend-vite/public/media/plants,
+#                               not versioned) and set only the image URLs of the
+#                               species in the store; plantings stay untouched
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -43,6 +50,15 @@ case "${1:-up}" in
   down)
     $COMPOSE down
     ;;
+  seed-season)
+    wait_ready
+    SPARQL="$SPARQL" python3 scripts/import-saisonplanung.py --season "${2:-2027}" --load
+    ;;
+  plant-images)
+    wait_ready
+    python3 scripts/plant-images.py
+    SPARQL="$SPARQL" python3 scripts/import-saisonplanung.py --images-only
+    ;;
   *)
-    echo "usage: $0 [up|reset|down]" >&2; exit 1 ;;
+    echo "usage: $0 [up|reset|down|seed-season [year]|plant-images]" >&2; exit 1 ;;
 esac

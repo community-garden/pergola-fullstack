@@ -7,12 +7,15 @@ import {
 import { Box, IconButton, Tooltip, Chip, Typography } from '@mui/material';
 import { Edit, EditOff } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { isNil } from 'lodash-es';
 import { PlantSpecies, PlantVariety } from '../../schema/patch-schema';
 import {
   extractPlantData,
   getPlantDisplayName,
   extractPeriods,
   periodOverlapsMonth,
+  dayToMonth,
+  PERIOD_TYPES,
   MONTH_BOUNDARIES,
   type PlantData,
   type Period,
@@ -24,18 +27,24 @@ import { PeriodEditHandle } from './PeriodEditHandle';
 export interface SeasonalGrowingCalendarProps {
   data: (PlantSpecies | PlantVariety)[];
   onDataChange?: (data: (PlantSpecies | PlantVariety)[]) => void;
-  periodColors?: {
-    sowingOutdoors?: string;
-    sowingUnderGlass?: string;
-    harvest?: string;
-  };
+  periodColors?: Partial<Record<PeriodType, string>>;
   defaultVisibleProperties?: string[];
 }
 
-const DEFAULT_PERIOD_COLORS = {
-  sowingOutdoors: '#4caf50',
+export const DEFAULT_PERIOD_COLORS: Record<PeriodType, string> = {
+  preCultivation: '#9c27b0',
   sowingUnderGlass: '#2196f3',
+  sowing: '#66bb6a',
+  sowingOutdoors: '#4caf50',
+  planting: '#00897b',
   harvest: '#ff9800',
+};
+
+/** Month-based period types map to the growingSeason month fields. */
+const MONTH_FIELDS: Partial<Record<PeriodType, ['preCultivationStart' | 'sowingStart' | 'plantingStart' | 'harvestStart', 'preCultivationEnd' | 'sowingEnd' | 'plantingEnd' | 'harvestEnd']>> = {
+  preCultivation: ['preCultivationStart', 'preCultivationEnd'],
+  sowing: ['sowingStart', 'sowingEnd'],
+  planting: ['plantingStart', 'plantingEnd'],
 };
 
 /**
@@ -211,6 +220,10 @@ export const SeasonalGrowingCalendar = ({
 
   // Transform data to PlantData format
   const plantData = useMemo(() => localData.map(extractPlantData), [localData]);
+  const usedPeriodTypes = useMemo(() => {
+    const used = new Set(plantData.flatMap((plant) => extractPeriods(plant).map((p) => p.type)));
+    return PERIOD_TYPES.filter((type) => used.has(type));
+  }, [plantData]);
 
   // Throttled tooltip update
   const updateTooltip = useCallback((day: number, x: number, y: number) => {
@@ -242,6 +255,20 @@ export const SeasonalGrowingCalendar = ({
     const period = periods[periodIndex];
     
     if (!period) return;
+
+    // Month-based periods (and month-based harvest) store months, not days
+    const monthFields =
+      MONTH_FIELDS[period.type] ??
+      (period.type === 'harvest' && isNil(plant.growingSeason.harvestStartDay)
+        ? (['harvestStart', 'harvestEnd'] as const)
+        : undefined);
+    if (monthFields) {
+      if (updates.start !== undefined) plant.growingSeason[monthFields[0]] = dayToMonth(updates.start);
+      if (updates.end !== undefined) plant.growingSeason[monthFields[1]] = dayToMonth(updates.end);
+      setLocalData(updatedData);
+      onDataChange?.(updatedData);
+      return;
+    }
 
     // Update the corresponding fields based on period type
     if (updates.start !== undefined) {
@@ -556,7 +583,7 @@ export const SeasonalGrowingCalendar = ({
         </Box>
       )}
       <MaterialReactTable table={table} />
-      <CalendarLegend periodColors={colors} />
+      <CalendarLegend periodColors={colors} periodTypes={usedPeriodTypes} />
     </Box>
   );
 };

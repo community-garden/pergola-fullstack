@@ -11,15 +11,17 @@ export interface FeatureFlag {
 }
 
 export const featureFlags: Record<string, FeatureFlag> = {
-  // Features temporarily disabled - coming in July 2026
+  // Season planning prototype (Wurzelwerk planning round, Nov 2026)
   plants: {
-    enabled: false,
-    releaseDate: 'July 2026',
+    enabled: true,
+    releaseDate: '',
   },
   seasonPlanner: {
-    enabled: false,
-    releaseDate: 'July 2026',
+    enabled: true,
+    releaseDate: '',
   },
+
+  // Features temporarily disabled - coming in July 2026
   notifications: {
     enabled: false,
     releaseDate: 'July 2026',

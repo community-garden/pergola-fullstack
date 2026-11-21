@@ -2,7 +2,9 @@ import { Box, Typography, Paper, List, ListItem, ListItemText, FormControl, Inpu
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { GenericForm } from '@graviola/semantic-json-form';
+import { SemanticTable } from '@graviola/edb-table-components';
 import { useCurrentGarden } from '@hooks/index';
+import { useCreateOrEditModal } from '@hooks/useCreateOrEditModal';
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -15,6 +17,7 @@ const Settings = () => {
   const { t, i18n } = useTranslation();
   const { gardenIRI } = useCurrentGarden();
   const [language, setLanguage] = useState(i18n.language);
+  const createOrEditModal = useCreateOrEditModal();
 
   const handleLanguageChange = (event: any) => {
     const newLang = event.target.value;
@@ -47,6 +50,24 @@ const Settings = () => {
         )}
       </ContentPaper>
       
+      <ContentPaper>
+        <Typography variant="h6" gutterBottom>
+          {t('garden:person.title')}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          {t('garden:person.description')}
+        </Typography>
+        <Box sx={{ height: 420 }}>
+          <SemanticTable
+            typeName="Person"
+            tableConfigRegistry={{
+              default: { columnVisibility: { IRI: false, entity: false, '@id': false, '@type': false } },
+            }}
+            onEditEntry={createOrEditModal}
+          />
+        </Box>
+      </ContentPaper>
+
       <ContentPaper>
         <Typography variant="h6" gutterBottom>
           Application Settings

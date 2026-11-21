@@ -72,7 +72,9 @@ export function SchedulerRow<TItem = unknown, TResource = unknown>({
       // Don't create if the click was on an item
       if ((e.target as HTMLElement).closest('[data-scheduler-item]')) return;
       const rect = e.currentTarget.getBoundingClientRect();
-      const px = e.clientX - rect.left + scrollX;
+      // The row lives inside the scrolled content, so rect.left already
+      // includes the horizontal scroll offset.
+      const px = e.clientX - rect.left;
       const unit = baseUnit + (px / effectiveCellWidth) * unitsPerCell;
       const snapped = snapStep ? Math.round(unit / snapStep) * snapStep : unit;
       onItemCreate(resource.id, snapped, snapped + (snapStep ?? unitsPerCell));

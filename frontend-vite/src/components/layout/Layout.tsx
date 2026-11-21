@@ -14,13 +14,26 @@ import {
 // Import background image
 import backgroundImage from '../../assets/background_full_grey_01.jpg';
 
+// The background sits on a viewport-fixed layer, so it stays in place while long
+// pages (settings, tables) scroll. On the container itself it would end after
+// 100vh, because the content area is a flex child with basis 0 and overflows.
+// A fixed layer also works on iOS, where `background-attachment: fixed` is ignored.
 const RootContainer = styled(Box)(() => ({
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
-  backgroundImage: `url(${backgroundImage})`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'fixed',
+  position: 'relative',
+  isolation: 'isolate',
+  '&::before': {
+    content: '""',
+    position: 'fixed',
+    inset: 0,
+    zIndex: -1,
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    pointerEvents: 'none',
+  },
 }));
 
 const ContentContainer = styled(Box)({

@@ -5,6 +5,8 @@ import { patchSchema, patchConfiguration, PatchSchema } from "./patch-schema";
 import { geoFeatureConfiguration, geoFeatureSchema, GeoFeatureSchema } from "./geo-feature-schema";
 import { featureTypesSchema, featureTypesConfiguration } from "./feature-types-schema";
 import { plantConfiguration, plantSchema } from "./plant-schema";
+import { personConfiguration, personSchema } from "./person-schema";
+import { plantingConfiguration, plantingSchema } from "./planting-schema";
 import { mergeSchemaDefinitions } from "./utils/mergeSchemaDefinitions";
 
 const GARDEN_IRI = "https://ontology.semantic-desk.top/garden#";
@@ -85,6 +87,8 @@ export const schema: JsonSchema = mergeSchemaDefinitions([
   patchSchema,
   plantSchema,
   featureTypesSchema,
+  personSchema,
+  plantingSchema,
 ]);
 
 export { GardenSchema };
@@ -102,6 +106,8 @@ export const gardenConfiguration = {
     ...plantConfiguration.primaryFields,
     ...geoFeatureConfiguration.primaryFields,
     ...featureTypesConfiguration.primaryFields,
+    ...personConfiguration.primaryFields,
+    ...plantingConfiguration.primaryFields,
   },
   typeNameLabelMap: {
     Garden: "Garden",
@@ -109,6 +115,8 @@ export const gardenConfiguration = {
     ...plantConfiguration.typeNameLabelMap,
     ...geoFeatureConfiguration.typeNameLabelMap,
     ...featureTypesConfiguration.typeNameLabelMap,
+    ...personConfiguration.typeNameLabelMap,
+    ...plantingConfiguration.typeNameLabelMap,
   },
   typeNameUiSchemaOptionsMap: {
     Garden: {
@@ -118,6 +126,8 @@ export const gardenConfiguration = {
     ...plantConfiguration.typeNameUiSchemaOptionsMap,
     ...geoFeatureConfiguration.typeNameUiSchemaOptionsMap,
     ...featureTypesConfiguration.typeNameUiSchemaOptionsMap,
+    ...personConfiguration.typeNameUiSchemaOptionsMap,
+    ...plantingConfiguration.typeNameUiSchemaOptionsMap,
   },
   uischemata: {
     Garden: generateDefaultUISchema(
@@ -138,5 +148,7 @@ export const gardenConfiguration = {
     ...plantConfiguration.uischemata,
     ...geoFeatureConfiguration.uischemata,
     ...featureTypesConfiguration.uischemata,
+    ...personConfiguration.uischemata,
+    ...plantingConfiguration.uischemata,
   },
 };

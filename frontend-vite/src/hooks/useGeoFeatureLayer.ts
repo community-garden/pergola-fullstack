@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import { wktToGeoJSON } from '@terraformer/wkt';
 
@@ -30,8 +30,19 @@ export const useGeoFeatureLayer = ({
   enabled,
   onFeatureClick,
 }: UseGeoFeatureLayerOptions) => {
+  // Bumped when the map becomes idle, so a layer that could not be added while
+  // the style/tiles were still loading is added afterwards.
+  const [readyTick, setReadyTick] = useState(0);
+
   useEffect(() => {
-    if (!map || !map.loaded() || !enabled) return;
+    if (!map || !enabled) return;
+    if (!map.isStyleLoaded()) {
+      const retry = () => setReadyTick((t) => t + 1);
+      map.once('idle', retry);
+      return () => {
+        map.off('idle', retry);
+      };
+    }
 
     // Convert features to GeoJSON FeatureCollection
     const geojsonFeatures = features
@@ -174,6 +185,6 @@ export const useGeoFeatureLayer = ({
         map.removeSource(SOURCE_ID);
       }
     };
-  }, [map, features, enabled, onFeatureClick]);
+  }, [map, features, enabled, onFeatureClick, readyTick]);
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, alpha } from '@mui/material';
 import { motion, useTransform, MotionValue } from 'motion/react';
 import type { SchedulerItem, SchedulerResource } from '../SchedulerTypes';
 
@@ -32,6 +32,15 @@ export function DefaultItemRenderer<TItem = unknown, TResource = unknown>({
   isDragging,
 }: DefaultItemRendererProps<TItem, TResource>) {
   const bg = item.color ?? '#1976d2';
+  const outlined = item.variant === 'outlined';
+  const duration = Math.max(1, item.end - item.start);
+  const segments = (item.segments ?? [])
+    .map((seg) => ({
+      ...seg,
+      from: Math.max(0, (seg.start - item.start) / duration),
+      to: Math.min(1, (seg.end - item.start) / duration),
+    }))
+    .filter((seg) => seg.to > seg.from);
 
   // How far the item's left edge is scrolled off-screen.
   // Clamp between 0 (label at natural position) and (width - 32) (min visible space).
@@ -49,7 +58,8 @@ export function DefaultItemRenderer<TItem = unknown, TResource = unknown>({
         position: 'absolute',
         inset: 0,
         borderRadius: 1,
-        bgcolor: bg,
+        bgcolor: outlined ? alpha(bg, 0.18) : bg,
+        border: outlined ? `1.5px dashed ${bg}` : 'none',
         display: 'flex',
         alignItems: 'center',
         overflow: 'hidden',
@@ -74,12 +84,12 @@ export function DefaultItemRenderer<TItem = unknown, TResource = unknown>({
           <Typography
             component="span"
             sx={{
-              color: '#fff',
+              color: outlined ? 'text.primary' : '#fff',
               fontWeight: 600,
               fontSize: '0.7rem',
               lineHeight: 1,
               display: 'block',
-              textShadow: '0 1px 2px rgba(0,0,0,0.4)',
+              textShadow: outlined ? 'none' : '0 1px 2px rgba(0,0,0,0.4)',
               userSelect: 'none',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -88,6 +98,27 @@ export function DefaultItemRenderer<TItem = unknown, TResource = unknown>({
             {item.label}
           </Typography>
         </motion.div>
+      )}
+      {segments.length > 0 && (
+        <Box
+          sx={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 5, pointerEvents: 'none' }}
+        >
+          {segments.map((seg, i) => (
+            <Box
+              key={i}
+              title={seg.label}
+              sx={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: `${seg.from * 100}%`,
+                width: `${(seg.to - seg.from) * 100}%`,
+                bgcolor: seg.color,
+                opacity: 0.95,
+              }}
+            />
+          ))}
+        </Box>
       )}
     </Box>
   );

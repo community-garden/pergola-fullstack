@@ -50,3 +50,10 @@ result
 replaced-versions.json
 data
 oxigraph-docker/data
+
+# Locally generated season data (contains first names of garden members)
+frontend-vite/fixtures/local/
+# Local Cypress run output (scripts/run-cypress-local.sh copies it into docs media)
+e2e/cypress/results/
+# Static media (plant images …): data, not code — synced to the server separately
+frontend-vite/public/media/

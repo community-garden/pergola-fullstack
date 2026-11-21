@@ -9,7 +9,13 @@ export interface UseCurrentGardenResult {
 }
 
 export const useCurrentGarden = (): UseCurrentGardenResult => {
-  const { gardenId } = useParams<{ gardenId: string }>();
+  const { gardenId: routeGardenId } = useParams<{ gardenId: string }>();
+  // Modals (NiceModal) render outside the router — fall back to the URL path.
+  const gardenId =
+    routeGardenId ??
+    (typeof window !== 'undefined'
+      ? decodeURIComponent(window.location.pathname.split('/')[1] ?? '') || undefined
+      : undefined);
 
   const gardenIRI = useMemo(() => {
     if (!gardenId) return undefined;

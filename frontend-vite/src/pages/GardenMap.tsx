@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import maplibregl from 'maplibre-gl';
 import { MaplibreTerradrawControl } from '@watergis/maplibre-gl-terradraw';
 import type { GeoJSONStoreFeatures } from 'terra-draw';
@@ -16,6 +17,21 @@ import { parseWktPoint } from '../utils/wkt';
 import { NewFeatureWizardNiceModal } from '@components/garden/NewFeatureWizardNiceModal';
 import { GeoFeatureDetailsModal } from '@components/garden/GeoFeatureDetailsModal';
 import { useDataStore, useAdbContext } from '@graviola/edb-state-hooks';
+import { useSeasonData } from '@hooks/useSeasonData';
+import { useGeoFeatureNames } from '@hooks/useGeoFeatureNames';
+import {
+  availableSeasons,
+  buildMapLabels,
+  featureAnchors,
+  formatLabelMode,
+  LABEL_MIN_ZOOM,
+  parseIconMode,
+  parseLabelMode,
+  type MapIconMode,
+  type MapLabelMode,
+} from '@components/map/labels/buildMapLabels';
+import { GeoFeatureLabels, useMapLabelDetail } from '@components/map/labels/GeoFeatureLabels';
+import { MapLabelModeFab } from '@components/map/labels/MapLabelModeFab';
 import { geojsonToWKT, wktToGeoJSON } from '@terraformer/wkt';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css';
@@ -25,7 +41,6 @@ const GardenMap = () => {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const drawControlRef = useRef<MaplibreTerradrawControl | null>(null);
   const [features, setFeatures] = useState<GeoJSONStoreFeatures[]>([]);
-  const [currentLayer, setCurrentLayer] = useState<'osm' | 'satellite'>('satellite');
   const [isEditMode, setIsEditMode] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   
@@ -64,12 +79,61 @@ const GardenMap = () => {
     NiceModal.show(GeoFeatureDetailsModal, { feature });
   };
 
-  console.log('garden', garden);
+  // --- Labels: bed names or the plantings of a season (mode in ?labels=) ---
+  const [searchParams, setSearchParams] = useSearchParams();
+  const labelMode = parseLabelMode(searchParams.get('labels'));
+  const setLabelMode = useCallback(
+    (mode: MapLabelMode) =>
+      setSearchParams(
+        (params) => {
+          params.set('labels', formatLabelMode(mode));
+          return params;
+        },
+        { replace: true },
+      ),
+    [setSearchParams],
+  );
+  // plant symbols in season labels (?icons=emoji, default: main images)
+  const iconMode = parseIconMode(searchParams.get('icons'));
+  const setIconMode = useCallback(
+    (mode: MapIconMode) =>
+      setSearchParams(
+        (params) => {
+          if (mode === 'emoji') params.set('icons', mode);
+          else params.delete('icons');
+          return params;
+        },
+        { replace: true },
+      ),
+    [setSearchParams],
+  );
+  const { data: featureNames } = useGeoFeatureNames();
+  const { data: seasonData } = useSeasonData();
+  const anchors = useMemo(() => featureAnchors(garden?.geoFeatures ?? []), [garden?.geoFeatures]);
+  const labels = useMemo(
+    () => buildMapLabels(labelMode, anchors, featureNames, seasonData),
+    // labelMode is rebuilt from the URL on every render, so depend on its value
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [formatLabelMode(labelMode), anchors, featureNames, seasonData],
+  );
+  const seasons = useMemo(() => availableSeasons(seasonData), [seasonData]);
+  const labelMap = mapLoaded ? mapRef.current : null;
+  const labelDetail = useMapLabelDetail(labelMap);
+
+  // GeoFeatures have no name of their own; use the names of what sits on them.
+  const viewFeatures = useMemo(
+    () =>
+      (garden?.geoFeatures ?? []).map((feature: any) => ({
+        ...feature,
+        name: feature.name || featureNames.get(feature['@id'])?.join(' / '),
+      })),
+    [garden?.geoFeatures, featureNames],
+  );
 
   // Use the GeoFeatureLayer hook for view mode
   useGeoFeatureLayer({
     map: mapRef.current,
-    features: garden?.geoFeatures || [],
+    features: viewFeatures,
     enabled: !isEditMode,
     onFeatureClick: handleFeatureClick,
   });
@@ -250,7 +314,6 @@ const GardenMap = () => {
         satelliteBtn.onclick = () => {
           map.setLayoutProperty('satellite', 'visibility', 'visible');
           map.setLayoutProperty('osm', 'visibility', 'none');
-          setCurrentLayer('satellite');
         };
 
         // OSM button
@@ -265,7 +328,6 @@ const GardenMap = () => {
         osmBtn.onclick = () => {
           map.setLayoutProperty('satellite', 'visibility', 'none');
           map.setLayoutProperty('osm', 'visibility', 'visible');
-          setCurrentLayer('osm');
         };
 
         this._container.appendChild(satelliteBtn);
@@ -561,23 +623,26 @@ const GardenMap = () => {
         />
       </Box>
       
-      {/* Debug: Show feature count, current layer, and mode */}
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 10,
-          right: 10,
-          background: 'rgba(255, 255, 255, 0.9)',
-          padding: '8px 12px',
-          borderRadius: 1,
-          boxShadow: 1,
-          fontSize: '0.875rem',
-        }}
-      >
-        Layer: {currentLayer === 'satellite' ? '🛰️ Satellite' : '🗺️ OSM'} | 
-        Mode: {isEditMode ? '✏️ Edit' : '👁️ View'} | 
-        Features: {garden?.geoFeatures?.length || 0}
-      </Box>
+      {!isEditMode && (
+        <>
+          <GeoFeatureLabels
+            map={labelMap}
+            labels={labels}
+            mode={labelMode}
+            detail={labelDetail}
+            iconMode={iconMode}
+          />
+          <MapLabelModeFab
+            mode={labelMode}
+            seasons={seasons}
+            onChange={setLabelMode}
+            iconMode={iconMode}
+            onIconModeChange={setIconMode}
+            showZoomHint={labelMode.kind !== 'off' && labelMap !== null && labelDetail === 'hidden'}
+            onZoomHintClick={() => labelMap?.easeTo({ zoom: LABEL_MIN_ZOOM + 0.5, duration: 800 })}
+          />
+        </>
+      )}
     </Box>
   );
 };

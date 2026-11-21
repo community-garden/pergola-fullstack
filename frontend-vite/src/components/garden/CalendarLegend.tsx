@@ -1,15 +1,15 @@
 import { Box, Paper, Typography, Grid, Chip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { PeriodType } from './plant-helpers';
+import { PERIOD_TYPES, type PeriodType } from './plant-helpers';
 
 interface CalendarLegendProps {
   periodColors: Record<PeriodType, string>;
+  /** Period types to explain; defaults to all */
+  periodTypes?: PeriodType[];
 }
 
-export const CalendarLegend = ({ periodColors }: CalendarLegendProps) => {
+export const CalendarLegend = ({ periodColors, periodTypes = PERIOD_TYPES }: CalendarLegendProps) => {
   const { t } = useTranslation('garden');
-
-  const periodTypes: PeriodType[] = ['sowingOutdoors', 'sowingUnderGlass', 'harvest'];
   
   const abbreviations = [
     { key: 'germinationDays', abbr: t('seasonalCalendar.abbreviations.germinationDays'), full: t('seasonalCalendar.properties.germinationDays') },

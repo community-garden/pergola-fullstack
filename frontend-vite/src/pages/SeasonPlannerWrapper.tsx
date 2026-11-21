@@ -1,5 +1,6 @@
 import { ComingSoon } from '@components/ui/ComingSoon';
 import { isFeatureEnabled, getFeatureReleaseDate } from '@config/featureFlags';
+import { SeasonPlanner as SeasonPlannerOriginal } from './SeasonPlannerOriginal';
 
 export const SeasonPlanner = () => {
   const enabled = isFeatureEnabled('seasonPlanner');
@@ -14,7 +15,5 @@ export const SeasonPlanner = () => {
     );
   }
 
-  // Import the original component only when needed
-  const { SeasonPlanner: SeasonPlannerOriginal } = require('./SeasonPlannerOriginal');
   return <SeasonPlannerOriginal />;
 };

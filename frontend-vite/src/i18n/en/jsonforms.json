@@ -1,17 +1,20 @@
 {
   "@id": { "label": "ID" },
   "@type": { "label": "Type" },
+  "antagonists": { "label": "Bad neighbours" },
   "area": { "label": "Area (m²)" },
   "authorityLinks": { "label": "Authority links" },
   "beeSpecies": { "label": "Bee species" },
   "canGrowFromSeed": { "label": "Can grow from seed" },
   "capacity": { "label": "Capacity (persons)" },
+  "careInfo": { "label": "Care" },
   "characteristics": { "label": "Characteristics" },
   "climateData": { "label": "Climate data" },
+  "companions": { "label": "Good neighbours" },
   "creationTime": { "label": "Created" },
   "daysToHarvest": { "label": "Days to harvest" },
   "description": { "label": "Description" },
-  "endDate": { "label": "End date" },
+  "endDate": { "label": "Until" },
   "error": {
     "required": "Required field",
     "minLength": "Too short (minimum length not met)",
@@ -32,11 +35,12 @@
     "outdoor_oven": "Outdoor oven",
     "other": "Other"
   },
-  "gardeningInfo": { "label": "Gardening info" },
+  "gardeningInfo": { "label": "Companion planting" },
   "geo": { "label": "Geometry (WKT)" },
   "geoFeature": { "label": "Geographic feature" },
   "germinationDays": { "label": "Germination days" },
-  "growingSeason": { "label": "Growing season" },
+  "growingSeason": { "label": "Growing calendar (months 1–12)" },
+  "harvestInfo": { "label": "Harvest" },
   "hasCover": { "label": "Has cover" },
   "hasElectricity": { "label": "Has electricity" },
   "hasHeating": { "label": "Has heating" },
@@ -46,6 +50,7 @@
   "harvestStart": { "label": "Harvest start (month)" },
   "harvestStartDay": { "label": "Harvest start (day)" },
   "height": { "label": "Height (cm)" },
+  "hint": { "label": "Hint" },
   "icon": { "label": "Icon" },
   "image": { "label": "Image" },
   "image.uploadButton": "Upload image",
@@ -54,12 +59,21 @@
   "image.error.tooLarge": "File is too large",
   "image.error.wrongType": "Unsupported file type",
   "image.error.uploadFailed": "Upload failed",
-  "imageUrl": { "label": "Image URL" },
-  "images": { "label": "Images" },
+  "image.notFound": "Image not found",
+  "imageUrl": { "label": "Main image (URL)", "description": "Shown instead of the icon, e.g. /media/plants/kartoffel/frucht.webp" },
+  "images": { "label": "Further images (URLs)", "description": "E.g. the bed from above, the front and back of a seed packet" },
+  "keeper": { "label": "Kept by" },
   "modificationTime": { "label": "Last modified" },
   "name": { "label": "Name" },
   "notes": { "label": "Notes" },
   "numberOfHives": { "label": "Number of hives" },
+  "nutrientDemand": {
+    "label": "Nutrient demand",
+    "heavy": "Heavy feeder",
+    "medium": "Medium feeder",
+    "light": "Light feeder"
+  },
+  "patch": { "label": "Bed" },
   "patchType": {
     "label": "Patch type",
     "bed": "Bed",
@@ -76,14 +90,18 @@
     "woodchip": "Wood chip",
     "other": "Other"
   },
+  "perennial": { "label": "Perennial" },
   "pH": { "label": "pH" },
-  "physicalCharacteristics": { "label": "Physical characteristics" },
+  "physicalCharacteristics": { "label": "Spacing & growth" },
   "plannedQuantity": { "label": "Planned quantity" },
   "plantingEnd": { "label": "Planting end (month)" },
+  "plantingInfo": { "label": "Planting out" },
   "plantingPlans": { "label": "Planting plans" },
   "plantingStart": { "label": "Planting start (month)" },
   "plantSpecies": { "label": "Plant species" },
   "plantVariety": { "label": "Plant variety" },
+  "preCultivationEnd": { "label": "Pre-cultivation until (month)" },
+  "preCultivationStart": { "label": "Pre-cultivation from (month)" },
   "prickingEnd": { "label": "Pricking end (month)" },
   "prickingStart": { "label": "Pricking start (month)" },
   "priority": {
@@ -92,7 +110,28 @@
     "medium": "Medium",
     "high": "High"
   },
-  "requirements": { "label": "Requirements" },
+  "quantity": { "label": "Quantity" },
+  "quantityUnit": {
+    "label": "Unit",
+    "plants": "plants",
+    "rows": "rows",
+    "m2": "m²",
+    "pieces": "pieces",
+    "grams": "grams"
+  },
+  "requestedBy": { "label": "Requested by" },
+  "requirements": { "label": "Light & water" },
+  "responsiblePersons": { "label": "Responsible" },
+  "role": {
+    "label": "Role",
+    "main": "Main crop",
+    "pre_crop": "Pre-crop",
+    "catch_crop": "Catch crop",
+    "post_crop": "Succession crop",
+    "green_manure": "Green manure",
+    "perennial": "Perennial crop"
+  },
+  "rowSpacing": { "label": "Row spacing (cm)" },
   "scientificName": { "label": "Scientific name" },
   "season": { "label": "Season" },
   "seatingType": {
@@ -103,6 +142,7 @@
     "pavilion": "Pavilion",
     "other": "Other"
   },
+  "seedPacket": { "label": "Fact sheet (as on the seed packet)" },
   "shedType": {
     "label": "Shed type",
     "tool_shed": "Tool shed",
@@ -110,18 +150,32 @@
     "potting_shed": "Potting shed",
     "other": "Other"
   },
+  "siteInfo": { "label": "Site" },
   "soil": { "label": "Soil" },
-  "sourceInfo": { "label": "Source info" },
+  "source": { "label": "Source (bought / swapped / own harvest)" },
+  "sourceInfo": { "label": "Seed source" },
   "sowingEnd": { "label": "Sowing end (month)" },
+  "sowingInfo": { "label": "Sowing" },
   "sowingOutdoorsEnd": { "label": "Outdoor sowing end (day)" },
   "sowingOutdoorsStart": { "label": "Outdoor sowing start (day)" },
   "sowingStart": { "label": "Sowing start (month)" },
   "sowingUnderGlassEnd": { "label": "Under-glass sowing end (day)" },
   "sowingUnderGlassStart": { "label": "Under-glass sowing start (day)" },
-  "spacing": { "label": "Spacing (cm)" },
+  "spacing": { "label": "Spacing in row (cm)" },
+  "spacingInfo": { "label": "Spacing" },
   "species": { "label": "Species" },
   "spread": { "label": "Spread (cm)" },
-  "startDate": { "label": "Start date" },
+  "startDate": { "label": "From" },
+  "status": {
+    "label": "Status",
+    "wish": "Wish",
+    "planned": "Planned",
+    "sown": "Sown",
+    "planted": "Planted",
+    "harvested": "Harvested",
+    "cancelled": "Cancelled"
+  },
+  "storageLocation": { "label": "Storage location" },
   "sun": {
     "label": "Sun requirements",
     "full_sun": "Full sun",
@@ -129,8 +183,17 @@
     "full_shade": "Full shade"
   },
   "taxonomy": { "label": "Taxonomy" },
-  "timing": { "label": "Timing" },
+  "timing": { "label": "Germination & harvest" },
+  "unit": {
+    "label": "Unit",
+    "packet": "packets",
+    "seeds": "seeds",
+    "grams": "grams",
+    "tubers": "tubers",
+    "plants": "young plants"
+  },
   "usableForIrrigation": { "label": "Usable for irrigation" },
+  "viableUntil": { "label": "Germinable until (year)" },
   "water": {
     "label": "Water requirements",
     "low": "Low",
@@ -152,5 +215,6 @@
     "polytunnel": "Polytunnel",
     "cold_frame": "Cold frame",
     "other": "Other"
-  }
+  },
+  "year": { "label": "Year (harvest/purchase)" }
 }
