@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { store } from "../store";
+import { store, loadExisting, availabilitiesOf, removeDocument } from "../store";
 import {
   WateringAvailabilityInputSchema,
   RemoveAvailabilityDateSchema,
@@ -38,7 +38,7 @@ app.post("/", async (c) => {
   const person: Omit<AnonymousPerson, "@id" | "@type"> = {
     ...(nickname ? { name: nickname } : {}),
   };
-  await store.upsertDocument("AnonymousPerson", pIRI, person);
+  await store.upsert("AnonymousPerson", pIRI, person as AnonymousPerson);
 
   // 2. Upsert WateringAvailability — month-scoped IRI prevents cross-month accumulation
   const availIRI = availabilityIRI(personId, gardenIri, targetMonth);
@@ -54,9 +54,8 @@ app.post("/", async (c) => {
     targetMonth,
   };
 
-  // removeDocument before upsertDocument: Graviola appends array triples on upsert
-  await store.removeDocument("WateringAvailability", availIRI);
-  await store.upsertDocument("WateringAvailability", availIRI, doc);
+  // An upsert replaces the whole document, arrays included (Graviola ≥ 2026-11).
+  await store.upsert("WateringAvailability", availIRI, doc as WateringAvailability);
 
   return c.json({ "@id": availIRI, ...doc }, 201);
 });
@@ -75,23 +74,11 @@ app.get("/", async (c) => {
   if (personId) {
     if (!month) return c.json({ error: "month is required when personId is provided" }, 400);
     const entryIRI = availabilityIRI(personId, gardenIri, month);
-    const entry = await store.loadDocument("WateringAvailability", entryIRI) as Record<string, unknown> | null;
-    // store.loadDocument returns a stub {  "@id": ... } even for missing IRIs; check a required field
-    return entry && entry.targetMonth ? c.json(entry) : c.json(null, 404);
+    const entry = await loadExisting("WateringAvailability", entryIRI, "targetMonth");
+    return entry ? c.json(entry) : c.json(null, 404);
   }
 
-  const gardenSlug = (gardenIri.split("/").pop() ?? "").toLowerCase();
-  const all = await store.listDocuments("WateringAvailability", 500);
-  const slugPattern = `/${gardenSlug}-`;
-  const matchingIRIs = (all as Array<{ "@id": string }>)
-    .map((e) => e["@id"])
-    .filter((id) => id.includes(slugPattern) && (!month || id.endsWith(`-${month}`)));
-
-  const docs = await Promise.all(
-    matchingIRIs.map((iri) => store.loadDocument("WateringAvailability", iri))
-  );
-
-  return c.json(docs.filter(Boolean));
+  return c.json(await availabilitiesOf(gardenIri, month));
 });
 
 // DELETE /api/watering/availability/date
@@ -116,7 +103,7 @@ app.delete("/date", async (c) => {
   }
 
   const availIRI = availabilityIRI(personId, gardenIri, targetMonth);
-  const existing = await store.loadDocument("WateringAvailability", availIRI) as WateringAvailability | null;
+  const existing = await loadExisting("WateringAvailability", availIRI, "targetMonth");
   if (!existing) {
     return c.json({ error: "Availability entry not found" }, 404);
   }
@@ -127,7 +114,7 @@ app.delete("/date", async (c) => {
   }
 
   if (availableDates.length === 0) {
-    await store.removeDocument("WateringAvailability", availIRI);
+    await removeDocument("WateringAvailability", availIRI);
     return c.json({ deleted: availIRI });
   }
 
@@ -141,8 +128,7 @@ app.delete("/date", async (c) => {
     targetMonth: existing.targetMonth,
   };
 
-  await store.removeDocument("WateringAvailability", availIRI);
-  await store.upsertDocument("WateringAvailability", availIRI, doc);
+  await store.upsert("WateringAvailability", availIRI, doc as WateringAvailability);
 
   return c.json({ "@id": availIRI, ...doc });
 });
@@ -153,7 +139,7 @@ app.delete("/:id", async (c) => {
   const id = c.req.param("id");
   const entityIRI = `${DATA_BASE}WateringAvailability/${id}`;
 
-  await store.removeDocument("WateringAvailability", entityIRI);
+  await removeDocument("WateringAvailability", entityIRI);
 
   return c.json({ deleted: entityIRI });
 });

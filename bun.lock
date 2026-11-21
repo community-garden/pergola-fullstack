@@ -126,9 +126,10 @@
       "name": "@pergola/watering-api",
       "version": "0.0.1",
       "dependencies": {
-        "@graviola/edb-core-types": "1.4.7",
-        "@graviola/remote-query-implementations": "1.4.7",
-        "@graviola/sparql-db-impl": "1.5.11",
+        "@graviola/edb-core-types": "1.8.0",
+        "@graviola/remote-query-implementations": "1.5.1",
+        "@graviola/sparql-db-impl": "1.9.2",
+        "@graviola/store-core": "0.4.1",
         "@pergola/letitrain": "workspace:*",
         "@types/json-schema": "^7.0.15",
         "hono": "^4.7.11",
@@ -515,7 +516,7 @@
 
     "@graviola/edb-basic-components": ["@graviola/edb-basic-components@1.6.1", "https://npm.winzlieb.eu/@graviola/edb-basic-components/-/edb-basic-components-1.6.1.tgz", { "dependencies": { "@graviola/edb-state-hooks": "1.8.3" }, "peerDependencies": { "@ebay/nice-modal-react": "^1.2", "@emotion/styled": "^11", "@mui/icons-material": "^7", "@mui/material": "^7", "next-i18next": "^15", "react": "^19" } }, "sha512-EwlY0Nzo1Q4dW3EOyj3eFDx2tkHoq6TzukDJ+9eJhgXoWzPirybbWpe449UnHYyNZF35eb0ZaZ5uKKUwKbCeRA=="],
 
-    "@graviola/edb-core-types": ["@graviola/edb-core-types@1.4.7", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.4.7.tgz", { "peerDependencies": { "@rdfjs/namespace": "^2.0.1", "@rdfjs/types": "^2.0.1" } }, "sha512-zE1AmNh8T5ciTKhVmRQ80fN5ePjn9fLuOVeNlErXQaDpbSoga842Z1wjsPW300WxG+sDKtugiDuhIR2PsLMtvw=="],
+    "@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
 
     "@graviola/edb-core-utils": ["@graviola/edb-core-utils@1.7.1", "https://npm.winzlieb.eu/@graviola/edb-core-utils/-/edb-core-utils-1.7.1.tgz", { "dependencies": { "@graviola/edb-core-types": "1.8.0", "lodash-es": "^4.17.21" } }, "sha512-IMo3NCGfqXa71WfyYe38GWqR10VvoPovshGNXCVQTCLanbTJRoXMh5XAcnKUrF84MXhdP9tRHew5J+f9432GDw=="],
 
@@ -573,7 +574,7 @@
 
     "@graviola/provenance-types": ["@graviola/provenance-types@0.2.0", "https://npm.winzlieb.eu/@graviola/provenance-types/-/provenance-types-0.2.0.tgz", {}, "sha512-oNmvvK4aMSL6CfScO45y09k7pOzAtaSgIpPQwY8zXMgXBpjAUDW8zWrUn1KOPYg0cZRAd43nA2DhBNYtiFQocg=="],
 
-    "@graviola/remote-query-implementations": ["@graviola/remote-query-implementations@1.4.7", "https://npm.winzlieb.eu/@graviola/remote-query-implementations/-/remote-query-implementations-1.4.7.tgz", { "dependencies": { "@rdfjs/dataset": "^2.0.2", "lodash-es": "^4.17.21", "n3": "^1.17.2" } }, "sha512-MnX2HYYCCq0ksbJnVr2FlU9hQYyNL3btxy/SOAJsP4HZ21JNUzTbkAiV9G/rp9Iwo70qJVPIn6vJVdZ6oP4cwQ=="],
+    "@graviola/remote-query-implementations": ["@graviola/remote-query-implementations@1.5.1", "https://npm.winzlieb.eu/@graviola/remote-query-implementations/-/remote-query-implementations-1.5.1.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.7.1", "@rdfjs/dataset": "^2.0.2", "lodash-es": "^4.17.21", "n3": "^1.17.2" } }, "sha512-aCOEjZ+hrBpH6cY/V42mgcFLDAEjKdddjjbaVWEYetScfl1iRlbFKGYpuEnuuu4MjYw+Z3gAA7f63JuUEwq38Q=="],
 
     "@graviola/search-facet-schema": ["@graviola/search-facet-schema@0.1.4", "https://npm.winzlieb.eu/@graviola/search-facet-schema/-/search-facet-schema-0.1.4.tgz", { "dependencies": { "@graviola/json-schema-utils": "1.9.0", "ajv": "^8.17.1" } }, "sha512-XZWTYKwy4DdZgD+SxZLbYV7r+kBRJEXWbGC5QNnQL3g8hnOA2+15Ru/Pm5BtBDSyKq5bsJdlS6AlhI90zy+hHQ=="],
 
@@ -585,7 +586,7 @@
 
     "@graviola/sidecar-core": ["@graviola/sidecar-core@0.1.2", "https://npm.winzlieb.eu/@graviola/sidecar-core/-/sidecar-core-0.1.2.tgz", { "dependencies": { "@graviola/json-schema-utils": "1.9.0" } }, "sha512-Yn7I06tvihyO0s/Z0OFxxXJG8EtMsEgLSMByyfYOA4Wm3WpTdybFoxM6d3fNba18n5HeTj3FFDqo09/UchdcCA=="],
 
-    "@graviola/sparql-db-impl": ["@graviola/sparql-db-impl@1.5.11", "https://npm.winzlieb.eu/@graviola/sparql-db-impl/-/sparql-db-impl-1.5.11.tgz", { "dependencies": { "@graviola/json-schema-utils": "1.5.7", "@graviola/jsonld-utils": "1.5.8", "@graviola/sparql-schema": "1.5.9" } }, "sha512-gqqfZHSLfZLaSlVrEOR7TiADHqFEQEMwewqKX+p+MdqpHX/itQyExmL3ZC4QYvgxooivPqMwrWI+uOqAfkfucQ=="],
+    "@graviola/sparql-db-impl": ["@graviola/sparql-db-impl@1.9.2", "https://npm.winzlieb.eu/@graviola/sparql-db-impl/-/sparql-db-impl-1.9.2.tgz", { "dependencies": { "@graviola/edb-core-types": "1.8.0", "@graviola/edb-core-utils": "1.7.1", "@graviola/edb-global-types": "1.3.9", "@graviola/json-schema-utils": "1.9.0", "@graviola/jsonld-utils": "1.6.7", "@graviola/meta-schema": "0.2.1", "@graviola/provenance-types": "0.2.0", "@graviola/remote-query-implementations": "1.5.1", "@graviola/sparql-schema": "1.8.1", "@graviola/sparql-tools": "0.2.3", "@graviola/statement-meta": "0.2.1", "@graviola/store-core": "0.4.1", "@rdfjs/data-model": "^2.0.2", "@tpluscode/rdf-ns-builders": "^5", "@tpluscode/rdf-string": "^1.3.4" } }, "sha512-oMIwTPU+bySBuuJmKjsyTFvlbxWuyb9TiDNESBw96VShpGY7A6w/OFjRezhyJAn520y43kU+/qmy+2UXKQfAuA=="],
 
     "@graviola/sparql-schema": ["@graviola/sparql-schema@1.8.1", "https://npm.winzlieb.eu/@graviola/sparql-schema/-/sparql-schema-1.8.1.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.7.1", "@graviola/edb-graph-traversal": "1.8.1", "@graviola/json-schema-utils": "1.9.0", "@graviola/jsonld-utils": "1.6.7", "@graviola/meta-schema": "0.2.1", "@graviola/typed-query-types": "0.4.0", "@tpluscode/rdf-ns-builders": "^5", "@tpluscode/rdf-string": "^1.3.4", "@tpluscode/sparql-builder": "^3.0.1", "lodash-es": "^4.17.21" }, "peerDependencies": { "@rdfjs/data-model": "^2.0.2", "jsonld-context-parser": "^2.4.0" } }, "sha512-LM/FZebXEo0J2QJ8etUvdYTqlG8XZ/evS80SNxNIreXth4vOz5dz3Flv7lULlegsxoO1I8PBR87Zv0WtaAEKKQ=="],
 
@@ -790,8 +791,6 @@
     "@rdfjs/environment": ["@rdfjs/environment@1.0.0", "", {}, "sha512-+S5YjSvfoQR5r7YQCRCCVHvIEyrWia7FJv2gqM3s5EDfotoAQmFeBagApa9c/eQFi5EiNhmBECE5nB8LIxTaHg=="],
 
     "@rdfjs/namespace": ["@rdfjs/namespace@2.0.1", "", { "dependencies": { "@rdfjs/data-model": "^2.0.1" } }, "sha512-U85NWVGnL3gWvOZ4eXwUcv3/bom7PAcutSBQqmVWvOaslPy+kDzAJCH1WYBLpdQd4yMmJ+bpJcDl9rcHtXeixg=="],
-
-    "@rdfjs/parser-jsonld": ["@rdfjs/parser-jsonld@2.1.3", "", { "dependencies": { "@rdfjs/data-model": "^2.0.2", "@rdfjs/sink": "^2.0.1", "duplex-to": "^2.0.0", "jsonld-streaming-parser": "^5.0.0", "readable-stream": "^4.5.2" } }, "sha512-VYnPEwVdqFAPTo9F8XIN4UpGPdNzhBaCFv5b5OT74pA7H8so4aTno3Yd6M5I9bhTrUoCQjpjgr+ugYlvWxdBIA=="],
 
     "@rdfjs/parser-n3": ["@rdfjs/parser-n3@2.1.0", "", { "dependencies": { "@rdfjs/data-model": "^2.0.2", "@rdfjs/sink": "^2.0.1", "duplex-to": "^2.0.0", "n3": "^1.17.2", "readable-stream": "^4.5.2" } }, "sha512-/DiosB+0vPzgAs1WXcCB8MbA5hqq0fIh9VhMg7fBmoJ/I8Xl6Op/AOxVu9x1XZCHSNwO/VsJT/HYKEctZVRKSQ=="],
 
@@ -3019,8 +3018,6 @@
 
     "string-argv": ["string-argv@0.3.1", "", {}, "sha512-a1uQGz7IyVy9YwhqjZIZu1c8JO8dNIe20xBmSS6qu9kv++k3JGzCVmprbNN5Kn+BgzD5E7YYwg1CcjuJMRNsvg=="],
 
-    "string-to-stream": ["string-to-stream@3.0.1", "", { "dependencies": { "readable-stream": "^3.4.0" } }, "sha512-Hl092MV3USJuUCC6mfl9sPzGloA3K5VwdIeJjYIkXY/8K+mUvaeEabWJgArp+xXrsWxCajeT2pc4axbVhIZJyg=="],
-
     "string-width": ["string-width@4.2.3", "", { "dependencies": { "emoji-regex": "^8.0.0", "is-fullwidth-code-point": "^3.0.0", "strip-ansi": "^6.0.1" } }, "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g=="],
 
     "string-width-cjs": ["string-width@4.2.3", "", { "dependencies": { "emoji-regex": "^8.0.0", "is-fullwidth-code-point": "^3.0.0", "strip-ansi": "^6.0.1" } }, "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g=="],
@@ -3497,55 +3494,17 @@
 
     "@eslint/eslintrc/globals": ["globals@14.0.0", "", {}, "sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ=="],
 
-    "@graviola/edb-core-utils/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
-    "@graviola/edb-data-mapping/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
     "@graviola/edb-data-mapping/ajv": ["ajv@8.20.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="],
-
-    "@graviola/edb-detail-renderer/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
-    "@graviola/edb-detail-renderer-core/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
-    "@graviola/edb-graph-traversal/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
 
     "@graviola/edb-graph-traversal/ajv": ["ajv@8.20.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="],
 
-    "@graviola/edb-import-components/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
-    "@graviola/edb-import-staging/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
     "@graviola/edb-linked-data-renderer/ajv": ["ajv@8.20.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="],
-
-    "@graviola/edb-table-components/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
-    "@graviola/edb-table-renderer-sparql-select/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
-    "@graviola/edb-ui-utils/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
 
     "@graviola/edb-ui-utils/ajv": ["ajv@8.20.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="],
 
-    "@graviola/fulltext-search-core/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
     "@graviola/search-facet-schema/ajv": ["ajv@8.20.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="],
 
-    "@graviola/semantic-jsonform-types/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
     "@graviola/semantic-jsonform-types/ajv": ["ajv@8.20.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="],
-
-    "@graviola/semantic-views/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
-    "@graviola/sparql-db-impl/@graviola/json-schema-utils": ["@graviola/json-schema-utils@1.5.7", "https://npm.winzlieb.eu/@graviola/json-schema-utils/-/json-schema-utils-1.5.7.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.5.7", "lodash-es": "^4.17.21" } }, "sha512-/JP2fRHbj3hzzVSvb4sOdcbWhvBwUTm/wE9pBifdnNA+4dgNDFHhQKtGhiJZo7WTvZbg3SkKQQu0OAztn4YpJw=="],
-
-    "@graviola/sparql-db-impl/@graviola/jsonld-utils": ["@graviola/jsonld-utils@1.5.8", "https://npm.winzlieb.eu/@graviola/jsonld-utils/-/jsonld-utils-1.5.8.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.5.7", "@graviola/edb-graph-traversal": "1.5.7" }, "peerDependencies": { "@rdfjs/dataset": "^2.0.2", "jsonld": "^8.3.2", "n3": "^1.17.2" } }, "sha512-1uwe1vx6eNOyy1qcrhr68P7EQ10eZDOIruMaf/p291dK/qzsqBZ/1YHAP0aP8fW7IlYcEvD1F0IuuFoQd/UfYg=="],
-
-    "@graviola/sparql-db-impl/@graviola/sparql-schema": ["@graviola/sparql-schema@1.5.9", "https://npm.winzlieb.eu/@graviola/sparql-schema/-/sparql-schema-1.5.9.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.5.7", "@graviola/edb-graph-traversal": "1.5.7", "@graviola/json-schema-utils": "1.5.7", "@graviola/jsonld-utils": "1.5.8", "@tpluscode/rdf-ns-builders": "^5", "@tpluscode/rdf-string": "^1.3.4", "@tpluscode/sparql-builder": "^3.0.1", "lodash-es": "^4.17.21" }, "peerDependencies": { "@rdfjs/data-model": "^2.0.2", "@rdfjs/parser-jsonld": "^2.1.1", "jsonld": "^8.3.2", "jsonld-context-parser": "^2.4.0", "n3": "^1.17.2", "rdf-dataset-ext": "^1.1.0", "string-to-stream": "^3.0.1" } }, "sha512-PJipXmlN7cUbjjhs0esVJrdWszcMxO+psae2RoY/OPIO+0ll0zgg99Q3qH8VzSZU/3McxHL6KqfCbNoWsxNtSQ=="],
-
-    "@graviola/sparql-store-provider/@graviola/remote-query-implementations": ["@graviola/remote-query-implementations@1.5.1", "https://npm.winzlieb.eu/@graviola/remote-query-implementations/-/remote-query-implementations-1.5.1.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.7.1", "@rdfjs/dataset": "^2.0.2", "lodash-es": "^4.17.21", "n3": "^1.17.2" } }, "sha512-aCOEjZ+hrBpH6cY/V42mgcFLDAEjKdddjjbaVWEYetScfl1iRlbFKGYpuEnuuu4MjYw+Z3gAA7f63JuUEwq38Q=="],
-
-    "@graviola/sparql-store-provider/@graviola/sparql-db-impl": ["@graviola/sparql-db-impl@1.9.2", "https://npm.winzlieb.eu/@graviola/sparql-db-impl/-/sparql-db-impl-1.9.2.tgz", { "dependencies": { "@graviola/edb-core-types": "1.8.0", "@graviola/edb-core-utils": "1.7.1", "@graviola/edb-global-types": "1.3.9", "@graviola/json-schema-utils": "1.9.0", "@graviola/jsonld-utils": "1.6.7", "@graviola/meta-schema": "0.2.1", "@graviola/provenance-types": "0.2.0", "@graviola/remote-query-implementations": "1.5.1", "@graviola/sparql-schema": "1.8.1", "@graviola/sparql-tools": "0.2.3", "@graviola/statement-meta": "0.2.1", "@graviola/store-core": "0.4.1", "@rdfjs/data-model": "^2.0.2", "@tpluscode/rdf-ns-builders": "^5", "@tpluscode/rdf-string": "^1.3.4" } }, "sha512-oMIwTPU+bySBuuJmKjsyTFvlbxWuyb9TiDNESBw96VShpGY7A6w/OFjRezhyJAn520y43kU+/qmy+2UXKQfAuA=="],
-
-    "@graviola/store-core/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
 
     "@isaacs/cliui/string-width": ["string-width@5.1.2", "", { "dependencies": { "eastasianwidth": "^0.2.0", "emoji-regex": "^9.2.2", "strip-ansi": "^7.0.1" } }, "sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA=="],
 
@@ -3844,12 +3803,6 @@
     "foreground-child/signal-exit": ["signal-exit@4.1.0", "", {}, "sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw=="],
 
     "from2/readable-stream": ["readable-stream@2.3.7", "", { "dependencies": { "core-util-is": "~1.0.0", "inherits": "~2.0.3", "isarray": "~1.0.0", "process-nextick-args": "~2.0.0", "safe-buffer": "~5.1.1", "string_decoder": "~1.1.1", "util-deprecate": "~1.0.1" } }, "sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw=="],
-
-    "frontend-vite/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
-
-    "frontend-vite/@graviola/remote-query-implementations": ["@graviola/remote-query-implementations@1.5.1", "https://npm.winzlieb.eu/@graviola/remote-query-implementations/-/remote-query-implementations-1.5.1.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.7.1", "@rdfjs/dataset": "^2.0.2", "lodash-es": "^4.17.21", "n3": "^1.17.2" } }, "sha512-aCOEjZ+hrBpH6cY/V42mgcFLDAEjKdddjjbaVWEYetScfl1iRlbFKGYpuEnuuu4MjYw+Z3gAA7f63JuUEwq38Q=="],
-
-    "frontend-vite/@graviola/sparql-db-impl": ["@graviola/sparql-db-impl@1.9.2", "https://npm.winzlieb.eu/@graviola/sparql-db-impl/-/sparql-db-impl-1.9.2.tgz", { "dependencies": { "@graviola/edb-core-types": "1.8.0", "@graviola/edb-core-utils": "1.7.1", "@graviola/edb-global-types": "1.3.9", "@graviola/json-schema-utils": "1.9.0", "@graviola/jsonld-utils": "1.6.7", "@graviola/meta-schema": "0.2.1", "@graviola/provenance-types": "0.2.0", "@graviola/remote-query-implementations": "1.5.1", "@graviola/sparql-schema": "1.8.1", "@graviola/sparql-tools": "0.2.3", "@graviola/statement-meta": "0.2.1", "@graviola/store-core": "0.4.1", "@rdfjs/data-model": "^2.0.2", "@tpluscode/rdf-ns-builders": "^5", "@tpluscode/rdf-string": "^1.3.4" } }, "sha512-oMIwTPU+bySBuuJmKjsyTFvlbxWuyb9TiDNESBw96VShpGY7A6w/OFjRezhyJAn520y43kU+/qmy+2UXKQfAuA=="],
 
     "fs-merger/fs-extra": ["fs-extra@8.1.0", "", { "dependencies": { "graceful-fs": "^4.2.0", "jsonfile": "^4.0.0", "universalify": "^0.1.0" } }, "sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g=="],
 
@@ -4195,8 +4148,6 @@
 
     "storybook/@vitest/spy": ["@vitest/spy@3.2.4", "", { "dependencies": { "tinyspy": "^4.0.3" } }, "sha512-vAfasCOe6AIK70iP5UD11Ac4siNUNJ9i/9PZ3NKx07sG6sUxeag1LWdNrMWeKKYBLlzuK+Gn65Yd5nyL6ds+nw=="],
 
-    "string-to-stream/readable-stream": ["readable-stream@3.6.2", "", { "dependencies": { "inherits": "^2.0.3", "string_decoder": "^1.1.1", "util-deprecate": "^1.0.1" } }, "sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA=="],
-
     "string.prototype.matchall/define-properties": ["define-properties@1.2.1", "", { "dependencies": { "define-data-property": "^1.0.1", "has-property-descriptors": "^1.0.0", "object-keys": "^1.1.1" } }, "sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg=="],
 
     "string.prototype.matchall/es-abstract": ["es-abstract@1.24.2", "", { "dependencies": { "array-buffer-byte-length": "^1.0.2", "arraybuffer.prototype.slice": "^1.0.4", "available-typed-arrays": "^1.0.7", "call-bind": "^1.0.8", "call-bound": "^1.0.4", "data-view-buffer": "^1.0.2", "data-view-byte-length": "^1.0.2", "data-view-byte-offset": "^1.0.1", "es-define-property": "^1.0.1", "es-errors": "^1.3.0", "es-object-atoms": "^1.1.1", "es-set-tostringtag": "^2.1.0", "es-to-primitive": "^1.3.0", "function.prototype.name": "^1.1.8", "get-intrinsic": "^1.3.0", "get-proto": "^1.0.1", "get-symbol-description": "^1.1.0", "globalthis": "^1.0.4", "gopd": "^1.2.0", "has-property-descriptors": "^1.0.2", "has-proto": "^1.2.0", "has-symbols": "^1.1.0", "hasown": "^2.0.2", "internal-slot": "^1.1.0", "is-array-buffer": "^3.0.5", "is-callable": "^1.2.7", "is-data-view": "^1.0.2", "is-negative-zero": "^2.0.3", "is-regex": "^1.2.1", "is-set": "^2.0.3", "is-shared-array-buffer": "^1.0.4", "is-string": "^1.1.1", "is-typed-array": "^1.1.15", "is-weakref": "^1.1.1", "math-intrinsics": "^1.1.0", "object-inspect": "^1.13.4", "object-keys": "^1.1.1", "object.assign": "^4.1.7", "own-keys": "^1.0.1", "regexp.prototype.flags": "^1.5.4", "safe-array-concat": "^1.1.3", "safe-push-apply": "^1.0.0", "safe-regex-test": "^1.1.0", "set-proto": "^1.0.0", "stop-iteration-iterator": "^1.1.0", "string.prototype.trim": "^1.2.10", "string.prototype.trimend": "^1.0.9", "string.prototype.trimstart": "^1.0.8", "typed-array-buffer": "^1.0.3", "typed-array-byte-length": "^1.0.3", "typed-array-byte-offset": "^1.0.4", "typed-array-length": "^1.0.7", "unbox-primitive": "^1.1.0", "which-typed-array": "^1.1.19" } }, "sha512-2FpH9Q5i2RRwyEP1AylXe6nYLR5OhaJTZwmlcP0dL/+JCbgg7yyEo/sEK6HeGZRf3dFpWwThaRHVApXSkW3xeg=="],
@@ -4332,18 +4283,6 @@
     "@graviola/search-facet-schema/ajv/json-schema-traverse": ["json-schema-traverse@1.0.0", "", {}, "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="],
 
     "@graviola/semantic-jsonform-types/ajv/json-schema-traverse": ["json-schema-traverse@1.0.0", "", {}, "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="],
-
-    "@graviola/sparql-db-impl/@graviola/json-schema-utils/@graviola/edb-core-utils": ["@graviola/edb-core-utils@1.5.7", "https://npm.winzlieb.eu/@graviola/edb-core-utils/-/edb-core-utils-1.5.7.tgz", {}, "sha512-5lXNEbM5kUCvuBWTW6k6Q0DccX9dps+BOYlCk+gDneODEasrv2KYP/Ofui/u4HwqlXMfKew00dJracE/aqh0mA=="],
-
-    "@graviola/sparql-db-impl/@graviola/jsonld-utils/@graviola/edb-core-utils": ["@graviola/edb-core-utils@1.5.7", "https://npm.winzlieb.eu/@graviola/edb-core-utils/-/edb-core-utils-1.5.7.tgz", {}, "sha512-5lXNEbM5kUCvuBWTW6k6Q0DccX9dps+BOYlCk+gDneODEasrv2KYP/Ofui/u4HwqlXMfKew00dJracE/aqh0mA=="],
-
-    "@graviola/sparql-db-impl/@graviola/jsonld-utils/@graviola/edb-graph-traversal": ["@graviola/edb-graph-traversal@1.5.7", "https://npm.winzlieb.eu/@graviola/edb-graph-traversal/-/edb-graph-traversal-1.5.7.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.5.7", "@graviola/json-schema-utils": "1.5.7", "@rdfjs/namespace": "^2.0.1", "@tpluscode/rdf-ns-builders": "^5", "clownface": "2.0.2", "lodash-es": "^4.17.21", "rdf-dataset-ext": "^1.0.1" }, "peerDependencies": { "@rdfjs/data-model": "^2.0.2", "ajv": "^8.12", "ajv-formats": "^3" } }, "sha512-LsPvXXrF2LhwQMSdfaWzqOibLfZhKs9Pp1kBGFevyPG9WFDnO/JRA0Rn7pK6VRhYBnBJEsG8ypDPmTiff1Dw3Q=="],
-
-    "@graviola/sparql-db-impl/@graviola/sparql-schema/@graviola/edb-core-utils": ["@graviola/edb-core-utils@1.5.7", "https://npm.winzlieb.eu/@graviola/edb-core-utils/-/edb-core-utils-1.5.7.tgz", {}, "sha512-5lXNEbM5kUCvuBWTW6k6Q0DccX9dps+BOYlCk+gDneODEasrv2KYP/Ofui/u4HwqlXMfKew00dJracE/aqh0mA=="],
-
-    "@graviola/sparql-db-impl/@graviola/sparql-schema/@graviola/edb-graph-traversal": ["@graviola/edb-graph-traversal@1.5.7", "https://npm.winzlieb.eu/@graviola/edb-graph-traversal/-/edb-graph-traversal-1.5.7.tgz", { "dependencies": { "@graviola/edb-core-utils": "1.5.7", "@graviola/json-schema-utils": "1.5.7", "@rdfjs/namespace": "^2.0.1", "@tpluscode/rdf-ns-builders": "^5", "clownface": "2.0.2", "lodash-es": "^4.17.21", "rdf-dataset-ext": "^1.0.1" }, "peerDependencies": { "@rdfjs/data-model": "^2.0.2", "ajv": "^8.12", "ajv-formats": "^3" } }, "sha512-LsPvXXrF2LhwQMSdfaWzqOibLfZhKs9Pp1kBGFevyPG9WFDnO/JRA0Rn7pK6VRhYBnBJEsG8ypDPmTiff1Dw3Q=="],
-
-    "@graviola/sparql-store-provider/@graviola/sparql-db-impl/@graviola/edb-core-types": ["@graviola/edb-core-types@1.8.0", "https://npm.winzlieb.eu/@graviola/edb-core-types/-/edb-core-types-1.8.0.tgz", { "dependencies": { "@graviola/typed-query-types": "0.4.0", "@rdfjs/types": "^2.0.1" } }, "sha512-F5rzX0B/dd/plCTHKKZp8r9Ba/rh/neC1SG9emYu/wkNmuv5RJE6hODc3OnVKbGx/YRIqrZoUn23W6DxcShzxQ=="],
 
     "@isaacs/cliui/string-width/emoji-regex": ["emoji-regex@9.2.2", "", {}, "sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg=="],
 
@@ -4903,10 +4842,6 @@
 
     "@emotion/babel-plugin/@babel/helper-module-imports/@babel/types/@babel/helper-validator-identifier": ["@babel/helper-validator-identifier@7.28.5", "", {}, "sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q=="],
 
-    "@graviola/sparql-db-impl/@graviola/jsonld-utils/@graviola/edb-graph-traversal/ajv": ["ajv@8.20.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="],
-
-    "@graviola/sparql-db-impl/@graviola/sparql-schema/@graviola/edb-graph-traversal/ajv": ["ajv@8.20.0", "", { "dependencies": { "fast-deep-equal": "^3.1.3", "fast-uri": "^3.0.1", "json-schema-traverse": "^1.0.0", "require-from-string": "^2.0.2" } }, "sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA=="],
-
     "@joshwooding/vite-plugin-react-docgen-typescript/glob/minimatch/brace-expansion": ["brace-expansion@5.0.6", "", { "dependencies": { "balanced-match": "^4.0.2" } }, "sha512-kLpxurY4Z4r9sgMsyG0Z9uzsBlgiU/EFKhj/h91/8yHu0edo7XuixOIH3VcJ8kkxs6/jPzoI6U9Vj3WqbMQ94g=="],
 
     "@rollup/plugin-babel/@babel/helper-module-imports/@babel/traverse/@babel/code-frame": ["@babel/code-frame@7.29.0", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.28.5", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw=="],
@@ -5132,10 +5067,6 @@
     "@emotion/babel-plugin/@babel/helper-module-imports/@babel/traverse/@babel/generator/jsesc": ["jsesc@3.1.0", "", { "bin": { "jsesc": "bin/jsesc" } }, "sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA=="],
 
     "@emotion/babel-plugin/@babel/helper-module-imports/@babel/traverse/debug/ms": ["ms@2.1.3", "", {}, "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="],
-
-    "@graviola/sparql-db-impl/@graviola/jsonld-utils/@graviola/edb-graph-traversal/ajv/json-schema-traverse": ["json-schema-traverse@1.0.0", "", {}, "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="],
-
-    "@graviola/sparql-db-impl/@graviola/sparql-schema/@graviola/edb-graph-traversal/ajv/json-schema-traverse": ["json-schema-traverse@1.0.0", "", {}, "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="],
 
     "@joshwooding/vite-plugin-react-docgen-typescript/glob/minimatch/brace-expansion/balanced-match": ["balanced-match@4.0.4", "", {}, "sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA=="],
 

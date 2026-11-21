@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { readFile, writeFile, mkdir, unlink } from "node:fs/promises";
 import { join } from "node:path";
-import { store } from "../store";
+import { store, removeDocument } from "../store";
 import {
   MediaAttachmentTypeIRI,
   mediaAttachmentIRI,
@@ -93,7 +93,7 @@ app.post("/", async (c) => {
     ...(meta.attachedTo ? { attachedTo: { "@id": meta.attachedTo } } : {}),
   };
 
-  await store.upsertDocument("MediaAttachment", iri, doc);
+  await store.upsert("MediaAttachment", iri, doc as MediaAttachment);
 
   return c.json(
     {
@@ -122,7 +122,7 @@ app.get("/:base64iri/thumb/:size", async (c) => {
     return c.json({ error: "Invalid IRI encoding" }, 400);
   }
 
-  const doc = (await store.loadDocument("MediaAttachment", iri)) as MediaAttachment | null;
+  const doc = (await store.loadOne("MediaAttachment", iri)) as MediaAttachment | null;
   if (!doc || !doc.storedPath) {
     return c.json({ error: "MediaAttachment not found" }, 404);
   }
@@ -170,7 +170,7 @@ app.delete("/:base64iri", async (c) => {
     return c.json({ error: "Invalid IRI encoding" }, 400);
   }
 
-  const doc = (await store.loadDocument("MediaAttachment", iri)) as MediaAttachment | null;
+  const doc = (await store.loadOne("MediaAttachment", iri)) as MediaAttachment | null;
   if (!doc || !doc.storedPath) {
     return c.json({ error: "MediaAttachment not found" }, 404);
   }
@@ -182,7 +182,7 @@ app.delete("/:base64iri", async (c) => {
     // File already gone — still clean up the SPARQL entity
   }
 
-  await store.removeDocument("MediaAttachment", iri);
+  await removeDocument("MediaAttachment", iri);
 
   return new Response(null, { status: 204 });
 });

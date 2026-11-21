@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { store } from "../store";
+import { store, loadExisting, availabilitiesOf, removeDocument } from "../store";
 import { CalculatePlanInputSchema, RemovePlanAssignmentSchema, type WateringPlan } from "../schema/watering-plan";
-import { type WateringAvailability, DATA_BASE } from "../schema/watering-availability";
+import { DATA_BASE } from "../schema/watering-availability";
 import { planAssignments } from "@pergola/letitrain";
 
 // Local structural types matching @pergola/letitrain's Person and Task interfaces
@@ -36,25 +36,21 @@ app.get("/", async (c) => {
 
   const month = c.req.query("month") ?? currentMonthYYYYMM();
   const entityIRI = planIRI(gardenIri, month);
-  const plan = await store.loadDocument("WateringPlan", entityIRI);
+  const plan = await loadExisting("WateringPlan", entityIRI, "calculatedAt");
 
-  if (!plan) {
+  if (!plan || !isPlanCalculated(plan)) {
     return c.json({ error: "No plan found for this garden and month" }, 404);
   }
 
-  // Resolve person names for all assigned persons
-  const assignments = (plan as WateringPlan).assignments ?? [];
+  // Resolve person names for all assigned persons in one query
+  const assignments = plan.assignments ?? [];
   const uniqueIris = [...new Set(assignments.map((a) => a.personIri))];
   const personNames: Record<string, string> = {};
-  await Promise.all(
-    uniqueIris.map(async (iri) => {
-      const person = await store.loadDocument("AnonymousPerson", iri) as { name?: string } | null;
-      if (person?.name) personNames[iri] = person.name;
-    })
-  );
-
-  if (!isPlanCalculated(plan as WateringPlan)) {
-    return c.json({ error: "No plan found for this garden and month" }, 404);
+  if (uniqueIris.length > 0) {
+    const persons = await store.filterMany("AnonymousPerson", { entityIRIs: uniqueIris });
+    for (const person of persons) {
+      if (person.name) personNames[person["@id"]] = person.name;
+    }
   }
 
   return c.json({ ...plan, personNames });
@@ -76,8 +72,8 @@ app.post("/:id/assignments", async (c) => {
   const parsed = RemovePlanAssignmentSchema.safeParse(body);
   if (!parsed.success) return c.json({ error: parsed.error.flatten() }, 400);
 
-  const plan = await store.loadDocument("WateringPlan", entityIRI) as WateringPlan | null;
-  if (!plan || !plan.calculatedAt) return c.json({ error: "Plan not found" }, 404);
+  const plan = await loadExisting("WateringPlan", entityIRI, "calculatedAt");
+  if (!plan) return c.json({ error: "Plan not found" }, 404);
 
   const { date, personIri } = parsed.data;
   const existing = plan.assignments ?? [];
@@ -94,8 +90,7 @@ app.post("/:id/assignments", async (c) => {
     assignments: [...existing, { date, personIri }],
   };
 
-  await store.removeDocument("WateringPlan", entityIRI);
-  await store.upsertDocument("WateringPlan", entityIRI, updated);
+  await store.upsert("WateringPlan", entityIRI, updated as WateringPlan);
 
   return c.json({ "@id": entityIRI, ...updated }, 201);
 });
@@ -118,7 +113,7 @@ app.delete("/:id/assignments", async (c) => {
     return c.json({ error: parsed.error.flatten() }, 400);
   }
 
-  const plan = await store.loadDocument("WateringPlan", entityIRI) as WateringPlan | null;
+  const plan = await loadExisting("WateringPlan", entityIRI, "targetMonth");
   if (!plan) {
     return c.json({ error: "Plan not found" }, 404);
   }
@@ -141,8 +136,7 @@ app.delete("/:id/assignments", async (c) => {
     assignments,
   };
 
-  await store.removeDocument("WateringPlan", entityIRI);
-  await store.upsertDocument("WateringPlan", entityIRI, updated);
+  await store.upsert("WateringPlan", entityIRI, updated as WateringPlan);
 
   return c.json({ "@id": entityIRI, ...updated });
 });
@@ -179,8 +173,7 @@ app.post("/restore", async (c) => {
   };
 
   const entityIRI = planIRI(gardenIri, targetMonth);
-  await store.removeDocument("WateringPlan", entityIRI);
-  await store.upsertDocument("WateringPlan", entityIRI, plan);
+  await store.upsert("WateringPlan", entityIRI, plan as WateringPlan);
 
   return c.json({ "@id": entityIRI, ...plan });
 });
@@ -191,7 +184,7 @@ app.delete("/:id", async (c) => {
   const id = c.req.param("id");
   const entityIRI = `${DATA_BASE}WateringPlan/${id}`;
 
-  await store.removeDocument("WateringPlan", entityIRI);
+  await removeDocument("WateringPlan", entityIRI);
 
   return c.json({ deleted: entityIRI });
 });
@@ -212,20 +205,8 @@ app.post("/calculate", async (c) => {
 
   const { gardenIri, targetPersonsPerTask, targetMonth: rawTargetMonth } = parsed.data;
   const targetMonth = rawTargetMonth ?? nextMonthYYYYMM();
-  const gardenSlug = (gardenIri.split("/").pop() ?? "").toLowerCase();
-
-  // Load availability entries scoped to this garden AND target month
-  const all = await store.listDocuments("WateringAvailability", 500);
-  const slugPattern = `/${gardenSlug}-`;
-  const monthSuffix = `-${targetMonth}`;
-  const matchingIRIs = (all as Array<{ "@id": string }>)
-    .map((e) => e["@id"])
-    .filter((id) => id.includes(slugPattern) && id.endsWith(monthSuffix));
-
-  const rawEntries = await Promise.all(
-    matchingIRIs.map((iri) => store.loadDocument("WateringAvailability", iri))
-  );
-  const entries = rawEntries.filter(Boolean) as WateringAvailability[];
+  // Availability entries of this garden for the target month
+  const entries = await availabilitiesOf(gardenIri, targetMonth);
 
   if (entries.length === 0) {
     return c.json({ error: "No availability entries found for this garden and month" }, 422);
@@ -274,9 +255,8 @@ app.post("/calculate", async (c) => {
   };
 
   const entityIRI = planIRI(gardenIri, targetMonth);
-  // Remove before upsert: Graviola appends array triples rather than replacing
-  await store.removeDocument("WateringPlan", entityIRI);
-  await store.upsertDocument("WateringPlan", entityIRI, plan);
+  // An upsert replaces the whole document, arrays included (Graviola ≥ 2026-11).
+  await store.upsert("WateringPlan", entityIRI, plan as WateringPlan);
 
   return c.json({ "@id": entityIRI, ...plan });
 });

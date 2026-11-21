@@ -20,10 +20,11 @@ const mockRemoveDocument = mock(async () => {});
 
 mock.module("../store", () => ({
   store: {
-    upsertDocument: mockUpsertDocument,
-    loadDocument: mockLoadDocument,
-    removeDocument: mockRemoveDocument,
+    upsert: mockUpsertDocument,
+    loadOne: mockLoadDocument,
+    remove: mockRemoveDocument,
   },
+  removeDocument: mockRemoveDocument,
 }));
 
 const mockBuildPicturiumUrl = mock(

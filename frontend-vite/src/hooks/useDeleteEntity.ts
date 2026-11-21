@@ -19,6 +19,9 @@ export const useDeleteEntity = ({ typeIRI }: DeleteEntityOptions) => {
     mutationFn: async (entityIRI: string) => {
       if (!ready || !dataStore) throw new Error('DataStore not ready');
       const typeName = dataStore.typeIRItoTypeName(typeIRI);
+      // Graviola's remove() leaves nested blank-node objects behind (orphans).
+      // An upsert of an empty document deletes them; remove() then drops the rest.
+      await dataStore.upsert(typeName, entityIRI, {});
       return await dataStore.remove(typeName, entityIRI);
     },
     onSuccess: () => invalidate(),
