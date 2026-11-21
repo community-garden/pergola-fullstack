@@ -2,11 +2,17 @@
  * Read model for season planning.
  *
  * The planner needs *all* beds, plantings, plants and persons of a garden at
- * once (Graviola's typed document loader pages at 20 and walks nested
- * documents, which is slow for a 100-row timeline). So the read side uses a few
- * flat SPARQL SELECTs against the same endpoint; writes still go through the
- * Graviola store (schema-validated upsert) — see hooks/usePlantingMutations.
+ * once. They are loaded through Graviola's typed store API (`filterMany` with
+ * `include`, checked against `PergolaRegistry`) and flattened into the small
+ * view types below; writes go through the same store — see
+ * hooks/usePlantingMutations.
+ *
+ * Graviola's SPARQL `where` cannot express "relation is missing" (wishes have
+ * no bed, some beds have no geometry) and has no `@id: { in }`, so the
+ * garden scoping of beds and plantings stays on the client.
  */
+import type { CrudDatastoreStore } from '@graviola/edb-state-hooks';
+import type { PergolaRegistry } from '../schema/registry';
 
 export const SPARQL_QUERY_URL: string =
   import.meta.env.VITE_SPARQL_API_URL || 'http://localhost:7878/query';
@@ -17,6 +23,10 @@ type Binding = Record<string, { type: string; value: string; datatype?: string }
 
 const PREFIXES = `PREFIX g: <${GARDEN_NS}>\n`;
 
+/**
+ * Plain SPARQL SELECT. Only api/mapLabels.ts still needs it: its query follows
+ * an inverse relation over every feature type, which the typed API cannot do.
+ */
 export async function sparqlSelect(query: string): Promise<Binding[]> {
   const res = await fetch(SPARQL_QUERY_URL, {
     method: 'POST',
@@ -30,18 +40,6 @@ export async function sparqlSelect(query: string): Promise<Binding[]> {
   const json = await res.json();
   return json.results.bindings as Binding[];
 }
-
-const str = (b: Binding, key: string): string | undefined => b[key]?.value;
-const num = (b: Binding, key: string): number | undefined => {
-  const v = b[key]?.value;
-  if (v === undefined) return undefined;
-  const n = Number(v);
-  return Number.isFinite(n) ? n : undefined;
-};
-const bool = (b: Binding, key: string): boolean | undefined => {
-  const v = b[key]?.value;
-  return v === undefined ? undefined : v === 'true' || v === '1';
-};
 
 // ---------------------------------------------------------------------------
 // Types
@@ -103,144 +101,122 @@ export interface PlantingInfo {
 }
 
 // ---------------------------------------------------------------------------
-// Queries
+// Queries (typed store API)
 // ---------------------------------------------------------------------------
 
-const range = (b: Binding, s: string, e: string): MonthRange | undefined => {
-  const start = num(b, s);
-  const end = num(b, e);
-  return start !== undefined && end !== undefined ? [start, end] : undefined;
+export type SeasonStore = Pick<CrudDatastoreStore<PergolaRegistry>, 'filterMany' | 'filterOne'>;
+
+/** `{ '@id' }` of a loaded relation; Graviola returns `{}` for a missing one. */
+const idOf = (ref: unknown): string | undefined => {
+  const iri = (ref as { '@id'?: unknown } | undefined)?.['@id'];
+  return typeof iri === 'string' && iri ? iri : undefined;
 };
 
-export async function fetchPlants(): Promise<PlantInfo[]> {
-  const rows = await sparqlSelect(`
-    SELECT ?s ?type ?name ?icon ?image ?family ?nd ?per ?species
-           ?pcS ?pcE ?soS ?soE ?plS ?plE ?haS ?haE
-    WHERE {
-      VALUES ?type { g:PlantSpecies g:PlantVariety }
-      ?s a ?type ; g:name ?name .
-      OPTIONAL { ?s g:icon ?icon }
-      OPTIONAL { ?s g:imageUrl ?image }
-      OPTIONAL { ?s g:family ?family }
-      OPTIONAL { ?s g:nutrientDemand ?nd }
-      OPTIONAL { ?s g:perennial ?per }
-      OPTIONAL { ?s g:species ?species }
-      OPTIONAL {
-        ?s g:growingSeason ?gs .
-        OPTIONAL { ?gs g:preCultivationStart ?pcS } OPTIONAL { ?gs g:preCultivationEnd ?pcE }
-        OPTIONAL { ?gs g:sowingStart ?soS }         OPTIONAL { ?gs g:sowingEnd ?soE }
-        OPTIONAL { ?gs g:plantingStart ?plS }       OPTIONAL { ?gs g:plantingEnd ?plE }
-        OPTIONAL { ?gs g:harvestStart ?haS }        OPTIONAL { ?gs g:harvestEnd ?haE }
-      }
-    }`);
-  const byIri = new Map<string, PlantInfo>();
-  rows.forEach((b) => {
-    const iri = str(b, 's')!;
-    if (byIri.has(iri)) return;
-    byIri.set(iri, {
-      iri,
-      kind: str(b, 'type') === `${GARDEN_NS}PlantVariety` ? 'variety' : 'species',
-      name: str(b, 'name')!,
-      icon: str(b, 'icon'),
-      imageUrl: str(b, 'image'),
-      family: str(b, 'family'),
-      nutrientDemand: str(b, 'nd'),
-      perennial: bool(b, 'per'),
-      speciesIri: str(b, 'species'),
+/** Plant types are `.loose()`, so fields not shared by species and varieties are `unknown`. */
+const asString = (v: unknown) => (typeof v === 'string' ? v : undefined);
+const asBoolean = (v: unknown) => (typeof v === 'boolean' ? v : undefined);
+
+const range = (start?: number, end?: number): MonthRange | undefined =>
+  start !== undefined && end !== undefined ? [start, end] : undefined;
+
+/** Only the link of a relation is needed: load it as a stub. */
+const REF = { maxRecursion: 0 } as const;
+
+export async function fetchPlants(store: SeasonStore): Promise<PlantInfo[]> {
+  const [species, varieties] = await Promise.all([
+    store.filterMany('PlantSpecies', {}),
+    store.filterMany('PlantVariety', { include: { species: REF } }),
+  ]);
+  const toInfo = (
+    doc: PergolaRegistry['PlantSpecies'] | PergolaRegistry['PlantVariety'],
+    kind: PlantInfo['kind'],
+  ): PlantInfo => {
+    const gs = doc.growingSeason;
+    return {
+      iri: doc['@id']!,
+      kind,
+      name: doc.name,
+      icon: doc.icon,
+      imageUrl: doc.imageUrl,
+      family: asString(doc.family),
+      nutrientDemand: asString(doc.nutrientDemand),
+      perennial: asBoolean(doc.perennial),
+      speciesIri: 'species' in doc ? idOf(doc.species) : undefined,
       phases: {
-        preCultivation: range(b, 'pcS', 'pcE'),
-        sowing: range(b, 'soS', 'soE'),
-        planting: range(b, 'plS', 'plE'),
-        harvest: range(b, 'haS', 'haE'),
+        preCultivation: range(gs?.preCultivationStart, gs?.preCultivationEnd),
+        sowing: range(gs?.sowingStart, gs?.sowingEnd),
+        planting: range(gs?.plantingStart, gs?.plantingEnd),
+        harvest: range(gs?.harvestStart, gs?.harvestEnd),
       },
-    });
-  });
-  return [...byIri.values()];
+    };
+  };
+  return [
+    ...species.filter((d) => d['@id'] && d.name).map((d) => toInfo(d, 'species')),
+    ...varieties.filter((d) => d['@id'] && d.name).map((d) => toInfo(d, 'variety')),
+  ];
 }
 
-export async function fetchPersons(): Promise<PersonInfo[]> {
-  const rows = await sparqlSelect(`
-    SELECT ?p ?name WHERE { ?p a g:Person ; g:name ?name } ORDER BY LCASE(?name)`);
-  return rows.map((b) => ({ iri: str(b, 'p')!, name: str(b, 'name')! }));
+export async function fetchPersons(store: SeasonStore): Promise<PersonInfo[]> {
+  const persons = await store.filterMany('Person', {});
+  return persons
+    .filter((p) => p['@id'] && p.name)
+    .map((p) => ({ iri: p['@id']!, name: p.name! }))
+    .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0));
 }
 
 /**
  * Beds of a garden: patches whose geo feature belongs to the garden, plus
  * patches without geometry (e.g. raised beds not drawn on the map yet).
  */
-export async function fetchPatches(gardenIri: string): Promise<PatchInfo[]> {
-  const rows = await sparqlSelect(`
-    SELECT ?p ?name ?icon ?type ?desc ?geo ?person ?personName WHERE {
-      ?p a g:Patch ; g:name ?name .
-      OPTIONAL { ?p g:geoFeature ?geo }
-      FILTER(!BOUND(?geo) || EXISTS { <${gardenIri}> g:geoFeatures ?geo })
-      OPTIONAL { ?p g:icon ?icon }
-      OPTIONAL { ?p g:patchType ?type }
-      OPTIONAL { ?p g:description ?desc }
-      OPTIONAL { ?p g:responsiblePersons ?person . OPTIONAL { ?person g:name ?personName } }
-    }`);
-  const byIri = new Map<string, PatchInfo>();
-  rows.forEach((b) => {
-    const iri = str(b, 'p')!;
-    let patch = byIri.get(iri);
-    if (!patch) {
-      patch = {
-        iri,
-        name: str(b, 'name')!,
-        icon: str(b, 'icon'),
-        patchType: str(b, 'type'),
-        description: str(b, 'desc'),
-        geoFeatureIri: str(b, 'geo'),
-        responsiblePersons: [],
-      };
-      byIri.set(iri, patch);
-    }
-    const personIri = str(b, 'person');
-    if (personIri && !patch.responsiblePersons.some((p) => p.iri === personIri)) {
-      patch.responsiblePersons.push({ iri: personIri, name: str(b, 'personName') ?? personIri });
-    }
-  });
-  return [...byIri.values()];
+export async function fetchPatches(store: SeasonStore, gardenIri: string): Promise<PatchInfo[]> {
+  const [garden, patches] = await Promise.all([
+    store.filterOne('Garden', gardenIri, { include: { geoFeatures: REF } }),
+    store.filterMany('Patch', {
+      include: { geoFeature: REF, responsiblePersons: { maxRecursion: 1 } },
+    }),
+  ]);
+  const gardenGeoFeatures = new Set((garden?.geoFeatures ?? []).map(idOf).filter(Boolean));
+  return patches
+    .filter((p) => p['@id'] && p.name)
+    .filter((p) => {
+      const geo = idOf(p.geoFeature);
+      return !geo || gardenGeoFeatures.has(geo);
+    })
+    .map((p) => ({
+      iri: p['@id']!,
+      name: p.name,
+      icon: p.icon,
+      patchType: p.patchType,
+      description: p.description,
+      geoFeatureIri: idOf(p.geoFeature),
+      responsiblePersons: (p.responsiblePersons ?? []).flatMap((person): PersonInfo[] => {
+        const iri = idOf(person);
+        return iri ? [{ iri, name: asString(person.name) ?? iri }] : [];
+      }),
+    }));
 }
 
-export async function fetchPlantings(): Promise<PlantingInfo[]> {
-  const rows = await sparqlSelect(`
-    SELECT ?p ?name ?patch ?species ?variety ?role ?status ?start ?end ?qty ?unit ?req ?notes WHERE {
-      ?p a g:Planting .
-      OPTIONAL { ?p g:name ?name }
-      OPTIONAL { ?p g:patch ?patch }
-      OPTIONAL { ?p g:plantSpecies ?species }
-      OPTIONAL { ?p g:plantVariety ?variety }
-      OPTIONAL { ?p g:role ?role }
-      OPTIONAL { ?p g:status ?status }
-      OPTIONAL { ?p g:startDate ?start }
-      OPTIONAL { ?p g:endDate ?end }
-      OPTIONAL { ?p g:quantity ?qty }
-      OPTIONAL { ?p g:quantityUnit ?unit }
-      OPTIONAL { ?p g:requestedBy ?req }
-      OPTIONAL { ?p g:notes ?notes }
-    }`);
-  const byIri = new Map<string, PlantingInfo>();
-  rows.forEach((b) => {
-    const iri = str(b, 'p')!;
-    if (byIri.has(iri)) return;
-    byIri.set(iri, {
-      iri,
-      name: str(b, 'name'),
-      patchIri: str(b, 'patch'),
-      speciesIri: str(b, 'species'),
-      varietyIri: str(b, 'variety'),
-      role: str(b, 'role'),
-      status: str(b, 'status'),
-      startDate: str(b, 'start')?.slice(0, 10),
-      endDate: str(b, 'end')?.slice(0, 10),
-      quantity: num(b, 'qty'),
-      quantityUnit: str(b, 'unit'),
-      requestedByIri: str(b, 'req'),
-      notes: str(b, 'notes'),
-    });
+export async function fetchPlantings(store: SeasonStore): Promise<PlantingInfo[]> {
+  const plantings = await store.filterMany('Planting', {
+    include: { patch: REF, plantSpecies: REF, plantVariety: REF, requestedBy: REF },
   });
-  return [...byIri.values()];
+  return plantings
+    .filter((p) => p['@id'])
+    .map((p) => ({
+      iri: p['@id']!,
+      name: p.name,
+      patchIri: idOf(p.patch),
+      speciesIri: idOf(p.plantSpecies),
+      varietyIri: idOf(p.plantVariety),
+      role: p.role,
+      status: p.status,
+      startDate: p.startDate?.slice(0, 10),
+      endDate: p.endDate?.slice(0, 10),
+      quantity: p.quantity,
+      quantityUnit: p.quantityUnit,
+      requestedByIri: idOf(p.requestedBy),
+      notes: p.notes,
+    }));
 }
 
 /** React Query key prefix for everything season-planning related. */

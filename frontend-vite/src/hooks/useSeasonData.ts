@@ -12,6 +12,7 @@ import {
   type PlantingInfo,
 } from '../api/season';
 import { useCurrentGarden } from './useCurrentGarden';
+import { usePergolaStore } from './usePergolaStore';
 
 export interface SeasonData {
   patches: PatchInfo[];
@@ -47,21 +48,22 @@ export const sortPatches = (patches: PatchInfo[]) =>
   [...patches].sort((a, b) => patchRank(a) - patchRank(b) || collator.compare(a.name, b.name));
 
 /**
- * Everything the season planner needs for the current garden, loaded with a
- * handful of flat SPARQL queries. Invalidate `SEASON_QUERY_KEY` after writes.
+ * Everything the season planner needs for the current garden, loaded through
+ * Graviola's typed store API. Invalidate `SEASON_QUERY_KEY` after writes.
  */
 export const useSeasonData = () => {
   const { gardenIRI } = useCurrentGarden();
+  const { store, ready } = usePergolaStore();
   const query = useQuery({
     queryKey: [...SEASON_QUERY_KEY, gardenIRI],
-    enabled: Boolean(gardenIRI),
+    enabled: Boolean(gardenIRI && ready && store),
     staleTime: 30_000,
     queryFn: async () => {
       const [patches, plantings, plants, persons] = await Promise.all([
-        fetchPatches(gardenIRI!),
-        fetchPlantings(),
-        fetchPlants(),
-        fetchPersons(),
+        fetchPatches(store!, gardenIRI!),
+        fetchPlantings(store!),
+        fetchPlants(store!),
+        fetchPersons(store!),
       ]);
       return { patches: sortPatches(patches), plantings, plants, persons };
     },
