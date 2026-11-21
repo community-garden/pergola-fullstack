@@ -1,0 +1,8 @@
+@prefix garden: <https://ontology.semantic-desk.top/garden#> .
+
+# Minimal seed for local development: the Wurzelwerk garden (Dresden).
+# WKT order is "lon lat".
+<https://data.semantic-desk.top/garden/Garden/Wurzelwerk> a garden:Garden ;
+    garden:name "Wurzelwerk" ;
+    garden:description "Gemeinschaftsgarten Wurzelwerk, Dresden" ;
+    garden:location "POINT (13.731529 51.083367)" .

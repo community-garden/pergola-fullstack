@@ -91,11 +91,14 @@ export default defineConfig({
     fs: {
       allow: ['..'],
     },
-    hmr: {
-      protocol: 'wss',
-      host: process.env.VITE_HMR_HOST || 'localhost',
-      port: 443
-    },
+    // Behind Traefik (dev01) HMR goes through wss on 443; locally use Vite's default.
+    hmr: process.env.VITE_HMR_HOST
+      ? {
+          protocol: 'wss',
+          host: process.env.VITE_HMR_HOST,
+          port: 443
+        }
+      : undefined,
     proxy: process.env.VITE_API_PROXY_TARGET
       ? {
           '/api': {

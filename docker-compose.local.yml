@@ -1,0 +1,15 @@
+# Local dev stack (no Traefik): a fresh Oxigraph on http://localhost:7880
+# The Vite frontend runs natively: cd frontend-vite && bun run dev
+# Manage with scripts/local-dev.sh (up | reset | down)
+services:
+  oxigraph-local:
+    image: ghcr.io/oxigraph/oxigraph:latest
+    command: serve --location /data --bind 0.0.0.0:7878 --cors
+    ports:
+      - "7880:7878"
+    volumes:
+      - oxigraph_local_data:/data
+    restart: unless-stopped
+
+volumes:
+  oxigraph_local_data:
