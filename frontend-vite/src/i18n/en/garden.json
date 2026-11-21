@@ -364,5 +364,9 @@
       "images": "Images",
       "emoji": "Emoji"
     }
+  },
+  "tableActions": {
+    "show": "Show",
+    "edit": "Edit"
   }
 }

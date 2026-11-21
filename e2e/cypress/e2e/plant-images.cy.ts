@@ -83,7 +83,8 @@ describe('Plant images', () => {
       .closest('tr')
       .find('button[aria-label="Row Actions"]')
       .click({ force: true });
-    cy.contains('[role="menuitem"]', 'edit').click();
+    // Graviola < 2: built-in 'edit'; from 2.x Pergola's own 'Bearbeiten' (provider/tableRowActions.ts)
+    cy.contains('[role="menuitem"]', /^(Bearbeiten|edit)$/i).click();
 
     cy.contains('label', 'Hauptbild (URL)', { timeout: 15000 }).should('be.visible');
     cy.get('input[value="Kartoffeln"]').should('exist');

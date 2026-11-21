@@ -1,0 +1,30 @@
+import type { PlantSpecies, PlantVariety } from './plant-schema';
+import type { Person } from './person-schema';
+import type { Patch } from './patch-schema';
+import type { Planting, SeedStock } from './planting-schema';
+import type { Garden } from './garden-schema';
+import type { GeoFeature } from './geo-feature-schema';
+
+/**
+ * Type registry for Graviola's typed store API (`filterOne` / `filterMany`).
+ *
+ * Maps the store's type names to the zod-inferred document types, so `where`,
+ * `include` and `select` are checked against the model:
+ *
+ * ```ts
+ * const { store } = usePergolaStore();
+ * store.filterMany('Planting', { where: { status: 'planned' }, include: { patch: true } });
+ * ```
+ */
+export type PergolaRegistry = {
+  PlantSpecies: PlantSpecies;
+  PlantVariety: PlantVariety;
+  Person: Person;
+  Patch: Patch;
+  Planting: Planting;
+  SeedStock: SeedStock;
+  Garden: Garden;
+  GeoFeature: GeoFeature;
+};
+
+export type PergolaTypeName = keyof PergolaRegistry;

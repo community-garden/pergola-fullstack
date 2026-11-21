@@ -3,30 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAdbContext, useDataStore } from '@graviola/edb-state-hooks';
 import { useCreateOrEditModal } from './useCreateOrEditModal';
 import { GARDEN_NS, SEASON_QUERY_KEY } from '../api/season';
+import { toReferences } from '../utils/toReferences';
 
 const PLANTING_TYPE_IRI = `${GARDEN_NS}Planting`;
-
-/**
- * References inside a loaded document come back as nested documents. For an
- * upsert only the link is relevant — reduce them to `{ '@id' }` so the
- * referenced entities are never rewritten from a possibly partial copy.
- */
-const toReferences = (doc: Record<string, unknown>) =>
-  Object.fromEntries(
-    Object.entries(doc).map(([key, value]) => {
-      if (key.startsWith('@')) return [key, value];
-      if (Array.isArray(value)) {
-        return [
-          key,
-          value.map((v) => (v && typeof v === 'object' && '@id' in v ? { '@id': (v as any)['@id'] } : v)),
-        ];
-      }
-      if (value && typeof value === 'object' && '@id' in value) {
-        return [key, { '@id': (value as any)['@id'] }];
-      }
-      return [key, value];
-    }),
-  );
 
 export interface NewPlantingDefaults {
   patch?: { '@id': string; name?: string };

@@ -33,6 +33,7 @@ import {
 import { GeoFeatureLabels, useMapLabelDetail } from '@components/map/labels/GeoFeatureLabels';
 import { MapLabelModeFab } from '@components/map/labels/MapLabelModeFab';
 import { geojsonToWKT, wktToGeoJSON } from '@terraformer/wkt';
+import { toReferences } from '../utils/toReferences';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css';
 
@@ -45,7 +46,7 @@ const GardenMap = () => {
   const { enqueueSnackbar } = useSnackbar();
   
   const { garden, isLoading, refetch: refetchGarden } = useCurrentGardenInfo();
-  const { ready: dataStoreReady } = useDataStore();
+  const { ready: dataStoreReady, dataStore } = useDataStore();
   const { createEntityIRI } = useAdbContext();
   const gardenIRI = garden?.['@id'];
   const geoFeatureTypeIRI = 'https://ontology.semantic-desk.top/garden#GeoFeature';
@@ -57,6 +58,9 @@ const GardenMap = () => {
   // (which has [] deps) always read current data rather than the stale closure value.
   const gardenRef = useRef(garden);
   useEffect(() => { gardenRef.current = garden; }, [garden]);
+  // Same for the store, which the draw handlers use to read the stored feature.
+  const dataStoreRef = useRef(dataStore);
+  useEffect(() => { dataStoreRef.current = dataStore; }, [dataStore]);
 
   // Use our clean CRUD hooks
   const { mutateAsync: createGeoFeature } = useCreateEntity({ typeIRI: geoFeatureTypeIRI });
@@ -456,13 +460,13 @@ const GardenMap = () => {
             const currentGardenIRI = currentGarden?.['@id'];
             if (currentGardenIRI && currentGarden) {
               const existingGeoFeatures = currentGarden.geoFeatures || [];
-              const updatedGarden = {
+              const updatedGarden = toReferences({
                 ...currentGarden,
                 geoFeatures: [
                   ...existingGeoFeatures,
                   { '@id': geoFeatureIRI }
                 ],
-              };
+              });
 
               // Update garden using our clean hook
               await updateGarden({
@@ -512,10 +516,10 @@ const GardenMap = () => {
                     const updatedGeoFeatures = existingGeoFeatures.filter(
                       (gf: any) => gf['@id'] !== geoFeatureIRI
                     );
-                    const updatedGarden = {
+                    const updatedGarden = toReferences({
                       ...currentGarden,
                       geoFeatures: updatedGeoFeatures,
-                    };
+                    });
 
                     // Update garden using our clean hook
                     await updateGarden({
@@ -551,11 +555,17 @@ const GardenMap = () => {
                   // Convert GeoJSON geometry to WKT
                   const wktGeometry = geojsonToWKT(updatedFeature.geometry);
                   
-                  // Update with new geometry and modification time
-                  const updatedData = {
+                  // An upsert replaces the whole document: start from the stored
+                  // feature so name, description and creationTime are kept.
+                  const stored = (await dataStoreRef.current?.loadOne('GeoFeature', geoFeatureIRI)) as
+                    | Record<string, unknown>
+                    | null
+                    | undefined;
+                  const updatedData = toReferences({
+                    ...(stored ?? {}),
                     geo: wktGeometry,
                     modificationTime: new Date().toISOString(),
-                  };
+                  });
                   
                   // Update using our clean hook
                   await updateGeoFeature({

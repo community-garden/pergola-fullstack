@@ -5,6 +5,9 @@ import { GenericForm } from '@graviola/semantic-json-form';
 import { SemanticTable } from '@graviola/edb-table-components';
 import { useCurrentGarden } from '@hooks/index';
 import { useCreateOrEditModal } from '@hooks/useCreateOrEditModal';
+import { hiddenColumns } from '@components/graviola/table/hiddenColumns';
+
+const PERSON_TABLE_UI_SCHEMA = hiddenColumns();
 
 const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -60,9 +63,7 @@ const Settings = () => {
         <Box sx={{ height: 420 }}>
           <SemanticTable
             typeName="Person"
-            tableConfigRegistry={{
-              default: { columnVisibility: { IRI: false, entity: false, '@id': false, '@type': false } },
-            }}
+            tableUiSchema={PERSON_TABLE_UI_SCHEMA}
             onEditEntry={createOrEditModal}
           />
         </Box>

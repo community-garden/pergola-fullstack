@@ -1,18 +1,19 @@
 import { describe, it, expect, beforeAll } from "bun:test";
+// @ts-expect-error n3 ships no type declarations in this workspace
 import N3 from "n3";
+// @ts-expect-error @rdfjs/dataset ships no type declarations in this workspace
 import datasetFactory from "@rdfjs/dataset";
 import { traverseGraphExtractBySchema } from "@graviola/edb-graph-traversal";
-import {
-  makeSPARQLConstructQuery,
-  load,
-} from "@graviola/sparql-schema";
+import { load } from "@graviola/sparql-schema";
 import { oxigraphCrudOptions } from "@graviola/remote-query-implementations";
 import { bringDefinitionToTop } from "@graviola/json-schema-utils";
 import type { JSONSchema7 } from "json-schema";
 import type { WalkerOptions } from "@graviola/edb-core-types";
+import { createPergolaTestStore, sparqlCount, sparqlRows } from "./helpers/pergolaTestStore";
+import { toReferences } from "../utils/toReferences";
 
 const SPARQL_API_URL =
-  process.env.VITE_SPARQL_API_URL || "http://localhost:7878/query";
+  process.env.VITE_SPARQL_API_URL || "http://localhost:7880/query";
 const BASE_IRI = "https://ontology.semantic-desk.top/garden#";
 const TEST_ENTITY_IRI =
   "https://data.semantic-desk.top/garden/Garden/Wurzelwerk";
@@ -47,6 +48,31 @@ beforeAll(async () => {
   schema = gardenSchema as JSONSchema7;
   crudFunctions = oxigraphCrudOptions(endpoint);
 });
+
+/**
+ * The CONSTRUCT that load() sends for the Wurzelwerk garden. sparql-schema no
+ * longer exports its query builder, so the query is captured from load().
+ */
+const gardenConstructQuery = async (): Promise<string> => {
+  const gardenSchema = bringDefinitionToTop(schema, "Garden");
+  let captured = "";
+  await load(
+    TEST_ENTITY_IRI,
+    `${BASE_IRI}Garden`,
+    gardenSchema as any,
+    async (query: string) => {
+      captured = query;
+      return crudFunctions.constructFetch(query);
+    },
+    {
+      defaultPrefix: BASE_IRI,
+      queryBuildOptions: { prefixes: { "": BASE_IRI } },
+      walkerOptions,
+      maxRecursion: walkerOptions.maxRecursion,
+    } as any,
+  );
+  return captured;
+};
 
 const sparqlSelect = async (query: string) => {
   const res = await fetch(SPARQL_API_URL, {
@@ -162,20 +188,11 @@ describe("Step 3: Verify Wurzelwerk entity in the store", () => {
 // Step 4: CONSTRUCT query generation from schema
 // ---------------------------------------------------------------------------
 describe("Step 4: CONSTRUCT query generation", () => {
-  it("should generate a valid CONSTRUCT query for Wurzelwerk", () => {
+  it("should generate a valid CONSTRUCT query for Wurzelwerk", async () => {
     const gardenSchema = bringDefinitionToTop(schema, "Garden");
     console.log("Garden schema properties:", Object.keys((gardenSchema as any)?.properties || {}));
 
-    const constructQuery = makeSPARQLConstructQuery(
-      TEST_ENTITY_IRI,
-      `${BASE_IRI}Garden`,
-      gardenSchema as any,
-      {
-        defaultPrefix: BASE_IRI,
-        queryBuildOptions: { prefixes: { "": BASE_IRI } },
-        maxRecursion: walkerOptions.maxRecursion,
-      } as any,
-    );
+    const constructQuery = await gardenConstructQuery();
 
     console.log("Generated CONSTRUCT query:\n", constructQuery);
     expect(constructQuery).toContain("CONSTRUCT");
@@ -183,17 +200,7 @@ describe("Step 4: CONSTRUCT query generation", () => {
   });
 
   it("should return non-empty N-Triples when executed", async () => {
-    const gardenSchema = bringDefinitionToTop(schema, "Garden");
-    const constructQuery = makeSPARQLConstructQuery(
-      TEST_ENTITY_IRI,
-      `${BASE_IRI}Garden`,
-      gardenSchema as any,
-      {
-        defaultPrefix: BASE_IRI,
-        queryBuildOptions: { prefixes: { "": BASE_IRI } },
-        maxRecursion: walkerOptions.maxRecursion,
-      } as any,
-    );
+    const constructQuery = await gardenConstructQuery();
 
     const res = await sparqlConstruct(constructQuery);
     expect(res.ok).toBe(true);
@@ -217,17 +224,7 @@ describe("Step 4: CONSTRUCT query generation", () => {
 // ---------------------------------------------------------------------------
 describe("Step 5: constructFetch via oxigraphCrudOptions", () => {
   it("should return a populated dataset for Wurzelwerk", async () => {
-    const gardenSchema = bringDefinitionToTop(schema, "Garden");
-    const constructQuery = makeSPARQLConstructQuery(
-      TEST_ENTITY_IRI,
-      `${BASE_IRI}Garden`,
-      gardenSchema as any,
-      {
-        defaultPrefix: BASE_IRI,
-        queryBuildOptions: { prefixes: { "": BASE_IRI } },
-        maxRecursion: walkerOptions.maxRecursion,
-      } as any,
-    );
+    const constructQuery = await gardenConstructQuery();
 
     const ds = await crudFunctions.constructFetch(constructQuery);
     console.log("constructFetch dataset size:", ds.size);
@@ -250,16 +247,7 @@ describe("Step 5: constructFetch via oxigraphCrudOptions", () => {
 describe("Step 6: traverseGraphExtractBySchema", () => {
   it("should extract a non-empty document from the dataset", async () => {
     const gardenSchema = bringDefinitionToTop(schema, "Garden");
-    const constructQuery = makeSPARQLConstructQuery(
-      TEST_ENTITY_IRI,
-      `${BASE_IRI}Garden`,
-      gardenSchema as any,
-      {
-        defaultPrefix: BASE_IRI,
-        queryBuildOptions: { prefixes: { "": BASE_IRI } },
-        maxRecursion: walkerOptions.maxRecursion,
-      } as any,
-    );
+    const constructQuery = await gardenConstructQuery();
 
     const ds = await crudFunctions.constructFetch(constructQuery);
     console.log("Dataset size before extraction:", ds.size);
@@ -362,5 +350,88 @@ describe("Step 7: Full load() pipeline", () => {
     );
 
     expect(result.document?.geoFeatures?.length).toBe(storeCount);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Step 8: Saving through the store keeps nested objects intact
+// ---------------------------------------------------------------------------
+// Regression for the 2026-09 Graviola release: its save() put blank nodes into
+// a DELETE/INSERT … WHERE template, so nested objects were created once per
+// WHERE solution (Knoblauch ended up with 15 copies of growingSeason). The
+// July release left orphaned blank nodes behind instead.
+describe("Step 8: store.upsert does not duplicate or orphan blank nodes", () => {
+  const PLANT_IRI = "https://data.semantic-desk.top/garden/PlantSpecies/knoblauch";
+  const NESTED = ["growingSeason", "gardeningInfo", "physicalCharacteristics"] as const;
+
+  const nestedCount = (prop: string) =>
+    sparqlCount(
+      `SELECT (COUNT(?b) AS ?c) WHERE { <${PLANT_IRI}> <${BASE_IRI}${prop}> ?b }`,
+    );
+  const orphanCount = () =>
+    sparqlCount(
+      `SELECT (COUNT(DISTINCT ?b) AS ?c) WHERE { ?b ?p ?o . FILTER(isBlank(?b)) FILTER NOT EXISTS { ?x ?y ?b } }`,
+    );
+  const tripleCount = () => sparqlCount(`SELECT (COUNT(*) AS ?c) WHERE { ?s ?p ?o }`);
+  const companions = () =>
+    sparqlRows(
+      `SELECT ?c WHERE { <${PLANT_IRI}> <${BASE_IRI}gardeningInfo> ?g . ?g <${BASE_IRI}companions> ?c } ORDER BY ?c`,
+    ).then((rows) => rows.map((r) => r.c));
+
+  it("saving Knoblauch twice leaves exactly one of each nested object", async () => {
+    const store = createPergolaTestStore();
+    const before = {
+      triples: await tripleCount(),
+      orphans: await orphanCount(),
+      companions: await companions(),
+    };
+    const doc = await store.loadOne("PlantSpecies", PLANT_IRI);
+    expect(doc).toBeTruthy();
+
+    for (let i = 0; i < 2; i++) {
+      await store.upsert("PlantSpecies", PLANT_IRI, doc as never);
+    }
+
+    for (const prop of NESTED) {
+      expect(await nestedCount(prop)).toBe(1);
+    }
+    expect(await companions()).toEqual(before.companions);
+    expect(await orphanCount()).toBe(before.orphans);
+    expect(await tripleCount()).toBe(before.triples);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Step 9: Saving documents with references (season planner, map) is lossless
+// ---------------------------------------------------------------------------
+describe("Step 9: upserts with references rewrite nothing but the document", () => {
+  const tripleCount = () => sparqlCount(`SELECT (COUNT(*) AS ?c) WHERE { ?s ?p ?o }`);
+  const triplesOf = (iri: string) =>
+    sparqlRows(`SELECT ?p ?o WHERE { <${iri}> ?p ?o } ORDER BY ?p ?o`);
+
+  it("a planting saved like the timeline does (references only) keeps all triples", async () => {
+    const store = createPergolaTestStore();
+    const [first] = await sparqlRows(
+      `SELECT ?s WHERE { ?s a <${BASE_IRI}Planting> } ORDER BY ?s LIMIT 1`,
+    );
+    if (!first) return;
+    const before = { all: await tripleCount(), own: await triplesOf(first.s) };
+    const doc = (await store.loadOne("Planting", first.s)) as Record<string, unknown>;
+    await store.upsert("Planting", first.s, toReferences(doc) as never);
+    expect(await triplesOf(first.s)).toEqual(before.own);
+    expect(await tripleCount()).toBe(before.all);
+  });
+
+  it("the garden saved like the map does (references only) keeps all triples", async () => {
+    const store = createPergolaTestStore();
+    const garden = "https://data.semantic-desk.top/garden/Garden/Wurzelwerk";
+    const before = { all: await tripleCount(), own: await triplesOf(garden) };
+    const doc = await store.filterOne("Garden", garden, {
+      include: { geoFeatures: true, patches: true, mainGeoFeature: true },
+    });
+    expect(doc?.geoFeatures?.length).toBeGreaterThan(0);
+    await store.upsert("Garden", garden, toReferences(doc as Record<string, unknown>) as never);
+    expect(await triplesOf(garden)).toEqual(before.own);
+    expect(await tripleCount()).toBe(before.all);
   });
 });

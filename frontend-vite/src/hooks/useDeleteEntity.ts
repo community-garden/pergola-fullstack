@@ -1,5 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useDataStore } from '@graviola/edb-state-hooks';
+import { useInvalidateEntityQueries } from './useInvalidateEntityQueries';
 
 interface DeleteEntityOptions {
   typeIRI: string;
@@ -12,26 +13,14 @@ interface DeleteEntityOptions {
  */
 export const useDeleteEntity = ({ typeIRI }: DeleteEntityOptions) => {
   const { dataStore, ready } = useDataStore();
-  const queryClient = useQueryClient();
+  const invalidate = useInvalidateEntityQueries(typeIRI);
 
-  const deleteMutation = useMutation({
+  return useMutation({
     mutationFn: async (entityIRI: string) => {
-      if (!ready) throw new Error('DataStore not ready');
-      
+      if (!ready || !dataStore) throw new Error('DataStore not ready');
       const typeName = dataStore.typeIRItoTypeName(typeIRI);
-      
-      return await dataStore.removeDocument(typeName, entityIRI);
+      return await dataStore.remove(typeName, entityIRI);
     },
-    onSuccess: (result, entityIRI) => {
-      // Invalidate relevant queries
-      queryClient.invalidateQueries({ queryKey: ['entity', entityIRI] });
-      queryClient.invalidateQueries({ queryKey: ['type', typeIRI] });
-    },
+    onSuccess: () => invalidate(),
   });
-
-  return deleteMutation;
 };
-
-
-
-

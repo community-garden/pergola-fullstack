@@ -1,7 +1,7 @@
 import React from "react";
 import type { Decorator } from "@storybook/react";
 import NiceModal from "@ebay/nice-modal-react";
-import { AdbProvider } from "@graviola/edb-state-hooks";
+import { AdbProvider, SemanticFormSlotProvider } from "@graviola/edb-state-hooks";
 import { MediaConfigProvider } from "../src/components/graviola/renderers/image-upload/MediaConfigContext";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import {
@@ -9,7 +9,6 @@ import {
   SemanticJsonFormNoOps,
   createStubSchema,
 } from "@graviola/semantic-json-form";
-import { useRouterMock } from "../src/provider/GraviolaProvider";
 import { plantSchema, plantConfiguration } from "../src/schema/plant-schema";
 
 const BASE_IRI = "https://ontology.semantic-desk.top/garden#";
@@ -45,19 +44,14 @@ export const withStoryProvider = (_turtleData?: string): Decorator =>
       <AdbProvider
         {...semanticConfig}
         env={{ publicBasePath: "", baseIRI: BASE_IRI }}
-        components={{
-          EditEntityModal: () => null,
-          EntityDetailModal: () => null,
-          SemanticJsonForm: SemanticJsonFormNoOps,
-          SimilarityFinder: () => null,
-        }}
-        useRouterHook={useRouterMock}
         schema={plantSchema as any}
         makeStubSchema={makeStubSchema}
       >
-        <NiceModal.Provider>
-          <Story />
-        </NiceModal.Provider>
+        <SemanticFormSlotProvider Component={SemanticJsonFormNoOps}>
+          <NiceModal.Provider>
+            <Story />
+          </NiceModal.Provider>
+        </SemanticFormSlotProvider>
       </AdbProvider>
     </MediaConfigProvider>
   );

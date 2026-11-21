@@ -2,19 +2,10 @@ import { useMemo } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { SemanticTable, TableConfigRegistry } from "@graviola/edb-table-components";
+import { SemanticTable } from "@graviola/edb-table-components";
 import { useCreateOrEditModal } from "@hooks/useCreateOrEditModal";
 import { PlantCalendarTab } from "@components/plants/PlantCalendarTab";
-
-// Graviola names its columns `<key>_single` (scalar), `<key>_entity` (nested
-// object), `<key>_label_group` (list) or `<key>`: hide all variants.
-const COLUMN_ID_SUFFIXES = ["", "_single", "_entity", "_label_group"];
-const hidden = (...keys: string[]) =>
-  Object.fromEntries(
-    ["IRI", "entity", "@id", "@type", ...keys].flatMap((k) =>
-      COLUMN_ID_SUFFIXES.map((suffix) => [`${k}${suffix}`, false]),
-    ),
-  );
+import { hiddenColumns, type TableUiSchema } from "@components/graviola/table/hiddenColumns";
 
 /** Botanical / technical columns that gardeners do not need in the overview. */
 const BOTANICAL_COLUMNS = [
@@ -32,12 +23,10 @@ const BOTANICAL_COLUMNS = [
   "gardeningInfo",
 ];
 
-const tableConfigRegistry: TableConfigRegistry = {
-  default: { columnVisibility: hidden() },
-  PlantSpecies: {
-    columnVisibility: hidden(...BOTANICAL_COLUMNS, "careInfo", "siteInfo", "description"),
-  },
-  PlantVariety: { columnVisibility: hidden(...BOTANICAL_COLUMNS) },
+const DEFAULT_TABLE_UI_SCHEMA = hiddenColumns();
+const TABLE_UI_SCHEMAS: Record<string, TableUiSchema> = {
+  PlantSpecies: hiddenColumns(...BOTANICAL_COLUMNS, "careInfo", "siteInfo", "description"),
+  PlantVariety: hiddenColumns(...BOTANICAL_COLUMNS),
 };
 
 const TABS = [
@@ -84,7 +73,7 @@ export const PlantManagement = () => {
           <SemanticTable
             key={active.typeName}
             typeName={active.typeName}
-            tableConfigRegistry={tableConfigRegistry}
+            tableUiSchema={TABLE_UI_SCHEMAS[active.typeName] ?? DEFAULT_TABLE_UI_SCHEMA}
             onEditEntry={createOrEditModal}
           />
         ) : (

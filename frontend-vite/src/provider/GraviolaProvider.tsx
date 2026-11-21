@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   AdbProvider,
   useAdbContext,
@@ -35,7 +35,6 @@ import {
   EntityFinderProps,
   FinderKnowledgeBaseDescription,
   GlobalSemanticConfig,
-  ModRouter,
 } from "@graviola/semantic-jsonform-types";
 import {
   JsonFormsCellRendererRegistryEntry,
@@ -106,21 +105,6 @@ const SimilarityFinder = (props: EntityFinderProps) => {
   return <EntityFinder {...props} allKnowledgeBases={allKnowledgeBases} />;
 };
 
-export const useRouterMock = () => {
-  return {
-    push: async (url: string) => {
-      console.log("push", url);
-    },
-    replace: async (url: string) => {
-      console.log("replace", url);
-    },
-    asPath: "",
-    pathname: "",
-    query: {},
-    searchParams: {},
-  } as ModRouter;
-};
-
 export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
   children,
   baseIRI,
@@ -164,13 +148,10 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
       queryBuildOptions: {
         ...c.queryBuildOptions,
         primaryFields,
+        sparqlFlavour: "oxigraph",
       },
     };
   }, [baseIRI, entityBaseIRI, primaryFields]);
-
-  useEffect(() => {
-    console.log("uischemata", uischemata);
-  }, [uischemata]);
 
   const makeStubSchema = useCallback(
     (schema: JSONSchema7) => {

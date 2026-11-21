@@ -1,5 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useDataStore } from '@graviola/edb-state-hooks';
+import { useInvalidateEntityQueries } from './useInvalidateEntityQueries';
 
 interface CreateEntityOptions {
   typeIRI: string;
@@ -12,35 +13,18 @@ interface CreateEntityOptions {
  */
 export const useCreateEntity = ({ typeIRI }: CreateEntityOptions) => {
   const { dataStore, ready } = useDataStore();
-  const queryClient = useQueryClient();
+  const invalidate = useInvalidateEntityQueries(typeIRI);
 
-  const createMutation = useMutation({
+  return useMutation({
     mutationFn: async ({ entityIRI, data }: { entityIRI: string; data: any }) => {
-      if (!ready) throw new Error('DataStore not ready');
-      
+      if (!ready || !dataStore) throw new Error('DataStore not ready');
       const typeName = dataStore.typeIRItoTypeName(typeIRI);
-      
-      // Ensure data has @id and @type
-      const dataWithType = {
+      return await dataStore.upsert(typeName, entityIRI, {
         ...data,
         '@id': entityIRI,
         '@type': typeIRI,
-      };
-      console.log('dataWithType', dataWithType);
-      console.log('typeName', typeName);
-      
-      return await dataStore.upsert(typeName, entityIRI, dataWithType);
+      });
     },
-    onSuccess: (result, variables) => {
-      // Invalidate relevant queries
-      queryClient.invalidateQueries({ queryKey: ['entity', variables.entityIRI] });
-      queryClient.invalidateQueries({ queryKey: ['type', typeIRI] });
-    },
+    onSuccess: () => invalidate(),
   });
-
-  return createMutation;
 };
-
-
-
-
