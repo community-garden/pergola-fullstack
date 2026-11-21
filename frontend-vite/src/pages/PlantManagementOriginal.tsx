@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { SemanticTable } from "@graviola/edb-table-components";
 import { useCreateOrEditModal } from "@hooks/useCreateOrEditModal";
+import { usePergolaRowActions } from "@hooks/usePergolaRowActions";
 import { PlantCalendarTab } from "@components/plants/PlantCalendarTab";
 import { hiddenColumns, type TableUiSchema } from "@components/graviola/table/hiddenColumns";
 
@@ -40,6 +41,7 @@ const TABS = [
 export const PlantManagement = () => {
   const { t } = useTranslation("garden");
   const createOrEditModal = useCreateOrEditModal();
+  const rowActions = usePergolaRowActions();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeKey = searchParams.get("tab") ?? "species";
   const active = useMemo(() => TABS.find((tab) => tab.key === activeKey) ?? TABS[0], [activeKey]);
@@ -75,6 +77,7 @@ export const PlantManagement = () => {
             typeName={active.typeName}
             tableUiSchema={TABLE_UI_SCHEMAS[active.typeName] ?? DEFAULT_TABLE_UI_SCHEMA}
             onEditEntry={createOrEditModal}
+            actionRegistry={rowActions}
           />
         ) : (
           <PlantCalendarTab />

@@ -365,8 +365,8 @@
     }
   },
   "tableActions": {
-    "show": "Show",
-    "edit": "Edit"
+    "createPlanting": "Create planting",
+    "duplicate": "Duplicate"
   },
   "intents": {
     "created": "Created",

@@ -365,8 +365,8 @@
     }
   },
   "tableActions": {
-    "show": "Anzeigen",
-    "edit": "Bearbeiten"
+    "createPlanting": "Pflanzung anlegen",
+    "duplicate": "Duplizieren"
   },
   "intents": {
     "created": "Angelegt",

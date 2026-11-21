@@ -7,13 +7,25 @@ import { toReferences } from '../utils/toReferences';
 
 const PLANTING_TYPE_IRI = `${GARDEN_NS}Planting`;
 
+type Ref = { '@id': string; name?: string };
+
 export interface NewPlantingDefaults {
-  patch?: { '@id': string; name?: string };
+  patch?: Ref;
+  plantSpecies?: Ref;
+  plantVariety?: Ref;
   startDate?: string;
   endDate?: string;
   status?: string;
   role?: string;
+  quantity?: number;
+  quantityUnit?: string;
+  notes?: string;
 }
+
+/** Fields of an existing planting that a copy takes over. */
+const COPIED_FIELDS = [
+  'patch', 'plantSpecies', 'plantVariety', 'role', 'startDate', 'endDate', 'quantity', 'quantityUnit', 'notes',
+] as const;
 
 /**
  * Write side of the season planner. All writes go through the Graviola store
@@ -73,11 +85,32 @@ export const usePlantingMutations = () => {
           ...(defaults.patch && {
             patch: { '@type': `${GARDEN_NS}Patch`, ...defaults.patch },
           }),
+          ...(defaults.plantSpecies && {
+            plantSpecies: { '@type': `${GARDEN_NS}PlantSpecies`, ...defaults.plantSpecies },
+          }),
+          ...(defaults.plantVariety && {
+            plantVariety: { '@type': `${GARDEN_NS}PlantVariety`, ...defaults.plantVariety },
+          }),
         }).catch(() => undefined); // cancelled
       await invalidate();
     },
     [createEntityIRI, createOrEditModal, invalidate],
   );
 
-  return { updateDates, editPlanting, createPlanting, invalidate };
+  /** Open the dialog for a new planting that copies bed, plant, period and amount of an existing one. */
+  const duplicatePlanting = useCallback(
+    async (plantingIri: string) => {
+      if (!ready || !dataStore) throw new Error('DataStore not ready');
+      const doc = (await dataStore.loadOne('Planting', plantingIri)) as Record<string, unknown> | null;
+      if (!doc) throw new Error(`Planting ${plantingIri} not found`);
+      const refs = toReferences(doc);
+      const defaults = Object.fromEntries(
+        COPIED_FIELDS.filter((key) => refs[key] !== undefined).map((key) => [key, refs[key]]),
+      ) as NewPlantingDefaults;
+      await createPlanting({ ...defaults, status: 'planned' });
+    },
+    [createPlanting, dataStore, ready],
+  );
+
+  return { updateDates, editPlanting, createPlanting, duplicatePlanting, invalidate };
 };
