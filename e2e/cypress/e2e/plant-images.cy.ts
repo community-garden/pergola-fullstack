@@ -83,7 +83,7 @@ describe('Plant images', () => {
       .closest('tr')
       .find('button[aria-label="Row Actions"]')
       .click({ force: true });
-    // Graviola < 2: built-in 'edit'; from 2.x Pergola's own 'Bearbeiten' (provider/tableRowActions.ts)
+    // Graviola's built-in row action ('Edit' since table-components 2.2, 'edit' before)
     cy.contains('[role="menuitem"]', /^(Bearbeiten|edit)$/i).click();
 
     cy.contains('label', 'Hauptbild (URL)', { timeout: 15000 }).should('be.visible');

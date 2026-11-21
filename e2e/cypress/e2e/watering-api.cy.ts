@@ -103,7 +103,8 @@ describe("Watering Availability API", () => {
 
       cy.request({
         method: "DELETE",
-        url: `${API}/plan/Wurzelwerk-2026-06/assignments`,
+        // plan IRIs use the lower-case garden slug (planIRI in watering-api/src/routes/plan.ts)
+        url: `${API}/plan/wurzelwerk-2026-06/assignments`,
         body: {
           date: assignment.date,
           personIri: assignment.personIri,

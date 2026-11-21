@@ -19,6 +19,7 @@ nav:
   - Environments: environments.md
   - Development:
     - Setup: development/setup.md
+    - Graviola 2026-11 upgrade: development/graviola-upgrade.md
   - Features:
     - LetItRain Wizard: letitrain-wizard.md
     - Watering Calendar: watering-calendar.md

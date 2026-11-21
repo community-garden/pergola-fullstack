@@ -9,6 +9,9 @@ import { useTranslation } from 'react-i18next';
  * The jsonforms namespace uses { "fieldName": { "label": "..." } } structure,
  * so direct t("fieldName.label") lookups work natively.
  *
+ * Keys of Graviola's relational `@id` controls ("<relation>.@id.label") fall
+ * back to the relation's key ("<relation>.label").
+ *
  * In dev mode, missing keys are logged to the console for easy gap detection.
  */
 export const useJsonFormsTranslator = () => {
@@ -20,6 +23,16 @@ export const useJsonFormsTranslator = () => {
 
       if (result !== '__JF_MISSING__') {
         return result;
+      }
+
+      // Graviola's relational fields (linked-data-renderer ≥ 7) render an
+      // `@id` control inside the relation, so JsonForms asks for
+      // "plantSpecies.@id.label". Fall back to the relation's own key.
+      if (key.includes('.@id.')) {
+        const relationResult = t(key.replace('.@id.', '.'), { defaultValue: '__JF_MISSING__' });
+        if (relationResult !== '__JF_MISSING__') {
+          return relationResult;
+        }
       }
 
       if (import.meta.env.DEV) {
