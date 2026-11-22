@@ -1,6 +1,8 @@
 import { Box } from '@mui/material';
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useCurrentGarden } from '../hooks/useCurrentGarden';
+import { getMapSession, updateMapSession as updateMapSessionFor, useMapSession } from '../hooks/useMapSession';
 import maplibregl from 'maplibre-gl';
 import { MaplibreTerradrawControl } from '@watergis/maplibre-gl-terradraw';
 import type { GeoJSONStoreFeatures } from 'terra-draw';
@@ -46,6 +48,11 @@ const GardenMap = () => {
   const { enqueueSnackbar } = useSnackbar();
   
   const { garden, isLoading, refetch: refetchGarden } = useCurrentGardenInfo();
+  // view, base layer and labels are kept while the window is open (in memory, not localStorage)
+  const { gardenId } = useCurrentGarden();
+  const [session, updateSession] = useMapSession(gardenId);
+  const gardenIdRef = useRef(gardenId);
+  gardenIdRef.current = gardenId;
   const { ready: dataStoreReady, dataStore } = useDataStore();
   const { createEntityIRI } = useAdbContext();
   const gardenIRI = garden?.['@id'];
@@ -85,22 +92,26 @@ const GardenMap = () => {
 
   // --- Labels: bed names or the plantings of a season (mode in ?labels=) ---
   const [searchParams, setSearchParams] = useSearchParams();
-  const labelMode = parseLabelMode(searchParams.get('labels'));
+  // the address wins (shared links), else what was chosen before in this window
+  const labelMode = parseLabelMode(searchParams.get('labels') ?? session.labels ?? null);
   const setLabelMode = useCallback(
-    (mode: MapLabelMode) =>
+    (mode: MapLabelMode) => {
+      updateSession({ labels: formatLabelMode(mode) });
       setSearchParams(
         (params) => {
           params.set('labels', formatLabelMode(mode));
           return params;
         },
         { replace: true },
-      ),
-    [setSearchParams],
+      );
+    },
+    [setSearchParams, updateSession],
   );
   // plant symbols in season labels (?icons=emoji, default: main images)
-  const iconMode = parseIconMode(searchParams.get('icons'));
+  const iconMode = parseIconMode(searchParams.get('icons') ?? session.icons ?? null);
   const setIconMode = useCallback(
-    (mode: MapIconMode) =>
+    (mode: MapIconMode) => {
+      updateSession({ icons: mode });
       setSearchParams(
         (params) => {
           if (mode === 'emoji') params.set('icons', mode);
@@ -108,8 +119,9 @@ const GardenMap = () => {
           return params;
         },
         { replace: true },
-      ),
-    [setSearchParams],
+      );
+    },
+    [setSearchParams, updateSession],
   );
   const { data: featureNames } = useGeoFeatureNames();
   const { data: seasonData } = useSeasonData();
@@ -230,6 +242,8 @@ const GardenMap = () => {
   // Fly to the garden's actual location once it loads (map may have started at default center)
   useEffect(() => {
     if (!mapRef.current || !mapLoaded || !garden?.location) return;
+    // the user has looked around in this window already: stay where they were
+    if (getMapSession(gardenIdRef.current).center) return;
     mapRef.current.flyTo({ center: mapCenter, zoom: 17, duration: 1000 });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [garden?.location, mapLoaded]);
@@ -237,6 +251,7 @@ const GardenMap = () => {
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
 
+    const remembered = getMapSession(gardenIdRef.current);
     // Create map with satellite as default
     const map = new maplibregl.Map({
       container: mapContainer.current,
@@ -269,7 +284,7 @@ const GardenMap = () => {
             type: 'raster',
             source: 'satellite',
             layout: {
-              visibility: 'visible',
+              visibility: remembered.baseLayer === 'osm' ? 'none' : 'visible',
             },
           },
           {
@@ -277,17 +292,30 @@ const GardenMap = () => {
             type: 'raster',
             source: 'osm',
             layout: {
-              visibility: 'none',
+              visibility: remembered.baseLayer === 'osm' ? 'visible' : 'none',
             },
           },
         ],
       },
-      center: mapCenter,
-      zoom: 17,
+      center: remembered.center ?? mapCenter,
+      zoom: remembered.zoom ?? 17,
+      bearing: remembered.bearing ?? 0,
+      pitch: remembered.pitch ?? 0,
       maxPitch: 85,
     });
 
     mapRef.current = map;
+
+    // remember where the map looks (only changes made by the user, not the first fly-in)
+    map.on('moveend', () => {
+      const c = map.getCenter();
+      updateMapSessionFor(gardenIdRef.current, {
+        center: [c.lng, c.lat],
+        zoom: map.getZoom(),
+        bearing: map.getBearing(),
+        pitch: map.getPitch(),
+      });
+    });
 
     // Mark map as loaded when it's ready
     map.once('load', () => {
@@ -318,6 +346,7 @@ const GardenMap = () => {
         satelliteBtn.onclick = () => {
           map.setLayoutProperty('satellite', 'visibility', 'visible');
           map.setLayoutProperty('osm', 'visibility', 'none');
+          updateMapSessionFor(gardenIdRef.current, { baseLayer: 'satellite' });
         };
 
         // OSM button
@@ -332,6 +361,7 @@ const GardenMap = () => {
         osmBtn.onclick = () => {
           map.setLayoutProperty('satellite', 'visibility', 'none');
           map.setLayoutProperty('osm', 'visibility', 'visible');
+          updateMapSessionFor(gardenIdRef.current, { baseLayer: 'osm' });
         };
 
         this._container.appendChild(satelliteBtn);

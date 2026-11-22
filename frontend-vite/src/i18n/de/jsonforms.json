@@ -3,6 +3,7 @@
   "@type": { "label": "Typ" },
   "antagonists": { "label": "Schlechte Nachbarn" },
   "area": { "label": "Fläche (m²)" },
+  "planRotation": { "label": "Drehung im Beetplan (°)" },
   "authorityLinks": { "label": "Autoritative Links" },
   "beeSpecies": { "label": "Bienenart" },
   "canGrowFromSeed": { "label": "Kann aus Samen gezogen werden" },

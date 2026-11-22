@@ -2,12 +2,16 @@ import { useMemo } from 'react';
 import { Box, Typography, Chip, Button, List, ListItemButton, ListItemText, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import GridOnIcon from '@mui/icons-material/GridOn';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import type { Patch } from '../../../schema/patch-schema';
 import { plantingLabel, useSeasonData } from '../../../hooks/useSeasonData';
 import { usePlantingMutations } from '../../../hooks/usePlantingMutations';
 import { useCreateOrEditModal } from '../../../hooks/useCreateOrEditModal';
 import { GARDEN_NS } from '../../../api/season';
+import { useCurrentGarden } from '../../../hooks/useCurrentGarden';
+import { lastSegment } from '../../../utils/iri';
 import { PlantIcon } from '../../plants/PlantIcon';
 import {
   ROLE_COLORS,
@@ -17,16 +21,20 @@ import {
 
 export interface PatchFeatureCardProps {
   patch: Patch;
+  /** called before the card navigates away, e.g. to close the dialog it sits in */
+  onNavigate?: () => void;
 }
 
 const formatDate = (iso?: string) => (iso ? iso.split('-').reverse().join('.') : '?');
 
-export const PatchFeatureCard: React.FC<PatchFeatureCardProps> = ({ patch }) => {
+export const PatchFeatureCard: React.FC<PatchFeatureCardProps> = ({ patch, onNavigate }) => {
   const { t } = useTranslation('garden');
   const season = defaultSeason();
   const { data } = useSeasonData();
   const { createPlanting, editPlanting, invalidate } = usePlantingMutations();
   const createOrEditModal = useCreateOrEditModal();
+  const navigate = useNavigate();
+  const { gardenId } = useCurrentGarden();
   const patchIri = patch['@id'];
   const patchInfo = patchIri ? data.patchesByIri.get(patchIri) : undefined;
 
@@ -65,6 +73,19 @@ export const PatchFeatureCard: React.FC<PatchFeatureCardProps> = ({ patch }) => 
             }
           >
             {t('patch.edit')}
+          </Button>
+        )}
+        {patchIri && gardenId && (
+          <Button
+            size="small"
+            startIcon={<GridOnIcon fontSize="small" />}
+            data-testid="open-bed-plan"
+            onClick={() => {
+              onNavigate?.();
+              navigate(`/${gardenId}/beds/${encodeURIComponent(lastSegment(patchIri))}/plan?season=${season}`);
+            }}
+          >
+            {t('bedPlanner.openPlan')}
           </Button>
         )}
       </Stack>

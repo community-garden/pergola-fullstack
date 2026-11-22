@@ -85,6 +85,8 @@ export interface PatchInfo {
   patchType?: string;
   description?: string;
   geoFeatureIri?: string;
+  /** rotation of the bed plan in degrees; undefined: automatic */
+  planRotation?: number;
   responsiblePersons: PersonInfo[];
 }
 
@@ -111,7 +113,7 @@ export interface PlantingInfo {
 export type SeasonStore = Pick<CrudDatastoreStore<PergolaRegistry>, 'filterMany' | 'filterOne'>;
 
 /** `{ '@id' }` of a loaded relation; Graviola returns `{}` for a missing one. */
-const idOf = (ref: unknown): string | undefined => {
+export const idOf = (ref: unknown): string | undefined => {
   const iri = (ref as { '@id'?: unknown } | undefined)?.['@id'];
   return typeof iri === 'string' && iri ? iri : undefined;
 };
@@ -125,7 +127,7 @@ const range = (start?: number, end?: number): MonthRange | undefined =>
   start !== undefined && end !== undefined ? [start, end] : undefined;
 
 /** Only the link of a relation is needed: load it as a stub. */
-const REF = { maxRecursion: 0 } as const;
+export const REF = { maxRecursion: 0 } as const;
 
 export async function fetchPlants(store: SeasonStore): Promise<PlantInfo[]> {
   const [species, varieties] = await Promise.all([
@@ -197,6 +199,7 @@ export async function fetchPatches(store: SeasonStore, gardenIri: string): Promi
       patchType: p.patchType,
       description: p.description,
       geoFeatureIri: idOf(p.geoFeature),
+      planRotation: asNumber(p.planRotation),
       responsiblePersons: (p.responsiblePersons ?? []).flatMap((person): PersonInfo[] => {
         const iri = idOf(person);
         return iri ? [{ iri, name: asString(person.name) ?? iri }] : [];

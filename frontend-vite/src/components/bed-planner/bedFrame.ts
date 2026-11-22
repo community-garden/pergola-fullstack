@@ -155,12 +155,107 @@ export const plantDiameterCm = (plant: { spacing?: number; spread?: number }): {
 /** Screen pixels for a length in centimetres at a zoom level. */
 export const cmToPx = (cm: number, lat: number, zoom: number): number => cm / 100 / metersPerPixel(lat, zoom);
 
-/** Zoom at which the whole frame fits into a `widthPx` × `heightPx` viewport. */
-export const fitZoom = (frame: BedFrame, widthPx: number, heightPx: number, paddingPx = 0): number => {
+/** Zoom at which a `widthCm` × `heightCm` area (seen straight) fits into a `widthPx` × `heightPx` viewport. */
+export const fitZoomFor = (
+  widthCm: number,
+  heightCm: number,
+  lat: number,
+  widthPx: number,
+  heightPx: number,
+  paddingPx = 0,
+): number => {
   const w = Math.max(1, widthPx - 2 * paddingPx);
   const h = Math.max(1, heightPx - 2 * paddingPx);
-  const mpp = Math.max(frame.widthCm / 100 / w, frame.heightCm / 100 / h);
-  return Math.log2((40_075_016.686 * Math.cos((frame.lat * Math.PI) / 180)) / (512 * mpp));
+  const mpp = Math.max(widthCm / 100 / w, heightCm / 100 / h);
+  return Math.log2((40_075_016.686 * Math.cos((lat * Math.PI) / 180)) / (512 * mpp));
+};
+
+/** Zoom at which the whole frame fits into a `widthPx` × `heightPx` viewport. */
+export const fitZoom = (frame: BedFrame, widthPx: number, heightPx: number, paddingPx = 0): number =>
+  fitZoomFor(frame.widthCm, frame.heightCm, frame.lat, widthPx, heightPx, paddingPx);
+
+// ── turned view ──────────────────────────────────────────────────────────────
+// A bed standing at 45° is easier to plan when the map is turned so that its
+// sides are straight. The turn is only the *view*: plants stay stored in the
+// north-up frame above, so turning never moves them. The grid and the box
+// follow the view (`ViewRect`).
+
+/** Rotation in degrees (map bearing, clockwise), normalised to [-180, 180). */
+export const normalizeRotation = (deg: number): number => ((((deg + 180) % 360) + 360) % 360) - 180;
+
+/**
+ * The rotation that makes the longest side of the bed straight, with the
+ * smallest turn (−45° … 45°): sides end up vertical or horizontal.
+ */
+export const bestRotation = (outline: LocalPoint[]): number => {
+  let longest = 0;
+  let heading = 0;
+  for (let i = 0; i < outline.length; i++) {
+    const a = outline[i];
+    const b = outline[(i + 1) % outline.length];
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    if (len > longest) {
+      longest = len;
+      // compass heading of the side (x east, y south)
+      heading = (Math.atan2(b.x - a.x, -(b.y - a.y)) * 180) / Math.PI;
+    }
+  }
+  let r = ((heading % 90) + 90) % 90; // 0 … 90
+  if (r > 45) r -= 90;
+  return Math.round(r * 10) / 10 || 0;
+};
+
+/** The smallest rectangle around the bed that is straight on a map turned by `rotation`. */
+export interface ViewRect {
+  rotation: number;
+  /** corner at the top-left of the screen, in bed coordinates */
+  origin: LocalPoint;
+  /** unit vectors of screen-right and screen-down, in bed coordinates */
+  right: LocalPoint;
+  down: LocalPoint;
+  widthCm: number;
+  heightCm: number;
+  /** a point of the rectangle: `a` cm to the right and `b` cm down from the origin */
+  at: (a: number, b: number) => LocalPoint;
+}
+
+export const viewRect = (outline: LocalPoint[], rotation: number): ViewRect => {
+  const r = (rotation * Math.PI) / 180;
+  const right = { x: Math.cos(r), y: Math.sin(r) };
+  const down = { x: -Math.sin(r), y: Math.cos(r) };
+  const as = outline.map((p) => p.x * right.x + p.y * right.y);
+  const bs = outline.map((p) => p.x * down.x + p.y * down.y);
+  const [a0, a1, b0, b1] = [Math.min(...as), Math.max(...as), Math.min(...bs), Math.max(...bs)];
+  const at = (a: number, b: number): LocalPoint => ({
+    x: (a0 + a) * right.x + (b0 + b) * down.x,
+    y: (a0 + a) * right.y + (b0 + b) * down.y,
+  });
+  return { rotation, origin: at(0, 0), right, down, widthCm: a1 - a0, heightCm: b1 - b0, at };
+};
+
+/** The rectangle as a closed ring of [lng, lat]. */
+export const viewRing = (frame: BedFrame, rect: ViewRect): LngLat[] =>
+  [rect.at(0, 0), rect.at(rect.widthCm, 0), rect.at(rect.widthCm, rect.heightCm), rect.at(0, rect.heightCm), rect.at(0, 0)].map(
+    (p) => frame.toLngLat(p),
+  );
+
+/** Grid lines every `stepCm` inside the rectangle, like `gridLines`, but along the turned view. */
+export const viewGrid = (
+  frame: BedFrame,
+  rect: ViewRect,
+  stepCm: number,
+  majorEveryCm: number,
+): GeoJSON.FeatureCollection<GeoJSON.LineString, { major: boolean }> => {
+  const features: GeoJSON.Feature<GeoJSON.LineString, { major: boolean }>[] = [];
+  const line = (a: LocalPoint, b: LocalPoint, at: number) =>
+    features.push({
+      type: 'Feature',
+      properties: { major: Math.abs(at / majorEveryCm - Math.round(at / majorEveryCm)) < 1e-9 },
+      geometry: { type: 'LineString', coordinates: [frame.toLngLat(a), frame.toLngLat(b)] },
+    });
+  for (let a = 0; a <= rect.widthCm + 1e-6; a += stepCm) line(rect.at(a, 0), rect.at(a, rect.heightCm), a);
+  for (let b = 0; b <= rect.heightCm + 1e-6; b += stepCm) line(rect.at(0, b), rect.at(rect.widthCm, b), b);
+  return { type: 'FeatureCollection', features };
 };
 
 export interface SpacedPlant extends LocalPoint {

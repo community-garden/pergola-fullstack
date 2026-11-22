@@ -5,11 +5,10 @@ The season planner says *what* grows on a bed and *when*. The bed planner adds
 Each placement is an entity with a position relative to the bed; rows and areas
 store their shape and spacing, and the single plants in them are computed.
 
-!!! info "Status: Storybook prototype"
-    The bed planner exists as components with stories
-    (`BedPlanner/BedPlanner` in Storybook, `bun run storybook`). Everything stays in
-    memory. The app route, saving to the store and a Cypress spec follow in the next
-    step (see [Outlook](#outlook)).
+!!! info "Status: in the app"
+    The bed planner is a page of the app, `/:gardenId/beds/:patchId/plan?season=2027`
+    (`patchId` is the last part of the bed's IRI). It is also available as stories in
+    Storybook (`BedPlanner/BedPlanner`, `bun run storybook`), which keep everything in memory.
 
 ---
 
@@ -171,6 +170,40 @@ imported from the plant cards' *Abstand*.
 
 ---
 
+## Turning the bed
+
+Many beds stand at an angle (about 45° when the map is north-up). The planner turns the
+map so that the bed's longest side is straight, and the grid follows, so it fits the bed.
+
+* By default the turn is **automatic**: the smallest rotation (−45° … 45°) that makes the
+  longest side vertical or horizontal.
+* The turn tool sits below the zoom buttons (compass icon) and is folded away until opened. Its buttons turn the bed in 5° steps. **Nord** shows it north-up,
+  **Auto** goes back to the automatic turn.
+* A turn you set is **saved with the bed** (`Patch.planRotation`, degrees clockwise; empty
+  means automatic), so the plan always opens the same way. It also appears as
+  *Drehung im Beetplan* in the bed's edit form.
+* Turning only changes the view. Placements stay in the north-up frame (see
+  [Coordinates](#coordinates)), so they never move when you turn the bed; the *x / y*
+  shown for a selection are those north-up values, and the grid's origin label is shown only
+  when the bed is not turned.
+
+## In the app
+
+* Open it with the **Beetplan** button in the bed card (click a bed on the map). The
+  back arrow in the header returns to where you came from.
+* Placements are saved through Graviola's typed store (`useBedPlanStore`, the second
+  implementation of `BedPlanApi` next to the in-memory `useBedPlanState`). Changes show
+  at once and are written one after the other; if a write fails, the placements are read
+  again and a message appears. The spacing fields are written once typing pauses.
+* Deleting a planting also deletes its placements (`usePlacementCleanup` listens to the
+  store's remove events), so no orphans stay behind.
+* Spec: `e2e/cypress/e2e/bed-planner.cy.ts` places a plant and a row, reloads, and
+  removes them again.
+
+<video controls width="100%" style="border-radius:8px">
+  <source src="/media/cypress/videos/bed-planner.cy.ts.mp4" type="video/mp4">
+</video>
+
 ## Limits
 
 * The view is north-up; beds are not turned to their long side yet.
@@ -189,9 +222,7 @@ imported from the plant cards' *Abstand*.
   strips (e.g. Igel-Beet: carrots | maize | pumpkin | maize | carrots, the story
   *Rows And Areas*); the bed could be split into strips along its long side in one step.
 * Moving the points of a row or area; a staggered pattern for areas.
-* **App integration:** route `/:gardenId/beds/:patchId/plan`, a *Beetplan* button in the
-  bed card on the map, saving through the Graviola store (`BedPlanApi` is the interface
-  to implement), deleting the placements of a deleted planting, a Cypress spec with video.
+* An entry from the season timeline as well, not only from the map card.
 * Placed plants on the garden map at high zoom.
 * A time slider for pre-crops and successions.
 * A rotated frame.

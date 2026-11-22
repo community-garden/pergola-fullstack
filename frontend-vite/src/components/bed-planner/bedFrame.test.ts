@@ -1,8 +1,11 @@
-import { describe, expect, it } from 'bun:test';
+import { describe, expect, it, it as test } from 'bun:test';
 import { footprint } from '../map/labels/geometry';
 import {
   DEFAULT_PLANT_DIAMETER_CM,
   bboxFrame,
+  bestRotation,
+  normalizeRotation,
+  viewRect,
   bedOutline,
   cmToPx,
   fitZoom,
@@ -140,5 +143,39 @@ describe('spacingConflicts', () => {
     const pumpkin = { id: 'pumpkin', x: 20, y: 0, diameterCm: 100, period: [4, 11] as [number, number] };
     expect(spacingConflicts([radish, maize])).toEqual([]);
     expect(spacingConflicts([radish, pumpkin])).toEqual([['radish', 'pumpkin']]);
+  });
+});
+
+describe('turned view', () => {
+  const rect = (pts: [number, number][]) => pts.map(([x, y]) => ({ x, y }));
+
+  test('an upright rectangle needs no rotation', () => {
+    expect(bestRotation(rect([[0, 0], [100, 0], [100, 300], [0, 300]]))).toBe(0);
+  });
+
+  test('a bed turned by 30° is straightened by that angle', () => {
+    const a = (30 * Math.PI) / 180;
+    // long side heads 30° clockwise from north
+    const long = { x: Math.sin(a) * 300, y: -Math.cos(a) * 300 };
+    const short = { x: Math.cos(a) * 100, y: Math.sin(a) * 100 };
+    const pts = rect([[0, 0], [long.x, long.y], [long.x + short.x, long.y + short.y], [short.x, short.y]]);
+    expect(bestRotation(pts)).toBeCloseTo(30, 0);
+    const r = viewRect(pts, bestRotation(pts));
+    expect(r.widthCm).toBeCloseTo(100, 0);
+    expect(r.heightCm).toBeCloseTo(300, 0);
+  });
+
+  test('the turn stays within ±45°', () => {
+    for (const heading of [10, 80, 100, 170, -40, 130]) {
+      const a = (heading * Math.PI) / 180;
+      const pts = rect([[0, 0], [Math.sin(a) * 300, -Math.cos(a) * 300], [Math.sin(a) * 300 + 5, -Math.cos(a) * 300 + 5]]);
+      expect(Math.abs(bestRotation(pts))).toBeLessThanOrEqual(45);
+    }
+  });
+
+  test('normalizeRotation wraps', () => {
+    expect(normalizeRotation(190)).toBe(-170);
+    expect(normalizeRotation(-180)).toBe(-180);
+    expect(normalizeRotation(540)).toBe(-180);
   });
 });

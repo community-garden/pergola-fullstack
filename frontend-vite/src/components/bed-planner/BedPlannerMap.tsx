@@ -9,8 +9,10 @@ import { createPortal } from 'react-dom';
 import { PlantIcon } from '../plants/PlantIcon';
 import {
   cmToPx,
-  frameRing,
-  gridLines,
+  fitZoomFor,
+  viewGrid,
+  viewRing,
+  type ViewRect,
   type BedFrame,
   type LocalPoint,
 } from './bedFrame';
@@ -67,6 +69,8 @@ export interface BedPlannerMapHandle {
 }
 
 interface BedPlannerMapProps {
+  /** the box around the bed that is straight in the (turned) view; its `rotation` is the map's bearing */
+  rect: ViewRect;
   geometry: GeoJSON.Geometry;
   frame: BedFrame;
   plants: PlacedPlantView[];
@@ -170,6 +174,7 @@ const geoJsonSource = (map: maplibregl.Map, id: string) =>
 export const BedPlannerMap = ({
   geometry,
   frame,
+  rect,
   plants,
   shapes,
   context,
@@ -248,13 +253,15 @@ export const BedPlannerMap = ({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-    const [west, north] = frame.topLeft;
-    const [east, south] = frame.bottomRight;
+    const center = frame.toLngLat(rect.at(rect.widthCm / 2, rect.heightCm / 2));
+    const fit = () =>
+      fitZoomFor(rect.widthCm, rect.heightCm, frame.lat, container.clientWidth, container.clientHeight, FIT_PADDING);
     const m = new maplibregl.Map({
       container,
       style: emptyStyle(),
-      bounds: [west, south, east, north],
-      fitBoundsOptions: { padding: FIT_PADDING },
+      center,
+      zoom: fit(),
+      bearing: rect.rotation,
       maxZoom: MAX_ZOOM,
       dragRotate: false,
       pitchWithRotate: false,
@@ -270,10 +277,10 @@ export const BedPlannerMap = ({
     const lock = () => {
       m.setMaxBounds(null);
       m.setMinZoom(null);
-      m.fitBounds([west, south, east, north], { padding: FIT_PADDING, animate: false });
-      const visible = m.getBounds();
+      m.jumpTo({ center, zoom: fit(), bearing: rect.rotation });
       m.setMinZoom(m.getZoom());
-      m.setMaxBounds(visible);
+      // for a turned map this is the box around the turned viewport
+      m.setMaxBounds(m.getBounds());
       container.dataset.minZoom = m.getMinZoom().toFixed(2);
     };
     const onZoom = () => {
@@ -293,7 +300,7 @@ export const BedPlannerMap = ({
       setMap(null);
       m.remove();
     };
-  }, [frame]);
+  }, [frame, rect]);
 
   // ── bed, frame, grid, context ─────────────────────────────────────────────
   useEffect(() => {
@@ -302,7 +309,7 @@ export const BedPlannerMap = ({
     const box: GeoJSON.Feature = {
       type: 'Feature',
       properties: {},
-      geometry: { type: 'LineString', coordinates: frameRing(frame) },
+      geometry: { type: 'LineString', coordinates: viewRing(frame, rect) },
     };
     const ctx: GeoJSON.FeatureCollection = {
       type: 'FeatureCollection',
@@ -314,7 +321,7 @@ export const BedPlannerMap = ({
     map.addSource('context', { type: 'geojson', data: ctx, maxzoom: 24 });
     map.addSource('bed', { type: 'geojson', data: bed, maxzoom: 24 });
     map.addSource('frame', { type: 'geojson', data: box, maxzoom: 24 });
-    map.addSource('grid', { type: 'geojson', data: gridLines(frame, 10, 50), maxzoom: 24 });
+    map.addSource('grid', { type: 'geojson', data: viewGrid(frame, rect, 10, 50), maxzoom: 24 });
     add({ id: 'context-fill', type: 'fill', source: 'context', paint: { 'fill-color': '#9e9e9e', 'fill-opacity': 0.25 } });
     add({ id: 'context-line', type: 'line', source: 'context', paint: { 'line-color': '#9e9e9e', 'line-width': 1 } });
     add({ id: 'bed-fill', type: 'fill', source: 'bed', paint: { 'fill-color': SOIL, 'fill-opacity': 0.85 } });
@@ -360,10 +367,11 @@ export const BedPlannerMap = ({
       return marker;
     };
     const corners = [
-      corner('0 / 0', frame.topLeft, 'bottom-left', 'bed-frame-origin'),
+      // the origin of the stored coordinates only agrees with the view when it is not turned
+      ...(rect.rotation === 0 ? [corner('0 / 0', frame.topLeft, 'bottom-left', 'bed-frame-origin')] : []),
       corner(
-        `${Math.round(frame.widthCm)} × ${Math.round(frame.heightCm)} cm`,
-        frame.bottomRight,
+        `${Math.round(rect.widthCm)} × ${Math.round(rect.heightCm)} cm`,
+        frame.toLngLat(rect.at(rect.widthCm, rect.heightCm)),
         'top-right',
         'bed-frame-size',
       ),
@@ -376,7 +384,7 @@ export const BedPlannerMap = ({
       );
       ['grid', 'frame', 'bed', 'context'].forEach((id) => map.getSource(id) && map.removeSource(id));
     };
-  }, [map, geometry, frame, context]);
+  }, [map, geometry, frame, rect, context]);
 
   // ── rows, areas and the one being drawn: layers ───────────────────────────
   useEffect(() => {
@@ -832,6 +840,7 @@ export const BedPlannerMap = ({
         el.style.setProperty('--d', String(plant.diameterCm));
         el.dataset.x = String(Math.round(plant.x));
         el.dataset.y = String(Math.round(plant.y));
+        el.dataset.iri = plant.iri;
         el.dataset.planting = plant.plantingIri;
         el.dataset.conflict = String(plant.conflict);
         el.title = `${plant.name} · x ${Math.round(plant.x)} cm · y ${Math.round(plant.y)} cm`;
@@ -851,6 +860,7 @@ export const BedPlannerMap = ({
         if (!el) return null;
         el.dataset.kind = s.shape.kind;
         el.dataset.count = String(s.plants.length);
+        el.dataset.iri = s.iri;
         el.dataset.planting = s.plantingIri;
         el.dataset.conflict = String(s.conflicts.size > 0);
         el.dataset.x = String(Math.round(s.labelAt.x));

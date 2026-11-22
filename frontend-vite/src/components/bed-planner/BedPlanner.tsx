@@ -9,6 +9,10 @@ import {
   type DragStartEvent,
   type Modifier,
 } from '@dnd-kit/core';
+import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import RotateRightIcon from '@mui/icons-material/RotateRight';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -42,11 +46,14 @@ import { PlantIcon } from '../plants/PlantIcon';
 import {
   bboxFrame,
   bedOutline,
+  bestRotation,
   insideBed,
+  normalizeRotation,
   outlineLocal,
   plantDiameterCm,
   roundPoint,
   spacingConflicts,
+  viewRect,
   type LocalPoint,
   type SpacedPlant,
 } from './bedFrame';
@@ -72,6 +79,8 @@ import type { BedPlanApi, BedPlanData } from './types';
 
 export interface BedPlannerProps extends BedPlanData {
   api: BedPlanApi;
+  /** shows a back button in the header (the app leaves the page; Storybook has none) */
+  onBack?: () => void;
 }
 
 const SIDEBAR_WIDTH = 320;
@@ -165,7 +174,7 @@ const iconUnderPointer: Modifier = ({ activatorEvent, activeNodeRect, transform 
  * bed, or chosen and then placed by clicking/tapping into the bed — one by
  * one, as a row (polyline) or as an area (polygon) filled at their spacing.
  */
-export const BedPlanner = ({ bed, season, plantings, plants, placements, context, api }: BedPlannerProps) => {
+export const BedPlanner = ({ bed, season, plantings, plants, placements, rotation, context, api, onBack }: BedPlannerProps) => {
   const { t, i18n } = useTranslation('garden');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -179,6 +188,8 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, context
   const [draggingIri, setDraggingIri] = useState<string>();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [satellite, setSatellite] = useState(false);
+  /** the turn tool next to the zoom buttons is folded away until opened */
+  const [turnOpen, setTurnOpen] = useState(false);
   const [message, setMessage] = useState<string>();
   const mapHandle = useRef<BedPlannerMapHandle>(null);
 
@@ -188,6 +199,12 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, context
     const ring = bedOutline(bed.geometry);
     return frame && ring ? outlineLocal(frame, ring) : [];
   }, [frame, bed.geometry]);
+
+  // ── turned view: saved, else the longest side straight ───────────────────────
+  const autoRotation = useMemo(() => bestRotation(outline), [outline]);
+  const viewRotation = normalizeRotation(rotation ?? autoRotation);
+  const rect = useMemo(() => viewRect(outline, viewRotation), [outline, viewRotation]);
+  const turn = (by: number) => api.setRotation(Math.round(normalizeRotation(viewRotation + by) * 10) / 10);
 
   // ── what the sidebar and the map show ───────────────────────────────────────
   const { items, itemsByIri, plantViews, shapeViews } = useMemo(() => {
@@ -482,6 +499,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, context
             handleRef={mapHandle}
             geometry={bed.geometry}
             frame={frame}
+            rect={rect}
             plants={plantViews}
             shapes={shapeViews}
             context={context}
@@ -502,15 +520,99 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, context
           {!compact && (
             <Paper
               elevation={2}
-              sx={{ position: 'absolute', top: 10, left: 10, px: 1.5, py: 0.75, maxWidth: 'calc(100% - 80px)', bgcolor: SOLID }}
+              sx={{
+                position: 'absolute',
+                top: 10,
+                left: 10,
+                pl: onBack ? 0.5 : 1.5,
+                pr: 1.5,
+                py: 0.75,
+                maxWidth: 'calc(100% - 80px)',
+                bgcolor: SOLID,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+              }}
             >
-              <Typography variant="subtitle2" noWrap>
-                {bed.name} · {season}
-              </Typography>
-              <Typography variant="caption" color="text.secondary" data-testid="bed-planner-count">
-                {t('bedPlanner.inBed', { count: plantCount })}
-              </Typography>
+              {onBack && (
+                <Tooltip title={t('bedPlanner.back')}>
+                  <IconButton size="small" onClick={onBack} aria-label={t('bedPlanner.back')} data-testid="bed-planner-back">
+                    <ArrowBackIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <Box sx={{ minWidth: 0 }}>
+                <Typography variant="subtitle2" noWrap>
+                  {bed.name} · {season}
+                </Typography>
+                <Typography variant="caption" color="text.secondary" data-testid="bed-planner-count">
+                  {t('bedPlanner.inBed', { count: plantCount })}
+                </Typography>
+              </Box>
             </Paper>
+          )}
+
+          {/* turn the view (saved with the bed): a map tool below the zoom buttons, folded away by default */}
+          {!compact && (
+            <Box
+              data-testid="bed-planner-rotation"
+              sx={{ position: 'absolute', top: 88, right: 10, display: 'flex', alignItems: 'center', gap: 0.75 }}
+            >
+              {turnOpen && (
+                <Paper elevation={2} sx={{ bgcolor: SOLID, display: 'flex', alignItems: 'center', px: 0.5, height: 29 }}>
+                  <Tooltip title={t('bedPlanner.turnLeft')}>
+                    <IconButton size="small" onClick={() => turn(-5)} aria-label={t('bedPlanner.turnLeft')} data-testid="bed-planner-turn-left">
+                      <RotateLeftIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Typography variant="caption" data-testid="bed-planner-rotation-value" sx={{ minWidth: 38, textAlign: 'center' }}>
+                    {number(viewRotation, 1)}°
+                  </Typography>
+                  <Tooltip title={t('bedPlanner.turnRight')}>
+                    <IconButton size="small" onClick={() => turn(5)} aria-label={t('bedPlanner.turnRight')} data-testid="bed-planner-turn-right">
+                      <RotateRightIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Button
+                    size="small"
+                    sx={{ minWidth: 0, px: 1 }}
+                    disabled={rotation === undefined}
+                    onClick={() => api.setRotation(undefined)}
+                    data-testid="bed-planner-turn-auto"
+                  >
+                    {t('bedPlanner.turnAuto')}
+                  </Button>
+                  <Button
+                    size="small"
+                    sx={{ minWidth: 0, px: 1 }}
+                    disabled={viewRotation === 0}
+                    onClick={() => api.setRotation(0)}
+                    data-testid="bed-planner-turn-north"
+                  >
+                    {t('bedPlanner.turnNorth')}
+                  </Button>
+                </Paper>
+              )}
+              <Tooltip title={t('bedPlanner.turnTool')}>
+                <IconButton
+                  onClick={() => setTurnOpen((o) => !o)}
+                  aria-label={t('bedPlanner.turnTool')}
+                  aria-expanded={turnOpen}
+                  data-testid="bed-planner-turn-toggle"
+                  sx={{
+                    width: 29,
+                    height: 29,
+                    borderRadius: '4px',
+                    bgcolor: turnOpen ? 'primary.main' : '#fff',
+                    color: turnOpen ? 'primary.contrastText' : 'rgba(0,0,0,0.75)',
+                    boxShadow: '0 0 0 2px rgba(0,0,0,0.1)',
+                    '&:hover': { bgcolor: turnOpen ? 'primary.dark' : '#f2f2f2' },
+                  }}
+                >
+                  <ExploreOutlinedIcon sx={{ fontSize: 19, transform: `rotate(${-viewRotation}deg)` }} />
+                </IconButton>
+              </Tooltip>
+            </Box>
           )}
 
           {/* placing mode: a bar at the top (desktop) or a slim bar at the bottom edge (phone) */}

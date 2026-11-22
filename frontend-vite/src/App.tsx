@@ -11,6 +11,7 @@ import {
   WateringWizard,
   PlantManagement,
   SeasonPlanner,
+  BedPlan,
 } from './pages';
 import './i18n';
 
@@ -29,6 +30,7 @@ const App = () => {
                 <Route path="watering/wizard/:stepNumber" element={<WateringWizard />} />
                 <Route path="plants" element={<PlantManagement />} />
                 <Route path="season-planner" element={<SeasonPlanner />} />
+                <Route path="beds/:patchId/plan" element={<BedPlan />} />
                 <Route path="notifications" element={<Notifications />} />
                 <Route path="garden-settings" element={<Settings />} />
               </Route>

@@ -183,7 +183,7 @@ export const GeoFeatureDetailsModal = NiceModal.create<GeoFeatureDetailsModalPro
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <PatchFeatureCard patch={patch} />
+                  <PatchFeatureCard patch={patch} onNavigate={handleClose} />
                 </AccordionDetails>
               </Accordion>
             ))}

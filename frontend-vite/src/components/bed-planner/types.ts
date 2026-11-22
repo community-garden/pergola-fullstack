@@ -37,6 +37,8 @@ export interface BedPlanData {
   /** all species and varieties, for names, images, spacing and "other plant" */
   plants: PlantInfo[];
   placements: BedPlacement[];
+  /** how the map is turned in the bed plan (degrees, clockwise); undefined: automatic, the longest side straight */
+  rotation?: number;
   /** other features of the garden, drawn in grey for orientation */
   context?: GeoJSON.Geometry[];
 }
@@ -53,6 +55,8 @@ export interface BedPlanApi {
   /** Changes the spacing of a row or an area. */
   updatePlacement: (placementIri: string, patch: Pick<BedPlacement, 'spacing' | 'rowSpacing'>) => void;
   removePlacement: (placementIri: string) => void;
+  /** Saves how the bed is turned in the plan; undefined goes back to automatic. */
+  setRotation: (degrees: number | undefined) => void;
   /** Assigns another plant to the bed (a new planting in the season); resolves to the planting's IRI. */
   addPlanting: (plantIri: string) => Promise<string>;
 }

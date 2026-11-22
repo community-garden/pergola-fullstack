@@ -3,6 +3,7 @@
   "@type": { "label": "Type" },
   "antagonists": { "label": "Bad neighbours" },
   "area": { "label": "Area (m²)" },
+  "planRotation": { "label": "Rotation in the bed plan (°)" },
   "authorityLinks": { "label": "Authority links" },
   "beeSpecies": { "label": "Bee species" },
   "canGrowFromSeed": { "label": "Can grow from seed" },

@@ -52,6 +52,12 @@ const PatchSchema = z
     patchType: z.enum(["bed", "greenhouse", "container", "field", "other"]).optional(),
     plantingPlans: z.array(PlantingPlanSchema).optional().describe("References to associated planting plans"),
     area: z.number().positive().optional().describe("Area in square meters"),
+    planRotation: z
+      .number()
+      .min(-180)
+      .max(180)
+      .optional()
+      .describe("How the bed is turned in the bed plan, in degrees clockwise; empty: the longest side straight"),
     responsiblePersons: z.array(PersonSchema).optional().describe("Who takes care of this bed"),
   })
   .loose()
@@ -150,6 +156,13 @@ const patchOnlyDefinitions: NonNullable<JsonSchema["definitions"]> = {
         exclusiveMinimum: 0,
         title: "Area (m²)",
         description: "Area in square meters",
+      },
+      planRotation: {
+        type: "number",
+        minimum: -180,
+        maximum: 180,
+        title: "Rotation in the bed plan (°)",
+        description: "How the bed is turned in the bed plan, in degrees clockwise; empty: the longest side straight",
       },
       responsiblePersons: {
         type: "array",
