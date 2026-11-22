@@ -1,10 +1,10 @@
 import { Path } from 'react-router-dom';
 import { Workshop, Shed, BeeStand, Seating, FirePlace, WaterBody } from './feature-types-schema';
 import { Garden } from './garden-schema';
-import { GeoFeature } from './geo-feature-schema';
+import { GeoFeature, GeoFeatureVersion } from './geo-feature-schema';
 import { Person } from './person-schema';
 import { MapOverlay } from './map-overlay-schema';
-import { Planting, PlantPlacement, SeedStock } from './planting-schema';
+import { Planting, BedNote, PlantPlacement, SeedStock } from './planting-schema';
 import { GrowingSeason, Patch, PhysicalCharacteristics, PlantingPlan, PlantingPlanItem, PlantSpecies, PlantVariety, Requirements, Timing } from './patch-schema';
 
 // JSON Schema exports
@@ -28,6 +28,7 @@ export { MapOverlaySchema, mapOverlaySchema, MAP_OVERLAY_TYPES } from './map-ove
 export type { MapOverlay } from './map-overlay-schema';
 export {
   PlantingSchema,
+  BedNoteSchema,
   PlantPlacementSchema,
   SeedStockSchema,
   plantingSchema,
@@ -40,7 +41,7 @@ export { NUTRIENT_DEMANDS } from './plant-schema';
 
 // Type exports
 export type { Person } from './person-schema';
-export type { Planting, PlantPlacement, SeedStock } from './planting-schema';
+export type { Planting, BedNote, PlantPlacement, SeedStock } from './planting-schema';
 export type { Garden } from './garden-schema';
 export type {
   Patch,
@@ -65,6 +66,7 @@ export type GardenDefinitions = {
   PhysicalCharacteristics: PhysicalCharacteristics,
   Timing: Timing,
   GeoFeature: GeoFeature,
+  GeoFeatureVersion: GeoFeatureVersion,
   Workshop: Workshop,
   Shed: Shed,
   BeeStand: BeeStand,
@@ -76,6 +78,7 @@ export type GardenDefinitions = {
   Planting: Planting,
   SeedStock: SeedStock,
   PlantPlacement: PlantPlacement,
+  BedNote: BedNote,
   MapOverlay: MapOverlay,
   Garden: Garden,
 }

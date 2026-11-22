@@ -6,7 +6,8 @@ import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import { appTheme } from './theme/appTheme';
 import { SnackbarProvider } from 'notistack';
 import { GraviolaProvider } from './provider/GraviolaProvider';
 import { gardenConfiguration } from './schema/garden-schema';
@@ -20,17 +21,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 const SPARQL_API_URL = import.meta.env.VITE_SPARQL_API_URL || "http://localhost:7878/query";
 
-// Create a theme instance
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#628bff",
-    },
-    secondary: {
-      main: "#9a9bff",
-    },
-  },
-});
 
 // Create a query client
 const queryClient = new QueryClient({
@@ -50,7 +40,7 @@ createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme}>
+          <ThemeProvider theme={appTheme}>
             <CssBaseline />
             <SnackbarProvider 
               maxSnack={3}

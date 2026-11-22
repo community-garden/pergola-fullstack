@@ -10,6 +10,10 @@
 #                               derive the web images (frontend-vite/public/media/plants,
 #                               not versioned) and set only the image URLs of the
 #                               species in the store; plantings stay untouched
+#   scripts/local-dev.sh map-overlays
+#                               derive the overlay images (public/media/overlays) and put the
+#                               map overlays of frontend-vite/fixtures/wurzelwerk-overlays.json
+#                               into the store
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -54,11 +58,15 @@ case "${1:-up}" in
     wait_ready
     SPARQL="$SPARQL" python3 scripts/import-saisonplanung.py --season "${2:-2027}" --load
     ;;
+  map-overlays)
+    wait_ready
+    SPARQL="$SPARQL" python3 scripts/map-overlays.py
+    ;;
   plant-images)
     wait_ready
     python3 scripts/plant-images.py
     SPARQL="$SPARQL" python3 scripts/import-saisonplanung.py --images-only
     ;;
   *)
-    echo "usage: $0 [up|reset|down|seed-season [year]|plant-images]" >&2; exit 1 ;;
+    echo "usage: $0 [up|reset|down|seed-season [year]|plant-images|map-overlays]" >&2; exit 1 ;;
 esac

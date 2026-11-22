@@ -198,7 +198,9 @@ map so that the bed's longest side is straight, and the grid follows, so it fits
 * Deleting a planting also deletes its placements (`usePlacementCleanup` listens to the
   store's remove events), so no orphans stay behind.
 * Spec: `e2e/cypress/e2e/bed-planner.cy.ts` places a plant and a row, reloads, and
-  removes them again.
+  removes them again. It brings its own test bed (`Patch/cypress-bed-planner`, outside the
+  garden, with one planting) and removes only that bed, its planting and their
+  placements, so it can run against a store with real bed plans.
 
 <video controls width="100%" style="border-radius:8px">
   <source src="/media/cypress/videos/bed-planner.cy.ts.mp4" type="video/mp4">
@@ -226,3 +228,31 @@ map so that the bed's longest side is straight, and the grid follows, so it fits
 * Placed plants on the garden map at high zoom.
 * A time slider for pre-crops and successions.
 * A rotated frame.
+
+---
+
+## Two views: bed plan and timeline
+
+The bed page has a switch in its header: the **bed plan** (graphic editor, default) and the
+**timeline** (`?view=timeline`). The timeline is the season planner's scheduler, but for this
+one bed: no wish list, no legend, taller bars. Clicking a bar highlights the planting
+(`?planting=<last part of the IRI>`); dragging and resizing work as in the season planner.
+In the season planner, the bed name on the left opens the timeline of that bed.
+
+## Notes on the bed
+
+A panel on the right (on phones: the **Notizen** view, `?view=notes`) holds Markdown notes
+on the bed, **newest first**; the toggle with the counter in the header folds it away.
+
+* Written with Graviola's Markdown renderer (`@graviola/edb-markdown-renderer`) and the
+  `@uiw/react-md-editor` editor; the preview is sanitised, links open in a new tab.
+* Each note shows when it was written and, if the user was logged in, by whom (name from the
+  login). Everybody may edit or delete every note; an edited note shows who changed it and when.
+* Type `BedNote` (`patch`, `text`, `createdAt`, `modifiedAt`, `createdBy`, `modifiedBy`). Date and
+  author are set by the app, not by Graviola's store-wide `$meta` stamping. In the generic forms
+  `text` is a Markdown field.
+* Deleting a bed deletes its notes (`hooks/useRemovalCleanup.ts`).
+* Later: show only the notes of the current season.
+
+Test: `e2e/cypress/e2e/bed-notes.cy.ts`. New dependencies (`@graviola/edb-markdown-renderer`,
+`@uiw/react-md-editor`, `rehype-*`): rebuild the frontend image.

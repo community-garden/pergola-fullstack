@@ -19,7 +19,9 @@
       "Sitzgelegenheit": "Sitzgelegenheit",
       "Feuerstelle": "Feuerstelle",
       "Gewässer": "Gewässer"
-    }
+    },
+    "fillRequired": "Bitte die Pflichtfelder ausfüllen.",
+    "noFeaturesAttached": "Zu dieser Fläche gibt es noch keinen Eintrag. Was ist sie?"
   },
   "geoFeature": {
     "title": "Geographisches Objekt",
@@ -380,7 +382,11 @@
     "spacingField": "Abstand",
     "rowSpacingField": "Reihenabstand",
     "emptyShape": "Keine dieser Pflanzen läge im Beet – nicht gesetzt",
-    "tooMany": "Höchstens {{max}} Pflanzen pro Reihe oder Fläche"
+    "tooMany": "Höchstens {{max}} Pflanzen pro Reihe oder Fläche",
+    "viewPlan": "Beetplan",
+    "viewTimeline": "Zeitplan",
+    "viewNotes": "Notizen",
+    "openBed": "Zeitplan dieses Beets öffnen"
   },
   "seasonPlanner": {
     "title": "Saisonplanung",
@@ -431,5 +437,79 @@
     "saveFailed": "Speichern fehlgeschlagen: {{message}}",
     "removed": "Gelöscht",
     "removeFailed": "Löschen fehlgeschlagen: {{message}}"
+  },
+  "entityDetail": {
+    "close": "Schließen",
+    "edit": "Bearbeiten",
+    "types": {
+      "Garden": "Garten",
+      "Patch": "Beet",
+      "PlantingPlan": "Anbauplan",
+      "PlantSpecies": "Pflanzenart",
+      "PlantVariety": "Sorte",
+      "Planting": "Pflanzung",
+      "PlantPlacement": "Pflanzposition",
+      "SeedStock": "Saatgut",
+      "Person": "Person",
+      "GeoFeature": "Kartenelement",
+      "Workshop": "Werkstatt/Gewächshaus",
+      "Shed": "Schuppen",
+      "BeeStand": "Bienenstand",
+      "Path": "Weg",
+      "Seating": "Sitzplatz",
+      "FirePlace": "Feuerstelle",
+      "WaterBody": "Gewässer",
+      "MapOverlay": "Karten-Overlay",
+      "GeoFeatureVersion": "Frühere Form",
+      "BedNote": "Beetnotiz"
+    }
+  },
+  "mapEdit": {
+    "edit": "Bearbeiten",
+    "editTitle": "Karte bearbeiten",
+    "done": "Fertig",
+    "tools": {
+      "select": "Auswählen",
+      "polygon": "Fläche",
+      "rectangle": "Rechteck",
+      "point": "Punkt"
+    },
+    "hints": {
+      "select": "Eine Form anklicken, um ihre Ecken zu verschieben",
+      "selected": "Ecken ziehen · einen Punkt auf der Kante ziehen ergibt eine neue Ecke",
+      "polygon": "Punkte setzen, zum Schließen auf den ersten Punkt klicken",
+      "rectangle": "Zwei Punkte für eine Seite setzen, dann die Breite",
+      "point": "Auf die Karte klicken"
+    },
+    "unnamed": "Ohne Zuordnung",
+    "describe": "Beschreiben …",
+    "undo": "Rückgängig",
+    "remove": "Entfernen",
+    "cancel": "Abbrechen",
+    "removeTitle": "„{{name}}“ von der Karte nehmen?",
+    "removeText": "Ab {{date}} gilt die Form nicht mehr. Sie bleibt in der Historie, und was auf ihr stand, bleibt nachvollziehbar.",
+    "removeTextNew": "Die Form wurde eben erst gezeichnet und wird ganz gelöscht.",
+    "removeConfirm": "Von der Karte nehmen",
+    "setupChip": "Einrichtung",
+    "historyChip": "Veränderung ab {{date}}",
+    "historyTitle": "Wie werden Formänderungen gespeichert?",
+    "setupSwitch": "Garten wird eingerichtet",
+    "setupOn": "Formänderungen sind Korrekturen, ohne Historie.",
+    "setupOff": "Jede Formänderung ist eine Veränderung im Garten: Die alte Form bleibt mit Datum erhalten.",
+    "changeDate": "Veränderung ab",
+    "saveError": "Speichern fehlgeschlagen",
+    "kept_one": "Alte Form aufbewahrt (Historie)",
+    "kept_other": "{{count}} alte Formen aufbewahrt (Historie)"
+  },
+  "bedNotes": {
+    "title": "Notizen",
+    "save": "Notiz speichern",
+    "cancel": "Abbrechen",
+    "edit": "Notiz bearbeiten",
+    "delete": "Notiz löschen",
+    "confirmDelete": "Diese Notiz löschen?",
+    "empty": "Noch keine Notizen.",
+    "edited": "bearbeitet {{date}} von {{name}}",
+    "saveFailed": "Notiz konnte nicht gespeichert werden: {{message}}"
   }
 }

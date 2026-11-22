@@ -229,5 +229,14 @@
   "visible": {"label": "Sichtbar", "description": "Standardmäßig auf der Karte eingeblendet"},
   "sortOrder": {"label": "Reihenfolge", "description": "Höhere Zahlen werden weiter oben gezeichnet"},
   "attribution": {"label": "Quelle", "description": "Wer hat das Bild gemacht, und wie"},
-  "mapOverlays": {"label": "Karten-Overlays"}
+  "mapOverlays": {"label": "Karten-Overlays"},
+  "validFrom": {"label": "Gültig ab", "description": "Erster Tag dieser Form; leer: schon immer"},
+  "validUntil": {"label": "Gültig bis (ohne diesen Tag)", "description": "Ab diesem Tag gilt die Form nicht mehr; leer: gilt noch"},
+  "versions": {"label": "Frühere Formen"},
+  "setupMode": {"label": "Garten wird eingerichtet", "description": "Formänderungen auf der Karte sind Korrekturen, ohne Historie"},
+  "text": { "label": "Notiz", "description": "Markdown: **fett**, *kursiv*, Listen, Links" },
+  "createdAt": { "label": "Geschrieben" },
+  "modifiedAt": { "label": "Geändert" },
+  "createdBy": { "label": "Geschrieben von" },
+  "modifiedBy": { "label": "Geändert von" }
 }

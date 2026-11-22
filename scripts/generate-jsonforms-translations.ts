@@ -33,9 +33,9 @@ const PATCH_TYPES = [
   "PhysicalCharacteristics",
   "Timing",
 ] as const;
-const GEO_TYPES = ["GeoFeature"] as const;
+const GEO_TYPES = ["GeoFeature", "GeoFeatureVersion"] as const;
 // Season planning types (resolved against the merged garden schema — they reference plants, beds and persons)
-const SEASON_TYPES = ["Person", "Planting", "SeedStock", "PlantPlacement"] as const;
+const SEASON_TYPES = ["Person", "Planting", "SeedStock", "PlantPlacement", "BedNote", "MapOverlay"] as const;
 
 function deepMerge(target: Record<string, any>, source: Record<string, any>): Record<string, any> {
   const result = { ...target };

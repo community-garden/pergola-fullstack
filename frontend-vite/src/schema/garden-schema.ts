@@ -24,6 +24,10 @@ const GardenSchema = z
     geoFeatures: z.array(GeoFeatureSchema).optional().describe("Geographic features in this garden"),
     mainGeoFeature: GeoFeatureSchema.optional().describe("Main geographic feature of the garden"),
     mapOverlays: z.array(MapOverlaySchema).optional().describe("Images laid over the garden map"),
+    setupMode: z
+      .boolean()
+      .optional()
+      .describe("The garden is being set up: shape changes on the map are corrections, without history"),
   })
   .loose()
   .meta({
@@ -81,6 +85,11 @@ const gardenJsonSchema: JsonSchema = {
           title: "Map overlays",
           description: "Images laid over the garden map",
           items: { $ref: "#/definitions/MapOverlay" },
+        },
+        setupMode: {
+          type: "boolean",
+          title: "Garden is being set up",
+          description: "Shape changes on the map are corrections, without history",
         },
       },
       required: ["name"],

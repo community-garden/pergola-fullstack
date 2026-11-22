@@ -98,8 +98,9 @@ Limits of the SPARQL implementation (2026-11):
 
 ### Detail view and intent bus
 
-`EntityDetailModal` now renders Graviola's new detail view (image header, field grid,
-nested sections, chips). `provider/useDetailViewConfig.ts` hides technical fields and
+The detail dialog renders Graviola's new detail view (image header, field grid,
+nested sections, chips). Since 2026-11-22 the dialog itself is Pergola's own, without
+Graviola's large side image — see [Entity Detail View](../features/entity-detail.md). `provider/useDetailViewConfig.ts` hides technical fields and
 turns the JSON Forms translations (`i18n/<lang>/jsonforms.json`) into labels.
 Fields inside nested sections still show the schema titles.
 

@@ -81,6 +81,10 @@ export interface BedPlannerProps extends BedPlanData {
   api: BedPlanApi;
   /** shows a back button in the header (the app leaves the page; Storybook has none) */
   onBack?: () => void;
+  /** extra controls in the header card (e.g. the view switch of the bed page) */
+  headerActions?: React.ReactNode;
+  /** a planting was armed in the list or a placement of it was selected on the map */
+  onPlantingFocus?: (plantingIri: string) => void;
 }
 
 const SIDEBAR_WIDTH = 320;
@@ -174,7 +178,7 @@ const iconUnderPointer: Modifier = ({ activatorEvent, activeNodeRect, transform 
  * bed, or chosen and then placed by clicking/tapping into the bed — one by
  * one, as a row (polyline) or as an area (polygon) filled at their spacing.
  */
-export const BedPlanner = ({ bed, season, plantings, plants, placements, rotation, context, api, onBack }: BedPlannerProps) => {
+export const BedPlanner = ({ bed, season, plantings, plants, placements, rotation, context, api, onBack, headerActions, onPlantingFocus }: BedPlannerProps) => {
   const { t, i18n } = useTranslation('garden');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -273,6 +277,12 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
   const armed = armedIri ? itemsByIri.get(armedIri) : undefined;
   const selected = plantViews.find((v) => v.iri === selectedIri);
   const selectedShape = shapeViews.find((v) => v.iri === selectedIri);
+  const selectedPlantingIri = selected?.plantingIri ?? selectedShape?.plantingIri;
+  useEffect(() => {
+    if (selectedPlantingIri) onPlantingFocus?.(selectedPlantingIri);
+    // only when the selection changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPlantingIri]);
   const plantCount = plantViews.length + shapeViews.reduce((n, s) => n + s.plants.length, 0);
   /** phone while placing or drawing: only the bar at the bottom, the bed stays free */
   const compact = isMobile && Boolean(armed);
@@ -371,12 +381,13 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
 
   const arm = useCallback(
     (plantingIri: string) => {
+      onPlantingFocus?.(plantingIri);
       setArmedIri((current) => (current === plantingIri && !isMobile ? undefined : plantingIri));
       setDraft([]);
       setSelectedIri(undefined);
       setDrawerOpen(false);
     },
-    [isMobile],
+    [isMobile, onPlantingFocus],
   );
 
   const disarm = useCallback(() => {
@@ -549,6 +560,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
                   {t('bedPlanner.inBed', { count: plantCount })}
                 </Typography>
               </Box>
+              {headerActions && <Box sx={{ ml: 1 }}>{headerActions}</Box>}
             </Paper>
           )}
 

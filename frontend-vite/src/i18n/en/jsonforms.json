@@ -229,5 +229,14 @@
   "visible": {"label": "Visible", "description": "Shown on the map by default"},
   "sortOrder": {"label": "Order", "description": "Higher numbers are drawn on top"},
   "attribution": {"label": "Source", "description": "Who made the image, and how"},
-  "mapOverlays": {"label": "Map overlays"}
+  "mapOverlays": {"label": "Map overlays"},
+  "validFrom": {"label": "Valid from", "description": "First day of this shape; empty: since always"},
+  "validUntil": {"label": "Valid until (exclusive)", "description": "From this day on the shape no longer holds; empty: still valid"},
+  "versions": {"label": "Earlier shapes"},
+  "setupMode": {"label": "Garden is being set up", "description": "Shape changes on the map are corrections, without history"},
+  "text": { "label": "Note", "description": "Markdown: **bold**, *italic*, lists, links" },
+  "createdAt": { "label": "Written" },
+  "modifiedAt": { "label": "Changed" },
+  "createdBy": { "label": "Written by" },
+  "modifiedBy": { "label": "Changed by" }
 }

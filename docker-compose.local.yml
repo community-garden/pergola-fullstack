@@ -10,6 +10,14 @@ services:
     volumes:
       - oxigraph_local_data:/data
     restart: unless-stopped
+  docs:
+    image: squidfunk/mkdocs-material
+    command: serve --dev-addr 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./docs:/docs
+    restart: unless-stopped
 
 volumes:
   oxigraph_local_data:

@@ -19,7 +19,9 @@
       "Sitzgelegenheit": "Seating Area",
       "Feuerstelle": "Fire Pit",
       "Gewässer": "Water Body"
-    }
+    },
+    "fillRequired": "Please fill in the required fields.",
+    "noFeaturesAttached": "Nothing describes this area yet. What is it?"
   },
   "geoFeature": {
     "title": "Geographic Feature",
@@ -380,7 +382,11 @@
     "spacingField": "Spacing",
     "rowSpacingField": "Row spacing",
     "emptyShape": "None of these plants would be in the bed – not placed",
-    "tooMany": "At most {{max}} plants per row or area"
+    "tooMany": "At most {{max}} plants per row or area",
+    "viewPlan": "Bed plan",
+    "viewTimeline": "Timeline",
+    "viewNotes": "Notes",
+    "openBed": "Open this bed's timeline"
   },
   "seasonPlanner": {
     "title": "Season planning",
@@ -431,5 +437,79 @@
     "saveFailed": "Saving failed: {{message}}",
     "removed": "Removed",
     "removeFailed": "Removing failed: {{message}}"
+  },
+  "entityDetail": {
+    "close": "Close",
+    "edit": "Edit",
+    "types": {
+      "Garden": "Garden",
+      "Patch": "Bed",
+      "PlantingPlan": "Planting plan",
+      "PlantSpecies": "Plant species",
+      "PlantVariety": "Variety",
+      "Planting": "Planting",
+      "PlantPlacement": "Plant placement",
+      "SeedStock": "Seed stock",
+      "Person": "Person",
+      "GeoFeature": "Map feature",
+      "Workshop": "Workshop/greenhouse",
+      "Shed": "Shed",
+      "BeeStand": "Bee stand",
+      "Path": "Path",
+      "Seating": "Seating area",
+      "FirePlace": "Fire place",
+      "WaterBody": "Water body",
+      "MapOverlay": "Map overlay",
+      "GeoFeatureVersion": "Earlier shape",
+      "BedNote": "Bed note"
+    }
+  },
+  "mapEdit": {
+    "edit": "Edit",
+    "editTitle": "Edit map",
+    "done": "Done",
+    "tools": {
+      "select": "Select",
+      "polygon": "Area",
+      "rectangle": "Rectangle",
+      "point": "Point"
+    },
+    "hints": {
+      "select": "Click a shape to move its corners",
+      "selected": "Drag the corners · drag a point on an edge to add a corner",
+      "polygon": "Set points, click the first point to close",
+      "rectangle": "Set two points for one side, then the width",
+      "point": "Click on the map"
+    },
+    "unnamed": "Not assigned",
+    "describe": "Describe …",
+    "undo": "Undo",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "removeTitle": "Take “{{name}}” off the map?",
+    "removeText": "From {{date}} on the shape no longer holds. It stays in the history, and what grew on it remains traceable.",
+    "removeTextNew": "The shape was only just drawn and is deleted completely.",
+    "removeConfirm": "Take off the map",
+    "setupChip": "Setting up",
+    "historyChip": "Change from {{date}}",
+    "historyTitle": "How are shape changes saved?",
+    "setupSwitch": "Garden is being set up",
+    "setupOn": "Shape changes are corrections, without history.",
+    "setupOff": "Every shape change is a change in the garden: the old shape is kept with its dates.",
+    "changeDate": "Change from",
+    "saveError": "Saving failed",
+    "kept_one": "Old shape kept (history)",
+    "kept_other": "{{count}} old shapes kept (history)"
+  },
+  "bedNotes": {
+    "title": "Notes",
+    "save": "Save note",
+    "cancel": "Cancel",
+    "edit": "Edit note",
+    "delete": "Delete note",
+    "confirmDelete": "Delete this note?",
+    "empty": "No notes yet.",
+    "edited": "edited {{date}} by {{name}}",
+    "saveFailed": "Could not save the note: {{message}}"
   }
 }

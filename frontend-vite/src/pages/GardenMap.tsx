@@ -1,26 +1,21 @@
-import { Box } from '@mui/material';
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCurrentGarden } from '../hooks/useCurrentGarden';
 import { getMapSession, updateMapSession as updateMapSessionFor, useMapSession } from '../hooks/useMapSession';
 import maplibregl from 'maplibre-gl';
-import { MaplibreTerradrawControl } from '@watergis/maplibre-gl-terradraw';
-import type { GeoJSONStoreFeatures } from 'terra-draw';
 import { useSnackbar } from 'notistack';
 import NiceModal from '@ebay/nice-modal-react';
-import { 
-  useCurrentGardenInfo, 
-  useCreateEntity, 
-  useUpdateEntity, 
-  useDeleteEntity,
-  useGeoFeatureLayer 
-} from '@hooks/index';
+import { useCurrentGardenInfo, useGeoFeatureLayer } from '@hooks/index';
 import { parseWktPoint } from '../utils/wkt';
 import { NewFeatureWizardNiceModal } from '@components/garden/NewFeatureWizardNiceModal';
 import { GeoFeatureDetailsModal } from '@components/garden/GeoFeatureDetailsModal';
-import { useDataStore, useAdbContext } from '@graviola/edb-state-hooks';
 import { useSeasonData } from '@hooks/useSeasonData';
 import { useGeoFeatureNames } from '@hooks/useGeoFeatureNames';
+import { SEASON_QUERY_KEY } from '../api/season';
 import {
   availableSeasons,
   buildMapLabels,
@@ -36,63 +31,47 @@ import { useMapOverlays } from '@components/map/overlays/useMapOverlays';
 import { MapOverlayFab } from '@components/map/overlays/MapOverlayFab';
 import { GeoFeatureLabels, useMapLabelDetail } from '@components/map/labels/GeoFeatureLabels';
 import { MapLabelModeFab } from '@components/map/labels/MapLabelModeFab';
-import { geojsonToWKT, wktToGeoJSON } from '@terraformer/wkt';
-import { toReferences } from '../utils/toReferences';
+import { MapEditBar } from '@components/map/edit/MapEditBar';
+import { useShapeEditor, type EditableShape } from '@components/map/edit/useShapeEditor';
+import { useShapePersistence } from '@components/map/edit/useShapePersistence';
+import { currentShapes, toDay } from '@components/map/edit/shapeHistory';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css';
 
+/** Opening zoom: the garden fills the screen (was 17: the whole neighbourhood). */
+const GARDEN_ZOOM = 18;
 const EMPTY_VISIBILITY: Record<string, boolean> = {};
+const NAMES_MODE: MapLabelMode = { kind: 'names' };
 
 const GardenMap = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const drawControlRef = useRef<MaplibreTerradrawControl | null>(null);
-  const [features, setFeatures] = useState<GeoJSONStoreFeatures[]>([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  
-  const { garden, isLoading, refetch: refetchGarden } = useCurrentGardenInfo();
+  const { t } = useTranslation('garden');
+  const theme = useTheme();
+  const compact = useMediaQuery(theme.breakpoints.down('sm'));
+  const queryClient = useQueryClient();
+
+  const { garden, isLoading: gardenLoading, refetch: refetchGarden } = useCurrentGardenInfo();
   // view, base layer and labels are kept while the window is open (in memory, not localStorage)
   const { gardenId } = useCurrentGarden();
   const [session, updateSession] = useMapSession(gardenId);
   const gardenIdRef = useRef(gardenId);
   gardenIdRef.current = gardenId;
-  const { ready: dataStoreReady, dataStore } = useDataStore();
-  const { createEntityIRI } = useAdbContext();
   const gardenIRI = garden?.['@id'];
-  const geoFeatureTypeIRI = 'https://ontology.semantic-desk.top/garden#GeoFeature';
-  const gardenTypeIRI = 'https://ontology.semantic-desk.top/garden#Garden';
-  
-  // Map TerraDraw feature IDs to GeoFeature IRIs
-  const featureIdToIRIMapRef = useRef<Record<string | number, string>>({});
-  // Keep a ref to the latest garden so event handlers inside the map useEffect
-  // (which has [] deps) always read current data rather than the stale closure value.
-  const gardenRef = useRef(garden);
-  useEffect(() => { gardenRef.current = garden; }, [garden]);
-  // Same for the store, which the draw handlers use to read the stored feature.
-  const dataStoreRef = useRef(dataStore);
-  useEffect(() => { dataStoreRef.current = dataStore; }, [dataStore]);
 
-  // Use our clean CRUD hooks
-  const { mutateAsync: createGeoFeature } = useCreateEntity({ typeIRI: geoFeatureTypeIRI });
-  const { mutateAsync: updateGeoFeature } = useUpdateEntity({ typeIRI: geoFeatureTypeIRI });
-  const { mutateAsync: deleteGeoFeature } = useDeleteEntity({ typeIRI: geoFeatureTypeIRI });
-  const { mutateAsync: updateGarden } = useUpdateEntity({ typeIRI: gardenTypeIRI });
-  
   const mapCenter = useMemo<[number, number]>(() => {
     const gardenLocation = parseWktPoint(garden?.location);
     return gardenLocation || [13.737262, 51.050407]; // Default to Dresden
   }, [garden?.location]);
 
-  // Track if we've already loaded features into TerraDraw
-  const featuresLoadedRef = useRef(false);
   // Track if map has loaded
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Handle feature click in view mode
-  const handleFeatureClick = (feature: any) => {
+  const handleFeatureClick = useCallback((feature: any) => {
     NiceModal.show(GeoFeatureDetailsModal, { feature });
-  };
+  }, []);
 
   // --- Labels: bed names or the plantings of a season (mode in ?labels=) ---
   const [searchParams, setSearchParams] = useSearchParams();
@@ -129,12 +108,21 @@ const GardenMap = () => {
   );
   const { data: featureNames } = useGeoFeatureNames();
   const { data: seasonData } = useSeasonData();
-  const anchors = useMemo(() => featureAnchors(garden?.geoFeatures ?? []), [garden?.geoFeatures]);
+
+  // Only the shapes that are still on the map; shapes taken off keep their history.
+  const today = toDay();
+  const geoFeatures = useMemo(
+    () => currentShapes((garden?.geoFeatures ?? []) as any[], today),
+    [garden?.geoFeatures, today],
+  );
+  const anchors = useMemo(() => featureAnchors(geoFeatures), [geoFeatures]);
+  // while editing, the bed names tell which shape is which
+  const shownLabelMode = isEditMode ? NAMES_MODE : labelMode;
   const labels = useMemo(
-    () => buildMapLabels(labelMode, anchors, featureNames, seasonData),
-    // labelMode is rebuilt from the URL on every render, so depend on its value
+    () => buildMapLabels(shownLabelMode, anchors, featureNames, seasonData),
+    // the label mode is rebuilt from the URL on every render, so depend on its value
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [formatLabelMode(labelMode), anchors, featureNames, seasonData],
+    [formatLabelMode(shownLabelMode), anchors, featureNames, seasonData],
   );
   const seasons = useMemo(() => availableSeasons(seasonData), [seasonData]);
   const labelMap = mapLoaded ? mapRef.current : null;
@@ -152,117 +140,102 @@ const GardenMap = () => {
   // GeoFeatures have no name of their own; use the names of what sits on them.
   const viewFeatures = useMemo(
     () =>
-      (garden?.geoFeatures ?? []).map((feature: any) => ({
+      geoFeatures.map((feature: any) => ({
         ...feature,
         name: feature.name || featureNames.get(feature['@id'])?.join(' / '),
       })),
-    [garden?.geoFeatures, featureNames],
+    [geoFeatures, featureNames],
   );
 
-  // Use the GeoFeatureLayer hook for view mode
+  // View mode: the shapes as a clickable layer (read-only)
   useGeoFeatureLayer({
-    map: mapRef.current,
+    map: labelMap,
     features: viewFeatures,
     enabled: !isEditMode,
     onFeatureClick: handleFeatureClick,
   });
 
-  // Load existing GeoFeatures from the garden and add them to TerraDraw
-  useEffect(() => {
-    // Skip if already loaded or conditions not met
-    if (featuresLoadedRef.current || !mapLoaded || !drawControlRef.current || !dataStoreReady || !garden) {
-      return;
+  // --- Edit mode: TerraDraw with our own bar, history of shapes ---
+  const [changeDay, setChangeDay] = useState(today);
+  const [setupMode, setSetupModeState] = useState(Boolean(garden?.setupMode));
+  useEffect(() => setSetupModeState(Boolean(garden?.setupMode)), [garden?.setupMode]);
+  const [busy, setBusy] = useState(false);
+
+  const persistence = useShapePersistence({
+    gardenIRI,
+    setupMode,
+    changeDay,
+    onKept: (iris) => enqueueSnackbar(t('mapEdit.kept', { count: iris.length }), { variant: 'info' }),
+  });
+  const editableShapes = useMemo<EditableShape[]>(
+    () =>
+      geoFeatures
+        .filter((feature: any) => feature?.['@id'] && feature.geo)
+        .map((feature: any) => ({ iri: feature['@id'], geo: feature.geo })),
+    [geoFeatures],
+  );
+  const editor = useShapeEditor({
+    map: labelMap,
+    active: isEditMode,
+    shapes: editableShapes,
+    persistence,
+    onError: (error) => {
+      console.error('Saving a shape failed:', error);
+      enqueueSnackbar(t('mapEdit.saveError'), { variant: 'error' });
+    },
+  });
+
+  const refreshMapData = useCallback(async () => {
+    await Promise.all([
+      refetchGarden(),
+      queryClient.invalidateQueries({ queryKey: [...SEASON_QUERY_KEY, 'featureNames'] }),
+    ]);
+  }, [refetchGarden, queryClient]);
+
+  const startEditing = useCallback(async () => {
+    // edit what is stored now, not what was loaded when the page opened
+    await refetchGarden();
+    setChangeDay(toDay());
+    setIsEditMode(true);
+  }, [refetchGarden]);
+
+  const finishEditing = useCallback(async () => {
+    setBusy(true);
+    try {
+      await editor.finish();
+    } finally {
+      setIsEditMode(false);
+      await refreshMapData();
+      setBusy(false);
     }
+  }, [editor, refreshMapData]);
 
-    const loadGeoFeatures = async () => {
-      const terraDrawInstance = drawControlRef.current?.getTerraDrawInstance();
-      if (!terraDrawInstance) {
-        return; // TerraDraw not ready yet
-      }
-
+  const changeSetupMode = useCallback(
+    async (value: boolean) => {
+      setSetupModeState(value);
       try {
-        // Get GeoFeatures from the garden relationship
-        const geoFeatures = garden.geoFeatures;
-        
-        if (!geoFeatures || geoFeatures.length === 0) {
-          console.log('No GeoFeatures found in garden');
-          featuresLoadedRef.current = true;
-          return;
-        }
-
-        // Convert GeoFeatures to TerraDraw features and add them to the map
-        const loadedFeatures: GeoJSONStoreFeatures[] = [];
-
-        for (const geoFeature of geoFeatures) {
-          if (geoFeature.geo) {
-            try {
-              // Convert WKT to GeoJSON
-              const geojsonGeometry = wktToGeoJSON(geoFeature.geo);
-              
-              // Determine mode based on geometry type
-              let mode = 'polygon';
-              if (geojsonGeometry.type === 'Point') mode = 'point';
-              else if (geojsonGeometry.type === 'LineString') mode = 'linestring';
-              else if (geojsonGeometry.type === 'Polygon') mode = 'polygon';
-              else if (geojsonGeometry.type.includes('Rectangle')) mode = 'rectangle';
-              
-              // Generate a simple UUID for the feature (TerraDraw needs clean IDs)
-              const featureId = crypto.randomUUID();
-              
-              // Create a TerraDraw-compatible feature
-              // IMPORTANT: properties should ONLY contain 'mode' - nothing else!
-              const feature: GeoJSONStoreFeatures = {
-                type: 'Feature',
-                geometry: geojsonGeometry as any,
-                properties: {
-                  mode: mode, // Only mode, no extra properties!
-                },
-                id: featureId,
-              };
-
-              loadedFeatures.push(feature);
-              
-              // Store the bidirectional mapping
-              featureIdToIRIMapRef.current[featureId] = geoFeature['@id'];
-            } catch (error) {
-              console.error('Failed to load GeoFeature:', geoFeature['@id'], error);
-            }
-          }
-        }
-
-        if (loadedFeatures.length > 0) {
-          // Add features to TerraDraw
-          terraDrawInstance.addFeatures(loadedFeatures);
-          setFeatures((prev: GeoJSONStoreFeatures[]) => [...prev, ...loadedFeatures]);
-          console.log(`Loaded ${loadedFeatures.length} GeoFeatures from garden onto the map`);
-        }
-        
-        featuresLoadedRef.current = true;
+        await persistence.setSetupMode(value);
+        await refetchGarden();
       } catch (error) {
-        console.error('Failed to load GeoFeatures from garden:', error);
-        featuresLoadedRef.current = true;
+        console.error('Saving the setup mode failed:', error);
+        setSetupModeState(!value);
+        enqueueSnackbar(t('mapEdit.saveError'), { variant: 'error' });
       }
-    };
+    },
+    [persistence, refetchGarden, enqueueSnackbar, t],
+  );
 
-    // Small delay to ensure TerraDraw is fully initialized
-    const timeoutId = setTimeout(loadGeoFeatures, 300);
-    
-    return () => clearTimeout(timeoutId);
-  }, [mapLoaded, dataStoreReady, garden]);
-
-
-
-  // Fly to the garden's actual location once it loads (map may have started at default center)
-  useEffect(() => {
-    if (!mapRef.current || !mapLoaded || !garden?.location) return;
-    // the user has looked around in this window already: stay where they were
-    if (getMapSession(gardenIdRef.current).center) return;
-    mapRef.current.flyTo({ center: mapCenter, zoom: 17, duration: 1000 });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [garden?.location, mapLoaded]);
+  const selectedName =
+    editor.selectedIri === null ? null : (featureNames.get(editor.selectedIri)?.join(' / ') ?? '');
+  const describeSelected = useCallback(async () => {
+    if (!editor.selectedIri) return;
+    await NiceModal.show(NewFeatureWizardNiceModal, { geoFeatureIRI: editor.selectedIri });
+  }, [editor.selectedIri]);
 
   useEffect(() => {
     if (!mapContainer.current || mapRef.current) return;
+    // wait for the garden, so the map opens on it at once instead of flying over from a default
+    if (gardenLoading && !getMapSession(gardenIdRef.current).center) return;
 
     const remembered = getMapSession(gardenIdRef.current);
     // Create map with satellite as default
@@ -311,7 +284,7 @@ const GardenMap = () => {
         ],
       },
       center: remembered.center ?? mapCenter,
-      zoom: remembered.zoom ?? 17,
+      zoom: remembered.zoom ?? GARDEN_ZOOM,
       bearing: remembered.bearing ?? 0,
       pitch: remembered.pitch ?? 0,
       maxPitch: 85,
@@ -394,251 +367,6 @@ const GardenMap = () => {
     // Add layer switcher below navigation control
     map.addControl(new LayerSwitcherControl(), 'top-right');
 
-    // Create edit mode toggle control
-    class EditModeControl implements maplibregl.IControl {
-      private _container?: HTMLDivElement;
-
-      onAdd(map: maplibregl.Map): HTMLElement {
-        this._container = document.createElement('div');
-        this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
-        this._container.style.marginTop = '10px';
-
-        // View mode button
-        const viewBtn = document.createElement('button');
-        viewBtn.className = 'maplibregl-ctrl-icon';
-        viewBtn.type = 'button';
-        viewBtn.title = 'View Mode (Read Only)';
-        viewBtn.innerHTML = '👁️';
-        viewBtn.style.fontSize = '16px';
-        viewBtn.style.width = '29px';
-        viewBtn.style.height = '29px';
-        viewBtn.onclick = () => {
-          setIsEditMode(false);
-          viewBtn.style.backgroundColor = '#088';
-          editBtn.style.backgroundColor = '';
-        };
-
-        // Edit mode button
-        const editBtn = document.createElement('button');
-        editBtn.className = 'maplibregl-ctrl-icon';
-        editBtn.type = 'button';
-        editBtn.title = 'Edit Mode';
-        editBtn.innerHTML = '✏️';
-        editBtn.style.fontSize = '16px';
-        editBtn.style.width = '29px';
-        editBtn.style.height = '29px';
-        editBtn.onclick = () => {
-          setIsEditMode(true);
-          editBtn.style.backgroundColor = '#088';
-          viewBtn.style.backgroundColor = '';
-        };
-
-        // Set initial state (view mode)
-        viewBtn.style.backgroundColor = '#088';
-
-        this._container.appendChild(viewBtn);
-        this._container.appendChild(editBtn);
-
-        return this._container;
-      }
-
-      onRemove(): void {
-        this._container?.parentNode?.removeChild(this._container);
-      }
-    }
-
-    // Add edit mode toggle below layer switcher
-    map.addControl(new EditModeControl(), 'top-right');
-
-    // Create TerraDraw control with clean mode list
-    const drawControl = new MaplibreTerradrawControl({
-      modes: [
-        'render',
-        'point',
-        'polygon',
-        'rectangle',
-        'freehand',
-        'angled-rectangle',
-        'select',
-        'delete-selection',
-      ],
-      open: true,
-    });
-
-    // Add control to map
-    map.addControl(drawControl, 'top-left');
-    drawControlRef.current = drawControl;
-
-    // Listen to TerraDraw events
-    const terraDrawInstance = drawControl.getTerraDrawInstance();
-    if (terraDrawInstance) {
-      // When a shape is finished
-      terraDrawInstance.on('finish', async (id: string | number) => {
-        const allFeatures = drawControl.getFeatures().features;
-        setFeatures(allFeatures);
-        
-        // Find the newly created feature
-        const newFeature = allFeatures.find(f => f.id === id);
-        
-        if (newFeature && newFeature.geometry && dataStoreReady) {
-          try {
-            // Create a new GeoFeature entity
-            const geoFeatureIRI = createEntityIRI('GeoFeature');
-            const now = new Date().toISOString();
-            
-            // Convert GeoJSON geometry to WKT for storage
-            const wktGeometry = geojsonToWKT(newFeature.geometry);
-            
-            const geoFeatureData = {
-              geo: wktGeometry,
-              creationTime: now,
-              modificationTime: now,
-            };
-            
-            // Create GeoFeature using our clean hook
-            await createGeoFeature({
-              entityIRI: geoFeatureIRI,
-              data: geoFeatureData,
-            });
-            
-            // Add GeoFeature to the garden's geoFeatures array
-            const currentGarden = gardenRef.current;
-            const currentGardenIRI = currentGarden?.['@id'];
-            if (currentGardenIRI && currentGarden) {
-              const existingGeoFeatures = currentGarden.geoFeatures || [];
-              const updatedGarden = toReferences({
-                ...currentGarden,
-                geoFeatures: [
-                  ...existingGeoFeatures,
-                  { '@id': geoFeatureIRI }
-                ],
-              });
-
-              // Update garden using our clean hook
-              await updateGarden({
-                entityIRI: currentGardenIRI,
-                data: updatedGarden,
-              });
-              await refetchGarden();
-            }
-            
-            // Store the mapping
-            featureIdToIRIMapRef.current[id] = geoFeatureIRI;
-            
-            console.log('GeoFeature saved and added to garden:', geoFeatureIRI);
-            
-            // Show snackbar asking if user wants to specify the feature
-            enqueueSnackbar('', {
-              variant: 'newFeature' as const,
-              preventDuplicate: true,
-              onSpecifyFeature: () => {
-                NiceModal.show(NewFeatureWizardNiceModal, { geoFeatureIRI });
-              },
-            });
-          } catch (error) {
-            console.error('Failed to save GeoFeature:', error);
-            enqueueSnackbar('Failed to save feature', { variant: 'error' });
-          }
-        }
-      });
-
-      // When features are deleted or modified
-      terraDrawInstance.on('change', async (ids: (string | number)[], type: string) => {
-        if (type === 'delete') {
-          const allFeatures = drawControl.getFeatures().features;
-          setFeatures(allFeatures);
-          
-          // Delete the corresponding GeoFeatures
-          if (dataStoreReady) {
-            for (const id of ids) {
-              const geoFeatureIRI = featureIdToIRIMapRef.current[id];
-              if (geoFeatureIRI) {
-                try {
-                  // Remove from garden's geoFeatures array first
-                  const currentGarden = gardenRef.current;
-                  const currentGardenIRI = currentGarden?.['@id'];
-                  if (currentGardenIRI && currentGarden) {
-                    const existingGeoFeatures = currentGarden.geoFeatures || [];
-                    const updatedGeoFeatures = existingGeoFeatures.filter(
-                      (gf: any) => gf['@id'] !== geoFeatureIRI
-                    );
-                    const updatedGarden = toReferences({
-                      ...currentGarden,
-                      geoFeatures: updatedGeoFeatures,
-                    });
-
-                    // Update garden using our clean hook
-                    await updateGarden({
-                      entityIRI: currentGardenIRI,
-                      data: updatedGarden,
-                    });
-                    await refetchGarden();
-                  }
-                  
-                  // Delete GeoFeature using our clean hook
-                  await deleteGeoFeature(geoFeatureIRI);
-                  
-                  delete featureIdToIRIMapRef.current[id];
-                  console.log('GeoFeature deleted from garden:', geoFeatureIRI);
-                } catch (error) {
-                  console.error('Failed to delete GeoFeature:', error);
-                }
-              }
-            }
-          }
-        } else if (type === 'update' || type === 'styling') {
-          // Update the geometry when a feature is modified
-          const allFeatures = drawControl.getFeatures().features;
-          setFeatures(allFeatures);
-          
-          if (dataStoreReady) {
-            for (const id of ids) {
-              const geoFeatureIRI = featureIdToIRIMapRef.current[id];
-              const updatedFeature = allFeatures.find(f => f.id === id);
-              
-              if (geoFeatureIRI && updatedFeature && updatedFeature.geometry) {
-                try {
-                  // Convert GeoJSON geometry to WKT
-                  const wktGeometry = geojsonToWKT(updatedFeature.geometry);
-                  
-                  // An upsert replaces the whole document: start from the stored
-                  // feature so name, description and creationTime are kept.
-                  const stored = (await dataStoreRef.current?.loadOne('GeoFeature', geoFeatureIRI)) as
-                    | Record<string, unknown>
-                    | null
-                    | undefined;
-                  const updatedData = toReferences({
-                    ...(stored ?? {}),
-                    geo: wktGeometry,
-                    modificationTime: new Date().toISOString(),
-                  });
-                  
-                  // Update using our clean hook
-                  await updateGeoFeature({
-                    entityIRI: geoFeatureIRI,
-                    data: updatedData,
-                  });
-                  
-                  console.log('GeoFeature updated:', geoFeatureIRI);
-                } catch (error) {
-                  console.error('Failed to update GeoFeature:', error);
-                }
-              }
-            }
-          }
-        }
-      });
-
-      // When a feature is selected
-      terraDrawInstance.on('select', (id: string | number) => {
-        console.log('Feature selected:', id);
-        const geoFeatureIRI = featureIdToIRIMapRef.current[id];
-        if (geoFeatureIRI) {
-          console.log('Mapped to GeoFeature:', geoFeatureIRI);
-        }
-      });
-    }
-
     // Cleanup
     return () => {
       if (mapRef.current) {
@@ -647,7 +375,8 @@ const GardenMap = () => {
         setMapLoaded(false);
       }
     };
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gardenLoading]);
 
   return (
     <Box
@@ -671,6 +400,7 @@ const GardenMap = () => {
       >
         <div
           ref={mapContainer}
+          data-testid="garden-map"
           style={{
             width: '100%',
             height: '100%',
@@ -678,16 +408,61 @@ const GardenMap = () => {
           }}
         />
       </Box>
-      
-      {!isEditMode && (
+
+      <GeoFeatureLabels
+        map={labelMap}
+        labels={labels}
+        mode={shownLabelMode}
+        detail={labelDetail}
+        iconMode={iconMode}
+      />
+
+      {isEditMode ? (
+        <MapEditBar
+          tool={editor.tool}
+          onToolChange={editor.setTool}
+          selectedName={selectedName}
+          onDescribe={describeSelected}
+          canUndo={editor.canUndo}
+          onUndo={editor.undo}
+          removeDeletes={Boolean(editor.selectedIri && editor.newIris.has(editor.selectedIri) && !selectedName)}
+          onRemove={() =>
+            editor.removeSelected(
+              editor.selectedIri && editor.newIris.has(editor.selectedIri) && !selectedName ? 'delete' : 'end',
+            )
+          }
+          setupMode={setupMode}
+          onSetupModeChange={changeSetupMode}
+          changeDay={changeDay}
+          today={today}
+          onChangeDayChange={setChangeDay}
+          onDone={finishEditing}
+          busy={busy}
+        />
+      ) : (
         <>
-          <GeoFeatureLabels
-            map={labelMap}
-            labels={labels}
-            mode={labelMode}
-            detail={labelDetail}
-            iconMode={iconMode}
-          />
+          <Button
+            variant="contained"
+            size="small"
+            color="inherit"
+            startIcon={compact ? undefined : <EditOutlinedIcon />}
+            onClick={startEditing}
+            disabled={!mapLoaded}
+            data-testid="map-edit-open"
+            aria-label={t('mapEdit.editTitle')}
+            title={t('mapEdit.editTitle')}
+            sx={{
+              position: 'absolute',
+              top: 10,
+              left: 10,
+              zIndex: 2,
+              minWidth: compact ? 36 : undefined,
+              bgcolor: 'background.paper',
+              textTransform: 'none',
+            }}
+          >
+            {compact ? <EditOutlinedIcon fontSize="small" /> : t('mapEdit.edit')}
+          </Button>
           <MapOverlayFab overlays={overlays} onToggle={toggleOverlay} />
           <MapLabelModeFab
             mode={labelMode}

@@ -43,7 +43,8 @@ for the text to fit. A floating button (bottom right) switches between the label
 Labels never overlap. If two labels collide, the bigger feature wins, and in season
 mode a bed with plantings beats an empty one. Smaller beds appear as you zoom in.
 Clicks pass through a label to the feature below, so the bed card opens as before.
-In edit mode (✏️) the labels are hidden.
+In edit mode the bed names are shown, whatever label mode is chosen
+(see [Editing the Garden Map](garden-map-editing.md)).
 
 ## Plant images
 
@@ -88,20 +89,12 @@ size on the ground comes from `footprint()` in `geometry.ts`.
 
 ---
 
-## Outlook: history of map features (not implemented yet)
+## History of map features
 
-!!! note "Project note"
-    This is recorded for later. Nothing of it is implemented yet.
+Shapes keep their history since 2026-11-22: see
+[Editing the Garden Map](garden-map-editing.md#history-of-shapes). Still to come:
 
-* Geo features will get a **start and end date**, because beds change their shape
-  over the years.
-* It must always stay possible to see **what grew on which piece of ground**, even
-  after beds were deleted or redrawn. There are two ways to change a bed:
-    1. **Deactivate and redraw.** Deleting a bed only gives it an end date, and a new
-       bed is drawn. A real delete happens only when it is explicitly requested.
-    2. **Versioned geometry.** The old polygon is saved as a version, then the polygon
-       may be changed.
-* Season views (these labels, the timeline) then have to use the geometry that was
-  valid in the selected season.
+* Season views (these labels, the timeline) have to use the geometry that was
+  valid in the selected season (`geometryOn()`).
 * Later a “farmer view” will render proper bed fields (rows, arrangement). The season
   labels on the map are only a simple precursor of it.

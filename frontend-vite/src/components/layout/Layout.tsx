@@ -1,7 +1,7 @@
 import { Box, styled } from '@mui/material';
 import { Outlet, useLocation } from 'react-router-dom';
 import AppHeader from './AppHeader';
-import { usePlacementCleanup } from '../../hooks/usePlacementCleanup';
+import { useRemovalCleanup } from '../../hooks/useRemovalCleanup';
 import { PathnameProvider } from '@graviola/edb-state-hooks';
 
 // Import background image
@@ -38,7 +38,7 @@ const ContentContainer = styled(Box)({
 
 const Layout = () => {
   const { pathname } = useLocation();
-  usePlacementCleanup();
+  useRemovalCleanup();
 
   return (
     // Graviola intents (show, edit, saved, …) are answered by PergolaIntentBus

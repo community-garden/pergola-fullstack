@@ -20,7 +20,6 @@ import NiceModal from "@ebay/nice-modal-react";
 import { SparqlStoreProvider } from "@graviola/sparql-store-provider";
 import {
   EditEntityModal,
-  EntityDetailModal,
   KBMainDatabase,
   SimilarityFinderDrawer,
 } from "@graviola/edb-advanced-components";
@@ -49,6 +48,7 @@ import { MediaConfigProvider } from "../components/graviola/renderers/image-uplo
 import { useJsonFormsTranslator } from "../hooks/useJsonFormsTranslator";
 import { PergolaIntentBus } from "./PergolaIntentBus";
 import { useDetailViewConfig } from "./useDetailViewConfig";
+import { PergolaEntityDetailModal } from "../components/entity-detail/PergolaEntityDetailModal";
 import type { SemanticJsonFormNoOpsProps } from "@graviola/semantic-jsonform-types";
 
 /**
@@ -172,7 +172,8 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
   const modals = useMemo(
     () => ({
       [MODAL_EDIT_ENTITY]: EditEntityModal,
-      [MODAL_ENTITY_DETAIL]: EntityDetailModal,
+      // own shell around Graviola's detail renderer: no large side image
+      [MODAL_ENTITY_DETAIL]: PergolaEntityDetailModal,
       [MODAL_SIMILARITY_FINDER]: SimilarityFinderDrawer,
     }),
     [],

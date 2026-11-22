@@ -13,6 +13,7 @@
 
 const GARDEN_ID = 'Wurzelwerk';
 const KNOBLAUCH = 'https://data.semantic-desk.top/garden/PlantSpecies/knoblauch';
+const KNOBLAUCH_SCIENTIFIC = 'Allium sativum';
 const G = 'https://ontology.semantic-desk.top/garden#';
 
 const sparqlUrl = () =>
@@ -42,7 +43,11 @@ const visitDe = (path: string) =>
     },
   });
 
-/** Opens the row menu of the table row whose name cell is exactly `name`. */
+/**
+ * Opens the row menu of the table row with a cell that is exactly `name`.
+ * Plant species are found by their scientific name: with sparql-schema 1.8.1
+ * the name column of paged tables stays empty (see the Graviola upgrade page).
+ */
 const openRowMenu = (name: string) =>
   cy
     .contains('td', new RegExp(`^\\s*${name}\\s*$`), { timeout: 20000 })
@@ -55,7 +60,7 @@ const menuItem = (label: RegExp | string) => cy.contains('[role="menuitem"]', la
 describe('Graviola views', () => {
   it('row menu: built-in Show/Edit per row plus Pergola entries', () => {
     visitDe('plants?tab=species');
-    openRowMenu('Knoblauch');
+    openRowMenu(KNOBLAUCH_SCIENTIFIC);
     menuItem(/^Show$/).should('be.visible');
     menuItem(/^Edit$/).should('be.visible');
     menuItem('Pflanzung anlegen').should('be.visible');
@@ -73,21 +78,24 @@ describe('Graviola views', () => {
 
   it('detail view, edit from it, save without duplicating nested objects', () => {
     visitDe('plants?tab=species');
-    openRowMenu('Knoblauch');
+    openRowMenu(KNOBLAUCH_SCIENTIFIC);
     menuItem(/^Show$/).click();
 
-    // new detail renderer with labels from the JSON Forms translations
+    // Pergola's detail dialog around Graviola's detail renderer, labels from the JSON Forms translations
     cy.get('[role="dialog"]', { timeout: 15000 }).within(() => {
+      cy.contains('Pflanzenart').should('be.visible');
       cy.contains('Knoblauch').should('be.visible');
       cy.contains('Pflanzenfamilie').should('exist');
       cy.contains('Anbaukalender').should('exist');
       cy.contains('Mischkultur').should('exist');
+      // the image only once, in the card on top (no large side image)
+      cy.get('img[src*="knoblauch/frucht"]').should('have.length', 1);
     });
     cy.wait(500);
     cy.screenshot('03-detail-view');
 
-    // "Edit" in the detail view dispatches an edit-entity intent → edit dialog
-    cy.get('[role="dialog"]').contains('button', /^edit$/i).scrollIntoView().click();
+    // "Edit" in the detail view opens Graviola's edit dialog on top
+    cy.get('[data-testid="entity-detail-edit"]').click();
     cy.contains('Edit entry', { timeout: 15000 }).should('be.visible');
     cy.get('input[value="Knoblauch"]').should('exist');
     cy.wait(500);

@@ -21,6 +21,8 @@ export interface SchedulerItem<TData = unknown> {
   variant?: 'solid' | 'outlined';
   /** Native tooltip shown on hover */
   tooltip?: string;
+  /** Drawn with a strong outline (e.g. the item an open side panel is about) */
+  selected?: boolean;
   /**
    * Optional sub-ranges drawn as a thin strip at the bottom of the bar
    * (e.g. phases). Ranges are in timeline units and clipped to the item.

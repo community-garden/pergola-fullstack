@@ -1,15 +1,39 @@
 /**
- * Bed planner — plants, rows and areas in the Igel-Beet, saved in the store.
+ * Bed planner — plants, rows and areas in a bed, saved in the store.
  *
- * Needs the Wurzelwerk season data (scripts/local-dev.sh seed-season 2027).
- * The spec places a single plant and a row, reloads to see that they were
- * saved, and removes them again; an `after` hook deletes leftovers.
+ * The spec brings its own test bed (a 4 × 3 m bed outside the garden with one planting
+ * in 2027), so it never touches the real beds and their plans. It places a single plant
+ * and a row, reloads to see that they were saved, and removes them again; the `after`
+ * hook deletes the test bed, its planting and all placements of that planting.
  */
 
 const GARDEN_ID = 'Wurzelwerk';
-const BED = '8vfrdlxuyq9'; // Igel-Beet
+const GARDEN = 'https://data.semantic-desk.top/garden/Garden/Wurzelwerk';
+const G = 'https://ontology.semantic-desk.top/garden#';
+const BED = 'cypress-bed-planner';
+const TEST_PATCH = `${G}Patch/${BED}`;
+const TEST_FEATURE = `${G}GeoFeature/${BED}`;
+const TEST_PLANTING = `https://data.semantic-desk.top/garden/Planting/${BED}`;
 const URL = `/${GARDEN_ID}/beds/${BED}/plan?season=2027`;
 const SPARQL_UPDATE = Cypress.env('SPARQL_UPDATE_URL') || 'http://localhost:7880/update';
+
+const update = (body: string) =>
+  cy.request({
+    method: 'POST',
+    url: SPARQL_UPDATE,
+    form: true,
+    body: { update: `PREFIX g: <${G}>\n${body}` },
+    failOnStatusCode: false,
+  });
+
+/** Removes the test bed and everything that hangs on it — nothing else. */
+const removeTestBed = () => {
+  update(`DELETE { ?pp ?p ?o } WHERE { ?pp a g:PlantPlacement ; g:planting <${TEST_PLANTING}> ; ?p ?o }`);
+  update(`DELETE WHERE { <${TEST_PLANTING}> ?p ?o }`);
+  update(`DELETE WHERE { <${TEST_PATCH}> ?p ?o }`);
+  update(`DELETE WHERE { <${GARDEN}> g:geoFeatures <${TEST_FEATURE}> }`);
+  update(`DELETE WHERE { <${TEST_FEATURE}> ?p ?o }`);
+};
 
 const visitPlan = () =>
   cy.visit(URL, { onBeforeLoad: (win) => win.localStorage.setItem('i18nextLng', 'de') });
@@ -21,21 +45,24 @@ const count = () =>
     .then((text) => Number(/\d+/.exec(text)?.[0] ?? 0));
 
 describe('Bed planner', () => {
-  after(() => {
-    // leftovers of a failed run
-    cy.request({
-      method: 'POST',
-      url: SPARQL_UPDATE,
-      form: true,
-      body: {
-        update:
-          'PREFIX g: <https://ontology.semantic-desk.top/garden#> DELETE { ?s ?p ?o } WHERE { ?s a g:PlantPlacement . ?s ?p ?o }',
-      },
-      failOnStatusCode: false,
-    });
+  before(() => {
+    removeTestBed();
+    update(`INSERT DATA {
+      <${TEST_FEATURE}> a g:GeoFeature ;
+        g:geo "POLYGON ((13.7320 51.08255, 13.732057 51.08255, 13.732057 51.082523, 13.7320 51.082523, 13.7320 51.08255))" .
+      <${GARDEN}> g:geoFeatures <${TEST_FEATURE}> .
+      <${TEST_PATCH}> a g:Patch ; g:name "Cypress-Testbeet" ; g:patchType "bed" ; g:geoFeature <${TEST_FEATURE}> .
+      <${TEST_PLANTING}> a g:Planting ; g:name "Cypress-Test" ; g:patch <${TEST_PATCH}> ;
+        g:plantSpecies <https://data.semantic-desk.top/garden/PlantSpecies/kartoffel> ;
+        g:startDate "2027-04-01" ; g:endDate "2027-09-30" ; g:status "planned" ; g:role "main" .
+    }`);
   });
 
-  it('opens the plan of the Igel-Beet with its plantings', () => {
+  after(() => {
+    removeTestBed();
+  });
+
+  it('opens the plan of the test bed with its planting', () => {
     visitPlan();
     cy.get('[data-testid="bed-planner-map"]', { timeout: 20000 }).should('be.visible');
     cy.get('[data-testid="bed-plan-item"]').should('have.length.at.least', 1);

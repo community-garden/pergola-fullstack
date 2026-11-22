@@ -121,6 +121,31 @@ export const PlantPlacementSchema = z
     description: "A single plant, a row or an area of plants at a position in a bed",
   });
 
+// ---------------------------------------------------------------------------
+// BedNote — a note on a bed, in Markdown (bed page, notes panel).
+// Everybody may edit every note. Date and author are set by the app (the
+// author is the name from the login, empty without one); Graviola's
+// store-wide `$meta` stamping is not used.
+// ---------------------------------------------------------------------------
+
+export const BedNoteSchema = z
+  .object({
+    "@id": z.string().optional(),
+    "@type": z.literal(`${GARDEN_IRI}BedNote`),
+    patch: PatchSchema.describe("The bed the note is about"),
+    text: z.string().min(1).describe("The note, in Markdown"),
+    createdAt: z.string().optional().describe("When the note was written (ISO date-time)"),
+    modifiedAt: z.string().optional().describe("When the note was last changed (ISO date-time)"),
+    createdBy: z.string().optional().describe("Who wrote the note (name from the login)"),
+    modifiedBy: z.string().optional().describe("Who changed the note last (name from the login)"),
+  })
+  .loose()
+  .meta({
+    id: "BedNote",
+    title: "Bed note",
+    description: "A note on a bed, in Markdown",
+  });
+
 const ref = (definition: string, title: string, description?: string) => ({
   $ref: `#/definitions/${definition}`,
   title,
@@ -213,6 +238,23 @@ const plantingDefinitions: NonNullable<JsonSchema["definitions"]> = {
     required: ["planting", "x", "y"],
     additionalProperties: true,
   },
+  BedNote: {
+    type: "object",
+    title: "Bed note",
+    description: "A note on a bed, in Markdown",
+    properties: {
+      "@id": { type: "string", title: "ID" },
+      "@type": { type: "string", const: `${GARDEN_IRI}BedNote`, title: "Type" },
+      patch: ref("Patch", "Bed", "The bed the note is about"),
+      text: { type: "string", minLength: 1, contentMediaType: "text/markdown", title: "Note" },
+      createdAt: { type: "string", format: "date-time", title: "Written" },
+      modifiedAt: { type: "string", format: "date-time", title: "Changed" },
+      createdBy: { type: "string", title: "Written by", description: "Name from the login" },
+      modifiedBy: { type: "string", title: "Changed by", description: "Name from the login" },
+    },
+    required: ["patch", "text"],
+    additionalProperties: true,
+  },
 };
 
 export const plantingSchema: JsonSchema = mergeSchemaDefinitions([
@@ -243,11 +285,16 @@ export const plantingConfiguration = {
       label: "name",
       description: "notes",
     },
+    BedNote: {
+      label: "createdAt",
+      description: "text",
+    },
   },
   typeNameLabelMap: {
     Planting: "Planting",
     SeedStock: "Seed stock",
     PlantPlacement: "Plant placement",
+    BedNote: "Bed note",
   },
   typeNameUiSchemaOptionsMap: {
     Planting: {
@@ -257,6 +304,9 @@ export const plantingConfiguration = {
       dropdown: true,
     },
     PlantPlacement: {
+      dropdown: true,
+    },
+    BedNote: {
       dropdown: true,
     },
   },
@@ -298,9 +348,20 @@ export const plantingConfiguration = {
         ctl("notes", { options: { multi: true } }),
       ],
     },
+    BedNote: {
+      type: "VerticalLayout",
+      elements: [
+        ctl("patch"),
+        // Markdown editor (@graviola/edb-markdown-renderer, registered in provider/config.ts)
+        ctl("text", { options: { markdown: true } }),
+        row(ctl("createdAt", { options: { readonly: true } }), ctl("createdBy", { options: { readonly: true } })),
+        row(ctl("modifiedAt", { options: { readonly: true } }), ctl("modifiedBy", { options: { readonly: true } })),
+      ],
+    },
   },
 };
 
 export type Planting = z.infer<typeof PlantingSchema>;
 export type SeedStock = z.infer<typeof SeedStockSchema>;
 export type PlantPlacement = z.infer<typeof PlantPlacementSchema>;
+export type BedNote = z.infer<typeof BedNoteSchema>;

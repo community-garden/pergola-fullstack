@@ -1,9 +1,9 @@
 import type { PlantSpecies, PlantVariety } from './plant-schema';
 import type { Person } from './person-schema';
 import type { Patch } from './patch-schema';
-import type { Planting, PlantPlacement, SeedStock } from './planting-schema';
+import type { Planting, BedNote, PlantPlacement, SeedStock } from './planting-schema';
 import type { Garden } from './garden-schema';
-import type { GeoFeature } from './geo-feature-schema';
+import type { GeoFeature, GeoFeatureVersion } from './geo-feature-schema';
 import type { MapOverlay } from './map-overlay-schema';
 
 /**
@@ -25,8 +25,10 @@ export type PergolaRegistry = {
   Planting: Planting;
   SeedStock: SeedStock;
   PlantPlacement: PlantPlacement;
+  BedNote: BedNote;
   Garden: Garden;
   GeoFeature: GeoFeature;
+  GeoFeatureVersion: GeoFeatureVersion;
   MapOverlay: MapOverlay;
 };
 
