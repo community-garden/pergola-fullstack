@@ -57,3 +57,6 @@ frontend-vite/fixtures/local/
 e2e/cypress/results/
 # Static media (plant images …): data, not code — synced to the server separately
 frontend-vite/public/media/
+
+# Local import of the season planning data (kept out of git)
+scripts/import-saisonplanung.py
