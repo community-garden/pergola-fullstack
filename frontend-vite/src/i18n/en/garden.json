@@ -402,6 +402,10 @@
     "filterPerson": "Person",
     "allPersons": "All"
   },
+  "mapOverlays": {
+    "title": "Overlays",
+    "button": "Show or hide overlays"
+  },
   "mapLabels": {
     "title": "Labels",
     "button": "Choose labels",

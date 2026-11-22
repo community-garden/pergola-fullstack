@@ -32,12 +32,16 @@ import {
   type MapIconMode,
   type MapLabelMode,
 } from '@components/map/labels/buildMapLabels';
+import { useMapOverlays } from '@components/map/overlays/useMapOverlays';
+import { MapOverlayFab } from '@components/map/overlays/MapOverlayFab';
 import { GeoFeatureLabels, useMapLabelDetail } from '@components/map/labels/GeoFeatureLabels';
 import { MapLabelModeFab } from '@components/map/labels/MapLabelModeFab';
 import { geojsonToWKT, wktToGeoJSON } from '@terraformer/wkt';
 import { toReferences } from '../utils/toReferences';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import '@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css';
+
+const EMPTY_VISIBILITY: Record<string, boolean> = {};
 
 const GardenMap = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -135,6 +139,15 @@ const GardenMap = () => {
   const seasons = useMemo(() => availableSeasons(seasonData), [seasonData]);
   const labelMap = mapLoaded ? mapRef.current : null;
   const labelDetail = useMapLabelDetail(labelMap);
+
+  // --- Overlays: images under the beds, switched on and off per garden ---
+  const overlayVisibility = session.overlays ?? EMPTY_VISIBILITY;
+  const overlays = useMapOverlays(labelMap, mapLoaded, garden?.mapOverlays, overlayVisibility);
+  const toggleOverlay = useCallback(
+    (id: string, visible: boolean) =>
+      updateSession({ overlays: { ...(getMapSession(gardenIdRef.current).overlays ?? {}), [id]: visible } }),
+    [updateSession],
+  );
 
   // GeoFeatures have no name of their own; use the names of what sits on them.
   const viewFeatures = useMemo(
@@ -307,7 +320,10 @@ const GardenMap = () => {
     mapRef.current = map;
 
     // remember where the map looks (only changes made by the user, not the first fly-in)
-    map.on('moveend', () => {
+    map.on('moveend', (e) => {
+      // the initial camera and the fly-in to the garden have no originalEvent; they must not
+      // count as "the user looked around", or the fly-in would be skipped
+      if (!e.originalEvent && !getMapSession(gardenIdRef.current).center) return;
       const c = map.getCenter();
       updateMapSessionFor(gardenIdRef.current, {
         center: [c.lng, c.lat],
@@ -672,6 +688,7 @@ const GardenMap = () => {
             detail={labelDetail}
             iconMode={iconMode}
           />
+          <MapOverlayFab overlays={overlays} onToggle={toggleOverlay} />
           <MapLabelModeFab
             mode={labelMode}
             seasons={seasons}

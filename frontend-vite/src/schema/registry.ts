@@ -4,6 +4,7 @@ import type { Patch } from './patch-schema';
 import type { Planting, PlantPlacement, SeedStock } from './planting-schema';
 import type { Garden } from './garden-schema';
 import type { GeoFeature } from './geo-feature-schema';
+import type { MapOverlay } from './map-overlay-schema';
 
 /**
  * Type registry for Graviola's typed store API (`filterOne` / `filterMany`).
@@ -26,6 +27,7 @@ export type PergolaRegistry = {
   PlantPlacement: PlantPlacement;
   Garden: Garden;
   GeoFeature: GeoFeature;
+  MapOverlay: MapOverlay;
 };
 
 export type PergolaTypeName = keyof PergolaRegistry;

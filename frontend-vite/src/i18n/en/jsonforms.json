@@ -221,5 +221,13 @@
   },
   "x": { "label": "x (cm from the left edge)", "description": "Distance from the left (west) edge of the bed's bounding box" },
   "y": { "label": "y (cm from the top edge)", "description": "Distance from the top (north) edge of the bed's bounding box" },
-  "year": { "label": "Year (harvest/purchase)" }
+  "year": { "label": "Year (harvest/purchase)" },
+  "corners": {"label": "Corners (WKT)", "description": "Four corners as WKT POLYGON: top-left, top-right, bottom-right, bottom-left"},
+  "overlayImageUrl": {"label": "Image URL", "description": "Static file, e.g. /media/overlays/watercolor.webp"},
+  "overlayType": {"label": "Overlay type", "photo": "Photo", "plan": "Plan", "watercolor": "Watercolor", "other": "Other"},
+  "opacity": {"label": "Opacity", "description": "0 = transparent, 1 = opaque"},
+  "visible": {"label": "Visible", "description": "Shown on the map by default"},
+  "sortOrder": {"label": "Order", "description": "Higher numbers are drawn on top"},
+  "attribution": {"label": "Source", "description": "Who made the image, and how"},
+  "mapOverlays": {"label": "Map overlays"}
 }

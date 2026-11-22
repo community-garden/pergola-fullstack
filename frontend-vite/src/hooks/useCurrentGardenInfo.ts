@@ -4,7 +4,7 @@ import { useCurrentGarden } from './useCurrentGarden';
 import { Garden } from 'schema';
 
 /** Relations of a garden that are loaded together with it. */
-const GARDEN_RELATIONS = { geoFeatures: true, patches: true, mainGeoFeature: true } as const;
+const GARDEN_RELATIONS = { geoFeatures: true, patches: true, mainGeoFeature: true, mapOverlays: true } as const;
 
 export const useCurrentGardenInfo = () => {
   const { gardenIRI } = useCurrentGarden();

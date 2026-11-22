@@ -3,6 +3,7 @@ import { Workshop, Shed, BeeStand, Seating, FirePlace, WaterBody } from './featu
 import { Garden } from './garden-schema';
 import { GeoFeature } from './geo-feature-schema';
 import { Person } from './person-schema';
+import { MapOverlay } from './map-overlay-schema';
 import { Planting, PlantPlacement, SeedStock } from './planting-schema';
 import { GrowingSeason, Patch, PhysicalCharacteristics, PlantingPlan, PlantingPlanItem, PlantSpecies, PlantVariety, Requirements, Timing } from './patch-schema';
 
@@ -23,6 +24,8 @@ export {
 } from './patch-schema';
 
 export { PersonSchema, personSchema } from './person-schema';
+export { MapOverlaySchema, mapOverlaySchema, MAP_OVERLAY_TYPES } from './map-overlay-schema';
+export type { MapOverlay } from './map-overlay-schema';
 export {
   PlantingSchema,
   PlantPlacementSchema,
@@ -73,5 +76,6 @@ export type GardenDefinitions = {
   Planting: Planting,
   SeedStock: SeedStock,
   PlantPlacement: PlantPlacement,
+  MapOverlay: MapOverlay,
   Garden: Garden,
 }

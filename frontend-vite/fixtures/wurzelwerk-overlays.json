@@ -1,0 +1,33 @@
+{
+  "garden": "https://data.semantic-desk.top/garden/Garden/Wurzelwerk",
+  "overlays": [
+    {
+      "id": "drohne-2026",
+      "name": "Drohnenfoto 2026",
+      "description": "Senkrechtaufnahme per Drohne, Sommer 2026. Über vier Passpunkte (Schuppen, Kuppelzelte, Gewächshäuschen, Container) auf die Satellitenansicht gelegt; Abweichung ca. 0,4 m.",
+      "type": "photo",
+      "source": "Saisonplanung/satelite/MAX_0011.JPG",
+      "file": "drohne-2026.webp",
+      "width": 3000,
+      "corners": "POLYGON ((13.7307350 51.0839230, 13.7330730 51.0835438, 13.7327334 51.0827176, 13.7303954 51.0830969, 13.7307350 51.0839230))",
+      "opacity": 1,
+      "visible": false,
+      "sortOrder": 0,
+      "attribution": "Drohnenaufnahme MAX_0011.JPG"
+    },
+    {
+      "id": "aquarell-2026",
+      "name": "Aquarellkarte 2026",
+      "description": "Aquarell nach dem Drohnenfoto, in Google Flow (Nano Banana) erzeugt; liegt deckungsgleich auf dem Foto und teilt dessen Eckpunkte.",
+      "type": "watercolor",
+      "source": "Saisonplanung/satelite/aquarell-flow.jpg",
+      "file": "aquarell-2026.webp",
+      "width": 2752,
+      "corners": "POLYGON ((13.7307350 51.0839230, 13.7330730 51.0835438, 13.7327334 51.0827176, 13.7303954 51.0830969, 13.7307350 51.0839230))",
+      "opacity": 0.9,
+      "visible": true,
+      "sortOrder": 1,
+      "attribution": "Google Flow (Nano Banana 2.1) nach MAX_0011.JPG"
+    }
+  ]
+}

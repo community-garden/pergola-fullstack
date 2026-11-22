@@ -7,6 +7,7 @@ import { featureTypesSchema, featureTypesConfiguration } from "./feature-types-s
 import { plantConfiguration, plantSchema } from "./plant-schema";
 import { personConfiguration, personSchema } from "./person-schema";
 import { plantingConfiguration, plantingSchema } from "./planting-schema";
+import { mapOverlayConfiguration, mapOverlaySchema, MapOverlaySchema } from "./map-overlay-schema";
 import { mergeSchemaDefinitions } from "./utils/mergeSchemaDefinitions";
 
 const GARDEN_IRI = "https://ontology.semantic-desk.top/garden#";
@@ -22,6 +23,7 @@ const GardenSchema = z
     patches: z.array(PatchSchema).optional().describe("Patches in this garden"),
     geoFeatures: z.array(GeoFeatureSchema).optional().describe("Geographic features in this garden"),
     mainGeoFeature: GeoFeatureSchema.optional().describe("Main geographic feature of the garden"),
+    mapOverlays: z.array(MapOverlaySchema).optional().describe("Images laid over the garden map"),
   })
   .loose()
   .meta({
@@ -74,6 +76,12 @@ const gardenJsonSchema: JsonSchema = {
           title: "Main geographic feature",
           description: "Main geographic feature of the garden",
         },
+        mapOverlays: {
+          type: "array",
+          title: "Map overlays",
+          description: "Images laid over the garden map",
+          items: { $ref: "#/definitions/MapOverlay" },
+        },
       },
       required: ["name"],
       additionalProperties: true,
@@ -89,6 +97,7 @@ export const schema: JsonSchema = mergeSchemaDefinitions([
   featureTypesSchema,
   personSchema,
   plantingSchema,
+  mapOverlaySchema,
 ]);
 
 export { GardenSchema };
@@ -108,6 +117,7 @@ export const gardenConfiguration = {
     ...featureTypesConfiguration.primaryFields,
     ...personConfiguration.primaryFields,
     ...plantingConfiguration.primaryFields,
+    ...mapOverlayConfiguration.primaryFields,
   },
   typeNameLabelMap: {
     Garden: "Garden",
@@ -117,6 +127,7 @@ export const gardenConfiguration = {
     ...featureTypesConfiguration.typeNameLabelMap,
     ...personConfiguration.typeNameLabelMap,
     ...plantingConfiguration.typeNameLabelMap,
+    ...mapOverlayConfiguration.typeNameLabelMap,
   },
   typeNameUiSchemaOptionsMap: {
     Garden: {
@@ -128,6 +139,7 @@ export const gardenConfiguration = {
     ...featureTypesConfiguration.typeNameUiSchemaOptionsMap,
     ...personConfiguration.typeNameUiSchemaOptionsMap,
     ...plantingConfiguration.typeNameUiSchemaOptionsMap,
+    ...mapOverlayConfiguration.typeNameUiSchemaOptionsMap,
   },
   uischemata: {
     Garden: generateDefaultUISchema(
@@ -150,5 +162,6 @@ export const gardenConfiguration = {
     ...featureTypesConfiguration.uischemata,
     ...personConfiguration.uischemata,
     ...plantingConfiguration.uischemata,
+    ...mapOverlayConfiguration.uischemata,
   },
 };

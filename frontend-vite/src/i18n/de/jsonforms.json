@@ -221,5 +221,13 @@
   },
   "x": { "label": "x (cm vom linken Rand)", "description": "Abstand von der linken (West-)Kante der Beet-Bounding-Box" },
   "y": { "label": "y (cm vom oberen Rand)", "description": "Abstand von der oberen (Nord-)Kante der Beet-Bounding-Box" },
-  "year": { "label": "Jahr (Ernte/Kauf)" }
+  "year": { "label": "Jahr (Ernte/Kauf)" },
+  "corners": {"label": "Eckpunkte (WKT)", "description": "Vier Ecken als WKT-POLYGON: oben links, oben rechts, unten rechts, unten links"},
+  "overlayImageUrl": {"label": "Bild-URL", "description": "Statische Datei, z. B. /media/overlays/aquarell.webp"},
+  "overlayType": {"label": "Art des Overlays", "photo": "Foto", "plan": "Plan", "watercolor": "Aquarell", "other": "Sonstiges"},
+  "opacity": {"label": "Deckkraft", "description": "0 = durchsichtig, 1 = deckend"},
+  "visible": {"label": "Sichtbar", "description": "Standardmäßig auf der Karte eingeblendet"},
+  "sortOrder": {"label": "Reihenfolge", "description": "Höhere Zahlen werden weiter oben gezeichnet"},
+  "attribution": {"label": "Quelle", "description": "Wer hat das Bild gemacht, und wie"},
+  "mapOverlays": {"label": "Karten-Overlays"}
 }

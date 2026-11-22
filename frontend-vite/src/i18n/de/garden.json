@@ -402,6 +402,10 @@
     "filterPerson": "Person",
     "allPersons": "Alle"
   },
+  "mapOverlays": {
+    "title": "Overlays",
+    "button": "Overlays ein- und ausblenden"
+  },
   "mapLabels": {
     "title": "Beschriftung",
     "button": "Beschriftung wählen",

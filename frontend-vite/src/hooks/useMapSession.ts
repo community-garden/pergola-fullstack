@@ -17,6 +17,8 @@ export interface MapSession {
   labels?: string;
   /** value of `?icons=` (`emoji`; `images` is the default) */
   icons?: string;
+  /** overlay IRI → shown or hidden, as chosen on the map */
+  overlays?: Record<string, boolean>;
 }
 
 const EMPTY: MapSession = {};
