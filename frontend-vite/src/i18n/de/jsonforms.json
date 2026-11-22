@@ -94,6 +94,7 @@
   "pH": { "label": "pH-Wert" },
   "physicalCharacteristics": { "label": "Abstände & Wuchs" },
   "plannedQuantity": { "label": "Geplante Anzahl" },
+  "planting": { "label": "Pflanzung", "description": "Zu welcher Pflanzung die Pflanze gehört" },
   "plantingEnd": { "label": "Pflanzen bis (Monat)" },
   "plantingInfo": { "label": "Pflanzen" },
   "plantingPlans": { "label": "Anbaupläne" },
@@ -143,6 +144,7 @@
     "other": "Sonstiges"
   },
   "seedPacket": { "label": "Steckbrief (wie auf der Saatguttüte)" },
+  "shape": { "label": "Reihe oder Fläche (WKT, cm)", "description": "Eine Reihe (LINESTRING) oder Fläche (POLYGON) in Beet-Zentimetern; leer bei einer einzelnen Pflanze" },
   "shedType": {
     "label": "Typ",
     "tool_shed": "Geräteschuppen",
@@ -216,5 +218,7 @@
     "cold_frame": "Frühbeet",
     "other": "Sonstiges"
   },
+  "x": { "label": "x (cm vom linken Rand)", "description": "Abstand von der linken (West-)Kante der Beet-Bounding-Box" },
+  "y": { "label": "y (cm vom oberen Rand)", "description": "Abstand von der oberen (Nord-)Kante der Beet-Bounding-Box" },
   "year": { "label": "Jahr (Ernte/Kauf)" }
 }

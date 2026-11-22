@@ -45,7 +45,7 @@ const range = (b: Binding, s: string, e: string): MonthRange | undefined => {
 
 export async function referenceFetchPlants(): Promise<PlantInfo[]> {
   const rows = await sparqlSelect(`
-    SELECT ?s ?type ?name ?icon ?image ?family ?nd ?per ?species
+    SELECT ?s ?type ?name ?icon ?image ?family ?nd ?per ?species ?sp ?rsp
            ?pcS ?pcE ?soS ?soE ?plS ?plE ?haS ?haE
     WHERE {
       VALUES ?type { g:PlantSpecies g:PlantVariety }
@@ -56,6 +56,10 @@ export async function referenceFetchPlants(): Promise<PlantInfo[]> {
       OPTIONAL { ?s g:nutrientDemand ?nd }
       OPTIONAL { ?s g:perennial ?per }
       OPTIONAL { ?s g:species ?species }
+      OPTIONAL {
+        ?s g:physicalCharacteristics ?pc .
+        OPTIONAL { ?pc g:spacing ?sp } OPTIONAL { ?pc g:rowSpacing ?rsp }
+      }
       OPTIONAL {
         ?s g:growingSeason ?gs .
         OPTIONAL { ?gs g:preCultivationStart ?pcS } OPTIONAL { ?gs g:preCultivationEnd ?pcE }
@@ -78,6 +82,8 @@ export async function referenceFetchPlants(): Promise<PlantInfo[]> {
       nutrientDemand: str(b, 'nd'),
       perennial: bool(b, 'per'),
       speciesIri: str(b, 'species'),
+      spacing: num(b, 'sp'),
+      rowSpacing: num(b, 'rsp'),
       phases: {
         preCultivation: range(b, 'pcS', 'pcE'),
         sowing: range(b, 'soS', 'soE'),

@@ -66,6 +66,10 @@ export interface PlantInfo {
   perennial?: boolean;
   /** For varieties: the species IRI */
   speciesIri?: string;
+  /** Recommended spacing in the row, in cm (bed planner: diameter of a plant) */
+  spacing?: number;
+  /** Recommended spacing between rows, in cm */
+  rowSpacing?: number;
   phases: PlantPhases;
 }
 
@@ -115,6 +119,7 @@ const idOf = (ref: unknown): string | undefined => {
 /** Plant types are `.loose()`, so fields not shared by species and varieties are `unknown`. */
 const asString = (v: unknown) => (typeof v === 'string' ? v : undefined);
 const asBoolean = (v: unknown) => (typeof v === 'boolean' ? v : undefined);
+const asNumber = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : undefined);
 
 const range = (start?: number, end?: number): MonthRange | undefined =>
   start !== undefined && end !== undefined ? [start, end] : undefined;
@@ -132,6 +137,7 @@ export async function fetchPlants(store: SeasonStore): Promise<PlantInfo[]> {
     kind: PlantInfo['kind'],
   ): PlantInfo => {
     const gs = doc.growingSeason;
+    const pc = doc.physicalCharacteristics;
     return {
       iri: doc['@id']!,
       kind,
@@ -142,6 +148,8 @@ export async function fetchPlants(store: SeasonStore): Promise<PlantInfo[]> {
       nutrientDemand: asString(doc.nutrientDemand),
       perennial: asBoolean(doc.perennial),
       speciesIri: 'species' in doc ? idOf(doc.species) : undefined,
+      spacing: asNumber(pc?.spacing),
+      rowSpacing: asNumber(pc?.rowSpacing),
       phases: {
         preCultivation: range(gs?.preCultivationStart, gs?.preCultivationEnd),
         sowing: range(gs?.sowingStart, gs?.sowingEnd),

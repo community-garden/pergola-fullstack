@@ -3,7 +3,7 @@ import { Workshop, Shed, BeeStand, Seating, FirePlace, WaterBody } from './featu
 import { Garden } from './garden-schema';
 import { GeoFeature } from './geo-feature-schema';
 import { Person } from './person-schema';
-import { Planting, SeedStock } from './planting-schema';
+import { Planting, PlantPlacement, SeedStock } from './planting-schema';
 import { GrowingSeason, Patch, PhysicalCharacteristics, PlantingPlan, PlantingPlanItem, PlantSpecies, PlantVariety, Requirements, Timing } from './patch-schema';
 
 // JSON Schema exports
@@ -25,6 +25,7 @@ export {
 export { PersonSchema, personSchema } from './person-schema';
 export {
   PlantingSchema,
+  PlantPlacementSchema,
   SeedStockSchema,
   plantingSchema,
   PLANTING_ROLES,
@@ -36,7 +37,7 @@ export { NUTRIENT_DEMANDS } from './plant-schema';
 
 // Type exports
 export type { Person } from './person-schema';
-export type { Planting, SeedStock } from './planting-schema';
+export type { Planting, PlantPlacement, SeedStock } from './planting-schema';
 export type { Garden } from './garden-schema';
 export type {
   Patch,
@@ -71,5 +72,6 @@ export type GardenDefinitions = {
   Person: Person,
   Planting: Planting,
   SeedStock: SeedStock,
+  PlantPlacement: PlantPlacement,
   Garden: Garden,
 }

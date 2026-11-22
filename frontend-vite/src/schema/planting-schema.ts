@@ -86,6 +86,41 @@ export const SeedStockSchema = z
     description: "Seed, tubers or young plants the garden has in stock",
   });
 
+// ---------------------------------------------------------------------------
+// PlantPlacement — one plant, a row or an area of plants in a bed (bed planner).
+// The position is relative to the bed: centimetres from the top-left
+// (north-west) corner of the bed polygon's bounding box, x to the east,
+// y to the south (see components/bed-planner/bedFrame.ts). Species, variety,
+// bed and period come from the planting.
+// Without `shape` it is a single plant at x/y. With `shape` it is a row
+// (LINESTRING) or an area (POLYGON) in the same centimetres, x/y is its first
+// point; the single plants are computed from `spacing` and `rowSpacing`
+// (components/bed-planner/bedLayout.ts).
+// ---------------------------------------------------------------------------
+
+export const PlantPlacementSchema = z
+  .object({
+    "@id": z.string().optional(),
+    "@type": z.literal(`${GARDEN_IRI}PlantPlacement`),
+    name: z.string().optional().describe("Label, filled in automatically if empty"),
+    planting: PlantingSchema.describe("The planting this plant belongs to"),
+    x: z.number().describe("Centimetres from the left (west) edge of the bed's bounding box"),
+    y: z.number().describe("Centimetres from the top (north) edge of the bed's bounding box"),
+    shape: z
+      .string()
+      .optional()
+      .describe("A row (LINESTRING) or an area (POLYGON) as WKT in bed centimetres; empty for a single plant"),
+    spacing: z.number().optional().describe("Centimetres between the plants of a row or area"),
+    rowSpacing: z.number().optional().describe("Centimetres between the rows of an area"),
+    notes: z.string().optional(),
+  })
+  .loose()
+  .meta({
+    id: "PlantPlacement",
+    title: "Plant placement",
+    description: "A single plant, a row or an area of plants at a position in a bed",
+  });
+
 const ref = (definition: string, title: string, description?: string) => ({
   $ref: `#/definitions/${definition}`,
   title,
@@ -147,6 +182,37 @@ const plantingDefinitions: NonNullable<JsonSchema["definitions"]> = {
     required: ["name"],
     additionalProperties: true,
   },
+  PlantPlacement: {
+    type: "object",
+    title: "Plant placement",
+    description: "A single plant, a row or an area of plants at a position in a bed",
+    properties: {
+      "@id": { type: "string", title: "ID" },
+      "@type": { type: "string", const: `${GARDEN_IRI}PlantPlacement`, title: "Type" },
+      name: { type: "string", title: "Label", description: "Label, filled in automatically if empty" },
+      planting: ref("Planting", "Planting", "The planting this plant belongs to"),
+      x: {
+        type: "number",
+        title: "x (cm)",
+        description: "Centimetres from the left (west) edge of the bed's bounding box",
+      },
+      y: {
+        type: "number",
+        title: "y (cm)",
+        description: "Centimetres from the top (north) edge of the bed's bounding box",
+      },
+      shape: {
+        type: "string",
+        title: "Row or area (WKT, cm)",
+        description: "A row (LINESTRING) or an area (POLYGON) as WKT in bed centimetres; empty for a single plant",
+      },
+      spacing: { type: "number", title: "Spacing (cm)", description: "Centimetres between the plants of a row or area" },
+      rowSpacing: { type: "number", title: "Row spacing (cm)", description: "Centimetres between the rows of an area" },
+      notes: { type: "string", title: "Notes" },
+    },
+    required: ["planting", "x", "y"],
+    additionalProperties: true,
+  },
 };
 
 export const plantingSchema: JsonSchema = mergeSchemaDefinitions([
@@ -173,16 +239,24 @@ export const plantingConfiguration = {
       label: "name",
       description: "source",
     },
+    PlantPlacement: {
+      label: "name",
+      description: "notes",
+    },
   },
   typeNameLabelMap: {
     Planting: "Planting",
     SeedStock: "Seed stock",
+    PlantPlacement: "Plant placement",
   },
   typeNameUiSchemaOptionsMap: {
     Planting: {
       dropdown: true,
     },
     SeedStock: {
+      dropdown: true,
+    },
+    PlantPlacement: {
       dropdown: true,
     },
   },
@@ -213,8 +287,20 @@ export const plantingConfiguration = {
         ctl("notes", { options: { multi: true } }),
       ],
     },
+    PlantPlacement: {
+      type: "VerticalLayout",
+      elements: [
+        ctl("planting"),
+        row(ctl("x"), ctl("y")),
+        ctl("shape"),
+        row(ctl("spacing"), ctl("rowSpacing")),
+        ctl("name"),
+        ctl("notes", { options: { multi: true } }),
+      ],
+    },
   },
 };
 
 export type Planting = z.infer<typeof PlantingSchema>;
 export type SeedStock = z.infer<typeof SeedStockSchema>;
+export type PlantPlacement = z.infer<typeof PlantPlacementSchema>;

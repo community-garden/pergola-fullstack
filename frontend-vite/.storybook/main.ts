@@ -8,6 +8,8 @@ const config: StorybookConfig = {
   "addons": [
     "@chromatic-com/storybook",
   ],
+  // public/ (e.g. the plant images under /media, which are not versioned)
+  staticDirs: ["../public"],
   "framework": {
     "name": "@storybook/react-vite",
     "options": {}

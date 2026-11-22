@@ -29,7 +29,8 @@ const ringCentroid = (ring: Ring): [number, number] | undefined => {
   return [cx / (3 * area), cy / (3 * area)];
 };
 
-const pointInRing = ([x, y]: [number, number], ring: Ring): boolean => {
+/** Ray casting; works for any planar coordinates, not only [lng, lat]. */
+export const pointInRing = ([x, y]: [number, number], ring: Ring): boolean => {
   let inside = false;
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
     const [xi, yi] = ring[i];
@@ -108,7 +109,19 @@ export const approxArea = (geometry: GeoJSON.Geometry): number => {
   }
 };
 
-const METERS_PER_DEGREE = 111_320;
+/** Metres per degree of latitude (and of longitude at the equator). */
+export const METERS_PER_DEGREE = 111_320;
+
+/** Outer ring of a polygon, or of the largest part of a multipolygon; undefined for points and lines. */
+export const largestRing = (geometry: GeoJSON.Geometry): number[][] | undefined => {
+  if (geometry.type === 'Polygon') return geometry.coordinates[0];
+  if (geometry.type === 'MultiPolygon') {
+    return [...geometry.coordinates]
+      .map((poly) => poly[0] ?? [])
+      .sort((a, b) => Math.abs(ringArea(b)) - Math.abs(ringArea(a)))[0];
+  }
+  return undefined;
+};
 
 /** Size of a feature on the ground, used to fit plant images into a bed. */
 export interface Footprint {
@@ -123,13 +136,7 @@ export interface Footprint {
 
 /** Footprint of a polygon (the largest part of a multipolygon); undefined for points and lines. */
 export const footprint = (geometry: GeoJSON.Geometry): Footprint | undefined => {
-  let ring: Ring | undefined;
-  if (geometry.type === 'Polygon') ring = geometry.coordinates[0];
-  else if (geometry.type === 'MultiPolygon') {
-    ring = [...geometry.coordinates]
-      .map((poly) => poly[0] ?? [])
-      .sort((a, b) => Math.abs(ringArea(b)) - Math.abs(ringArea(a)))[0];
-  }
+  const ring = largestRing(geometry);
   if (!ring || ring.length < 3) return undefined;
   const lngs = ring.map((p) => p[0]);
   const lats = ring.map((p) => p[1]);

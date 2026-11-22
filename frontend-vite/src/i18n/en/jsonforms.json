@@ -94,6 +94,7 @@
   "pH": { "label": "pH" },
   "physicalCharacteristics": { "label": "Spacing & growth" },
   "plannedQuantity": { "label": "Planned quantity" },
+  "planting": { "label": "Planting", "description": "The planting this plant belongs to" },
   "plantingEnd": { "label": "Planting end (month)" },
   "plantingInfo": { "label": "Planting out" },
   "plantingPlans": { "label": "Planting plans" },
@@ -143,6 +144,7 @@
     "other": "Other"
   },
   "seedPacket": { "label": "Fact sheet (as on the seed packet)" },
+  "shape": { "label": "Row or area (WKT, cm)", "description": "A row (LINESTRING) or an area (POLYGON) in bed centimetres; empty for a single plant" },
   "shedType": {
     "label": "Shed type",
     "tool_shed": "Tool shed",
@@ -216,5 +218,7 @@
     "cold_frame": "Cold frame",
     "other": "Other"
   },
+  "x": { "label": "x (cm from the left edge)", "description": "Distance from the left (west) edge of the bed's bounding box" },
+  "y": { "label": "y (cm from the top edge)", "description": "Distance from the top (north) edge of the bed's bounding box" },
   "year": { "label": "Year (harvest/purchase)" }
 }

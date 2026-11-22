@@ -89,7 +89,7 @@ export const useSeasonData = () => {
 };
 
 /** Display helpers shared by timeline, map card and lists. */
-export const plantingPlant = (planting: PlantingInfo, data: SeasonData) => {
+export const plantingPlant = (planting: PlantingInfo, data: Pick<SeasonData, 'plantsByIri'>) => {
   const variety = planting.varietyIri ? data.plantsByIri.get(planting.varietyIri) : undefined;
   const species =
     (planting.speciesIri ? data.plantsByIri.get(planting.speciesIri) : undefined) ??
@@ -97,7 +97,7 @@ export const plantingPlant = (planting: PlantingInfo, data: SeasonData) => {
   return { species, variety };
 };
 
-export const plantingLabel = (planting: PlantingInfo, data: SeasonData) => {
+export const plantingLabel = (planting: PlantingInfo, data: Pick<SeasonData, 'plantsByIri'>) => {
   const { species, variety } = plantingPlant(planting, data);
   const icon = variety?.icon ?? species?.icon ?? '🌱';
   /** main image of the variety, else of the species */
