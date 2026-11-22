@@ -10,6 +10,10 @@
  * no names (PlantSpecies, Person, Patch, …) and no BedNote text. Fixed in
  * sparql-schema 1.8.3.
  *
+ * Relation columns read the related entity's label from `<relation>_label_pri`.
+ * Before sparql-schema 1.9.1 it was missing for stub schemas (`<Type>Stub`
+ * references), so a variety's species or a planting's bed showed nothing.
+ *
  * Runs against a live Oxigraph (VITE_SPARQL_API_URL; the local stack is
  * http://localhost:7880/query).
  */
@@ -71,6 +75,17 @@ describe("table columns show the stored values", () => {
           const expected = iris.filter((iri) => has.has(`${iri} ${property}`)).length;
           const shown = rows.filter((r) => r[`${property}_single`]?.value !== undefined).length;
           if (shown < expected) gaps.push(`${property}${property === label ? " (label)" : ""}: ${shown}/${expected}`);
+        }
+        // single relations: the related entity's label (relation column chip)
+        for (const [property, propertySchema] of Object.entries(schema.properties ?? {})) {
+          const ref = (propertySchema as { $ref?: string }).$ref;
+          const targetLabel = ref ? primaryFields[ref.split("/").pop()!]?.label : undefined;
+          if (!targetLabel) continue;
+          const linked = await sparqlRows(
+            `SELECT DISTINCT ?e WHERE { VALUES ?e { ${iris.map((i) => `<${i}>`).join(" ")} } ?e <${BASE_IRI}${property}> ?t . ?t <${BASE_IRI}${targetLabel}> ?l }`,
+          );
+          const shown = rows.filter((r) => r[`${property}_label_pri`]?.value !== undefined).length;
+          if (shown < linked.length) gaps.push(`${property} (relation label): ${shown}/${linked.length}`);
         }
         expect(gaps).toEqual([]);
       });
