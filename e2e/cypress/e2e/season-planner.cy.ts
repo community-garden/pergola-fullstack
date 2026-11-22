@@ -29,7 +29,8 @@ describe('Season planning — plants & seeds', () => {
 
   it('opens the gardener-oriented species form', () => {
     visitDe('plants?tab=species');
-    cy.contains('button', /create new|neu/i, { timeout: 15000 }).click();
+    // icon-only toolbar button since edb-table-components 2.3
+    cy.get('button[aria-label="create new"]', { timeout: 15000 }).first().click();
     cy.contains('Steckbrief', { timeout: 10000 }).should('be.visible');
     cy.contains('label', 'Nährstoffbedarf').should('exist');
     // botanical details are hidden in the gardener form

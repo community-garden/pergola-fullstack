@@ -1,21 +1,22 @@
 # Graviola 2026-11 upgrade
 
-Pergola uses the `@graviola/*` releases of 2026-11-21 (e.g. `sparql-schema` 1.8.1,
-`sparql-db-impl` 1.9.2, `edb-state-hooks` 1.8.3, `edb-table-components` 2.2.0,
-`edb-advanced-components` 1.7.8, `sparql-store-provider` 7.0.3). The frontend and
+Pergola uses the `@graviola/*` releases of 2026-11-22 (e.g. `sparql-schema` 1.8.3,
+`sparql-db-impl` 1.9.4, `edb-state-hooks` 1.8.5, `edb-table-components` 2.3.0,
+`edb-advanced-components` 1.7.10, `sparql-store-provider` 7.0.5). The frontend and
 the watering API use the same versions.
 
 <video controls width="100%" style="border-radius:8px">
   <source src="/media/cypress/videos/graviola-views.cy.ts.mp4" type="video/mp4">
 </video>
 
-!!! warning "Needs a sparql-schema patch release"
-    In `sparql-schema` 1.8.1, paged list queries leave required properties unbound
-    outside their subquery. Tables then show **no names** for plant species and
-    persons (the name column only has the image). The fix is on branch
-    `fix/paged-select-required-outer` of graviola-framework (commit 8b4b0ae3) and
-    must be published before the tables are usable again. The video above was
-    recorded with that fix applied locally.
+!!! note "Empty names in tables (fixed in sparql-schema 1.8.3)"
+    `sparql-schema` 1.8.1 left *required* properties unbound outside the subquery
+    of paged list queries. Every table column of a required property stayed empty:
+    the names of plant species, varieties, persons, beds and other garden features,
+    the text of bed notes, x/y of plant placements. Types whose name is optional
+    (plantings, seating, fire place) were fine — hence "sometimes".
+    `frontend-vite/src/__tests__/table-columns.test.ts` checks every scalar column
+    of the first table page of every type against the stored values.
 
 ---
 
@@ -43,12 +44,15 @@ linked entity is never written back.
 they are listed in `include`:
 
 ```ts
-loadDocumentAsync(gardenIRI, {
-  include: { geoFeatures: true, patches: true, mainGeoFeature: true },
-});
+loadDocumentAsync(gardenIRI, { include: GARDEN_RELATIONS });
 ```
 
 `loadOne` (forms, detail view) still loads relations.
+
+`schema/gardenRelations.ts` lists every relation of the garden. Saving the garden
+from the map writes the whole document back, so a relation missing there would be
+deleted; `sparql-datastore.test.ts` fails when the Garden schema gains a relation
+that is not listed.
 
 ### Typed store API
 
@@ -90,6 +94,8 @@ Limits of the SPARQL implementation (2026-11):
   `name_single`, `name_entity` and `name_label_group`.
 * Graviola's **Show / Edit / Delete permanently** appear per row again (English labels
   for now).
+* Since 2.3.0 the toolbar buttons are icons (e.g. `aria-label="create new"`), and
+  tables can switch to a list view.
 * Pergola's own row entries come from `hooks/usePergolaRowActions.ts`, passed as
   `actionRegistry`:
     * plant species and varieties: **Pflanzung anlegen** (planting dialog prefilled with
@@ -119,8 +125,9 @@ for `plantSpecies.@id.label`. `hooks/useJsonFormsTranslator.ts` falls back to
 
 ## Upstream issues
 
-* `sparql-schema`: required properties unbound outside the paged subquery (fixed on
-  `fix/paged-select-required-outer`, not yet published).
+* `edb-table-components` 2.3.0 passes the export menu items to MUI `Menu` as a
+  Fragment (`SemanticTableToolbarActions.tsx`), which logs
+  *"MUI: The Menu component doesn't accept a Fragment as a child"*.
 * `remove()` leaves nested blank nodes (orphans).
 * `loadOne` returns a stub `{ "@id" }` for unknown IRIs instead of `null`.
 * Built-in row actions have fixed English labels; the table adapter drops their icons.
@@ -134,6 +141,8 @@ for `plantSpecies.@id.label`. `hooks/useJsonFormsTranslator.ts` falls back to
 # integration tests against the local stack (scripts/local-dev.sh up)
 VITE_SPARQL_API_URL=http://localhost:7880/query bun test frontend-vite/src/__tests__/sparql-datastore.test.ts
 VITE_SPARQL_API_URL=http://localhost:7880/query bun test frontend-vite/src/api/__tests__/season-typed.test.ts
+
+VITE_SPARQL_API_URL=http://localhost:7880/query bun test frontend-vite/src/__tests__/table-columns.test.ts
 
 # e2e
 BASE_URL=http://localhost:5173 scripts/run-cypress-local.sh cypress/e2e/graviola-views.cy.ts

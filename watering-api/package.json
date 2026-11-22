@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "@graviola/edb-core-types": "1.8.0",
-    "@graviola/remote-query-implementations": "1.5.1",
-    "@graviola/sparql-db-impl": "1.9.2",
+    "@graviola/remote-query-implementations": "1.5.2",
+    "@graviola/sparql-db-impl": "1.9.4",
     "@graviola/store-core": "0.4.1",
     "@pergola/letitrain": "workspace:*",
     "@types/json-schema": "^7.0.15",

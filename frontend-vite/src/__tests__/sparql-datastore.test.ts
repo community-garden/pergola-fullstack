@@ -11,6 +11,7 @@ import type { JSONSchema7 } from "json-schema";
 import type { WalkerOptions } from "@graviola/edb-core-types";
 import { createPergolaTestStore, sparqlCount, sparqlRows } from "./helpers/pergolaTestStore";
 import { toReferences } from "../utils/toReferences";
+import { GARDEN_RELATIONS } from "../schema/gardenRelations";
 
 const SPARQL_API_URL =
   process.env.VITE_SPARQL_API_URL || "http://localhost:7880/query";
@@ -422,13 +423,20 @@ describe("Step 9: upserts with references rewrite nothing but the document", () 
     expect(await tripleCount()).toBe(before.all);
   });
 
+  it("the garden loads every relation it has, so a save cannot drop one", () => {
+    const gardenSchema = (schema as any).definitions.Garden as { properties: Record<string, any> };
+    const relations = Object.entries(gardenSchema.properties)
+      .filter(([, p]) => p.$ref || p.items?.$ref)
+      .map(([name]) => name)
+      .sort();
+    expect(Object.keys(GARDEN_RELATIONS).sort()).toEqual(relations);
+  });
+
   it("the garden saved like the map does (references only) keeps all triples", async () => {
     const store = createPergolaTestStore();
     const garden = "https://data.semantic-desk.top/garden/Garden/Wurzelwerk";
     const before = { all: await tripleCount(), own: await triplesOf(garden) };
-    const doc = await store.filterOne("Garden", garden, {
-      include: { geoFeatures: true, patches: true, mainGeoFeature: true },
-    });
+    const doc = await store.filterOne("Garden", garden, { include: GARDEN_RELATIONS });
     expect(doc?.geoFeatures?.length).toBeGreaterThan(0);
     await store.upsert("Garden", garden, toReferences(doc as Record<string, unknown>) as never);
     expect(await triplesOf(garden)).toEqual(before.own);
