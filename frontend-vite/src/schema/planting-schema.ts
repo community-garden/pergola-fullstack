@@ -61,7 +61,22 @@ export const PlantingSchema = z
 // SeedStock — what seed (or tubers, young plants) the garden has.
 // ---------------------------------------------------------------------------
 
-export const SEED_UNITS = ["packet", "seeds", "grams", "tubers", "plants"] as const;
+// plantsWorth / squareMeters / rowMeters: how far the seed goes ("ca. 150 Pfl.", "4–5 m²",
+// "3–4 lfd. Meter" on the inventory sheets); plants = young plants
+export const SEED_UNITS = [
+  "packet",
+  "seeds",
+  "grams",
+  "pieces",
+  "tubers",
+  "plants",
+  "plantsWorth",
+  "squareMeters",
+  "rowMeters",
+] as const;
+
+/** Rough amount when the seed was not counted ("wenig", "mittel", "viel", "sehr viel"). */
+export const SEED_AMOUNT_LEVELS = ["little", "medium", "plenty", "lots"] as const;
 
 export const SeedStockSchema = z
   .object({
@@ -72,6 +87,7 @@ export const SeedStockSchema = z
     plantVariety: PlantVarietySchema.optional(),
     quantity: z.number().nonnegative().optional(),
     unit: z.enum(SEED_UNITS).optional(),
+    amountLevel: z.enum(SEED_AMOUNT_LEVELS).optional().describe("Rough amount when not counted"),
     source: z.string().optional().describe("Bought at / swapped / own harvest"),
     year: z.number().int().optional().describe("Year of harvest or purchase"),
     viableUntil: z.number().int().optional().describe("Germinable until (year)"),
@@ -197,6 +213,12 @@ const plantingDefinitions: NonNullable<JsonSchema["definitions"]> = {
       plantVariety: ref("PlantVariety", "Plant variety"),
       quantity: { type: "number", minimum: 0, title: "Quantity" },
       unit: { type: "string", enum: [...SEED_UNITS], title: "Unit" },
+      amountLevel: {
+        type: "string",
+        enum: [...SEED_AMOUNT_LEVELS],
+        title: "Rough amount",
+        description: "Rough amount when not counted",
+      },
       source: { type: "string", title: "Source", description: "Bought at / swapped / own harvest" },
       year: { type: "integer", title: "Year", description: "Year of harvest or purchase" },
       viableUntil: { type: "integer", title: "Germinable until", description: "Germinable until (year)" },
@@ -330,7 +352,7 @@ export const plantingConfiguration = {
       elements: [
         ctl("name"),
         row(ctl("plantSpecies"), ctl("plantVariety")),
-        row(ctl("quantity"), ctl("unit")),
+        row(ctl("quantity"), ctl("unit"), ctl("amountLevel")),
         row(ctl("year"), ctl("viableUntil")),
         ctl("source"),
         row(ctl("storageLocation"), ctl("keeper")),

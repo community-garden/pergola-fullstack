@@ -192,8 +192,19 @@
     "packet": "Tüten",
     "seeds": "Samen",
     "grams": "Gramm",
+    "pieces": "Stück",
     "tubers": "Knollen",
-    "plants": "Jungpflanzen"
+    "plants": "Jungpflanzen",
+    "plantsWorth": "Pflanzen (Saatgut reicht für)",
+    "squareMeters": "m² (Saatgut reicht für)",
+    "rowMeters": "laufende Meter (Reihe)"
+  },
+  "amountLevel": {
+    "label": "Menge grob",
+    "little": "wenig",
+    "medium": "mittel",
+    "plenty": "viel",
+    "lots": "sehr viel"
   },
   "usableForIrrigation": { "label": "Zum Gießen nutzbar" },
   "viableUntil": { "label": "Keimfähig bis (Jahr)" },

@@ -36,6 +36,7 @@ export {
   PLANTING_STATUSES,
   PLANTING_QUANTITY_UNITS,
   SEED_UNITS,
+  SEED_AMOUNT_LEVELS,
 } from './planting-schema';
 export { NUTRIENT_DEMANDS } from './plant-schema';
 

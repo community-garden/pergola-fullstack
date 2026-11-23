@@ -192,8 +192,19 @@
     "packet": "packets",
     "seeds": "seeds",
     "grams": "grams",
+    "pieces": "pieces",
     "tubers": "tubers",
-    "plants": "young plants"
+    "plants": "young plants",
+    "plantsWorth": "plants' worth of seed",
+    "squareMeters": "m² worth of seed",
+    "rowMeters": "row metres"
+  },
+  "amountLevel": {
+    "label": "Rough amount",
+    "little": "a little",
+    "medium": "medium",
+    "plenty": "plenty",
+    "lots": "lots"
   },
   "usableForIrrigation": { "label": "Usable for irrigation" },
   "viableUntil": { "label": "Germinable until (year)" },
