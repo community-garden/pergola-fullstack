@@ -1,0 +1,11 @@
+{
+  "currentLocation": "Aktueller Standort",
+  "sunrise": "Sonnenaufgang",
+  "sunset": "Sonnenuntergang",
+  "feelsLike": "Gefühlt",
+  "humidity": "Luftfeuchte",
+  "wind": "Wind",
+  "windKmh": "{{speed}} km/h",
+  "errorTitle": "Wetterdaten konnten nicht geladen werden",
+  "unknownError": "Unbekannter Fehler"
+}

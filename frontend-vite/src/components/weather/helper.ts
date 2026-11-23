@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 // Types for the OpenWeatherMap API response
 export interface WeatherData {
@@ -90,8 +91,16 @@ const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '66b182a33df58ab59d4
  * @param lon Longitude of the location
  * @returns Weather data from OpenWeatherMap API
  */
-export const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> => {
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+/** OpenWeather language code. The app only ships German and English. */
+export const weatherLanguage = (language: string | undefined): 'de' | 'en' =>
+  (language ?? 'de').toLowerCase().startsWith('en') ? 'en' : 'de';
+
+export const fetchWeatherData = async (
+  lat: number,
+  lon: number,
+  lang: 'de' | 'en' = 'de',
+): Promise<WeatherData> => {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&appid=${API_KEY}`;
   
   const response = await fetch(url);
   
@@ -110,9 +119,12 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<Weathe
  * @returns Query result with weather data
  */
 export const useWeatherData = (lat: number, lon: number, enabled = true) => {
+  const { i18n } = useTranslation();
+  const lang = weatherLanguage(i18n.resolvedLanguage ?? i18n.language);
+
   return useQuery({
-    queryKey: ['weather', lat, lon],
-    queryFn: () => fetchWeatherData(lat, lon),
+    queryKey: ['weather', lat, lon, lang],
+    queryFn: () => fetchWeatherData(lat, lon, lang),
     enabled,
     staleTime: 30 * 60 * 1000, // 30 minutes
     gcTime: 60 * 60 * 1000, // 1 hour

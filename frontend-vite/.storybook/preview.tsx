@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import type { Preview } from '@storybook/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../src/i18n';
+import '@icon/icofont/icofont.css';
 
 const preview: Preview = {
   parameters: {

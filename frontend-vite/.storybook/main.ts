@@ -1,10 +1,8 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  "stories": [
-    "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
-  ],
+  // Default Configure.mdx uses heavy JSX; Vite import-analysis fails on it — drop MDX glob.
+  stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   "addons": [
     "@chromatic-com/storybook",
   ],

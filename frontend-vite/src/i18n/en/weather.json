@@ -1,0 +1,11 @@
+{
+  "currentLocation": "Current location",
+  "sunrise": "Sunrise",
+  "sunset": "Sunset",
+  "feelsLike": "Feels like",
+  "humidity": "Humidity",
+  "wind": "Wind",
+  "windKmh": "{{speed}} km/h",
+  "errorTitle": "Could not load weather data",
+  "unknownError": "Unknown error"
+}

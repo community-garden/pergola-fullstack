@@ -3,6 +3,10 @@ import { Outlet, useLocation } from 'react-router-dom';
 import AppHeader from './AppHeader';
 import { useRemovalCleanup } from '../../hooks/useRemovalCleanup';
 import { PathnameProvider } from '@graviola/edb-state-hooks';
+import {
+  PaintingFocusProvider,
+  usePaintingFocus,
+} from '../home/PaintingFocusContext';
 
 // Import background image
 import backgroundImage from '../../assets/background_full_grey_01.jpg';
@@ -26,6 +30,21 @@ const RootContainer = styled(Box)(() => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     pointerEvents: 'none',
+    transition: 'transform 0.75s ease, filter 0.75s ease',
+    transform: 'scale(1)',
+    filter: 'brightness(1) saturate(1)',
+  },
+  '&[data-painting-focus="true"]::before': {
+    transform: 'scale(1.06)',
+    filter: 'brightness(1.04) saturate(1.1)',
+  },
+  '& .painting-focus-dim': {
+    transition: 'opacity 0.55s ease',
+    opacity: 1,
+  },
+  '&[data-painting-focus="true"] .painting-focus-dim': {
+    opacity: 0,
+    pointerEvents: 'none',
   },
 }));
 
@@ -36,22 +55,32 @@ const ContentContainer = styled(Box)({
   flexDirection: 'column',
 });
 
-const Layout = () => {
+const LayoutInner = () => {
   const { pathname } = useLocation();
+  const { mode } = usePaintingFocus();
   useRemovalCleanup();
 
+  const focusActive = mode !== 'closed';
+
   return (
-    // Graviola intents (show, edit, saved, …) are answered by PergolaIntentBus
-    // in the GraviolaProvider, which also covers the modals.
     <PathnameProvider value={pathname}>
-        <RootContainer>
-          <AppHeader />
-          <ContentContainer>
-            <Outlet />
-          </ContentContainer>
-        </RootContainer>
+      <RootContainer
+        data-painting-focus={focusActive ? 'true' : undefined}
+        data-testid={focusActive ? 'painting-focus-active' : undefined}
+      >
+        <AppHeader className="painting-focus-dim" />
+        <ContentContainer className="painting-focus-dim">
+          <Outlet />
+        </ContentContainer>
+      </RootContainer>
     </PathnameProvider>
   );
 };
+
+const Layout = () => (
+  <PaintingFocusProvider>
+    <LayoutInner />
+  </PaintingFocusProvider>
+);
 
 export default Layout;

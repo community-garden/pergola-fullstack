@@ -21,6 +21,7 @@ nav:
     - Setup: development/setup.md
     - Graviola 2026-11 upgrade: development/graviola-upgrade.md
   - Features:
+    - Garden Home: features/home.md
     - LetItRain Wizard: letitrain-wizard.md
     - Watering Calendar: watering-calendar.md
     - JsonForms i18n: features/jsonforms-i18n.md
@@ -31,6 +32,7 @@ nav:
     - Bed Planner: features/bed-planner.md
     - Entity Detail View: features/entity-detail.md
     - Map Overlays: features/map-overlays.md
+    - Compact Weather: features/weather-compact.md
   - API:
     - Watering API: watering-api.md
     - Media Upload: media-upload.md

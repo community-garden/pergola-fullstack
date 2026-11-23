@@ -31,7 +31,11 @@ const ToolbarStyled = styled(Toolbar)({
   alignItems: 'center',
 });
 
-const AppHeader = () => {
+interface AppHeaderProps {
+  className?: string;
+}
+
+const AppHeader = ({ className }: AppHeaderProps) => {
   const { t } = useTranslation('navigation');
   const location = useLocation();
   const { gardenId } = useParams<{ gardenId: string }>();
@@ -62,7 +66,7 @@ const AppHeader = () => {
 
   return (
     <>
-      <AppBarStyled position="sticky">
+      <AppBarStyled position="sticky" className={className}>
         <ToolbarStyled>
           <IconButton
             color="inherit"

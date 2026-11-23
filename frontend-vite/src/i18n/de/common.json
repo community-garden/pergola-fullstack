@@ -6,9 +6,17 @@
     "gardenSettings": "Garten Einstellungen",
     "language": "Sprache",
     "login": "Login",
+    "loginDisabled": "Login ist nicht eingerichtet",
     "logout": "Logout",
     "myProfile": "Mein Profil",
     "userMenu": "Anwendender"
+  },
+  "home": {
+    "paintingCredit": "Illustration: Joachim Tilsch",
+    "visitArtist": "Website von Joachim Tilsch",
+    "closePaintingFocus": "Illustration schließen",
+    "paintingFocusAriaLabel": "Hintergrundillustration im Vollbild",
+    "shortcutsAriaLabel": "Schnellzugriff auf Hauptfunktionen"
   },
   "noLocationData": "Keine Standortdaten verfügbar",
   "settings": {
