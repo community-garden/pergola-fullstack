@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { Box, Typography, Chip, Button, List, ListItemButton, ListItemText, Stack } from '@mui/material';
+import { useMemo, useState } from 'react';
+import { Box, ButtonBase, Typography, Chip, Button, Dialog, List, ListItemButton, ListItemText, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -13,6 +13,7 @@ import { GARDEN_NS } from '../../../api/season';
 import { useCurrentGarden } from '../../../hooks/useCurrentGarden';
 import { lastSegment } from '../../../utils/iri';
 import { PlantIcon } from '../../plants/PlantIcon';
+import { resolveMediaUrl } from '../../../utils/mediaUrl';
 import {
   ROLE_COLORS,
   defaultSeason,
@@ -37,6 +38,10 @@ export const PatchFeatureCard: React.FC<PatchFeatureCardProps> = ({ patch, onNav
   const { gardenId } = useCurrentGarden();
   const patchIri = patch['@id'];
   const patchInfo = patchIri ? data.patchesByIri.get(patchIri) : undefined;
+  /** main image (e.g. the animal of a community bed); a click shows the whole picture */
+  const image = patch.imageUrl ?? patchInfo?.imageUrl;
+  const largeImage = resolveMediaUrl(patch.images?.[0] ?? image);
+  const [imageOpen, setImageOpen] = useState(false);
 
   const plantings = useMemo(
     () =>
@@ -48,16 +53,40 @@ export const PatchFeatureCard: React.FC<PatchFeatureCardProps> = ({ patch, onNav
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, p: 2 }}>
-      <Box>
-        <Typography variant="h6" gutterBottom>
-          {patch.name}
-        </Typography>
-        {patch.description && (
-          <Typography variant="body2" color="text.secondary">
-            {patch.description}
-          </Typography>
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+        {image && (
+          <ButtonBase
+            onClick={() => setImageOpen(true)}
+            aria-label={t('patch.showImage')}
+            data-testid="patch-image"
+            sx={{ borderRadius: '18%', flexShrink: 0 }}
+          >
+            <PlantIcon icon={patch.icon} image={image} size={112} shape="rounded" />
+          </ButtonBase>
         )}
+        <Box sx={{ minWidth: 0 }}>
+          <Typography variant="h6" gutterBottom>
+            {patch.name}
+          </Typography>
+          {patch.description && (
+            <Typography variant="body2" color="text.secondary">
+              {patch.description}
+            </Typography>
+          )}
+        </Box>
       </Box>
+      {largeImage && (
+        <Dialog open={imageOpen} onClose={() => setImageOpen(false)} maxWidth="sm">
+          <Box
+            component="img"
+            src={largeImage}
+            alt={patch.name}
+            data-testid="patch-image-large"
+            onClick={() => setImageOpen(false)}
+            sx={{ display: 'block', width: '100%', maxHeight: '85vh', objectFit: 'contain', cursor: 'zoom-out' }}
+          />
+        </Dialog>
+      )}
 
       <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap alignItems="center">
         {patch.patchType && <Chip label={t(`patch.types.${patch.patchType}`)} size="small" />}

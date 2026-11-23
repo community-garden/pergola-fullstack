@@ -10,6 +10,7 @@ import { SEASON_QUERY_KEY } from '../api/season';
 import { BedPlanner } from '../components/bed-planner/BedPlanner';
 import { BedViewSwitch, type BedView } from '../components/bed-planner/BedViewSwitch';
 import { BedNotesPanel } from '../components/bed-notes/BedNotesPanel';
+import { PlantIcon } from '../components/plants/PlantIcon';
 import { SeasonPlannerScheduler } from '../components/season-planner/SeasonPlannerScheduler';
 import { defaultSeason } from '../components/season-planner/seasonTimeline';
 import { useBedPlanStore } from '../hooks/useBedPlanStore';
@@ -146,7 +147,7 @@ const BedPlan = () => {
 
   const planView = (
     <BedPlanner
-      bed={{ iri: patch.iri, name: patch.name, geometry: bedGeometry ?? NO_GEOMETRY }}
+      bed={{ iri: patch.iri, name: patch.name, imageUrl: patch.imageUrl, geometry: bedGeometry ?? NO_GEOMETRY }}
       season={season}
       plantings={data.plantings}
       plants={data.plants}
@@ -178,6 +179,7 @@ const BedPlan = () => {
           <IconButton size="small" onClick={goBack} aria-label={t('bedPlanner.back')} data-testid="bed-planner-back">
             <ArrowBackIcon fontSize="small" />
           </IconButton>
+          {patch.imageUrl && <PlantIcon image={patch.imageUrl} size={36} shape="rounded" />}
           <Typography variant="h6" noWrap>
             {patch.name}
           </Typography>
@@ -197,6 +199,7 @@ const BedPlan = () => {
               <IconButton size="small" onClick={goBack} aria-label={t('bedPlanner.back')}>
                 <ArrowBackIcon fontSize="small" />
               </IconButton>
+              {patch.imageUrl && <PlantIcon image={patch.imageUrl} size={32} shape="rounded" />}
               <Typography variant="subtitle1" noWrap sx={{ flex: 1 }}>
                 {patch.name} · {season}
               </Typography>

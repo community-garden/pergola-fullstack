@@ -464,6 +464,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
   const sidebar = (
     <BedPlannerSidebar
       bedName={bed.name}
+      bedImage={bed.imageUrl}
       season={season}
       items={items}
       plants={plants}
@@ -552,6 +553,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
                   </IconButton>
                 </Tooltip>
               )}
+              {bed.imageUrl && <PlantIcon image={bed.imageUrl} size={36} shape="rounded" />}
               <Box sx={{ minWidth: 0 }}>
                 <Typography variant="subtitle2" noWrap>
                   {bed.name} · {season}

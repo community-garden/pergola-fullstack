@@ -30,6 +30,7 @@ import { plantingLabel, useSeasonData } from '../../hooks/useSeasonData';
 import { usePlantingMutations } from '../../hooks/usePlantingMutations';
 import type { PatchInfo, PlantingInfo } from '../../api/season';
 import { DEFAULT_PERIOD_COLORS } from '../garden/SeasonalGrowingCalendar';
+import { PlantIcon } from '../plants/PlantIcon';
 import {
   ROLE_COLORS,
   defaultSeason,
@@ -125,7 +126,16 @@ export const SeasonPlannerScheduler = ({
   );
 
   const resources = useMemo(
-    () => data.patches.filter((p) => !patchIri || p.iri === patchIri).map(patchToResource),
+    () =>
+      data.patches
+        .filter((p) => !patchIri || p.iri === patchIri)
+        .map(patchToResource)
+        // a bed with a picture (e.g. the animal of a community bed) shows it instead of the emoji
+        .map((r) =>
+          r.data?.imageUrl
+            ? { ...r, icon: <PlantIcon icon={r.icon as string} image={r.data.imageUrl} size={24} /> }
+            : r,
+        ),
     [data.patches, patchIri],
   );
   const items = useMemo(
@@ -343,7 +353,7 @@ export const SeasonPlannerScheduler = ({
                   sx={{ display: 'flex', alignItems: 'center', gap: 0.75, px: 1, color: 'inherit', textDecoration: 'none', overflow: 'hidden', width: '100%', '&:hover': { textDecoration: 'underline' } }}
                   data-testid="season-planner-open-bed"
                 >
-                  <span>{resource.icon}</span>
+                  <Box component="span" sx={{ display: 'flex', flexShrink: 0 }}>{resource.icon}</Box>
                   <Typography variant="body2" noWrap>{resource.label}</Typography>
                 </Box>
               </Tooltip>

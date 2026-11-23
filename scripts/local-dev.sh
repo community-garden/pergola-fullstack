@@ -7,9 +7,10 @@
 #                               (re)import plants, varieties, persons and wishes from
 #                               Saisonplanung/pflanzen/*.json (default season 2027)
 #   scripts/local-dev.sh plant-images
-#                               derive the web images (frontend-vite/public/media/plants,
-#                               not versioned) and set only the image URLs of the
-#                               species in the store; plantings stay untouched
+#                               derive the web images (frontend-vite/public/media/plants
+#                               and media/beds, not versioned) and set only the image URLs
+#                               of the species and the community beds in the store;
+#                               plantings stay untouched
 #   scripts/local-dev.sh map-overlays
 #                               derive the overlay images (public/media/overlays) and put the
 #                               map overlays of frontend-vite/fixtures/wurzelwerk-overlays.json

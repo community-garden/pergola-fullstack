@@ -107,11 +107,12 @@ export async function referenceFetchPersons(): Promise<PersonInfo[]> {
  */
 export async function referenceFetchPatches(gardenIri: string): Promise<PatchInfo[]> {
   const rows = await sparqlSelect(`
-    SELECT ?p ?name ?icon ?type ?desc ?geo ?person ?personName WHERE {
+    SELECT ?p ?name ?icon ?image ?type ?desc ?geo ?person ?personName WHERE {
       ?p a g:Patch ; g:name ?name .
       OPTIONAL { ?p g:geoFeature ?geo }
       FILTER(!BOUND(?geo) || EXISTS { <${gardenIri}> g:geoFeatures ?geo })
       OPTIONAL { ?p g:icon ?icon }
+      OPTIONAL { ?p g:imageUrl ?image }
       OPTIONAL { ?p g:patchType ?type }
       OPTIONAL { ?p g:description ?desc }
       OPTIONAL { ?p g:responsiblePersons ?person . OPTIONAL { ?person g:name ?personName } }
@@ -125,6 +126,7 @@ export async function referenceFetchPatches(gardenIri: string): Promise<PatchInf
         iri,
         name: str(b, 'name')!,
         icon: str(b, 'icon'),
+        imageUrl: str(b, 'image'),
         patchType: str(b, 'type'),
         description: str(b, 'desc'),
         geoFeatureIri: str(b, 'geo'),

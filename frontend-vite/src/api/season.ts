@@ -82,6 +82,8 @@ export interface PatchInfo {
   iri: string;
   name: string;
   icon?: string;
+  /** Main image (URL, may be relative to the app root), e.g. the bed's animal on community beds */
+  imageUrl?: string;
   patchType?: string;
   description?: string;
   geoFeatureIri?: string;
@@ -196,6 +198,7 @@ export async function fetchPatches(store: SeasonStore, gardenIri: string): Promi
       iri: p['@id']!,
       name: p.name,
       icon: p.icon,
+      imageUrl: p.imageUrl,
       patchType: p.patchType,
       description: p.description,
       geoFeatureIri: idOf(p.geoFeature),

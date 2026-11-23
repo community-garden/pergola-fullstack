@@ -21,6 +21,7 @@ import type { Workshop, Shed, BeeStand, Path, Seating, FirePlace, WaterBody } fr
 import { GeoFeatureInfo } from './GeoFeatureInfo';
 import { FeatureTypeSelector } from './FeatureTypeSelector';
 import { PatchFeatureCard } from './feature/PatchFeatureCard';
+import { PlantIcon } from '../plants/PlantIcon';
 import { WorkshopFeatureCard } from './feature/WorkshopFeatureCard';
 import { ShedFeatureCard } from './feature/ShedFeatureCard';
 import { BeeStandFeatureCard } from './feature/BeeStandFeatureCard';
@@ -178,8 +179,9 @@ export const GeoFeatureDetailsModal = NiceModal.create<GeoFeatureDetailsModalPro
                 sx={{ mb: 1 }}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>
-                    🌱 {patch.name || t('features.types.Beet')}
+                  <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <PlantIcon icon="🌱" image={patch.imageUrl} size={28} />
+                    {patch.name || t('features.types.Beet')}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>

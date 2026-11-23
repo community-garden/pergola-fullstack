@@ -1,8 +1,9 @@
-# Plant Images (static media)
+# Plant and Bed Images (static media)
 
 A plant can carry a **main image** that is shown instead of its emoji symbol, and
-any number of **further images**. For now these are plain URLs to static files:
-there is no media server and no media object yet.
+any number of **further images**. A bed can carry them as well: the community beds
+of Wurzelwerk show their animal (see [Bed images](#bed-images)). For now these are
+plain URLs to static files: there is no media server and no media object yet.
 
 <video controls width="100%" style="border-radius:8px">
   <source src="/media/cypress/videos/plant-images.cy.ts.mp4" type="video/mp4">
@@ -31,6 +32,43 @@ cannot be loaded, the field turns red with *Bild nicht gefunden*, and the app
 falls back to the emoji. The plant table shows the main image as an avatar next
 to the name.
 
+## Bed images
+
+Beds (**Patch**, `schema/patch-schema.ts`) have the same two fields, `imageUrl` and
+`images`. In the bed form the main image has the same preview. The community beds of
+Wurzelwerk use the watercolours of their animals, e.g. *Dubstep Daniel Dachs*.
+
+Where a bed shows its main image:
+
+* **Bed card** on the map: next to the bed's name. A click shows the whole painting
+  (the first further image) in large.
+* **Season planner**: in front of the bed's name in the bed column, instead of the emoji.
+* **Bed page**: next to the name in the bed plan (header and sidebar), in the
+  timeline and in the notes view.
+* **Forms and detail dialog**: where a form links a bed (e.g. *Beet* in the planting
+  form), and in the bed's detail dialog, which opens from there (`primaryFields.image`).
+
+Beds without an image look as before: emoji (season planner) or nothing (bed card).
+
+The source pictures are `Saisonplanung/bilder/gemeinschaft/<id>.jpg`. The ids and
+names come from `Saisonplanung/beete.json`. Older drafts such as `igel-v1-mit-blatt.jpg`
+are not used.
+
+```
+frontend-vite/public/media/beds/<id>/bild.webp       main image (512 × 512, square around the painting)
+frontend-vite/public/media/beds/<id>/aquarell.webp   the whole painting without the empty paper (≤ 1024 px)
+```
+
+`scripts/local-dev.sh plant-images` makes them together with the plant images:
+
+* `scripts/plant-images.py` also writes the bed images. With ids, e.g.
+  `scripts/plant-images.py dachs igel`, it makes only those plants or beds.
+* `scripts/import-saisonplanung.py --images-only` sets `imageUrl` and `images` of the
+  community beds in the store. It finds them by name and touches nothing else on the bed.
+  `seed-season` (`--load`) sets them as well.
+* The Schildkröte bed is called *Schildkröte* in the app, not *Schildkröten-Beet*:
+  `BED_STORE_NAMES` in the import script maps the name.
+
 ## Where the images are shown
 
 * **Map, season labels** (`?labels=<year>`): the label menu has a section
@@ -46,6 +84,7 @@ The season timeline and the plant calendar still use the emoji.
 ```
 frontend-vite/public/media/plants/<id>/frucht.webp   main image (512 × 512)
 frontend-vite/public/media/plants/<id>/beet.webp     bed from above (≤ 800 px)
+frontend-vite/public/media/beds/<id>/bild.webp       bed images, see above
 ```
 
 * The folder is **not versioned** (`.gitignore`): the images are data, not code.

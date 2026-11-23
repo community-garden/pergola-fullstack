@@ -41,6 +41,8 @@ export type PlaceMode = 'single' | 'line' | 'area';
 
 interface BedPlannerSidebarProps {
   bedName: string;
+  /** main image of the bed, next to its name */
+  bedImage?: string;
   season: number;
   items: BedPlanItem[];
   plants: PlantInfo[];
@@ -117,6 +119,7 @@ const PlantingRow = ({
 /** List of the bed's plantings, plus a picker for any other plant. */
 export const BedPlannerSidebar = ({
   bedName,
+  bedImage,
   season,
   items,
   plants,
@@ -134,13 +137,16 @@ export const BedPlannerSidebar = ({
   );
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }} data-testid="bed-planner-sidebar">
-      <Box sx={{ px: 2, pt: 2, pb: 1 }}>
-        <Typography variant="overline" color="text.secondary">
-          {t('bedPlanner.title')} {season}
-        </Typography>
-        <Typography variant="h6" sx={{ lineHeight: 1.2 }}>
-          {bedName}
-        </Typography>
+      <Box sx={{ px: 2, pt: 2, pb: 1, display: 'flex', gap: 1.5, alignItems: 'center' }}>
+        {bedImage && <PlantIcon image={bedImage} size={56} shape="rounded" />}
+        <Box sx={{ minWidth: 0 }}>
+          <Typography variant="overline" color="text.secondary">
+            {t('bedPlanner.title')} {season}
+          </Typography>
+          <Typography variant="h6" sx={{ lineHeight: 1.2 }}>
+            {bedName}
+          </Typography>
+        </Box>
       </Box>
       <Divider />
       <Typography variant="subtitle2" sx={{ px: 2, pt: 1.5 }}>

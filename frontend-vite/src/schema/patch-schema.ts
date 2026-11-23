@@ -47,6 +47,8 @@ const PatchSchema = z
     "@type": z.literal(`${GARDEN_IRI}Patch`),
     name: z.string().min(1).describe("Name of the patch"),
     icon: z.string().optional().describe("Icon identifier"),
+    imageUrl: z.string().optional().describe("Primary image URL"),
+    images: z.array(z.string()).optional().describe("Additional image URLs"),
     geoFeature: GeoFeatureSchema.optional().describe("Reference to geographic feature"),
     description: z.string().optional(),
     patchType: z.enum(["bed", "greenhouse", "container", "field", "other"]).optional(),
@@ -134,6 +136,8 @@ const patchOnlyDefinitions: NonNullable<JsonSchema["definitions"]> = {
       "@type": { type: "string", const: `${GARDEN_IRI}Patch`, title: "Type" },
       name: { type: "string", minLength: 1, title: "Name", description: "Name of the patch" },
       icon: { type: "string", title: "Icon", description: "Icon identifier" },
+      imageUrl: { type: "string", title: "Image URL", description: "Primary image URL" },
+      images: { type: "array", items: { type: "string" }, title: "Images", description: "Additional image URLs" },
       geoFeature: {
         $ref: "#/definitions/GeoFeature",
         title: "Geo feature",
@@ -189,6 +193,7 @@ export const patchConfiguration = {
     Patch: {
       label: "name",
       description: "description",
+      image: "imageUrl",
     },
     PlantingPlan: {
       label: "name",
@@ -214,6 +219,12 @@ export const patchConfiguration = {
         // Planting plans are superseded by first-class Planting entities.
         skipScope: ["#/properties/plantingPlans"],
         scopeOverride: {
+          // main image (URL with preview), as for plants
+          "#/properties/imageUrl": {
+            type: "Control",
+            scope: "#/properties/imageUrl",
+            options: { customRenderer: "ImageUrlRenderer" },
+          },
           // one-to-many as dropdown, never the entity finder
           "#/properties/responsiblePersons": {
             type: "Control",

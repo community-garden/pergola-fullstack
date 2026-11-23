@@ -6,6 +6,8 @@ import type { BedShape } from './bedLayout';
 export interface BedPlanBed {
   iri: string;
   name: string;
+  /** main image of the bed (e.g. the animal of a community bed), shown next to its name */
+  imageUrl?: string;
   /** GeoJSON geometry of the bed (from its geo feature's WKT) */
   geometry: GeoJSON.Geometry;
 }

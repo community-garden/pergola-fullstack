@@ -156,7 +156,8 @@
       "field": "Field",
       "other": "Other"
     },
-    "edit": "Edit bed"
+    "edit": "Edit bed",
+    "showImage": "Show the picture large"
   },
   "plantingPlan": {
     "title": "Planting Plan",

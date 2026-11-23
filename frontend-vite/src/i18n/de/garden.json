@@ -156,7 +156,8 @@
       "field": "Feld",
       "other": "Sonstiges"
     },
-    "edit": "Beet bearbeiten"
+    "edit": "Beet bearbeiten",
+    "showImage": "Bild groß anzeigen"
   },
   "plantingPlan": {
     "title": "Anbauplan",
