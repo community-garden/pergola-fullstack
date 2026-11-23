@@ -137,6 +137,7 @@
     "@graviola/edb-linked-data-renderer": "7.0.7",
     "@graviola/edb-state-hooks": "1.9.0",
     "@graviola/edb-table-components": "2.3.2",
+    "@graviola/edb-table-renderer-sparql-select": "0.1.14",
     "@graviola/edb-ui-utils": "0.4.7",
     "@graviola/entity-finder": "1.5.11",
     "@graviola/json-schema-utils": "1.9.0",

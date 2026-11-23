@@ -144,6 +144,9 @@
       },
     },
   },
+  "overrides": {
+    "@graviola/edb-table-renderer-sparql-select": "0.1.14",
+  },
   "packages": {
     "@adobe/css-tools": ["@adobe/css-tools@4.4.4", "", {}, "sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg=="],
 
@@ -555,7 +558,7 @@
 
     "@graviola/edb-table-renderer-jsonld": ["@graviola/edb-table-renderer-jsonld@0.2.9", "https://npm.winzlieb.eu/@graviola/edb-table-renderer-jsonld/-/edb-table-renderer-jsonld-0.2.9.tgz", { "dependencies": { "@graviola/edb-basic-components": "1.6.4", "@graviola/edb-core-utils": "1.7.2", "@graviola/edb-detail-renderer": "0.8.4", "@graviola/edb-detail-renderer-core": "0.6.2", "@graviola/edb-state-hooks": "1.9.0", "@graviola/edb-table-mrt-adapter": "0.1.4", "@graviola/edb-table-types": "0.2.2", "@graviola/edb-ui-utils": "0.4.7", "@graviola/json-schema-utils": "1.9.0", "@graviola/jsonld-utils": "1.6.8", "@graviola/meta-schema": "0.2.1", "lodash-es": "^4.17.21", "next-i18next": "^15" }, "peerDependencies": { "@jsonforms/core": "^3", "@mui/icons-material": "^7", "@mui/material": "^7", "material-react-table": "^2.0.0", "react": "^19" } }, "sha512-q6ZNzZQP8hvIReRWBSZUswn5gNSuS719kr/KsIU4xwyY2n2g24VeFnb+3GnHEWjoPkXuVZFHG1eYtZGx2kFtNQ=="],
 
-    "@graviola/edb-table-renderer-sparql-select": ["@graviola/edb-table-renderer-sparql-select@0.1.13", "https://npm.winzlieb.eu/@graviola/edb-table-renderer-sparql-select/-/edb-table-renderer-sparql-select-0.1.13.tgz", { "dependencies": { "@graviola/edb-basic-components": "1.6.4", "@graviola/edb-core-types": "1.8.0", "@graviola/edb-core-utils": "1.7.2", "@graviola/edb-data-mapping": "0.5.2", "@graviola/edb-state-hooks": "1.9.0", "@graviola/edb-table-mrt-adapter": "0.1.4", "@graviola/edb-table-types": "0.2.2", "@graviola/json-schema-utils": "1.9.0", "@graviola/meta-schema": "0.2.1", "lodash-es": "^4.17.21", "next-i18next": "^15" }, "peerDependencies": { "@ebay/nice-modal-react": "^1.2", "@jsonforms/core": "^3", "@mui/icons-material": "^7", "@mui/material": "^7", "material-react-table": "^2.0.0", "react": "^19" } }, "sha512-H3isB0Z0iw5KdjQHK2OnuDZQIEyCE1LY5CTwoTIQGy+tsITwQ+5qDEn/SuchX2DVjECuGN9UbZ0WTHVhFFT6hg=="],
+    "@graviola/edb-table-renderer-sparql-select": ["@graviola/edb-table-renderer-sparql-select@0.1.14", "https://npm.winzlieb.eu/@graviola/edb-table-renderer-sparql-select/-/edb-table-renderer-sparql-select-0.1.14.tgz", { "dependencies": { "@graviola/edb-basic-components": "1.6.4", "@graviola/edb-core-types": "1.8.0", "@graviola/edb-core-utils": "1.7.2", "@graviola/edb-data-mapping": "0.5.2", "@graviola/edb-state-hooks": "1.9.0", "@graviola/edb-table-mrt-adapter": "0.1.4", "@graviola/edb-table-types": "0.2.2", "@graviola/json-schema-utils": "1.9.0", "@graviola/meta-schema": "0.2.1", "lodash-es": "^4.17.21", "next-i18next": "^15" }, "peerDependencies": { "@ebay/nice-modal-react": "^1.2", "@jsonforms/core": "^3", "@mui/icons-material": "^7", "@mui/material": "^7", "material-react-table": "^2.0.0", "react": "^19" } }, "sha512-BADAHNEORAqa/8P6H/RizQl9PBCC+CXE9d7hi1UqZevnK4jinGS5dAzA0CCglvg9a094tJCnB20dWR2FRV6SOA=="],
 
     "@graviola/edb-table-types": ["@graviola/edb-table-types@0.2.2", "https://npm.winzlieb.eu/@graviola/edb-table-types/-/edb-table-types-0.2.2.tgz", { "dependencies": { "@graviola/meta-schema": "0.2.1", "@jsonforms/core": "^3", "@types/json-schema": "^7.0.15", "lodash-es": "^4.17.21" } }, "sha512-64VhqsrxbkagLHjF5+gVy4CgkpVvHQsUjl7BiZdjxAwhVELXo2RcJ9fY0kvGPhjHXjxmr/CSbRUvbbWxY/05hw=="],
 

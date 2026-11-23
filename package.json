@@ -13,6 +13,9 @@
     "husky": ">=4",
     "lint-staged": ">=10"
   },
+  "overrides": {
+    "@graviola/edb-table-renderer-sparql-select": "0.1.14"
+  },
   "scripts": {
     "docker:up": "docker-compose up -d",
     "seedDb": "node scripts/seed.js",
@@ -35,5 +38,4 @@
       "api/node_modules/.bin/eslint --fix"
     ]
   }
-  
 }
