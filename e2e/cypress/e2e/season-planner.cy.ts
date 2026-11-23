@@ -60,7 +60,28 @@ describe('Season planning — timeline', () => {
     cy.screenshot('04-season-timeline');
   });
 
+  it('is read-only until the edit mode is switched on', () => {
+    cy.get('[data-testid="edit-mode-toggle"]').should('have.attr', 'aria-pressed', 'false');
+    cy.contains('button', 'Neue Pflanzung').should('not.exist');
+    cy.get('[data-testid="edit-mode-toggle"]').first().click();
+    cy.get('[data-testid="edit-mode-toggle"]').first().should('have.attr', 'aria-pressed', 'true');
+    cy.contains('button', 'Neue Pflanzung').should('be.visible');
+    cy.screenshot('04b-edit-mode');
+  });
+
+  it('opens the bed in the detail dialog, with an action to its planning', () => {
+    cy.get('[data-testid="season-planner-open-bed"]', { timeout: 20000 }).first().click();
+    cy.get('[data-testid="entity-detail-dialog"]', { timeout: 15000 }).should('be.visible');
+    cy.wait(1000);
+    cy.screenshot('04c-bed-detail');
+    cy.get('[data-testid="entity-detail-dialog"]').contains('button', 'Beetplanung öffnen').click();
+    cy.location('pathname', { timeout: 15000 }).should('match', /\/beds\/[^/]+\/plan$/);
+    cy.get('[data-testid="entity-detail-dialog"]').should('not.exist');
+  });
+
   it('opens a wish in the planting dialog with dropdowns (no entity finder)', () => {
+    cy.get('[data-testid="edit-mode-toggle"]').first().click();
+    cy.get('[data-testid="season-planner-wishlist"]').click();
     cy.get('body').then(($body) => {
       const wish = $body.find('.MuiChip-clickable');
       if (!wish.length) {

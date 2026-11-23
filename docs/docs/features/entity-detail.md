@@ -47,6 +47,19 @@ Where the settings live:
 | per type: own UI schema (`uiSchemata`), extra renderers (`extraRenderers`, tester + renderer), layout | also `viewConfig.detail`, or per dialog via the `config` prop |
 | image, name and description of the card | `primaryFields` of the type (`schema/*-schema.ts`) |
 
+### Actions on a type: the bed
+
+The card of a bed (`Patch`) has the primary action **Beetplanung öffnen**. Graviola's default
+detail layout (`TopLevelLayout`) has no slot for actions — only its *card* view renders
+`cardPresentation.actions` — so the app adds a layout through the structured dispatch:
+`provider/bedDetailLayout.tsx` registers a renderer for `TopLevelLayout` of type `Patch`
+with a higher rank (`extraRenderers` in `useDetailViewConfig`). It draws the usual hero card
+and properties, plus an `EntityActionsBar` with the type's actions inside the card. The action's
+`run` closes the dialog and navigates to `/:garden/beds/:patchId/plan`. The season planner opens
+the dialog with the intent `{ kind: 'show-entity', typeName: 'Patch' }` when a bed name is clicked.
+Other types get actions with `createActionsTopLevelLayout(typeName, actions)`. Storybook has no
+router, so the action is only added when the hook gets a `navigate` function.
+
 ## Code
 
 | File | Purpose |

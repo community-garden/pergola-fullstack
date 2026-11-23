@@ -5,6 +5,7 @@ import type { LeftPanelMode } from '../SchedulerTypes';
 
 interface LeftPanelHeaderProps {
   children?: React.ReactNode;
+  actions?: React.ReactNode;
   mode: LeftPanelMode;
   onModeChange: (mode: LeftPanelMode) => void;
   collapsible: boolean;
@@ -25,6 +26,7 @@ const MODE_TITLE: Record<LeftPanelMode, string> = {
 
 export const LeftPanelHeader: React.FC<LeftPanelHeaderProps> = ({
   children,
+  actions,
   mode,
   onModeChange,
   collapsible,
@@ -45,6 +47,7 @@ export const LeftPanelHeader: React.FC<LeftPanelHeaderProps> = ({
       }}
     >
       <Box sx={{ flex: 1, overflow: 'hidden', minWidth: 0 }}>{children}</Box>
+      {actions}
       {collapsible && (
         <Tooltip title={MODE_TITLE[mode]} placement="right">
           <IconButton

@@ -79,6 +79,8 @@ interface BedPlannerMapProps {
   context?: GeoJSON.Geometry[];
   /** satellite image under the bed (blurry at these zoom levels) */
   satellite?: boolean;
+  /** plants, rows and areas can be dragged (edit mode); default on */
+  editable?: boolean;
   /** a plant is chosen for placing: clicks on the map place it (or draw its row/area) */
   armed: boolean;
   /** a row or an area is being drawn: clicks add points */
@@ -180,6 +182,7 @@ export const BedPlannerMap = ({
   context,
   satellite = false,
   armed,
+  editable = true,
   drawing,
   selectedIri,
   highlightPlantingIri,
@@ -202,6 +205,7 @@ export const BedPlannerMap = ({
 
   // latest props for the map's event handlers
   const live = useRef({
+    editable,
     frame,
     plants,
     shapes,
@@ -217,6 +221,7 @@ export const BedPlannerMap = ({
     onMoveShape,
   });
   live.current = {
+    editable,
     frame,
     plants,
     shapes,
@@ -715,9 +720,9 @@ export const BedPlannerMap = ({
       Object.assign(el.style, {
         width: `max(${MIN_PLANT_PX}px, calc(var(--d) * var(--px-per-cm) * 1px))`,
         height: `max(${MIN_PLANT_PX}px, calc(var(--d) * var(--px-per-cm) * 1px))`,
-        cursor: 'grab',
+        cursor: live.current.editable ? 'grab' : 'pointer',
       });
-      const marker = new maplibregl.Marker({ element: el, anchor: 'center', draggable: true })
+      const marker = new maplibregl.Marker({ element: el, anchor: 'center', draggable: live.current.editable })
         .setLngLat(lngLat)
         .addTo(map);
       let dragged = false;
@@ -763,8 +768,8 @@ export const BedPlannerMap = ({
       }
       const el = document.createElement('div');
       el.dataset.testid = 'bed-shape';
-      el.style.cursor = 'grab';
-      const marker = new maplibregl.Marker({ element: el, anchor: 'center', draggable: true })
+      el.style.cursor = live.current.editable ? 'grab' : 'pointer';
+      const marker = new maplibregl.Marker({ element: el, anchor: 'center', draggable: live.current.editable })
         .setLngLat(frame.toLngLat(s.labelAt))
         .addTo(map);
       const shift = () => {
@@ -801,6 +806,16 @@ export const BedPlannerMap = ({
     if (changed) setChipElements(new Map([...chips].map(([iri, { el }]) => [iri, el])));
     // renderShapes reads the latest props from `live`
   }, [map, shapes, frame]);
+
+  // read-only: markers can be selected but not dragged
+  useEffect(() => {
+    for (const ref of [markersRef, chipsRef]) {
+      ref.current.forEach(({ marker, el }) => {
+        marker.setDraggable(editable);
+        el.style.cursor = editable ? 'grab' : 'pointer';
+      });
+    }
+  }, [editable, elements, chipElements]);
 
   // markers belong to the map instance
   useEffect(

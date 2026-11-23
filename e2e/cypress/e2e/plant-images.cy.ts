@@ -1,8 +1,9 @@
 /**
  * Plant images: the main image of a plant replaces its emoji on the map and
- * is entered in the plant form as a URL with a preview.
+ * is entered in the plant form as a URL with a preview. Community beds show
+ * their animal picture in the season planner and the bed planner.
  *
- * Needs the Wurzelwerk season data and the static plant images locally:
+ * Needs the Wurzelwerk season data and the static plant and bed images locally:
  *   scripts/local-dev.sh seed-season 2027
  *   scripts/local-dev.sh plant-images
  * (frontend-vite/public/media is not versioned.)
@@ -95,5 +96,30 @@ describe('Plant images', () => {
     cy.screenshot('06-plant-form-main-image');
 
     cy.contains('button', /^cancel$/i).click();
+  });
+
+  it('shows the picture of a community bed in the season planner and the bed planner', () => {
+    visitDe('season-planner');
+    cy.contains('[data-testid="season-planner-open-bed"]', 'Dachs-Beet', { timeout: 20000 })
+      .find('img[src="/media/beds/dachs/bild.webp"]')
+      .should('be.visible')
+      .and(loaded);
+    cy.wait(500);
+    cy.screenshot('07-season-planner-bed-images');
+
+    // a click on the name opens the bed's detail dialog; its action leads to the bed page
+    // (timeline), which shows the picture next to the name, the bed plan in its sidebar
+    cy.contains('[data-testid="season-planner-open-bed"]', 'Dachs-Beet').click();
+    cy.get('[data-testid="entity-detail-dialog"]', { timeout: 15000 })
+      .contains('button', 'Beetplanung öffnen')
+      .click();
+    cy.location('pathname', { timeout: 15000 }).should('match', /\/beds\/[^/]+\/plan$/);
+    cy.get('img[src="/media/beds/dachs/bild.webp"]', { timeout: 20000 }).should('be.visible').and(loaded);
+    cy.get('[data-testid="bed-view-plan"]').click();
+    cy.get('[data-testid="bed-planner-sidebar"] img[src="/media/beds/dachs/bild.webp"]', { timeout: 20000 })
+      .should('be.visible')
+      .and(loaded);
+    cy.wait(1000);
+    cy.screenshot('08-bed-planner-bed-image');
   });
 });

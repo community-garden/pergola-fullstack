@@ -85,6 +85,11 @@ export interface BedPlannerProps extends BedPlanData {
   headerActions?: React.ReactNode;
   /** a planting was armed in the list or a placement of it was selected on the map */
   onPlantingFocus?: (plantingIri: string) => void;
+  /**
+   * Edit mode (default on, so Storybook stays as it was). Off: the plan is only shown —
+   * no placing, drawing, dragging, deleting, turning or changing spacings.
+   */
+  editMode?: boolean;
 }
 
 const SIDEBAR_WIDTH = 320;
@@ -178,7 +183,7 @@ const iconUnderPointer: Modifier = ({ activatorEvent, activeNodeRect, transform 
  * bed, or chosen and then placed by clicking/tapping into the bed — one by
  * one, as a row (polyline) or as an area (polygon) filled at their spacing.
  */
-export const BedPlanner = ({ bed, season, plantings, plants, placements, rotation, context, api, onBack, headerActions, onPlantingFocus }: BedPlannerProps) => {
+export const BedPlanner = ({ bed, season, plantings, plants, placements, rotation, context, api, onBack, headerActions, onPlantingFocus, editMode = true }: BedPlannerProps) => {
   const { t, i18n } = useTranslation('garden');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -382,12 +387,13 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
   const arm = useCallback(
     (plantingIri: string) => {
       onPlantingFocus?.(plantingIri);
+      if (!editMode) return;
       setArmedIri((current) => (current === plantingIri && !isMobile ? undefined : plantingIri));
       setDraft([]);
       setSelectedIri(undefined);
       setDrawerOpen(false);
     },
-    [isMobile, onPlantingFocus],
+    [isMobile, onPlantingFocus, editMode],
   );
 
   const disarm = useCallback(() => {
@@ -410,6 +416,15 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
     [api],
   );
 
+  // leaving edit mode ends placing and drawing
+  useEffect(() => {
+    if (!editMode) {
+      setArmedIri(undefined);
+      setDraft([]);
+      setTurnOpen(false);
+    }
+  }, [editMode]);
+
   // Esc: drop the drawing, then end placing / deselect · Enter: finish the row or area ·
   // Backspace: remove its last point, or the selected plant (also Delete)
   useEffect(() => {
@@ -427,13 +442,13 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
       } else if ((e.key === 'Delete' || e.key === 'Backspace') && draft.length > 0) {
         e.preventDefault();
         setDraft((d) => d.slice(0, -1));
-      } else if ((e.key === 'Delete' || e.key === 'Backspace') && selectedIri) {
+      } else if ((e.key === 'Delete' || e.key === 'Backspace') && selectedIri && editMode) {
         remove(selectedIri);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [draft.length, finishDraft, disarm, selectedIri, remove]);
+  }, [draft.length, finishDraft, disarm, selectedIri, remove, editMode]);
 
   const number = (value: number, digits: number) =>
     new Intl.NumberFormat(i18n.language, { maximumFractionDigits: digits }).format(value);
@@ -449,7 +464,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
     const start = activatorPoint(e.activatorEvent);
     if (!start) return;
     const at = mapHandle.current?.clientToLocal(start.x + e.delta.x, start.y + e.delta.y);
-    if (at) place(String(e.active.id), at);
+    if (at && editMode) place(String(e.active.id), at);
   };
   const dragging = draggingIri ? itemsByIri.get(draggingIri) : undefined;
 
@@ -471,7 +486,8 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
       armedIri={armedIri}
       mode={placeMode}
       onModeChange={changeMode}
-      draggable={!isMobile && placeMode === 'single'}
+      draggable={editMode && !isMobile && placeMode === 'single'}
+      editMode={editMode}
       onArm={arm}
       onHover={setHoverIri}
       onOtherPlant={otherPlant}
@@ -517,6 +533,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
             context={context}
             satellite={satellite}
             armed={Boolean(armed)}
+            editable={editMode}
             drawing={drawing}
             selectedIri={selectedIri}
             highlightPlantingIri={hoverIri ?? armedIri}
@@ -567,7 +584,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
           )}
 
           {/* turn the view (saved with the bed): a map tool below the zoom buttons, folded away by default */}
-          {!compact && (
+          {!compact && editMode && (
             <Box
               data-testid="bed-planner-rotation"
               sx={{ position: 'absolute', top: 88, right: 10, display: 'flex', alignItems: 'center', gap: 0.75 }}
@@ -764,6 +781,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
               </Box>
               {isMobile && (
                 <>
+                  {editMode && (
                   <IconButton
                     size="small"
                     color="error"
@@ -773,12 +791,13 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
                   >
                     <DeleteOutlineIcon fontSize="small" />
                   </IconButton>
+                  )}
                   <IconButton size="small" onClick={() => setSelectedIri(undefined)} aria-label={t('bedPlanner.done')}>
                     <CloseIcon fontSize="small" />
                   </IconButton>
                 </>
               )}
-              {selectedShape && (
+              {selectedShape && editMode && (
                 <Box sx={{ display: 'flex', gap: 1, ...(isMobile && { flexBasis: '100%' }) }}>
                   <SpacingField
                     label={t('bedPlanner.spacingField')}
@@ -798,7 +817,7 @@ export const BedPlanner = ({ bed, season, plantings, plants, placements, rotatio
                   )}
                 </Box>
               )}
-              {!isMobile && (
+              {!isMobile && editMode && (
                 <Button
                   size="small"
                   color="error"

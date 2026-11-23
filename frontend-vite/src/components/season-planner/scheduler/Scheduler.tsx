@@ -47,6 +47,7 @@ export function Scheduler<TItem = unknown, TResource = unknown>(
     leftPanelCollapsible = true,
     leftPanelDefaultMode = 'full',
     leftPanelHeader,
+    leftPanelActions,
     renderResource,
     initialScrollTo,
   } = props;
@@ -177,6 +178,7 @@ export function Scheduler<TItem = unknown, TResource = unknown>(
         state={state as typeof internalState}
         leftPanelWidth={leftPanelWidth}
         leftPanelHeader={leftPanelHeader}
+        leftPanelActions={leftPanelActions}
         leftPanelCollapsible={leftPanelCollapsible}
         rowHeight={rowHeight}
         resourceLaneCount={resourceLaneCount}

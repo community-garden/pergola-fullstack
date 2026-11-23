@@ -215,6 +215,8 @@ export interface SchedulerProps<TItem = unknown, TResource = unknown> {
   leftPanelDefaultMode?: LeftPanelMode;
   /** Optional content rendered in the left panel header area */
   leftPanelHeader?: React.ReactNode;
+  /** Small controls (e.g. the edit-mode toggle) shown beside the collapse button. */
+  leftPanelActions?: React.ReactNode;
 
   // ── Callbacks ────────────────────────────────────────────────────────────
   /** Called when user clicks/taps empty space and canCreateItems is true */

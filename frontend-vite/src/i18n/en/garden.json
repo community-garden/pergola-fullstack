@@ -256,6 +256,12 @@
       "12": "December"
     }
   },
+  "editMode": {
+    "label": "Edit mode",
+    "on": "Edit mode is on – click to lock",
+    "inDevelopment": "Edit mode is still in development here",
+    "off": "View only – click to edit"
+  },
   "seasonalCalendar": {
     "title": "Seasonal Growing Calendar",
     "editMode": "Edit Mode",
@@ -387,11 +393,14 @@
     "viewPlan": "Bed plan",
     "viewTimeline": "Timeline",
     "viewNotes": "Notes",
+    "showBed": "Open bed details",
+    "openBedPlan": "Open bed planning",
     "openBed": "Open this bed's timeline"
   },
   "seasonPlanner": {
     "title": "Season planning",
     "season": "Season",
+    "legend": "Legend",
     "wishlist": "Wish list",
     "wishlistDescription": "no bed yet",
     "beds": "Beds",

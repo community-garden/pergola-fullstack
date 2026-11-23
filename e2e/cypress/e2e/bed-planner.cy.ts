@@ -35,8 +35,11 @@ const removeTestBed = () => {
   update(`DELETE WHERE { <${TEST_FEATURE}> ?p ?o }`);
 };
 
-const visitPlan = () =>
+/** The plan opens read-only; most steps need the edit mode. */
+const visitPlan = (edit = true) => {
   cy.visit(URL, { onBeforeLoad: (win) => win.localStorage.setItem('i18nextLng', 'de') });
+  if (edit) cy.get('[data-testid="edit-mode-toggle"]', { timeout: 20000 }).click();
+};
 
 const count = () =>
   cy
@@ -63,11 +66,24 @@ describe('Bed planner', () => {
   });
 
   it('opens the plan of the test bed with its planting', () => {
-    visitPlan();
+    visitPlan(false);
     cy.get('[data-testid="bed-planner-map"]', { timeout: 20000 }).should('be.visible');
     cy.get('[data-testid="bed-plan-item"]').should('have.length.at.least', 1);
     cy.wait(1500);
     cy.screenshot('01-empty-plan');
+  });
+
+  it('is read-only until the edit mode is switched on', () => {
+    visitPlan(false);
+    cy.get('[data-testid="edit-mode-toggle"]', { timeout: 20000 }).should('have.attr', 'aria-pressed', 'false');
+    // nothing to place with, nothing to turn
+    cy.get('[data-testid="bed-plan-mode"]').should('not.exist');
+    cy.get('[data-testid="bed-plan-other-plant"]').should('not.exist');
+    cy.get('[data-testid="bed-planner-turn-toggle"]').should('not.exist');
+    cy.get('[data-testid="edit-mode-toggle"]').click().should('have.attr', 'aria-pressed', 'true');
+    cy.get('[data-testid="bed-plan-mode"]').should('be.visible');
+    cy.get('[data-testid="bed-planner-turn-toggle"]').should('be.visible');
+    cy.screenshot('01b-edit-mode');
   });
 
   it('turns the bed, keeps the turn after a reload, and goes back to automatic', () => {

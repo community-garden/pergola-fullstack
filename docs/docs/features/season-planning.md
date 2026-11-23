@@ -53,7 +53,10 @@ sowing, planting out, harvest).
 
 ### Saisonplanung (`/:garden/season-planner`)
 
-A timeline with one row per bed and one bar per planting:
+A timeline with one row per bed and one bar per planting. The planner opens **read-only**,
+so a stray click or drag cannot change anything. The **Bearbeitungsmodus** switch (chip in
+the toolbar, icon next to the column-collapse button) turns editing on; it is off again after
+every reload. In edit mode:
 
 | Action | Result |
 |---|---|
@@ -62,6 +65,10 @@ A timeline with one row per bed and one bar per planting:
 | drag the bar edges | change start / end |
 | click a bar | edit dialog |
 | click a chip in **Wunschliste** | edit the wish, e.g. assign a bed |
+
+Without edit mode a click on a bar opens the planting's detail dialog, and the **new planting**
+button and the wish chips do nothing. A click on a **bed name** opens the bed's detail dialog
+(see [Entity Detail View](entity-detail.md)); its button **Beetplanung öffnen** leads to the bed page.
 
 Colours encode the role, dashed bars are wishes. The thin strip at the bottom of a
 bar shows the plant's calendar windows, so you can see roughly when to sow,

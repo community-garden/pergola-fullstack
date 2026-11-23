@@ -26,6 +26,7 @@
     "@graviola/edb-core-types": "1.8.0",
     "@graviola/edb-core-utils": "1.7.2",
     "@graviola/edb-data-mapping": "0.5.2",
+    "@graviola/edb-detail-renderer": "0.8.4",
     "@graviola/edb-detail-renderer-core": "0.6.2",
     "@graviola/edb-graph-traversal": "1.8.2",
     "@graviola/edb-linked-data-renderer": "7.0.7",

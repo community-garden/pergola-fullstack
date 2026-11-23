@@ -54,6 +54,8 @@ interface BedPlannerSidebarProps {
   onArm: (plantingIri: string) => void;
   onHover: (plantingIri: string | undefined) => void;
   onOtherPlant: (plantIri: string) => void;
+  /** edit mode (default on); off: the list only shows and selects, nothing can be placed or added */
+  editMode?: boolean;
 }
 
 /** "2027-04-01" → "01.04." */
@@ -130,6 +132,7 @@ export const BedPlannerSidebar = ({
   onArm,
   onHover,
   onOtherPlant,
+  editMode = true,
 }: BedPlannerSidebarProps) => {
   const { t } = useTranslation('garden');
   const options = [...plants].sort(
@@ -152,6 +155,8 @@ export const BedPlannerSidebar = ({
       <Typography variant="subtitle2" sx={{ px: 2, pt: 1.5 }}>
         {t('bedPlanner.planned')}
       </Typography>
+      {editMode && (
+        <>
       <ToggleButtonGroup
         exclusive
         fullWidth
@@ -192,6 +197,8 @@ export const BedPlannerSidebar = ({
                 : 'bedPlanner.hintTap',
         )}
       </Typography>
+        </>
+      )}
       <List dense sx={{ flex: 1, overflow: 'auto' }}>
         {items.length === 0 && (
           <Typography variant="body2" color="text.secondary" sx={{ px: 2, py: 1 }}>
@@ -209,6 +216,8 @@ export const BedPlannerSidebar = ({
           />
         ))}
       </List>
+      {editMode && (
+        <>
       <Divider />
       <Box sx={{ p: 2 }}>
         <Autocomplete
@@ -235,6 +244,8 @@ export const BedPlannerSidebar = ({
           )}
         />
       </Box>
+        </>
+      )}
     </Box>
   );
 };

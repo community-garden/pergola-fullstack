@@ -1,5 +1,6 @@
 "use client";
 
+import { useNavigate } from "react-router-dom";
 import React, { useCallback, useMemo } from "react";
 import {
   AdbProvider,
@@ -162,7 +163,8 @@ export const GraviolaProvider: React.FC<GraviolaProviderProps> = ({
     [entityBaseIRI, definitionToTypeIRI],
   );
 
-  const viewConfig = useDetailViewConfig();
+  const navigate = useNavigate();
+  const viewConfig = useDetailViewConfig(navigate);
 
   const rendererRegistry = useMemo(
     () => [...allRenderers, ...(renderers || [])],

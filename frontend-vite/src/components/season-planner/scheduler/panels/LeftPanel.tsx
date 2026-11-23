@@ -20,6 +20,7 @@ interface LeftPanelProps<TData = unknown> {
   state: UseSchedulerReturn;
   leftPanelWidth: number;
   leftPanelHeader?: React.ReactNode;
+  leftPanelActions?: React.ReactNode;
   leftPanelCollapsible: boolean;
   rowHeight: number;
   resourceLaneCount: Map<string, number>;
@@ -34,6 +35,7 @@ export function LeftPanel<TData = unknown>({
   state,
   leftPanelWidth,
   leftPanelHeader,
+  leftPanelActions,
   leftPanelCollapsible,
   rowHeight,
   resourceLaneCount,
@@ -70,6 +72,7 @@ export function LeftPanel<TData = unknown>({
       <LeftPanelHeader
         mode={panelMode}
         onModeChange={setPanelMode}
+        actions={panelMode === 'minimal' ? undefined : leftPanelActions}
         collapsible={leftPanelCollapsible}
         height={headerHeight}
       >

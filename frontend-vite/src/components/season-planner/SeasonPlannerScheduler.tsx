@@ -5,8 +5,8 @@ import {
   Button,
   Chip,
   CircularProgress,
-  Collapse,
   IconButton,
+  Popover,
   Stack,
   ToggleButton,
   ToggleButtonGroup,
@@ -16,16 +16,16 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
+import { useDispatchIntent } from '@graviola/edb-state-hooks';
 import { useSnackbar } from 'notistack';
 import { Scheduler, createDateConfig, useScheduler, ONE_DAY_MS } from './scheduler';
 import type { SchedulerItem } from './scheduler';
 import { useDateFnsLocale } from '../../hooks';
-import { useCurrentGarden } from '../../hooks/useCurrentGarden';
-import { lastSegment } from '../../utils/iri';
+import { useEditMode } from '../../hooks/useEditMode';
+import { EditModeToggle } from '../common/EditModeToggle';
 import { plantingLabel, useSeasonData } from '../../hooks/useSeasonData';
 import { usePlantingMutations } from '../../hooks/usePlantingMutations';
 import type { PatchInfo, PlantingInfo } from '../../api/season';
@@ -61,12 +61,15 @@ export interface SeasonPlannerSchedulerProps {
   /** With a handler, a click on a bar selects the planting instead of opening its edit dialog. */
   selectedPlantingIri?: string;
   onPlantingSelect?: (plantingIri: string) => void;
+  /** Controlled edit mode; without it the planner keeps its own (off by default). */
+  editMode?: boolean;
+  onEditModeChange?: (editMode: boolean) => void;
 }
 
 /**
  * Season planning timeline: one row per bed, one bar per planting.
- * Click empty space → new planting, drag → move, drag edges → change dates,
- * click a bar → edit dialog. Wishes without a bed are listed above.
+ * In edit mode: click empty space → new planting, drag → move, drag edges →
+ * change dates, click a bar → edit dialog. Read-only by default. Wishes without a bed are listed above.
  */
 export const SeasonPlannerScheduler = ({
   patchIri,
@@ -75,11 +78,19 @@ export const SeasonPlannerScheduler = ({
   toolbarStart,
   selectedPlantingIri,
   onPlantingSelect,
+  editMode: editModeProp,
+  onEditModeChange,
 }: SeasonPlannerSchedulerProps = {}) => {
   const singleBed = Boolean(patchIri);
   const rowHeight = singleBed ? BED_ROW_HEIGHT : ROW_HEIGHT;
   const leftPanelWidth = singleBed ? BED_LEFT_PANEL_WIDTH : LEFT_PANEL_WIDTH;
-  const { gardenId } = useCurrentGarden();
+  const dispatchIntent = useDispatchIntent();
+  const own = useEditMode();
+  const editMode = editModeProp ?? own.editMode;
+  const toggleEditMode = useCallback(
+    () => (onEditModeChange ? onEditModeChange(!editMode) : own.toggleEditMode()),
+    [onEditModeChange, editMode, own],
+  );
   const { t } = useTranslation('garden');
   const locale = useDateFnsLocale();
   const { enqueueSnackbar } = useSnackbar();
@@ -95,7 +106,8 @@ export const SeasonPlannerScheduler = ({
     },
     [onSeasonChange],
   );
-  const [showWishes, setShowWishes] = useState(true);
+  const [wishAnchor, setWishAnchor] = useState<HTMLElement | null>(null);
+  const [legendAnchor, setLegendAnchor] = useState<HTMLElement | null>(null);
   const seasonRange = useMemo(() => seasonWindow(season), [season]);
 
   const text = useMemo<TimelineText>(
@@ -226,7 +238,8 @@ export const SeasonPlannerScheduler = ({
         display: 'flex',
         flexDirection: 'column',
         gap: 1,
-        p: 1.5,
+        px: 1.5,
+        py: 1,
         bgcolor: 'background.paper',
       }}
     >
@@ -250,6 +263,7 @@ export const SeasonPlannerScheduler = ({
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
+        {editMode && (
         <Button
           size="small"
           variant="contained"
@@ -263,21 +277,33 @@ export const SeasonPlannerScheduler = ({
         >
           {t('seasonPlanner.newPlanting')}
         </Button>
+        )}
+        <EditModeToggle variant="chip" editMode={editMode} onToggle={toggleEditMode} />
         <Box sx={{ flex: 1 }} />
-        {!singleBed && Object.entries(ROLE_COLORS).map(([role, color]) => (
-          <Chip
-            key={role}
+        {!singleBed && (
+          <Button
             size="small"
-            label={t(`planting.roles.${role}`)}
-            sx={{ bgcolor: color, color: '#fff', height: 20, fontSize: '0.7rem' }}
-          />
-        ))}
-        {!singleBed && (['preCultivation', 'sowing', 'planting', 'harvest'] as const).map((phase) => (
-          <Stack key={phase} direction="row" alignItems="center" spacing={0.5}>
-            <Box sx={{ width: 14, height: 5, bgcolor: DEFAULT_PERIOD_COLORS[phase] }} />
-            <Typography variant="caption">{t(`seasonPlanner.phases.${phase}`)}</Typography>
-          </Stack>
-        ))}
+            color="inherit"
+            startIcon={<FavoriteBorderIcon fontSize="small" />}
+            onClick={(e) => setWishAnchor(e.currentTarget)}
+            sx={{ textTransform: 'none' }}
+            data-testid="season-planner-wishlist"
+          >
+            {t('seasonPlanner.wishlist')} ({wishes.length})
+          </Button>
+        )}
+        {!singleBed && (
+          <Tooltip title={t('seasonPlanner.legend')}>
+            <IconButton
+              size="small"
+              onClick={(e) => setLegendAnchor(e.currentTarget)}
+              aria-label={t('seasonPlanner.legend')}
+              data-testid="season-planner-legend"
+            >
+              <InfoOutlinedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip title="Zoom −">
           <IconButton size="small" onClick={() => setZoom(Math.max(0.5, zoom / 1.4))}>
             <ZoomOutIcon fontSize="small" />
@@ -290,19 +316,19 @@ export const SeasonPlannerScheduler = ({
         </Tooltip>
       </Stack>
 
-      {/* Wish list: plantings without a bed */}
-      {!singleBed && (
-      <Box>
-        <Button
-          size="small"
-          onClick={() => setShowWishes((v) => !v)}
-          endIcon={showWishes ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          sx={{ textTransform: 'none' }}
-        >
-          {t('seasonPlanner.wishlist')} ({wishes.length}) – {t('seasonPlanner.wishlistDescription')}
-        </Button>
-        <Collapse in={showWishes}>
-          <Stack direction="row" flexWrap="wrap" useFlexGap spacing={0.5} sx={{ maxHeight: 96, overflowY: 'auto', py: 0.5 }}>
+      {/* Wish list: plantings without a bed — closed by default, opens from the toolbar */}
+      <Popover
+        open={Boolean(wishAnchor)}
+        anchorEl={wishAnchor}
+        onClose={() => setWishAnchor(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Box sx={{ p: 1.5, maxWidth: 460 }} data-testid="season-planner-wishlist-panel">
+          <Typography variant="subtitle2">
+            {t('seasonPlanner.wishlist')} ({wishes.length}) – {t('seasonPlanner.wishlistDescription')}
+          </Typography>
+          <Stack direction="row" flexWrap="wrap" useFlexGap spacing={0.5} sx={{ maxHeight: 280, overflowY: 'auto', pt: 1 }}>
             {wishes.map(({ planting, icon, name }) => {
               const requester = planting.requestedByIri
                 ? data.personsByIri.get(planting.requestedByIri)?.name
@@ -314,21 +340,55 @@ export const SeasonPlannerScheduler = ({
                   variant="outlined"
                   label={`${icon} ${name}${requester ? ` (${requester})` : ''}`}
                   title={planting.notes}
-                  onClick={() => void editPlanting(planting.iri)}
+                  onClick={
+                    editMode
+                      ? () => {
+                          setWishAnchor(null);
+                          void editPlanting(planting.iri);
+                        }
+                      : undefined
+                  }
                   sx={{ borderStyle: 'dashed' }}
                 />
               );
             })}
           </Stack>
-        </Collapse>
-      </Box>
-      )}
+        </Box>
+      </Popover>
 
-      {!singleBed && (
-        <Typography variant="caption" color="text.secondary">
-          {t('seasonPlanner.hint')}
-        </Typography>
-      )}
+      {/* Legend and hint */}
+      <Popover
+        open={Boolean(legendAnchor)}
+        anchorEl={legendAnchor}
+        onClose={() => setLegendAnchor(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Stack spacing={1} sx={{ p: 1.5, maxWidth: 420 }}>
+          <Stack direction="row" flexWrap="wrap" useFlexGap spacing={0.5}>
+            {Object.entries(ROLE_COLORS).map(([role, color]) => (
+              <Chip
+                key={role}
+                size="small"
+                label={t(`planting.roles.${role}`)}
+                sx={{ bgcolor: color, color: '#fff', height: 20, fontSize: '0.7rem' }}
+              />
+            ))}
+          </Stack>
+          <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1.5}>
+            {(['preCultivation', 'sowing', 'planting', 'harvest'] as const).map((phase) => (
+              <Stack key={phase} direction="row" alignItems="center" spacing={0.5}>
+                <Box sx={{ width: 14, height: 5, bgcolor: DEFAULT_PERIOD_COLORS[phase] }} />
+                <Typography variant="caption">{t(`seasonPlanner.phases.${phase}`)}</Typography>
+              </Stack>
+            ))}
+          </Stack>
+          <Typography variant="caption" color="text.secondary">
+            {t('seasonPlanner.hint')}
+          </Typography>
+        </Stack>
+      </Popover>
+
 
       {resources.length === 0 ? (
         <Alert severity="info">{t('seasonPlanner.noPatches')}</Alert>
@@ -346,11 +406,15 @@ export const SeasonPlannerScheduler = ({
             rowHeight={rowHeight}
             leftPanelWidth={leftPanelWidth}
             renderResource={singleBed ? undefined : (resource) => (
-              <Tooltip title={t('bedPlanner.openBed')}>
+              <Tooltip title={t('bedPlanner.showBed')}>
                 <Box
-                  component={RouterLink}
-                  to={`/${gardenId}/beds/${lastSegment(resource.id)}/plan?view=timeline&season=${season}`}
-                  sx={{ display: 'flex', alignItems: 'center', gap: 0.75, px: 1, color: 'inherit', textDecoration: 'none', overflow: 'hidden', width: '100%', '&:hover': { textDecoration: 'underline' } }}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => void dispatchIntent({ kind: 'show-entity', entityIRI: resource.id, typeName: 'Patch' })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') void dispatchIntent({ kind: 'show-entity', entityIRI: resource.id, typeName: 'Patch' });
+                  }}
+                  sx={{ display: 'flex', alignItems: 'center', gap: 0.75, px: 1, cursor: 'pointer', overflow: 'hidden', width: '100%', '&:hover': { textDecoration: 'underline' } }}
                   data-testid="season-planner-open-bed"
                 >
                   <Box component="span" sx={{ display: 'flex', flexShrink: 0 }}>{resource.icon}</Box>
@@ -363,14 +427,18 @@ export const SeasonPlannerScheduler = ({
                 {t('seasonPlanner.beds')}
               </Typography>
             }
-            canCreateItems
-            canMoveItems
-            canResizeItems
+            canCreateItems={editMode}
+            canMoveItems={editMode}
+            canResizeItems={editMode}
             snapStep={ONE_DAY_MS}
             onItemCreate={handleCreate}
             onItemMove={(item, _resourceId, start, end) => persistRange(item, start, end)}
             onItemResize={(item, start, end) => persistRange(item, start, end)}
-            onItemClick={(item) => (onPlantingSelect ? onPlantingSelect(item.id) : void editPlanting(item.id))}
+            onItemClick={(item) => {
+              if (onPlantingSelect) onPlantingSelect(item.id);
+              else if (editMode) void editPlanting(item.id);
+              else void dispatchIntent({ kind: 'show-entity', entityIRI: item.id, typeName: 'Planting' });
+            }}
           />
         </Box>
       )}

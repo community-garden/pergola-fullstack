@@ -256,6 +256,12 @@
       "12": "Dezember"
     }
   },
+  "editMode": {
+    "label": "Bearbeitungsmodus",
+    "on": "Bearbeitungsmodus ist an – zum Sperren klicken",
+    "inDevelopment": "Der Bearbeitungsmodus ist hier noch in Entwicklung",
+    "off": "Nur Ansicht – zum Bearbeiten klicken"
+  },
   "seasonalCalendar": {
     "title": "Aussaat- und Pflanzkalender",
     "editMode": "Bearbeitungsmodus",
@@ -387,11 +393,14 @@
     "viewPlan": "Beetplan",
     "viewTimeline": "Zeitplan",
     "viewNotes": "Notizen",
+    "showBed": "Beetdetails öffnen",
+    "openBedPlan": "Beetplanung öffnen",
     "openBed": "Zeitplan dieses Beets öffnen"
   },
   "seasonPlanner": {
     "title": "Saisonplanung",
     "season": "Saison",
+    "legend": "Legende",
     "wishlist": "Wunschliste",
     "wishlistDescription": "noch ohne Beet",
     "beds": "Beete",

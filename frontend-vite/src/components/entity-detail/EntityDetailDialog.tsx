@@ -1,4 +1,5 @@
 import { Close as CloseIcon, Edit as EditIcon } from '@mui/icons-material';
+import { useMemo } from 'react';
 import {
   Box,
   Button,
@@ -15,6 +16,7 @@ import {
   useTheme,
 } from '@mui/material';
 import type { DetailViewConfig } from '@graviola/edb-detail-renderer-core';
+import { useAdbContext } from '@graviola/edb-state-hooks';
 import { SemanticDetailViewNoOps } from '@graviola/semantic-views';
 import { useTranslation } from 'react-i18next';
 
@@ -56,6 +58,19 @@ export const EntityDetailDialog = ({
   const { t } = useTranslation('garden');
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  // SemanticDetailView takes the other app-wide detail settings from the view config,
+  // but not its `extraRenderers` (e.g. the bed layout with its actions): pass them on.
+  const { viewConfig } = useAdbContext();
+  const mergedConfig = useMemo<Partial<DetailViewConfig>>(
+    () => ({
+      ...config,
+      extraRenderers: [
+        ...((config?.extraRenderers ?? []) as NonNullable<DetailViewConfig['extraRenderers']>),
+        ...((viewConfig?.detail?.extraRenderers ?? []) as unknown as NonNullable<DetailViewConfig['extraRenderers']>),
+      ],
+    }),
+    [config, viewConfig],
+  );
   const typeLabel = typeName ? t(`entityDetail.types.${typeName}`, { defaultValue: typeName }) : '';
 
   return (
@@ -90,7 +105,7 @@ export const EntityDetailDialog = ({
             entityIRI={entityIRI}
             typeIRI={typeIRI}
             typeName={typeName}
-            config={config}
+            config={mergedConfig}
           />
         ) : (
           <EntityDetailSkeleton />

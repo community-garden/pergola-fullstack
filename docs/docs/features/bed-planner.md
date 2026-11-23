@@ -237,7 +237,16 @@ The bed page has a switch in its header: the **bed plan** (graphic editor, defau
 **timeline** (`?view=timeline`). The timeline is the season planner's scheduler, but for this
 one bed: no wish list, no legend, taller bars. Clicking a bar highlights the planting
 (`?planting=<last part of the IRI>`); dragging and resizing work as in the season planner.
-In the season planner, the bed name on the left opens the timeline of that bed.
+In the season planner, the bed name on the left opens the bed's detail dialog; its action
+**Beetplanung öffnen** leads here.
+
+### Edit mode
+
+The bed page opens **read-only** (also after a reload): in both views a **Bearbeitungsmodus**
+chip next to the view switch turns editing on. Off, you can look at the plan and select plants,
+rows and areas, but nothing can be placed, drawn, dragged, deleted, turned or re-spaced; the
+plant list shows no placing mode and no "other plant" field, and the map markers cannot be
+dragged. Notes are written as before.
 
 ## Notes on the bed
 

@@ -13,6 +13,8 @@ import { BedNotesPanel } from '../components/bed-notes/BedNotesPanel';
 import { PlantIcon } from '../components/plants/PlantIcon';
 import { SeasonPlannerScheduler } from '../components/season-planner/SeasonPlannerScheduler';
 import { defaultSeason } from '../components/season-planner/seasonTimeline';
+import { EditModeToggle } from '../components/common/EditModeToggle';
+import { useEditMode } from '../hooks/useEditMode';
 import { useBedPlanStore } from '../hooks/useBedPlanStore';
 import { useCurrentGarden } from '../hooks/useCurrentGarden';
 import { useSeasonData } from '../hooks/useSeasonData';
@@ -103,6 +105,7 @@ const BedPlan = () => {
   );
   const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate(toMap));
   const setView = (v: BedView) => update({ view: v === 'plan' ? undefined : v });
+  const { editMode, setEditMode, toggleEditMode } = useEditMode();
   const switcher = <BedViewSwitch value={view} onChange={setView} withNotes={isMobile} />;
   const notesToggle = !isMobile && (
     <Tooltip title={t('bedPlanner.viewNotes')}>
@@ -160,9 +163,11 @@ const BedPlan = () => {
       headerActions={
         <Stack direction="row" spacing={0.5} alignItems="center">
           {switcher}
+          <EditModeToggle variant="chip" editMode={editMode} onToggle={toggleEditMode} />
           {notesToggle}
         </Stack>
       }
+      editMode={editMode}
       onPlantingFocus={selectPlanting}
     />
   );
@@ -173,6 +178,8 @@ const BedPlan = () => {
       season={season}
       onSeasonChange={(s) => update({ season: String(s) })}
       selectedPlantingIri={selectedPlantingIri}
+      editMode={editMode}
+      onEditModeChange={setEditMode}
       onPlantingSelect={selectPlanting}
       toolbarStart={
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mr: 1 }}>
