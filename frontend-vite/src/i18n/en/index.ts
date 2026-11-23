@@ -5,6 +5,7 @@ import watering from './watering.json';
 import garden from './garden.json';
 import jsonforms from './jsonforms.json';
 import weather from './weather.json';
+import events from './events.json';
 
 export default {
   common,
@@ -14,4 +15,5 @@ export default {
   garden,
   jsonforms,
   weather,
+  events,
 }

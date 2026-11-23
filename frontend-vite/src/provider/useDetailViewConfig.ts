@@ -8,7 +8,7 @@ import { createActionsTopLevelLayout } from "./bedDetailLayout";
 import { lastSegment } from "../utils/iri";
 
 /** Technical fields that gardeners do not need in a detail view. */
-const HIDDEN_IN_DETAIL = ["geo", "creationTime", "modificationTime"];
+const HIDDEN_IN_DETAIL = ["geo", "creationTime", "modificationTime", "garden", "sequence"];
 
 /**
  * View configuration for Graviola's detail views (EntityDetailModal →

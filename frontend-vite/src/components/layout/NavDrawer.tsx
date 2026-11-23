@@ -14,6 +14,7 @@ import {
   LocalFlorist as PlantsIcon,
   CalendarMonth as SeasonPlannerIcon,
   Opacity as WaterdropIcon,
+  Event as EventsIcon,
   EventNote as EventNoteIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material';
@@ -56,6 +57,7 @@ const navItems: NavItem[] = [
   { icon: <PlantsIcon />, labelKey: 'plants', route: 'plants', featureFlag: 'plants' },
   { icon: <SeasonPlannerIcon />, labelKey: 'seasonPlanner', route: 'season-planner', featureFlag: 'seasonPlanner' },
   { icon: <WaterdropIcon />, labelKey: 'watering', route: 'watering', featureFlag: 'watering' },
+  { icon: <EventsIcon />, labelKey: 'events', route: 'events', featureFlag: 'events' },
   { icon: <EventNoteIcon />, labelKey: 'notifications', route: 'notifications', featureFlag: 'notifications' },
   { icon: <SettingsIcon />, labelKey: 'gardenSettings', route: 'garden-settings', featureFlag: 'settings' },
 ];

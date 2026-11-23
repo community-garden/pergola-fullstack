@@ -20,6 +20,11 @@ export const featureFlags: Record<string, FeatureFlag> = {
     enabled: true,
     releaseDate: '',
   },
+  // Garden calendar: get-togethers, workdays, … (independent of the season planning)
+  events: {
+    enabled: true,
+    releaseDate: '',
+  },
 
   // Features temporarily disabled - coming in July 2026
   notifications: {

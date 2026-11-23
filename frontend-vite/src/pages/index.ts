@@ -7,4 +7,5 @@ export { default as Settings } from './Settings';
 export { default as LandingPage } from './LandingPage';
 export { PlantManagement } from './PlantManagementWrapper';
 export { SeasonPlanner } from './SeasonPlannerWrapper';
+export { Events } from './EventsWrapper';
 export { default as BedPlan } from './BedPlan';

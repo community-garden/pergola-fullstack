@@ -471,7 +471,8 @@
       "WaterBody": "Water body",
       "MapOverlay": "Map overlay",
       "GeoFeatureVersion": "Earlier shape",
-      "BedNote": "Bed note"
+      "BedNote": "Bed note",
+      "GardenEvent": "Event"
     }
   },
   "mapEdit": {

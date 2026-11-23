@@ -8,6 +8,7 @@ import { plantConfiguration, plantSchema } from "./plant-schema";
 import { personConfiguration, personSchema } from "./person-schema";
 import { plantingConfiguration, plantingSchema } from "./planting-schema";
 import { mapOverlayConfiguration, mapOverlaySchema, MapOverlaySchema } from "./map-overlay-schema";
+import { eventConfiguration, eventSchema } from "./event-schema";
 import { mergeSchemaDefinitions } from "./utils/mergeSchemaDefinitions";
 
 const GARDEN_IRI = "https://ontology.semantic-desk.top/garden#";
@@ -107,6 +108,7 @@ export const schema: JsonSchema = mergeSchemaDefinitions([
   personSchema,
   plantingSchema,
   mapOverlaySchema,
+  eventSchema,
 ]);
 
 export { GardenSchema };
@@ -127,6 +129,7 @@ export const gardenConfiguration = {
     ...personConfiguration.primaryFields,
     ...plantingConfiguration.primaryFields,
     ...mapOverlayConfiguration.primaryFields,
+    ...eventConfiguration.primaryFields,
   },
   typeNameLabelMap: {
     Garden: "Garden",
@@ -137,6 +140,7 @@ export const gardenConfiguration = {
     ...personConfiguration.typeNameLabelMap,
     ...plantingConfiguration.typeNameLabelMap,
     ...mapOverlayConfiguration.typeNameLabelMap,
+    ...eventConfiguration.typeNameLabelMap,
   },
   typeNameUiSchemaOptionsMap: {
     Garden: {
@@ -149,6 +153,7 @@ export const gardenConfiguration = {
     ...personConfiguration.typeNameUiSchemaOptionsMap,
     ...plantingConfiguration.typeNameUiSchemaOptionsMap,
     ...mapOverlayConfiguration.typeNameUiSchemaOptionsMap,
+    ...eventConfiguration.typeNameUiSchemaOptionsMap,
   },
   uischemata: {
     Garden: generateDefaultUISchema(
@@ -172,5 +177,6 @@ export const gardenConfiguration = {
     ...personConfiguration.uischemata,
     ...plantingConfiguration.uischemata,
     ...mapOverlayConfiguration.uischemata,
+    ...eventConfiguration.uischemata,
   },
 };

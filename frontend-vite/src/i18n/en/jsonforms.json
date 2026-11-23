@@ -249,5 +249,30 @@
   "createdAt": { "label": "Written" },
   "modifiedAt": { "label": "Changed" },
   "createdBy": { "label": "Written by" },
-  "modifiedBy": { "label": "Changed by" }
+  "modifiedBy": { "label": "Changed by" },
+  "startsOn": { "label": "Starts on" },
+  "startsAt": { "label": "Starts at", "description": "Leave empty for an all-day event" },
+  "endsOn": { "label": "Ends on", "description": "Leave empty for a one-day event. The last day counts." },
+  "endsAt": { "label": "Ends at" },
+  "timeZone": { "label": "Time zone" },
+  "place": { "label": "Place", "description": "e.g. clubhouse, bed 5, meeting point at the gate" },
+  "eventCategory": {
+    "label": "Kind of event",
+    "gathering": "Get-together",
+    "workday": "Workday",
+    "workshop": "Workshop",
+    "celebration": "Celebration",
+    "meeting": "Meeting",
+    "other": "Other"
+  },
+  "eventStatus": {
+    "label": "Status",
+    "confirmed": "Taking place",
+    "tentative": "Tentative",
+    "cancelled": "Cancelled"
+  },
+  "url": { "label": "Link" },
+  "contact": { "label": "Contact", "description": "Visible to everyone: only enter what may be public" },
+  "garden": { "label": "Garden" },
+  "sequence": { "label": "Revision" }
 }

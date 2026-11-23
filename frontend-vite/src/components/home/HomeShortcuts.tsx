@@ -9,7 +9,7 @@ import {
   LocalFlorist as PlantsIcon,
   CalendarMonth as SeasonPlannerIcon,
   Opacity as WaterdropIcon,
-  Settings as SettingsIcon,
+  Event as EventsIcon,
 } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,7 @@ const shortcutItems: ShortcutItem[] = [
   { icon: <PlantsIcon fontSize="large" />, labelKey: 'plants', route: 'plants', featureFlag: 'plants' },
   { icon: <SeasonPlannerIcon fontSize="large" />, labelKey: 'seasonPlanner', route: 'season-planner', featureFlag: 'seasonPlanner' },
   { icon: <WaterdropIcon fontSize="large" />, labelKey: 'watering', route: 'watering', featureFlag: 'watering' },
-  { icon: <SettingsIcon fontSize="large" />, labelKey: 'gardenSettings', route: 'garden-settings', featureFlag: 'settings' },
+  { icon: <EventsIcon fontSize="large" />, labelKey: 'events', route: 'events', featureFlag: 'events' },
 ];
 
 const HomeShortcuts = () => {
@@ -44,10 +44,9 @@ const HomeShortcuts = () => {
       aria-label={tCommon('home.shortcutsAriaLabel')}
       data-testid="home-shortcuts"
       sx={{
+        // the start page's shared container decides the width
         width: '100%',
-        maxWidth: 720,
-        mx: 'auto',
-        mb: 2,
+        boxSizing: 'border-box',
         p: { xs: 2, sm: 3 },
         borderRadius: 3,
         border: `1px solid ${alpha(theme.palette.common.white, 0.65)}`,

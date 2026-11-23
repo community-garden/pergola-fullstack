@@ -249,5 +249,30 @@
   "createdAt": { "label": "Geschrieben" },
   "modifiedAt": { "label": "Geändert" },
   "createdBy": { "label": "Geschrieben von" },
-  "modifiedBy": { "label": "Geändert von" }
+  "modifiedBy": { "label": "Geändert von" },
+  "startsOn": { "label": "Beginn (Datum)" },
+  "startsAt": { "label": "Beginn (Uhrzeit)", "description": "Leer lassen für einen ganztägigen Termin" },
+  "endsOn": { "label": "Ende (Datum)", "description": "Leer lassen für einen eintägigen Termin. Der letzte Tag zählt mit." },
+  "endsAt": { "label": "Ende (Uhrzeit)" },
+  "timeZone": { "label": "Zeitzone" },
+  "place": { "label": "Ort", "description": "z. B. Gemeinschaftshaus, Beet 5, Treffpunkt am Tor" },
+  "eventCategory": {
+    "label": "Art des Termins",
+    "gathering": "Treffen",
+    "workday": "Arbeitseinsatz",
+    "workshop": "Workshop",
+    "celebration": "Fest",
+    "meeting": "Plenum",
+    "other": "Sonstiges"
+  },
+  "eventStatus": {
+    "label": "Status",
+    "confirmed": "Findet statt",
+    "tentative": "Vorläufig",
+    "cancelled": "Abgesagt"
+  },
+  "url": { "label": "Link" },
+  "contact": { "label": "Kontakt", "description": "Für alle sichtbar: nur eintragen, was öffentlich sein darf" },
+  "garden": { "label": "Garten" },
+  "sequence": { "label": "Fassung" }
 }

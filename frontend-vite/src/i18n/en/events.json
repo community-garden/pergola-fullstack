@@ -1,0 +1,16 @@
+{
+  "title": "Events",
+  "preview": {
+    "title": "Events",
+    "ariaLabel": "Next events in the garden",
+    "all": "All events",
+    "recent": "Recently",
+    "allDay": "all day",
+    "until": "until {{date}}",
+    "cancelled": "Cancelled",
+    "tentative": "Tentative",
+    "empty": "No events entered yet.",
+    "emptyUpcoming": "Nothing coming up right now.",
+    "loadFailed": "Events could not be loaded."
+  }
+}

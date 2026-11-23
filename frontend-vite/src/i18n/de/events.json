@@ -1,0 +1,16 @@
+{
+  "title": "Termine",
+  "preview": {
+    "title": "Termine",
+    "ariaLabel": "Nächste Termine im Garten",
+    "all": "Alle Termine",
+    "recent": "Zuletzt",
+    "allDay": "ganztägig",
+    "until": "bis {{date}}",
+    "cancelled": "Abgesagt",
+    "tentative": "Vorläufig",
+    "empty": "Noch keine Termine eingetragen.",
+    "emptyUpcoming": "Gerade stehen keine Termine an.",
+    "loadFailed": "Termine konnten nicht geladen werden."
+  }
+}

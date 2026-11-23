@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ComponentProps } from 'react';
-import type { SemanticTable } from '@graviola/edb-table-components';
+import type { PergolaSemanticTable } from '@components/graviola/table/PergolaSemanticTable';
 import type { EntityActionContext, EntityActionEntry } from '@graviola/edb-detail-renderer-core';
 import { useDataStore } from '@graviola/edb-state-hooks';
 import { usePlantingMutations } from './usePlantingMutations';
+import { useEventMutations } from './useEventMutations';
 
-type TableActionRegistry = NonNullable<ComponentProps<typeof SemanticTable>['actionRegistry']>;
+type TableActionRegistry = NonNullable<ComponentProps<typeof PergolaSemanticTable>['actionRegistry']>;
 
 const rowAction = (
   name: string,
@@ -38,14 +39,16 @@ const rowAction = (
  * built-in Show / Edit / Delete):
  * - plant species and varieties: "Create planting" (prefilled with the plant)
  * - plantings: "Duplicate" (same bed, plant, period and amount)
+ * - garden events: "Duplicate" (same title, time and place; pick a new day)
  *
- * Pass the result as `actionRegistry` to `<SemanticTable>`. The prop is typed
+ * Pass the result as `actionRegistry` to `<PergolaSemanticTable>`. The prop is typed
  * as the legacy TableActionRegistry, but SemanticTable 2.x reads it as
  * EntityActionEntry[] — hence the cast.
  */
 export const usePergolaRowActions = (): TableActionRegistry => {
   const { t } = useTranslation('garden');
   const { createPlanting, duplicatePlanting } = usePlantingMutations();
+  const { duplicateEvent } = useEventMutations();
   const { dataStore } = useDataStore();
 
   return useMemo(
@@ -66,7 +69,10 @@ export const usePergolaRowActions = (): TableActionRegistry => {
         rowAction('pergola:duplicate-planting', ['Planting'], () => t('tableActions.duplicate'), (iri) =>
           duplicatePlanting(iri),
         ),
+        rowAction('pergola:duplicate-event', ['GardenEvent'], () => t('tableActions.duplicate'), (iri) =>
+          duplicateEvent(iri),
+        ),
       ] as unknown as TableActionRegistry,
-    [createPlanting, dataStore, duplicatePlanting, t],
+    [createPlanting, dataStore, duplicateEvent, duplicatePlanting, t],
   );
 };

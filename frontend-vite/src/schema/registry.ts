@@ -5,6 +5,7 @@ import type { Planting, BedNote, PlantPlacement, SeedStock } from './planting-sc
 import type { Garden } from './garden-schema';
 import type { GeoFeature, GeoFeatureVersion } from './geo-feature-schema';
 import type { MapOverlay } from './map-overlay-schema';
+import type { GardenEvent } from './event-schema';
 
 /**
  * Type registry for Graviola's typed store API (`filterOne` / `filterMany`).
@@ -30,6 +31,7 @@ export type PergolaRegistry = {
   GeoFeature: GeoFeature;
   GeoFeatureVersion: GeoFeatureVersion;
   MapOverlay: MapOverlay;
+  GardenEvent: GardenEvent;
 };
 
 export type PergolaTypeName = keyof PergolaRegistry;

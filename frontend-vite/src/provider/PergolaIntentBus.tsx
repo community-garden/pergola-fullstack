@@ -12,6 +12,9 @@ import {
   type GraviolaIntent,
 } from "@graviola/edb-state-hooks";
 import { SEASON_QUERY_KEY } from "../api/season";
+import { EVENTS_QUERY_KEY, stampSavedEvent } from "../api/events";
+import { useCurrentGarden } from "../hooks/useCurrentGarden";
+import { usePergolaStore } from "../hooks/usePergolaStore";
 
 /**
  * Answers the intents Graviola components dispatch (show, edit, create,
@@ -28,6 +31,8 @@ export const PergolaIntentBus = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation("garden");
   const queryClient = useQueryClient();
   const { typeNameToTypeIRI, createEntityIRI } = useAdbContext();
+  const { store } = usePergolaStore();
+  const { gardenIRI } = useCurrentGarden();
 
   const dispatch = useCallback(
     (intent: GraviolaIntent) => {
@@ -58,6 +63,13 @@ export const PergolaIntentBus = ({ children }: { children: ReactNode }) => {
           // The season planner and map read plantings, beds and plants through
           // their own queries; refresh them after any save in a Graviola form.
           void queryClient.invalidateQueries({ queryKey: SEASON_QUERY_KEY });
+          if (intent.typeName === "GardenEvent" && store) {
+            // iCal bookkeeping (CREATED, LAST-MODIFIED, SEQUENCE), whichever way the form was opened
+            void stampSavedEvent(store, intent.entityIRI, gardenIRI, new Date().toISOString()).then(() =>
+              queryClient.invalidateQueries({ queryKey: EVENTS_QUERY_KEY }),
+            );
+          }
+          void queryClient.invalidateQueries({ queryKey: EVENTS_QUERY_KEY });
           enqueueSnackbar(t(intent.created ? "intents.created" : "intents.saved"), { variant: "success" });
           return;
         case "entity-save-failed":
@@ -65,6 +77,7 @@ export const PergolaIntentBus = ({ children }: { children: ReactNode }) => {
           return;
         case "entity-removed":
           void queryClient.invalidateQueries({ queryKey: SEASON_QUERY_KEY });
+          void queryClient.invalidateQueries({ queryKey: EVENTS_QUERY_KEY });
           enqueueSnackbar(t("intents.removed"), { variant: "success" });
           return;
         case "entity-removal-failed":
@@ -77,7 +90,7 @@ export const PergolaIntentBus = ({ children }: { children: ReactNode }) => {
           return navigate(intent.href);
       }
     },
-    [createEntityIRI, enqueueSnackbar, navigate, queryClient, t, typeNameToTypeIRI],
+    [createEntityIRI, enqueueSnackbar, gardenIRI, navigate, queryClient, store, t, typeNameToTypeIRI],
   );
 
   return <GraviolaIntentBusProvider dispatch={dispatch}>{children}</GraviolaIntentBusProvider>;

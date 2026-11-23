@@ -4,6 +4,7 @@ import { Garden } from './garden-schema';
 import { GeoFeature, GeoFeatureVersion } from './geo-feature-schema';
 import { Person } from './person-schema';
 import { MapOverlay } from './map-overlay-schema';
+import { GardenEvent } from './event-schema';
 import { Planting, BedNote, PlantPlacement, SeedStock } from './planting-schema';
 import { GrowingSeason, Patch, PhysicalCharacteristics, PlantingPlan, PlantingPlanItem, PlantSpecies, PlantVariety, Requirements, Timing } from './patch-schema';
 
@@ -26,6 +27,15 @@ export {
 export { PersonSchema, personSchema } from './person-schema';
 export { MapOverlaySchema, mapOverlaySchema, MAP_OVERLAY_TYPES } from './map-overlay-schema';
 export type { MapOverlay } from './map-overlay-schema';
+export {
+  GardenEventSchema,
+  eventSchema,
+  EVENT_CATEGORIES,
+  EVENT_STATUSES,
+  EVENT_STATUS_ICAL,
+  DEFAULT_TIME_ZONE,
+} from './event-schema';
+export type { GardenEvent, EventCategory, EventStatus } from './event-schema';
 export {
   PlantingSchema,
   BedNoteSchema,
@@ -81,5 +91,6 @@ export type GardenDefinitions = {
   PlantPlacement: PlantPlacement,
   BedNote: BedNote,
   MapOverlay: MapOverlay,
+  GardenEvent: GardenEvent,
   Garden: Garden,
 }

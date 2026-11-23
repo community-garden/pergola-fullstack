@@ -471,7 +471,8 @@
       "WaterBody": "Gewässer",
       "MapOverlay": "Karten-Overlay",
       "GeoFeatureVersion": "Frühere Form",
-      "BedNote": "Beetnotiz"
+      "BedNote": "Beetnotiz",
+      "GardenEvent": "Termin"
     }
   },
   "mapEdit": {
