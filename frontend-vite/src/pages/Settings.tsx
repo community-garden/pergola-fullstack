@@ -2,7 +2,7 @@ import { Box, Typography, Paper, List, ListItem, ListItemText, FormControl, Inpu
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { GenericForm } from '@graviola/semantic-json-form';
-import { SemanticTable } from '@graviola/edb-table-components';
+import { PergolaSemanticTable } from '@components/graviola/table/PergolaSemanticTable';
 import { useCurrentGarden } from '@hooks/index';
 import { useCreateOrEditModal } from '@hooks/useCreateOrEditModal';
 import { hiddenColumns } from '@components/graviola/table/hiddenColumns';
@@ -61,7 +61,7 @@ const Settings = () => {
           {t('garden:person.description')}
         </Typography>
         <Box sx={{ height: 420 }}>
-          <SemanticTable
+          <PergolaSemanticTable
             typeName="Person"
             tableUiSchema={PERSON_TABLE_UI_SCHEMA}
             onEditEntry={createOrEditModal}

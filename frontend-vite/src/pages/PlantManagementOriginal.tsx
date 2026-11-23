@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { SemanticTable } from "@graviola/edb-table-components";
+import { PergolaSemanticTable } from "@components/graviola/table/PergolaSemanticTable";
 import { useCreateOrEditModal } from "@hooks/useCreateOrEditModal";
 import { usePergolaRowActions } from "@hooks/usePergolaRowActions";
 import { PlantCalendarTab } from "@components/plants/PlantCalendarTab";
@@ -72,7 +72,7 @@ export const PlantManagement = () => {
       </Tabs>
       <Box sx={{ flex: 1, minHeight: 0, overflow: "auto" }}>
         {active.typeName ? (
-          <SemanticTable
+          <PergolaSemanticTable
             key={active.typeName}
             typeName={active.typeName}
             tableUiSchema={TABLE_UI_SCHEMAS[active.typeName] ?? DEFAULT_TABLE_UI_SCHEMA}
