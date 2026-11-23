@@ -37,8 +37,8 @@ import { useShapePersistence } from '@components/map/edit/useShapePersistence';
 import { currentShapes, toDay } from '@components/map/edit/shapeHistory';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-/** Opening zoom: the garden fills the screen (was 17: the whole neighbourhood). */
-const GARDEN_ZOOM = 18;
+/** Opening zoom: the garden fills the screen (was 17, then 18). */
+const GARDEN_ZOOM = 19;
 const EMPTY_VISIBILITY: Record<string, boolean> = {};
 const NAMES_MODE: MapLabelMode = { kind: 'names' };
 
