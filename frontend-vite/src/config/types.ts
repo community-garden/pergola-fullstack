@@ -14,6 +14,8 @@ export interface ApiConfig {
  * Authentication configuration
  */
 export interface AuthConfig {
+  /** Whether OIDC login is configured (authority and client id set) */
+  enabled: boolean;
   /** OIDC authority URL */
   oidcAuthority: string;
   /** Client ID for the application */
@@ -32,6 +34,8 @@ export interface AppConfig {
   api: ApiConfig;
   /** Authentication configuration */
   auth: AuthConfig;
+  /** Knowledge-base proxy URL (empty = fetch the APIs directly) */
+  kbProxyUrl: string;
 }
 
 /**
@@ -49,6 +53,8 @@ export interface EnvVariables {
   VITE_REDIRECT_URI?: string;
   /** OAuth scope */
   VITE_OAUTH_SCOPE?: string;
+  /** Optional proxy for knowledge-base requests */
+  VITE_KB_PROXY_URL?: string;
 }
 
 // Extend the ImportMeta interface

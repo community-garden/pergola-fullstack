@@ -1,6 +1,7 @@
 import { useState, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@auth/index';
+import config from '@config/index';
 import { useLocalUser } from '@hooks/useLocalUser';
 import {
   Avatar,
@@ -119,11 +120,14 @@ export const AvatarMenu = ({ className }: AvatarMenuProps) => {
         </MenuItem>
 
         {!isAuthenticated && (
-          <MenuItem onClick={handleLogin}>
+          <MenuItem onClick={handleLogin} disabled={!config.auth.enabled}>
             <ListItemIcon>
               <LoginIcon />
             </ListItemIcon>
-            <ListItemText primary={t('common.login')} />
+            <ListItemText
+              primary={t('common.login')}
+              secondary={config.auth.enabled ? undefined : t('common.loginDisabled')}
+            />
           </MenuItem>
         )}
 

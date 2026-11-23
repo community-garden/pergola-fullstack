@@ -18,6 +18,11 @@ interface AuthProviderProps {
  * using configuration from the global config module.
  */
 export function AuthProvider({ children }: AuthProviderProps) {
+  // Without an OIDC authority the app runs without login (no Keycloak needed).
+  if (!config.auth.enabled) {
+    return <>{children}</>;
+  }
+
   // OIDC configuration from the global config
   const oidcConfig = {
     authority: config.auth.oidcAuthority,

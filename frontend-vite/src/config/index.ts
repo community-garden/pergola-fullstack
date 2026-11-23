@@ -36,20 +36,14 @@ const createAuthConfig = (): AuthConfig => {
   const redirectUri = import.meta.env.VITE_REDIRECT_URI;
   const scope = import.meta.env.VITE_OAUTH_SCOPE;
   
-  if (!oidcAuthority) {
-    console.warn('OIDC authority not provided in environment variables. Using default value.');
-  }
-  
-  if (!clientId) {
-    console.warn('Client ID not provided in environment variables. Using default value.');
-  }
-  
-  if (!redirectUri) {
-    console.warn('Redirect URI not provided in environment variables. Using default value.');
+  const enabled = Boolean(oidcAuthority && clientId);
+  if (!enabled) {
+    console.info('Login disabled: VITE_OIDC_AUTHORITY or VITE_CLIENT_ID is empty.');
   }
   
   return {
-    oidcAuthority: oidcAuthority || 'http://localhost:8080/realms/pergola',
+    enabled,
+    oidcAuthority: oidcAuthority || '',
     clientId: clientId || 'admin',
     redirectUri: redirectUri || 'http://localhost:3001/callback',
     scope: scope || 'openid profile email',
@@ -64,6 +58,7 @@ const createConfig = (): AppConfig => {
   return {
     api: createApiConfig(),
     auth: createAuthConfig(),
+    kbProxyUrl: import.meta.env.VITE_KB_PROXY_URL || '',
   };
 };
 
