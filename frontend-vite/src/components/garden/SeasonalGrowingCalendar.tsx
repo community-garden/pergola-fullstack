@@ -4,8 +4,9 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
-import { Box, IconButton, Tooltip, Chip, Typography } from '@mui/material';
-import { Edit, EditOff } from '@mui/icons-material';
+import { Box, IconButton, Tooltip, Popover, Typography } from '@mui/material';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { EditModeToggle } from '../common/EditModeToggle';
 import { useTranslation } from 'react-i18next';
 import { isNil } from 'lodash-es';
 import { PlantSpecies, PlantVariety } from '../../schema/patch-schema';
@@ -200,6 +201,7 @@ export const SeasonalGrowingCalendar = ({
 }: SeasonalGrowingCalendarProps) => {
   const { t } = useTranslation('garden');
   const [editMode, setEditMode] = useState(false);
+  const [legendAnchor, setLegendAnchor] = useState<HTMLElement | null>(null);
   const [localData, setLocalData] = useState<(PlantSpecies | PlantVariety)[]>(data);
   const [tooltipState, setTooltipState] = useState<{ day: number; x: number; y: number } | null>(null);
   const tooltipTimeoutRef = useRef<number | null>(null);
@@ -456,8 +458,8 @@ export const SeasonalGrowingCalendar = ({
   const columnVisibility = useMemo(() => {
     const visibility: Record<string, boolean> = {};
     
-    // All columns are visible by default except optional property columns
-    const optionalProps = ['height', 'sun', 'water'];
+    // the month columns are always visible; property columns only when listed
+    const optionalProps = ['germinationDays', 'daysToHarvest', 'spacing', 'height', 'sun', 'water'];
     optionalProps.forEach((prop) => {
       visibility[prop] = defaultVisibleProperties.includes(prop);
     });
@@ -499,24 +501,26 @@ export const SeasonalGrowingCalendar = ({
         flexDirection: 'column',
       },
     },
+    // same look as the season planner: edit-mode chip, legend behind an info icon
     renderTopToolbarCustomActions: () => (
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Tooltip title={editMode ? t('seasonalCalendar.editMode') : t('seasonalCalendar.editMode')}>
+        <EditModeToggle
+          variant="chip"
+          editMode={editMode}
+          onToggle={() => setEditMode((v) => !v)}
+          // dragging periods only makes sense when the change can go somewhere (e.g. be saved)
+          disabledHint={onDataChange ? undefined : t('editMode.inDevelopment')}
+        />
+        <Tooltip title={t('seasonalCalendar.legend.title')}>
           <IconButton
-            onClick={() => setEditMode(!editMode)}
-            color={editMode ? 'primary' : 'default'}
+            size="small"
+            onClick={(e) => setLegendAnchor(e.currentTarget)}
+            aria-label={t('seasonalCalendar.legend.title')}
+            data-testid="calendar-legend-button"
           >
-            {editMode ? <EditOff /> : <Edit />}
+            <InfoOutlinedIcon fontSize="small" />
           </IconButton>
         </Tooltip>
-        {editMode && (
-          <Chip
-            label={t('seasonalCalendar.editMode')}
-            color="primary"
-            size="small"
-            variant="outlined"
-          />
-        )}
       </Box>
     ),
   });
@@ -583,7 +587,14 @@ export const SeasonalGrowingCalendar = ({
         </Box>
       )}
       <MaterialReactTable table={table} />
-      <CalendarLegend periodColors={colors} periodTypes={usedPeriodTypes} />
+      <Popover
+        open={Boolean(legendAnchor)}
+        anchorEl={legendAnchor}
+        onClose={() => setLegendAnchor(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <CalendarLegend periodColors={colors} periodTypes={usedPeriodTypes} />
+      </Popover>
     </Box>
   );
 };

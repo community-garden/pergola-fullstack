@@ -70,6 +70,9 @@ export interface PlantInfo {
   spacing?: number;
   /** Recommended spacing between rows, in cm */
   rowSpacing?: number;
+  /** Days from sowing to germination / to harvest (calendar columns) */
+  germinationDays?: number;
+  daysToHarvest?: number;
   phases: PlantPhases;
 }
 
@@ -154,6 +157,8 @@ export async function fetchPlants(store: SeasonStore): Promise<PlantInfo[]> {
       speciesIri: 'species' in doc ? idOf(doc.species) : undefined,
       spacing: asNumber(pc?.spacing),
       rowSpacing: asNumber(pc?.rowSpacing),
+      germinationDays: asNumber(doc.timing?.germinationDays),
+      daysToHarvest: asNumber(doc.timing?.daysToHarvest),
       phases: {
         preCultivation: range(gs?.preCultivationStart, gs?.preCultivationEnd),
         sowing: range(gs?.sowingStart, gs?.sowingEnd),

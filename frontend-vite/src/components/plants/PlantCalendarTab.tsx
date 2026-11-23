@@ -23,6 +23,10 @@ const toSpecies = (plant: PlantInfo): PlantSpecies => ({
   icon: plant.icon,
   family: plant.family,
   growingSeason: toGrowingSeason(plant),
+  ...(plant.spacing !== undefined && { physicalCharacteristics: { spacing: plant.spacing } }),
+  ...(plant.germinationDays !== undefined || plant.daysToHarvest !== undefined
+    ? { timing: { germinationDays: plant.germinationDays, daysToHarvest: plant.daysToHarvest } }
+    : {}),
 });
 
 /**
@@ -49,12 +53,21 @@ export const PlantCalendarTab = () => {
             '@type': `${GARDEN_NS}PlantVariety`,
             name: v.name,
             species: toSpecies(s),
+            ...(v.spacing !== undefined && { physicalCharacteristics: { spacing: v.spacing } }),
+            ...(v.germinationDays !== undefined || v.daysToHarvest !== undefined
+              ? { timing: { germinationDays: v.germinationDays, daysToHarvest: v.daysToHarvest } }
+              : {}),
             ...(Object.keys(own).length > 0 && { growingSeason: own }),
           });
         });
     });
     return rows;
   }, [data.plants]);
+
+  // a column nobody has filled in yet would only show dashes
+  const visibleProperties = (['germinationDays', 'daysToHarvest', 'spacing'] as const).filter((key) =>
+    data.plants.some((p) => p[key] !== undefined),
+  );
 
   if (isLoading) {
     return (
@@ -66,5 +79,5 @@ export const PlantCalendarTab = () => {
   if (error) {
     return <Typography color="error">{t('seasonPlanner.loadError')}</Typography>;
   }
-  return <SeasonalGrowingCalendar data={calendarData} defaultVisibleProperties={['spacing']} />;
+  return <SeasonalGrowingCalendar data={calendarData} defaultVisibleProperties={visibleProperties} />;
 };
